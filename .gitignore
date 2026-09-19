@@ -1,0 +1,24 @@
+node_modules/
+src/function/chrome
+
+# Environment variables
+.env
+core
+
+# Runtime data (user uploads)
+files/
+logs/
+
+# Ephemeral session data (AI chat sessions + Express admin sessions)
+data/session/
+data/sessions/
+
+# Uploaded/generated files
+upload-expiry.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary session / solver tokens
+.fd_sp*

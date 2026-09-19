@@ -1,0 +1,36 @@
+{
+  "email": "fuzzy-panther-232-g19i@akunlama.com",
+  "username": "fuzzy-panther-232-g19i",
+  "domain": "akunlama.com",
+  "otp": "150747",
+  "token": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwMjYtMDktazEiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOlsiYXBvZGV4LWNoYXQiLCJhcG9kZXgtd2ViIl0sImV4cCI6MTc5MjM0MTE3OCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFwb2RleC5haSIsInNlc3Npb25faWQiOiJhYjAxYzE3Ny1hZGYyLTQ2OWMtOTQzNy01MDYzMWVjYjUyNGEiLCJzaWQiOiJhYjAxYzE3Ny1hZGYyLTQ2OWMtOTQzNy01MDYzMWVjYjUyNGEiLCJ1c2VyX2lkIjoiZW1haWxfM2ZlZDVmYWQ5ZjU5In0.1MPxEw6ezn6IEOMkRUXfmH4jj54taDnmcNCUg60nViyXsWcI6Xn5nIMSeEUMkpWmLHJmB9tYZW6by_NB42uIeA",
+  "sessionCookie": null,
+  "fullCookie": "guest_id=guest_ec66c8d86cbd; apx-signed-in=1",
+  "deviceID": "3b058531-da84-4d77-a1de-741d235f96ef",
+  "guest_id": "guest_ec66c8d86cbd",
+  "user": {
+    "avatar": "",
+    "email": "fuzzy-panther-232-g19i@akunlama.com",
+    "id": "email_3fed5fad9f59",
+    "name": "fuzzy-panther-232-g19i",
+    "onboarding_completed": {}
+  },
+  "isNewUser": true,
+  "raw": {
+    "data": {
+      "access_token": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwMjYtMDktazEiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOlsiYXBvZGV4LWNoYXQiLCJhcG9kZXgtd2ViIl0sImV4cCI6MTc5MjM0MTE3OCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFwb2RleC5haSIsInNlc3Npb25faWQiOiJhYjAxYzE3Ny1hZGYyLTQ2OWMtOTQzNy01MDYzMWVjYjUyNGEiLCJzaWQiOiJhYjAxYzE3Ny1hZGYyLTQ2OWMtOTQzNy01MDYzMWVjYjUyNGEiLCJ1c2VyX2lkIjoiZW1haWxfM2ZlZDVmYWQ5ZjU5In0.1MPxEw6ezn6IEOMkRUXfmH4jj54taDnmcNCUg60nViyXsWcI6Xn5nIMSeEUMkpWmLHJmB9tYZW6by_NB42uIeA",
+      "is_new_user": true,
+      "user": {
+        "avatar": "",
+        "email": "fuzzy-panther-232-g19i@akunlama.com",
+        "id": "email_3fed5fad9f59",
+        "name": "fuzzy-panther-232-g19i",
+        "onboarding_completed": {}
+      }
+    },
+    "message": "Login successful",
+    "success": true
+  },
+  "createdAt": "2026-09-18T16:32:58.935Z",
+  "expires": 1789835578935
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "audit_id": "ALMSEBHLGB",
+    "admin_id": "USR2378A4CD4D",
+    "admin_username": "testuser",
+    "target_user_id": "USR2378A4CD4D",
+    "target_username": "testuser",
+    "action": "APIKEY_RESET",
+    "old_data": "{\"apikey\":\"acb478791e905105570b5b364e23bfaa4ce3e3b8a3560ca86617866639b101f3\"}",
+    "new_data": "{\"apikey\":\"b0c71ba9044326faf829f638591bffa61669e8d1c8ebe03079eb36b7edfb7e0c\"}",
+    "ip": "::ffff:127.0.0.1",
+    "user_agent": "curl/7.81.0",
+    "timestamp": "2026-08-04T07:08:58.715Z"
+  }
+]

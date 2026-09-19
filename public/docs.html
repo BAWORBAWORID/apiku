@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="generator" content="Zyyvor Api'S Platform">
+    <title>Zyyvor Api'S | API Documentation</title>
+    <meta name="description" content="Complete API documentation for Zyyvor Api'S — Browse 300+ REST API endpoints with interactive playground, auto-fill parameters, and real-time testing. AI chat, downloaders, image processing, tools, and more." id="meta-description">
+    <meta name="keywords" content="api documentation, rest api, api playground, api endpoints, api testing, developer docs, api reference, zyvor">
+    <meta name="author" content="Zyyvor Api'S Team">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <meta name="googlebot" content="index, follow">
+    <meta name="theme-color" content="#050505">
+    <link rel="icon" type="image/x-icon" href="/src/images/logo.ico">
+    <link rel="apple-touch-icon" href="/src/images/logo.jpg">
+    <link rel="canonical" href="https://api.zyvor.my.id/docs">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://api.zyvor.my.id/docs">
+    <meta property="og:title" content="Zyyvor Api'S — API Documentation">
+    <meta property="og:description" content="Browse 300+ REST API endpoints with interactive playground and real-time testing." id="meta-og-description">
+    <meta property="og:image" content="https://api.zyvor.my.id/src/images/logo.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Zyyvor API Documentation">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:site_name" content="Zyyvor Api'S">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ZyyvorAPI">
+    <meta name="twitter:creator" content="@ZyyvorAPI">
+    <meta name="twitter:title" content="Zyyvor Api'S — API Documentation">
+    <meta name="twitter:description" content="Browse 300+ REST API endpoints with interactive playground.">
+    <meta name="twitter:image" content="https://api.zyvor.my.id/src/images/logo.jpg">
+    <meta name="twitter:image:alt" content="Zyyvor API Documentation">
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "SiteNavigationElement",
+                "@id": "https://api.zyvor.my.id/#navigation",
+                "name": "Main Navigation",
+                "description": "Primary site navigation links for Zyyvor API platform",
+                "url": "https://api.zyvor.my.id",
+                "hasPart": [
+                    {"@type": "SiteNavigationElement", "name": "Home", "url": "https://api.zyvor.my.id/"},
+                    {"@type": "SiteNavigationElement", "name": "Documentation", "url": "https://api.zyvor.my.id/docs"},
+                    {"@type": "SiteNavigationElement", "name": "Support", "url": "https://api.zyvor.my.id/support"},
+                    {"@type": "SiteNavigationElement", "name": "Status", "url": "https://api.zyvor.my.id/stats"},
+                    {"@type": "SiteNavigationElement", "name": "Changelog", "url": "https://api.zyvor.my.id/changelog"},
+                    {"@type": "SiteNavigationElement", "name": "Request", "url": "https://api.zyvor.my.id/request-report"}
+                ]
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://api.zyvor.my.id/#website",
+                "name": "Zyyvor Api'S",
+                "url": "https://api.zyvor.my.id",
+                "inLanguage": "en-US"
+            },
+            {
+                "@type": "WebAPI",
+                "@id": "https://api.zyvor.my.id/#webapi",
+                "name": "Zyyvor REST API Platform",
+                "url": "https://api.zyvor.my.id",
+                "documentation": "https://api.zyvor.my.id/docs",
+                "provider": {
+                    "@type": "Organization",
+                    "@id": "https://api.zyvor.my.id/#organization"
+                }
+            },
+            {
+                "@type": "TechArticle",
+                "@id": "https://api.zyvor.my.id/docs#article",
+                "name": "Zyyvor API Documentation — 300+ REST API Endpoints",
+                "headline": "Complete API documentation for Zyyvor Api'S",
+                "description": "Browse 300+ REST API endpoints with interactive playground, auto-fill parameters, and real-time testing. AI chat, downloaders, image processing, tools, and more.",
+                "url": "https://api.zyvor.my.id/docs",
+                "proficiencyLevel": "Beginner",
+                "about": { "@id": "https://api.zyvor.my.id/#webapi" },
+                "isPartOf": { "@id": "https://api.zyvor.my.id/#website" }
+            },
+            {
+                "@type": "WebPage",
+                "@id": "https://api.zyvor.my.id/docs#webpage",
+                "url": "https://api.zyvor.my.id/docs",
+                "isPartOf": { "@id": "https://api.zyvor.my.id/#website" }
+            },
+            {
+                "@type": "SoftwareApplication",
+                "@id": "https://api.zyvor.my.id/#software",
+                "name": "Zyyvor API Documentation Portal",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "All",
+                "description": "Interactive API documentation with built-in playground for testing 300+ REST API endpoints.",
+                "url": "https://api.zyvor.my.id/docs",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD"
+                }
+            },
+            {
+                "@type": "Organization",
+                "@id": "https://api.zyvor.my.id/#organization",
+                "name": "Zyyvor Api'S",
+                "url": "https://api.zyvor.my.id",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://api.zyvor.my.id/src/images/logo.jpg",
+                    "width": 1200,
+                    "height": 630
+                },
+                "sameAs": [
+                    "https://t.me/ZyyvorAPI",
+                    "https://github.com/BAWORBAWORID/apiku"
+                ],
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "contactType": "technical support",
+                    "email": "contact@api.zyvor.my.id",
+                    "url": "https://t.me/ZyyvorAPI",
+                    "availableLanguage": ["English", "Indonesian"]
+                }
+            },
+            {
+                "@type": "BreadcrumbList",
+                "@id": "https://api.zyvor.my.id/docs#breadcrumb",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://api.zyvor.my.id"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "API Documentation",
+                        "item": "https://api.zyvor.my.id/docs"
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{width:100%;overflow-x:hidden}
+        :root{
+            --bg:#050505;--surface:#0a0a0a;--border:rgba(255,255,255,0.06);
+            --text:#fff;--text-2:#888;--text-3:#555;
+            --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;--display:'Syne',sans-serif;
+        }
+        body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;width:100%;max-width:100%;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+        .grid-bg{position:fixed;top:0;left:0;width:100%;height:100vh;background-image:radial-gradient(rgba(255,255,255,0.06) 1px,transparent 1px);background-size:32px 32px;z-index:-1;pointer-events:none}
+        .grid-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 0%,var(--bg) 80%)}
+        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+        input,textarea,select{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+
+        /* Nav */
+        .nav{position:fixed;top:0;left:0;right:0;background:rgba(5,5,5,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:1000;height:56px}
+        .nav-inner{max-width:1200px;margin:0 auto;padding:0 2rem;height:100%;display:flex;justify-content:space-between;align-items:center}
+        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:white}
+        .logo img{width:32px;height:32px;border-radius:6px;object-fit:cover}
+        .logo-text{font-family:var(--display);font-weight:700;font-size:1rem;letter-spacing:-0.02em}
+        .logo-sub{font-family:var(--mono);font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.15em}
+        .menu-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--text-2);cursor:pointer;transition:all 0.2s}
+        .menu-btn:hover{border-color:rgba(255,255,255,0.15);color:white}
+        .dropdown{position:absolute;top:100%;left:0;margin-top:8px;width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:none;z-index:100}
+        .dropdown.show{display:block}
+        .dropdown a{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;color:var(--text-2);text-decoration:none;transition:all 0.15s}
+        .dropdown a:hover{background:rgba(255,255,255,0.05);color:white}
+        .dropdown a i{width:16px;text-align:center;font-size:12px}
+        .dropdown .sep{height:1px;background:var(--border);margin:4px 0}
+
+        /* Toast */
+        .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 20px;font-size:13px;color:white;z-index:9999;opacity:0;transition:all 0.3s;pointer-events:none}
+        .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+        /* Hero */
+        .hero{padding:8rem 2rem 3rem;max-width:1200px;margin:0 auto;text-align:center}
+        .hero h1{font-family:var(--display);font-size:clamp(2rem,5vw,3.5rem);font-weight:800;letter-spacing:-0.03em;color:white;margin-bottom:12px}
+        .hero p{font-size:1rem;color:var(--text-2);max-width:600px;margin:0 auto 2rem}
+
+        /* Stats Row */
+        .stats-row{display:flex;gap:2rem;margin-bottom:2rem;flex-wrap:wrap}
+        .stat-item{text-align:left}
+        .stat-val{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:white}
+        .stat-label{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em}
+
+        /* Search */
+        .search-wrap{position:relative;margin-bottom:2rem}
+        .search-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:14px}
+        .search-input{width:100%;padding:12px 14px 12px 40px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;color:white;outline:none;transition:border-color 0.2s}
+        .search-input:focus{border-color:rgba(255,255,255,0.15)}
+        .search-input::placeholder{color:var(--text-3)}
+
+        /* Filters */
+        .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2rem;max-width:1200px}
+        .filter-btn{padding:6px 14px;background:transparent;border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:11px;color:var(--text-2);cursor:pointer;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.05em}
+        .filter-btn:hover{border-color:rgba(255,255,255,0.15);color:white}
+        .filter-btn.active{background:white;color:#050505;border-color:white}
+
+        /* Main Content */
+        .content{max-width:1200px;margin:0 auto;padding:0 2rem 4rem;overflow-x:hidden}
+
+        /* Category */
+        .category{margin-bottom:3rem}
+
+        /* Announcement dropdown */
+        .announce-item{padding:12px 14px;border-bottom:1px solid var(--border);transition:background 0.15s}
+        .announce-item:last-child{border-bottom:none}
+        .announce-item:hover{background:rgba(255,255,255,0.03)}
+        .announce-item .a-title{font-family:var(--display);font-size:12px;font-weight:700;color:white}
+        .announce-item .a-desc{font-size:11px;color:var(--text-2);margin-top:3px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .announce-item .a-meta{display:flex;gap:8px;align-items:center;margin-top:5px}
+        .announce-item .a-ver{font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.06);color:var(--text-3)}
+        .announce-item .a-date{font-family:var(--mono);font-size:9px;color:var(--text-3)}
+
+        /* Response viewer */
+        .pg-result{background:#020202 !important;border:1px solid var(--border);border-radius:8px;min-height:60px;max-height:80vh;overflow:hidden;position:relative;overscroll-behavior:contain;display:none;user-select:text !important;-webkit-user-select:text !important}
+        .pg-result[style*="display: block"],.pg-result[style*="display:block"],.pg-result[style*="display: flex"],.pg-result[style*="display:flex"]{display:flex !important;flex-direction:column}
+        .pg-result *{user-select:text !important;-webkit-user-select:text !important}
+        .pg-result .drag-handle{display:none}
+        .pg-result .result-toolbar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#0a0a0a;position:relative;z-index:5;flex-shrink:0;user-select:none !important;-webkit-user-select:none !important}
+        .pg-result .result-toolbar *{user-select:none !important;-webkit-user-select:none !important}
+        .pg-result .result-toolbar::after{content:"";position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(to right, #6366f1, transparent);opacity:0.35}
+        .pg-result .result-toolbar .toolbar-left{display:flex;align-items:center;gap:8px}
+        .pg-result .result-toolbar .toolbar-right{display:flex;gap:6px}
+        .pg-result .result-toolbar .toolbar-btn{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:4px;background:transparent;border:1px solid var(--border);color:var(--text-3);cursor:pointer;font-size:10px;transition:all 0.15s}
+        .pg-result .result-toolbar .toolbar-btn:hover{color:white;border-color:rgba(255,255,255,0.2)}
+        .pg-result pre{font-family:var(--mono);font-size:12px;color:var(--text-2);white-space:pre-wrap;word-break:break-all;overflow:auto;padding:16px;margin:0;user-select:text !important;-webkit-user-select:text !important;touch-action:auto !important;flex:1;min-height:0;background:#020202}
+        .pg-result .media-container{padding:24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;overflow-y:auto;flex:1;min-height:0;background:#020202}
+        .pg-result .media-container .img-wrapper{position:relative;max-width:100%;border-radius:20px;overflow:hidden;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);box-shadow:0 8px 24px rgba(0,0,0,.25);transition:all 0.2s ease}
+        .pg-result .media-container .img-wrapper:hover{transform:translateY(-2px)}
+        .pg-result .media-container img{max-width:100%;max-height:600px;width:100%;height:auto;display:block;object-fit:contain}
+        .pg-result .media-container video{max-width:100%;max-height:500px;border-radius:12px;border:1px solid var(--border)}
+        .pg-result .media-container audio{width:100%}
+        .pg-result .media-container .media-info{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+        .pg-result .media-container .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:14px;background:white;color:#050505;font-family:var(--sans);font-size:13px;font-weight:600;text-decoration:none;transition:all 0.2s ease}
+        .pg-result .media-container .download-btn:hover{opacity:0.9;transform:translateY(-1px)}
+        .pg-result .media-container .binary-preview{display:flex;flex-direction:column;align-items:center;padding:2rem;color:var(--text-2);font-size:13px}
+        .pg-result .csv-container{width:100%;overflow-y:auto;flex:1;min-height:0;background:#020202;padding:16px}
+        .pg-result .csv-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px}
+        .pg-result .csv-table th,.pg-result .csv-table td{padding:6px 10px;border:1px solid var(--border);text-align:left;white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis}
+        .pg-result .csv-table th{background:rgba(255,255,255,0.05);font-weight:600;position:sticky;top:0}
+        .pg-result .csv-table tr:hover td{background:rgba(255,255,255,0.03)}
+        .pg-result .example-tabs{display:flex;gap:2px;padding:8px 12px;border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch}
+        .pg-result .example-tab{padding:5px 12px;border-radius:5px;background:transparent;color:var(--text-3);font-family:var(--mono);font-size:11px;border:none;cursor:pointer;white-space:nowrap;transition:all 0.15s}
+        .pg-result .example-tab:hover{color:var(--text-1);background:rgba(255,255,255,0.05)}
+        .pg-result .example-tab.active{background:rgba(255,255,255,0.08);color:white;font-weight:600}
+        .pg-result .response-type{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase}
+        .pg-result .response-type .type-badge{padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.06);color:var(--text-2)}
+        .cat-head{font-family:var(--display);font-size:1.25rem;font-weight:700;text-transform:uppercase;letter-spacing:-0.01em;color:white;margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+        .cat-count{font-family:var(--mono);font-size:11px;color:var(--text-3);border:1px solid var(--border);padding:2px 8px;border-radius:4px}
+
+        /* Endpoint Grid */
+        .ep-grid{display:flex;flex-direction:column;gap:8px}
+
+        /* Endpoint Card */
+        .ep-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;cursor:pointer;transition:border-color 0.2s;-webkit-tap-highlight-color:transparent;user-select:none;overflow:hidden;max-width:100%}
+        .ep-card:hover{border-color:rgba(255,255,255,0.12)}
+        .ep-card.expanded{border-color:rgba(255,255,255,0.15)}
+        .ep-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;overflow:hidden;width:100%;max-width:100%}
+        .ep-method{font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0}
+        .method-get{background:rgba(255,255,255,0.08);color:white}
+        .method-post{background:rgba(255,255,255,0.04);color:var(--text-2);border:1px solid var(--border)}
+        .ep-path{font-family:var(--mono);font-size:13px;color:white;flex:1;min-width:0;word-break:break-all;overflow-wrap:break-word}
+        .ep-status{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0}
+        .ep-status .dot{width:5px;height:5px;border-radius:50%}
+        .s-online{color:#22c55e}.s-online .dot{background:#22c55e}
+        .s-offline{color:#ef4444}.s-offline .dot{background:#ef4444}
+        .s-maintenance{color:#f59e0b}.s-maintenance .dot{background:#f59e0b}
+        .s-premium{color:#8b5cf6}.s-premium .dot{background:#8b5cf6}
+        .s-vip{color:#FACC15}.s-vip .dot{background:#FACC15}
+        .ep-desc{font-size:13px;color:var(--text-2);margin-top:8px;line-height:1.5;word-break:break-word;overflow-wrap:break-word}
+
+        /* Expanded Body */
+        .ep-body{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);overflow:visible;max-width:100%}
+        .ep-card.expanded .ep-body{display:block}
+
+        /* Params */
+        .ep-params{margin-bottom:16px;max-width:100%;overflow-x:hidden}
+        .ep-params h4{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px}
+        .param-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);width:100%}
+        .param-row:last-child{border-bottom:none}
+        .param-name{font-family:var(--mono);font-size:12px;color:white}
+
+        /* Playground */
+        .playground{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:8px;padding:16px;-webkit-tap-highlight-color:transparent;overflow-x:hidden;overflow-y:visible;max-width:100%;word-break:break-word}
+        .pg-header{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
+        .pg-url{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;margin-bottom:12px;overflow:hidden;width:100%;max-width:100%}
+        .pg-method-badge{font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;flex-shrink:0;white-space:nowrap}
+        .pg-url-text{font-family:var(--mono);font-size:11px;color:var(--text-2);word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;flex:1;min-width:0;max-width:100%}
+        .pg-inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:12px;width:100%;max-width:100%}
+        .pg-input-group{min-width:0;max-width:100%}
+        .pg-input-group label{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:4px}
+        .pg-input{width:100%;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:4px;font-family:var(--mono);font-size:12px;color:white;outline:none;max-width:100%;min-width:0;box-sizing:border-box}
+        .pg-input:focus{border-color:rgba(255,255,255,0.15)}
+        .pg-input[data-required="true"]{border-left:2px solid #ef4444}
+        .upload-zone{border:2px dashed var(--border);border-radius:8px;padding:12px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+        .upload-zone:hover,.upload-zone.dragover{border-color:var(--accent);background:rgba(255,255,255,0.04)}
+        .upload-zone .upload-icon{font-size:20px;color:var(--text-3);margin-bottom:4px}
+        .upload-zone .upload-text{font-size:11px;color:var(--text-2)}
+        .upload-zone .upload-hint{font-size:9px;color:var(--text-3);margin-top:2px}
+        .upload-zone .upload-preview{display:none;margin-top:8px;padding:6px 8px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:6px;text-align:left}
+        .upload-zone .upload-preview.show{display:flex;align-items:center;gap:8px}
+        .upload-zone .upload-preview img{width:32px;height:32px;border-radius:4px;object-fit:cover;border:1px solid var(--border)}
+        .upload-zone .upload-preview .file-info{flex:1;min-width:0}
+        .upload-zone .upload-preview .file-name{font-size:11px;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .upload-zone .upload-preview .file-size{font-size:9px;color:var(--text-3);margin-top:1px}
+        .upload-zone .upload-preview .file-remove{font-size:12px;color:var(--text-3);cursor:pointer;padding:2px}
+        .upload-zone .upload-preview .file-remove:hover{color:#ef4444}
+        .pg-select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;cursor:pointer;max-width:100%}
+        .pg-input::placeholder{color:var(--text-3)}
+        .pg-actions{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;width:100%;max-width:100%}
+        .btn{padding:8px 16px;border-radius:6px;font-family:var(--sans);font-weight:600;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:opacity 0.15s;text-decoration:none;border:none;-webkit-tap-highlight-color:transparent;user-select:none;white-space:nowrap}
+        .btn-white{background:white;color:#050505}
+        .btn-white:hover{opacity:0.9}
+        .btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
+        .btn-ghost:hover{border-color:rgba(255,255,255,0.15);color:white}
+
+        /* Loading */
+        .loading{text-align:center;padding:4rem 2rem;color:var(--text-3);font-size:14px}
+        .loading a{color:white}
+
+        /* Footer */
+        .footer{border-top:1px solid var(--border);padding:3rem 2rem 2rem;max-width:1200px;margin:0 auto}
+        .footer-links-row{display:flex;justify-content:center;gap:2rem;margin-bottom:1.5rem;flex-wrap:wrap}
+        .footer-links-row a{color:var(--text-3);text-decoration:none;font-size:13px;transition:color 0.15s}
+        .footer-links-row a:hover{color:white}
+        .footer-bottom{text-align:center;font-size:12px;color:var(--text-3)}
+
+        /* ============= HEALTH BAR ============= */
+        .stats-grid { display: flex; flex-wrap: nowrap; justify-content: center; gap: 12px; margin: 0 auto 12px; max-width: 100%; overflow-x: auto; padding: 4px 0; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .stats-grid::-webkit-scrollbar { display: none; }
+        .endpoint-card { display: flex; width: max-content; margin: 0 auto 2rem; }
+        .health-stat{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all 0.25s;min-width:0}
+        .health-stat:hover{border-color:rgba(255,255,255,0.12);background:rgba(255,255,255,0.05)}
+        .health-stat .h-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;flex-shrink:0;}
+        .health-stat .h-icon i{font-size:12px}
+        .health-stat .h-info{display:flex;flex-direction:column;gap:1px;min-width:0;}
+        .health-stat .h-label{font-size:9px;font-family:var(--mono);color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap}
+        .health-stat .h-value{font-size:13px;font-weight:700;font-family:var(--display);color:white;letter-spacing:-0.01em;white-space:nowrap}
+        .health-stat .h-value .h-sub{font-size:10px;font-weight:400;color:var(--text-2);margin-left:2px}
+        .health-stat .h-value .h-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle;animation:pulse-dot 2s ease-in-out infinite}
+        .h-latency{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.15)}
+        .h-latency .h-icon{background:rgba(34,197,94,0.12);color:#22c55e}
+        .h-status{background:rgba(34,197,94,0.06);border-color:rgba(34,197,94,0.12)}
+        .h-status .h-icon{background:rgba(34,197,94,0.1);color:#22c55e}
+        .h-uptime{background:rgba(59,130,246,0.06);border-color:rgba(59,130,246,0.12)}
+        .h-uptime .h-icon{background:rgba(59,130,246,0.1);color:#3b82f6}
+        .h-version{background:rgba(168,85,247,0.06);border-color:rgba(168,85,247,0.12)}
+        .h-version .h-icon{background:rgba(168,85,247,0.1);color:#a855f7}
+        .h-endpoints{background:rgba(234,179,8,0.06);border-color:rgba(234,179,8,0.12)}
+        .h-endpoints .h-icon{background:rgba(234,179,8,0.1);color:#eab308}
+        @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.85)}}
+        @keyframes bell-ring{0%{transform:rotate(0) scale(1)}5%{transform:rotate(15deg) scale(1.1)}10%{transform:rotate(-13deg) scale(1.1)}15%{transform:rotate(12deg) scale(1.08)}20%{transform:rotate(-10deg) scale(1.08)}25%{transform:rotate(8deg)}30%{transform:rotate(-6deg)}35%{transform:rotate(4deg)}40%{transform:rotate(-2deg)}45%{transform:rotate(1deg)}50%,100%{transform:rotate(0) scale(1)}}
+        @keyframes bell-glow{0%,50%{box-shadow:0 0 0 0 rgba(34,197,94,0.4)}25%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+        #bellBtn.has-notif{animation:bell-glow 2s ease-in-out infinite}
+        #bellBtn.has-notif i.fa-bell{animation:bell-ring 2s ease-in-out infinite}
+        @keyframes fade-in{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
+        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+        .stats-grid .health-stat{animation:fade-in 0.4s ease-out both}
+        .stats-grid .health-stat:nth-child(1){animation-delay:0.05s}
+        .stats-grid .health-stat:nth-child(2){animation-delay:0.1s}
+        .stats-grid .health-stat:nth-child(3){animation-delay:0.15s}
+        .stats-grid .health-stat:nth-child(4){animation-delay:0.2s}
+        .endpoint-card{animation:fade-in 0.4s ease-out 0.25s both}
+
+        /* ============= LATENCY BADGE ============= */
+        .latency-badge{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:4px;flex-shrink:0;transition:all 0.3s;font-weight:600}
+        .latency-badge.lb-fast{background:rgba(34,197,94,0.12);color:#22c55e;border:1px solid rgba(34,197,94,0.2)}
+        .latency-badge.lb-mid{background:rgba(234,179,8,0.12);color:#eab308;border:1px solid rgba(234,179,8,0.2)}
+        .latency-badge.lb-slow{background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.2)}
+        .latency-badge.lb-none{background:rgba(255,255,255,0.04);color:var(--text-3);border:1px solid var(--border)}
+        .latency-badge i{font-size:8px}
+
+        /* ============= METRICS PANEL ============= */
+        .metrics-panel{display:none;border-top:1px solid var(--border);padding:8px 12px 6px;background:rgba(255,255,255,0.015)}
+        .metrics-panel.show{display:block;animation:fade-in 0.25s ease-out}
+        .metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:4px 16px}
+        .metric-item{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:11px;font-family:var(--mono)}
+        .metric-item .m-label{color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;font-size:9px}
+        .metric-item .m-value{color:var(--text-2);font-weight:500}
+        .metric-item .m-value.m-status{font-weight:700}
+        .m-status-2xx{color:#22c55e}
+        .m-status-4xx{color:#eab308}
+        .m-status-5xx{color:#ef4444}
+
+        @media(max-width:768px){
+            .hero{padding:6rem 1.5rem 2rem}
+            .content{padding:0 1.5rem 3rem}
+            .pg-result{resize:none;max-height:70vh;touch-action:pan-y;-webkit-overflow-scrolling:touch}
+            .pg-result .result-toolbar{cursor:default}
+            .pg-result .media-container img{max-height:400px}
+            .pg-result .media-container video{max-height:350px}
+            .pg-result pre{font-size:11px}
+            .ep-grid{gap:6px}
+            .ep-card{padding:12px 14px}
+            .pg-inputs{grid-template-columns:1fr}
+            .filters{gap:4px}
+            .filter-btn{padding:5px 10px;font-size:10px}
+            .dropdown{max-height:70vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+            .announce-item{padding:10px 12px}
+            .pg-actions{flex-direction:column;align-items:stretch}
+            .pg-actions .btn{justify-content:center;padding:10px 14px}
+            .pg-url{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+            .nav-inner{padding:0 1rem}
+            .stats-row{gap:1.5rem}
+            .pg-url-text{font-size:10px}
+            .param-name{font-size:11px}
+            .stats-grid { flex-wrap: wrap; gap: 8px; margin-bottom: 12px; overflow-x: visible; }
+            .endpoint-card { margin-top: 0; margin-bottom: 1.5rem; }
+            .health-stat { padding: 6px 10px; gap: 6px; }
+            .health-stat .h-icon { width: 22px; height: 22px; }
+            .health-stat .h-icon i { font-size: 10px; }
+            .health-stat .h-value { font-size: 12px; }
+            .health-stat .h-label { font-size: 8px; }
+            .metrics-grid{grid-template-columns:repeat(2,1fr);gap:2px 10px}
+            .metric-item{font-size:10px}
+            .latency-badge{font-size:8px;padding:1px 5px}
+        }
+
+        /* Global Notif Modal */
+        .notif-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 1.5rem; }
+        .notif-modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .notif-modal-box { background: #111; border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 2rem; max-width: 420px; width: 100%; text-align: center; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.6); transform: translateY(20px); transition: transform 0.3s ease; }
+        .notif-modal-overlay.show .notif-modal-box { transform: translateY(0); }
+        .notif-close-btn { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: #888; font-size: 1.5rem; cursor: pointer; transition: color 0.2s; }
+        .notif-close-btn:hover { color: #fff; }
+        .notif-icon { width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.06); color: #fff; font-size: 1.25rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem auto; border: 1px solid rgba(255,255,255,0.1); }
+        .notif-title { font-family: var(--display); font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem; }
+        .notif-message { color: var(--text-2); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; }
+        .notif-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 0.8rem 1.2rem; background: #fff; color: #000; font-weight: 600; font-size: 0.9rem; border-radius: 10px; text-decoration: none; transition: background 0.2s, transform 0.1s; }
+        .notif-action-btn:hover { background: #e5e5e5; transform: translateY(-1px); }
+
+        /* Floating Feedback Button */
+        .feedback-float-btn { position: fixed; bottom: 24px; right: 24px; background: #161616; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 10px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 8px; text-decoration: none; z-index: 1000; box-shadow: 0 8px 20px rgba(0,0,0,0.5); transition: all 0.2s ease; }
+        .feedback-float-btn:hover { background: #222; border-color: rgba(255,255,255,0.3); transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+
+    <!-- Nav -->
+    <nav class="nav" aria-label="Main navigation">
+        <div class="nav-inner">
+            <div style="display:flex;align-items:center;gap:16px">
+                <div style="position:relative">
+                    <button class="menu-btn" onclick="toggleMenu()" aria-label="Menu"><i class="fas fa-ellipsis-v"></i></button>
+                    <div id="navMenu" class="dropdown">
+                        <a href="/"><i class="fas fa-home"></i>Home</a>
+                        <div class="sep"></div>
+                        <a href="/docs"><i class="fas fa-book"></i>Documentation</a>
+                        <a href="/support"><i class="fas fa-headset"></i>Support</a>
+                        <a href="/stats"><i class="fas fa-chart-line"></i>Status</a>
+                        <a href="/changelog"><i class="fas fa-clock-rotate-left"></i>Changelog</a>
+                        <div class="sep"></div>
+                        <a href="/request-report"><i class="fas fa-bug"></i>Request</a>
+                        <a href="/admin/login"><i class="fas fa-shield-alt"></i>Admin</a>
+                    </div>
+                </div>
+                <a href="/" class="logo">
+                    <img src="/src/images/logo.jpg" alt="Zyyvor" onerror="this.style.display='none'">
+                    <div>
+                        <div class="logo-text">Zyyvor</div>
+                        <div class="logo-sub">API Documentation</div>
+                    </div>
+                </a>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+                <div style="position:relative">
+                    <button class="menu-btn" onclick="toggleAnnounce()" aria-label="Announcements" id="bellBtn">
+                        <i class="fas fa-bell"></i>
+                        <span id="bellBadge" style="display:none;position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:#22c55e"></span>
+                    </button>
+                    <div id="announcePanel" class="dropdown" style="width:340px;max-height:400px;overflow-y:auto;right:0;left:auto">
+                        <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+                            <span style="font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.15em">Announcements</span>
+                        </div>
+                        <div id="announceList"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero" role="main" aria-label="Documentation hero">
+        <h1>API Documentation</h1>
+        <p>Explore all available endpoints. Click any endpoint to expand details and try it directly from your browser.</p>
+        <div class="stats-grid">
+            <div class="health-stat h-status">
+                <div class="h-icon"><i class="fas fa-circle"></i></div>
+                <div class="h-info">
+                    <span class="h-label">API Status</span>
+                    <span class="h-value" id="healthStatus"><span class="h-dot" style="background:#22c55e"></span>Online</span>
+                </div>
+            </div>
+            <div class="health-stat h-latency">
+                <div class="h-icon"><i class="fas fa-bolt"></i></div>
+                <div class="h-info">
+                    <span class="h-label">Avg Latency</span>
+                    <span class="h-value" id="healthLatency">327 <span class="h-sub">ms</span></span>
+                </div>
+            </div>
+            <div class="health-stat h-uptime">
+                <div class="h-icon"><i class="fas fa-clock"></i></div>
+                <div class="h-info">
+                    <span class="h-label">Uptime</span>
+                    <span class="h-value" id="healthUptime">99.94%</span>
+                </div>
+            </div>
+            <div class="health-stat h-version">
+                <div class="h-icon"><i class="fas fa-tag"></i></div>
+                <div class="h-info">
+                    <span class="h-label">Version</span>
+                    <span class="h-value" id="healthVersion">-</span>
+                </div>
+            </div>
+        </div>
+        <div class="health-stat h-endpoints endpoint-card">
+            <div class="h-icon"><i class="fas fa-cube"></i></div>
+            <div class="h-info">
+                <span class="h-label">Endpoints</span>
+                <span class="h-value" id="healthEndpoints">-</span>
+            </div>
+        </div>
+        <div class="search-wrap" style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <div style="position: relative; flex: 1; min-width: 250px;">
+                <i class="fas fa-search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-3); font-size: 14px;"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search endpoints..." oninput="filterEndpoints()" style="padding-left: 40px; width: 100%;">
+            </div>
+        </div>
+        <div class="filters" id="categoryFilters">
+            <button class="filter-btn active" onclick="setCat('all',this)">All</button>
+        </div>
+    </div>
+
+    <!-- API Key & Authentication Info -->
+    <div style="max-width:1200px;margin:0 auto 24px;padding:0 20px">
+        <div style="background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.15);border-radius:12px;padding:20px 24px;position:relative;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="this.parentElement.classList.toggle('expanded');const c=this.parentElement.querySelector('.auth-detail');c.style.display=c.style.display==='none'?'block':'none'">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <i class="fas fa-key" style="color:#8b5cf6;font-size:16px"></i>
+                    <span style="font-weight:700;color:#e2e8f0;font-size:14px">API Key & Authentication</span>
+                    <span style="font-size:11px;color:#8b5cf6;background:rgba(139,92,246,0.1);padding:2px 8px;border-radius:6px;font-family:var(--mono)">NEW</span>
+                </div>
+                <i class="fas fa-chevron-down" style="color:#64748b;font-size:12px;transition:transform 0.2s"></i>
+            </div>
+            <div class="auth-detail" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid rgba(139,92,246,0.1)">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+                    <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:16px">
+                        <h4 style="color:#c084fc;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px"><i class="fas fa-shield-halved" style="margin-right:6px"></i>Status-Based Access</h4>
+                        <p style="color:#94a3b8;font-size:12px;line-height:1.6">Endpoint yang berstatus <code style="color:#c084fc;background:rgba(139,92,246,0.1);padding:1px 6px;border-radius:4px;font-size:11px">premium</code> atau <code style="color:#eab308;background:rgba(234,179,8,0.1);padding:1px 6px;border-radius:4px;font-size:11px">vip</code> memerlukan API key. Key premium bisa akses endpoint premium, key VIP bisa akses semua.</p>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:16px">
+                        <h4 style="color:#c084fc;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px"><i class="fas fa-route" style="margin-right:6px"></i>Endpoint Restrictions</h4>
+                        <p style="color:#94a3b8;font-size:12px;line-height:1.6">API key bisa di-restrict ke endpoint tertentu saja menggunakan <code style="color:#c084fc;background:rgba(139,92,246,0.1);padding:1px 6px;border-radius:4px;font-size:11px">allowedEndpoints</code>. Contoh: <code style="color:#22c55e;background:rgba(34,197,94,0.1);padding:1px 6px;border-radius:4px;font-size:11px">/api/am/*</code> hanya bisa akses endpoint AM.</p>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:16px">
+                        <h4 style="color:#c084fc;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px"><i class="fas fa-gauge-high" style="margin-right:6px"></i>Rate Limits</h4>
+                        <p style="color:#94a3b8;font-size:12px;line-height:1.6">Setiap key memiliki rate limit: <code style="color:#3b82f6;background:rgba(59,130,246,0.1);padding:1px 6px;border-radius:4px;font-size:11px">maxPerDay</code> (per hari) dan <code style="color:#3b82f6;background:rgba(59,130,246,0.1);padding:1px 6px;border-radius:4px;font-size:11px">maxPerMinute</code> (per menit). Set 0 = unlimited.</p>
+                    </div>
+                </div>
+                <div style="margin-top:16px;background:rgba(255,255,255,0.02);border-radius:8px;padding:14px 16px">
+                    <h4 style="color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Cara Menggunakan API Key</h4>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px">
+                        <code style="color:#22c55e;background:rgba(34,197,94,0.08);padding:4px 10px;border-radius:6px;font-size:11px;border:1px solid rgba(34,197,94,0.15)">?apikey=YOUR_KEY</code>
+                        <code style="color:#22c55e;background:rgba(34,197,94,0.08);padding:4px 10px;border-radius:6px;font-size:11px;border:1px solid rgba(34,197,94,0.15)">X-API-Key: YOUR_KEY</code>
+                        <code style="color:#22c55e;background:rgba(34,197,94,0.08);padding:4px 10px;border-radius:6px;font-size:11px;border:1px solid rgba(34,197,94,0.15)">Authorization: Bearer YOUR_KEY</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Endpoints -->
+    <div class="content">
+        <div id="endpointsContainer">
+            <div class="loading">Loading endpoints...</div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <span id="toastMsg"></span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" aria-label="Site footer">
+        <div class="footer-links-row">
+            <a href="/">Home</a>
+            <a href="/support">Support</a>
+            <a href="/stats">Status</a>
+            <a href="/changelog">Changelog</a>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Zyyvor Api'S. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <script>
+        // Menu
+        function toggleMenu(){document.getElementById('navMenu').classList.toggle('show')}
+        window.addEventListener('click',e=>{
+            const m=document.getElementById('navMenu');
+            const b=e.target.closest('.menu-btn');
+            if(m&&!m.contains(e.target)&&(!b||b.getAttribute('aria-label')!=='Menu'))m.classList.remove('show');
+            const ap=document.getElementById('announcePanel');
+            const bb=e.target.closest('#bellBtn');
+            if(ap&&!ap.contains(e.target)&&!bb)ap.classList.remove('show');
+        });
+
+        let allEndpoints=[];
+        let statusMap={};
+        let activeCategory='all';
+
+        function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+        function safeAttr(s){return s.replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;')}
+
+        // Fetch endpoints from /openapi.json (already has all fields)
+        async function loadEndpoints(){
+            try{
+                const r=await fetch('/openapi.json');
+                const d=await r.json();
+                if(d.endpoints&&d.endpoints.length){
+                    allEndpoints=d.endpoints;
+                    buildStatusMap(d.endpoints);
+                    buildFilters(d.endpoints);
+                    updateStats(d.endpoints);
+                    renderEndpoints(d.endpoints);
+                }
+            }catch(e){
+                document.getElementById('endpointsContainer').innerHTML='<div class="loading">Failed to load endpoints. <a href="/" style="color:white">Go back</a></div>';
+            }
+        }
+
+        function buildStatusMap(eps){
+            eps.forEach(ep=>{statusMap[ep.route]=ep.status||'online'});
+        }
+
+        function buildFilters(eps){
+            const cats=[...new Set(eps.map(e=>e.category).filter(Boolean))].sort();
+            const container=document.getElementById('categoryFilters');
+            let html='<button class="filter-btn active" onclick="setCat(\'all\',this)">All</button>';
+            cats.forEach(c=>{
+                html+=`<button class="filter-btn" onclick="setCat('${c.replace(/'/g,"\\'")}',this)">${c}</button>`;
+            });
+            container.innerHTML=html;
+        }
+
+        function setCat(cat,btn){
+            activeCategory=cat;
+            document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            filterEndpoints();
+        }
+
+        function updateStats(eps){
+            const count = eps.length;
+            const healthEp = document.getElementById('healthEndpoints');
+            if(healthEp) healthEp.textContent = count;
+            // Update meta tags
+            const metaDesc = document.getElementById('meta-description');
+            if(metaDesc) metaDesc.setAttribute('content', `API Documentation for Zyyvor Api'S — ${count}+ REST API endpoints`);
+            const metaOg = document.getElementById('meta-og-description');
+            if(metaOg) metaOg.setAttribute('content', `${count}+ REST API endpoints for modern developers.`);
+        }
+
+        function filterEndpoints(){
+            const q=document.getElementById('searchInput').value.toLowerCase();
+            let filtered=allEndpoints;
+            if(activeCategory!=='all')filtered=filtered.filter(e=>e.category===activeCategory);
+            if(q)filtered=filtered.filter(e=>(e.path||'').toLowerCase().includes(q)||(e.name||'').toLowerCase().includes(q)||(e.description||'').toLowerCase().includes(q));
+            renderEndpoints(filtered);
+        }
+
+        function renderEndpoints(eps){
+            const container=document.getElementById('endpointsContainer');
+            if(!eps.length){container.innerHTML='<div class="loading">No endpoints found.</div>';return}
+
+            const grouped={};
+            eps.forEach(ep=>{
+                const cat=ep.category||'Uncategorized';
+                if(!grouped[cat])grouped[cat]=[];
+                grouped[cat].push(ep);
+            });
+
+            let html='';
+            Object.keys(grouped).sort().forEach(cat=>{
+                const items=grouped[cat];
+                html+=`<div class="category">
+                    <div class="cat-head">${cat} <span class="cat-count">${items.length}</span></div>
+                    <div class="ep-grid">`;
+                items.forEach(ep=>{
+                    const methods=Array.isArray(ep.methods)?ep.methods:(ep.method||'GET').split(',').map(m=>m.trim().toUpperCase());
+                    const status=ep.status||'online';
+                    const sClass='s-'+status;
+                    const desc=ep.description||'';
+                    const path=ep.route||ep.path||'';
+                    let params=[...(ep.params||[])];
+                    let paramSchema={...(ep.paramsSchema||{})};
+                    
+                    const isPremium = ep.status === 'premium' || ep.status === 'vip' || ep.premium === true || ep.premium === 'true' || ep.requirePremium === true || ep.requirePremium === 'true' || ep.isPremium === true || ep.isPremium === 'true' || (ep.badge && (ep.badge.toUpperCase() === 'PREMIUM' || ep.badge.toUpperCase() === 'VIP'));
+                    if (isPremium) {
+                        if (!params.includes('apikey')) {
+                            params.push('apikey');
+                        }
+                        paramSchema['apikey'] = paramSchema['apikey'] || { type: 'string', required: true };
+                    }
+                    const domain=window.location.origin;
+
+                    html+=`<div class="ep-card" onclick="toggleEp(event,this)">
+                        <div class="ep-head">
+                            ${methods.map(m=>`<span class="ep-method ${m==='GET'?'method-get':'method-post'}">${m}</span>`).join('')}
+                            <span class="ep-path">${esc(path)}</span>
+                            <span class="ep-status ${sClass}"><span class="dot"></span>${status}</span>
+                        </div>
+                        <div class="ep-desc">${esc(desc)}</div>
+                        <div class="ep-body">
+                            ${params.length?`<div class="ep-params">
+                                <h4>Parameters</h4>
+                                ${params.map(p=>{
+                                    const s=paramSchema[p]||{};
+                                    const req=s.required===true?'<span class="param-req" style="color:#ef4444;font-size:10px;font-weight:700">REQUIRED</span>':'';
+                                    return `<div class="param-row">
+                                        <span class="param-name">${esc(p)}</span>
+                                        ${req}
+                                    </div>`;
+                                }).join('')}
+                            </div>`:''}
+                            <div class="playground">
+                                ${status==='offline'||status==='maintenance'||status==='error'?`<div class="status-warning-banner" style="margin-bottom:14px;padding:12px 16px;border-radius:8px;background:${status==='maintenance'?'rgba(245,158,11,0.12)':'rgba(239,68,68,0.12)'};border:1px solid ${status==='maintenance'?'rgba(245,158,11,0.35)':'rgba(239,68,68,0.35)'};color:${status==='maintenance'?'#f59e0b':'#ef4444'};display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px">
+                                    <i class="fas ${status==='maintenance'?'fa-tools':'fa-exclamation-triangle'}" style="font-size:16px"></i>
+                                    <div>
+                                        <b style="text-transform:uppercase;letter-spacing:0.05em">Endpoint ${status.toUpperCase()}</b><br>
+                                        <span style="font-size:11px;opacity:0.9;font-family:var(--font)">Mohon maaf, endpoint ini sedang berstatus <b>${status.toUpperCase()}</b> sehingga fitur pengujian (Try) dinonaktifkan sementara.</span>
+                                    </div>
+                                </div>`:''}
+                                <div class="pg-header"><span>Playground</span></div>
+                                <div class="pg-url">
+                                    ${methods.map(m=>`<span class="pg-method-badge ${m==='GET'?'method-get':'method-post'}">${m}</span>`).join('')}
+                                    <span class="pg-url-text">${domain}${path}</span>
+                                </div>
+                                ${params.length?`<div class="pg-inputs">
+                                    ${params.map(p=>{
+                                        const s=paramSchema[p]||{};
+                                        const ph=s.default||s.enum?.[0]||p;
+                                        const req=s.required===true;
+                                        const reqStar=req?'<span style="color:#ef4444;margin-left:2px">*</span>':'';
+                                        const inputId='pg-'+path.replace(/\//g,'-')+'-'+p;
+                                        const reqAttr=req?' data-required="true"':'';
+                                        if(s.enum&&s.enum.length){
+                                            const defVal=s.default||s.example||s.enum[0]||'';
+                                            const opts=s.enum.map(v=>`<option value="${esc(v)}" ${v===defVal?'selected':''}>${esc(v)}</option>`).join('');
+                                            return `<div class="pg-input-group">
+                                                <label>${esc(p)}${reqStar}</label>
+                                                <select class="pg-input pg-select" id="${inputId}"${reqAttr}>
+                                                    ${!req?'<option value="">-- optional --</option>':''}
+                                                    ${opts}
+                                                </select>
+                                            </div>`;
+                                        }
+                                        if(s.type==='file'){
+                                            return `<div class="pg-input-group">
+                                                <label>${esc(p)}${reqStar}</label>
+                                                <div class="upload-zone" id="uz-${p}" onclick="document.getElementById('${inputId}').click()">
+                                                    <input type="file" id="${inputId}"${reqAttr} style="display:none" onchange="handleFileSelect('${inputId}')">
+                                                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                                    <div class="upload-text">Klik atau drag & drop file di sini</div>
+                                                    <div class="upload-hint">Format apapun — maks 10MB</div>
+                                                    <div class="upload-preview" id="up-${inputId}" style="display:none"></div>
+                                                </div>
+                                            </div>`;
+                                        }
+                                        return `<div class="pg-input-group">
+                                            <label>${esc(p)}${reqStar}</label>
+                                            <input class="pg-input" id="${inputId}" placeholder="${esc(ph)}" value="${esc(s.default||s.example||'')}"${reqAttr}>
+                                        </div>`;
+                                    }).join('')}
+                                </div>`:''}
+                                <div class="pg-actions">
+                                    <button class="btn btn-white btn-try${status==='offline'||status==='maintenance'||status==='error'?' btn-disabled-status':''}"${status==='offline'||status==='maintenance'||status==='error'?' disabled':''} data-path="${esc(path)}" data-status="${esc(status)}" data-methods='${JSON.stringify(methods)}' data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"${status==='offline'||status==='maintenance'||status==='error'?' style="opacity:0.4;cursor:not-allowed;pointer-events:none;border:1px solid '+(status==='maintenance'?'rgba(245,158,11,0.4);color:#f59e0b;background:rgba(245,158,11,0.08)':'rgba(239,68,68,0.4);color:#ef4444;background:rgba(239,68,68,0.08)')+'" title="Endpoint sedang '+status.toUpperCase()+', tidak dapat dicoba saat ini"':''}><i class="fas ${status==='offline'||status==='maintenance'||status==='error'?'fa-ban':'fa-play'}"></i> ${status==='offline'||status==='maintenance'||status==='error'?'Try ('+status.toUpperCase()+')':'Try'}</button>
+                                    <button class="btn btn-ghost btn-copy" data-url="${domain}${esc(path)}" data-path="${esc(path)}" data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"><i class="fas fa-copy"></i> Copy URL</button>
+                                    <button class="btn btn-ghost btn-example" data-path="${esc(path)}" data-methods='${JSON.stringify(methods)}' data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"><i class="fas fa-code"></i> Example</button>
+                                </div>
+                                <div class="pg-result" id="result-${path.replace(/\//g,'-')}"></div>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                html+=`</div></div>`;
+            });
+            container.innerHTML=html;
+        }
+
+        function toggleEp(e,card){
+            // Don't toggle if clicking interactive elements inside
+            if(e.target.closest('.ep-body'))return;
+            card.classList.toggle('expanded');
+        }
+
+        function handleFileSelect(inputId){
+            const input=document.getElementById(inputId);
+            const zone=input.closest('.upload-zone');
+            const preview=document.getElementById('up-'+inputId);
+            if(!input||!input.files||!input.files.length){
+                if(preview){preview.style.display='none';preview.classList.remove('show')}
+                return
+            }
+            const file=input.files[0];
+            if(!preview)return;
+            const size=(file.size/1024).toFixed(1)+'KB';
+            let thumb='';
+            if(file.type.startsWith('image/')){
+                const reader=new FileReader();
+                reader.onload=function(e){preview.querySelector('.file-thumb').src=e.target.result}
+                reader.readAsDataURL(file);
+                thumb=`<img class="file-thumb" src="" alt="">`;
+            }else{thumb=`<div class="file-thumb" style="width:32px;height:32px;border-radius:4px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px"><i class="fas fa-file"></i></div>`}
+            preview.innerHTML=thumb+`
+                <div class="file-info">
+                    <div class="file-name">${esc(file.name)}</div>
+                    <div class="file-size">${size}</div>
+                </div>
+                <span class="file-remove" onclick="removeFile('${inputId}')"><i class="fas fa-times"></i></span>
+            `;
+            preview.style.display='flex';preview.classList.add('show');
+            zone.querySelector('.upload-icon').style.display='none';
+            zone.querySelector('.upload-text').textContent='File selected';
+            zone.querySelector('.upload-hint').textContent='Klik untuk ganti file';
+            if(file.type.startsWith('image/')){
+                const reader=new FileReader();
+                reader.onload=function(e){preview.querySelector('.file-thumb').src=e.target.result}
+                reader.readAsDataURL(file);
+            }
+        }
+        function removeFile(inputId){
+            const input=document.getElementById(inputId);
+            const zone=input.closest('.upload-zone');
+            const preview=document.getElementById('up-'+inputId);
+            if(input)input.value='';
+            if(preview){preview.style.display='none';preview.classList.remove('show')}
+            zone.querySelector('.upload-icon').style.display='block';
+            zone.querySelector('.upload-text').textContent='Klik atau drag & drop file di sini';
+            zone.querySelector('.upload-hint').textContent='Format apapun — maks 10MB';
+        }
+        // Drag-drop support for upload zones
+        document.addEventListener('dragover',function(e){
+            const zone=e.target.closest('.upload-zone');
+            if(zone){e.preventDefault();zone.classList.add('dragover')}
+        });
+        document.addEventListener('dragleave',function(e){
+            const zone=e.target.closest('.upload-zone');
+            if(zone){zone.classList.remove('dragover')}
+        });
+        document.addEventListener('drop',function(e){
+            const zone=e.target.closest('.upload-zone');
+            if(!zone)return;
+            e.preventDefault();
+            zone.classList.remove('dragover');
+            const input=zone.querySelector('input[type="file"]');
+            if(input&&e.dataTransfer.files.length){
+                input.files=e.dataTransfer.files;
+                input.dispatchEvent(new Event('change'));
+            }
+        });
+
+        // Global listener for API Key sync (Memory only, no storage)
+        document.addEventListener('input', e => {
+            if (e.target && e.target.id && e.target.id.endsWith('-apikey')) {
+                const newVal = e.target.value;
+                document.querySelectorAll('input[id$="-apikey"]').forEach(el => {
+                    if (el !== e.target) el.value = newVal;
+                });
+            }
+        });
+
+        // Event delegation for Try and Copy buttons
+        document.addEventListener('click',e=>{
+            const tryBtn=e.target.closest('.btn-try');
+            if(tryBtn){
+                e.stopPropagation();
+                const epStatus = tryBtn.dataset.status || 'online';
+                if (epStatus === 'offline' || epStatus === 'maintenance' || epStatus === 'error') {
+                    showToast(`⚠️ Endpoint berstatus ${epStatus.toUpperCase()}: Tidak dapat diuji coba saat ini.`);
+                    const resId = 'result-' + tryBtn.dataset.path.replace(/\//g,'-');
+                    const resDiv = document.getElementById(resId);
+                    if (resDiv) {
+                        resDiv.style.display = 'block';
+                        resDiv.innerHTML = `<div class="result-toolbar" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3)">
+                            <div class="toolbar-left" style="color:#ef4444;font-family:var(--mono);font-size:11px;font-weight:700">
+                                <i class="fas fa-exclamation-circle" style="margin-right:6px"></i> ENDPOINT ${epStatus.toUpperCase()}
+                            </div>
+                            <div class="toolbar-right">
+                                <button class="toolbar-btn" onclick="this.closest('.pg-result').style.display='none'" title="Close"><i class="fas fa-xmark"></i></button>
+                            </div>
+                        </div>
+                        <div style="padding:16px;font-family:var(--mono);font-size:12px;color:#fca5a5;background:rgba(0,0,0,0.35);line-height:1.6">
+                            ❌ <b>Pengujian dinonaktifkan:</b> Endpoint <code>${esc(tryBtn.dataset.path)}</code> saat ini berstatus <span style="padding:2px 6px;border-radius:4px;background:rgba(239,68,68,0.2);color:#ff8080;font-weight:700">${esc(epStatus.toUpperCase())}</span>.<br>
+                            Silakan coba kembali setelah layanan kembali online / maintenance selesai.
+                        </div>`;
+                    }
+                    return;
+                }
+                const path=tryBtn.dataset.path;
+                const methods=JSON.parse(tryBtn.dataset.methods||'["GET"]');
+                const params=JSON.parse(tryBtn.dataset.params||'[]');
+                const schema=JSON.parse(tryBtn.dataset.schema||'{}');
+                runTryEndpoint(path,methods,params,schema);
+                return;
+            }
+            const copyBtn=e.target.closest('.btn-copy');
+            if(copyBtn){
+                e.stopPropagation();
+                const path=copyBtn.dataset.path;
+                const params=JSON.parse(copyBtn.dataset.params||'[]');
+                const paramSchema=JSON.parse(copyBtn.dataset.schema||'{}');
+                const prefix='pg-'+path.replace(/\//g,'-')+'-';
+                const domain=window.location.origin;
+                const queryParams=[];
+                params.forEach(p=>{
+                    const s=paramSchema[p]||{};
+                    const input=document.getElementById(prefix+p);
+                    const val=(input&&input.value)||s.default||s.example||'';
+                    if(s.type!=='file')queryParams.push(encodeURIComponent(p)+'='+encodeURIComponent(val));
+                });
+                const fullUrl=domain+path+(queryParams.length?'?'+queryParams.join('&'):'');
+                navigator.clipboard.writeText(fullUrl).catch(()=>{const t=document.createElement('textarea');t.value=fullUrl;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t)});
+                return;
+            }
+            const exampleBtn=e.target.closest('.btn-example');
+            if(exampleBtn){
+                e.stopPropagation();
+                const path=exampleBtn.dataset.path;
+                const methods=JSON.parse(exampleBtn.dataset.methods||'["GET"]');
+                const params=JSON.parse(exampleBtn.dataset.params||'[]');
+                const paramSchema=JSON.parse(exampleBtn.dataset.schema||'{}');
+                const prefix='pg-'+path.replace(/\//g,'-')+'-';
+                const domain=window.location.origin;
+                showExampleCode(path,methods,params,paramSchema,prefix,domain);
+            }
+        });
+
+        function makeToolbar(type,statusText,size){
+            const lowerType = type.toLowerCase();
+            const showCopy = !['loading', 'image', 'video', 'audio', 'pdf', 'binary'].includes(lowerType);
+            return `<div class="result-toolbar">
+                <div class="toolbar-left" style="display:flex;align-items:center;gap:8px">
+                    <span style="padding:3px 10px;border-radius:999px;background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.06);font-family:var(--mono);font-size:10px;color:var(--text-2);text-transform:uppercase;font-weight:600">${type}</span>
+                    <span style="font-family:var(--mono);font-size:10px;color:var(--text-3)">&bull;</span>
+                    <span style="font-family:var(--mono);font-size:10px;color:var(--text-3);font-weight:500">${statusText}</span>
+                    ${size?`<span style="font-family:var(--mono);font-size:10px;color:var(--text-3)">&bull;</span><span style="font-family:var(--mono);font-size:10px;color:var(--text-3);font-weight:500">${size}</span>`:''}
+                </div>
+                <div class="toolbar-right">
+                    ${showCopy ? `<button class="toolbar-btn" onclick="copyResultText(this)" title="Copy"><i class="fas fa-copy"></i></button>` : ''}
+                    <button class="toolbar-btn" onclick="this.closest('.pg-result').style.display='none'" title="Close"><i class="fas fa-xmark"></i></button>
+                </div>
+            </div>`;
+        }
+
+        function copyResultText(btn){
+            const pre=btn.closest('.pg-result').querySelector('pre');
+            if(pre)copyToClipboard(pre.textContent);
+        }
+
+        function copyToClipboard(text){
+            if(navigator.clipboard&&window.isSecureContext){
+                navigator.clipboard.writeText(text).then(()=>{ showToast('Copied'); showNotification('Copied to clipboard!', 'success'); }).catch(()=>fallbackCopy(text));
+            }else{
+                fallbackCopy(text);
+            }
+        }
+        function fallbackCopy(text){
+            const ta=document.createElement('textarea');
+            ta.value=text;ta.style.cssText='position:fixed;left:-9999px;top:-9999px;opacity:0';
+            document.body.appendChild(ta);
+            ta.select();
+            try{document.execCommand('copy');showToast('Copied')}catch{showToast('Copy failed')}
+            document.body.removeChild(ta);
+        }
+
+
+        async function runTryEndpoint(path,methods,params,paramSchema){
+            const resultId='result-'+path.replace(/\//g,'-');
+            const resultEl=document.getElementById(resultId);
+            if(!resultEl)return;
+
+            // Validate required fields
+            const prefix='pg-'+path.replace(/\//g,'-')+'-';
+            const missing=[];
+            params.forEach(p=>{
+                const s=paramSchema[p]||{};
+                const input=document.getElementById(prefix+p);
+                if(!input)return;
+                if(input.dataset.required!=='true')return;
+                if(s.type==='file'){
+                    if(!input.files||!input.files.length)missing.push(p);
+                }else{
+                    if(!input.value.trim())missing.push(p);
+                }
+                if(missing.includes(p)){
+                    input.style.borderColor='#ef4444';
+                    input.addEventListener('input',()=>{input.style.borderColor=''}, {once:true});
+                    input.addEventListener('change',()=>{input.style.borderColor=''}, {once:true});
+                }
+            });
+            if(missing.length){
+                showToast('Required: '+missing.join(', '));
+                return;
+            }
+
+            resultEl.style.cssText='display:flex;color:#888';
+            resultEl.innerHTML=makeToolbar('Loading','...','')+'<div style="padding:12px"><span style="font-family:var(--mono);font-size:12px;color:var(--text-3)">Fetching...</span></div>';
+
+            const queryParams=[];
+            params.forEach(p=>{
+                const s=paramSchema[p]||{};
+                const input=document.getElementById(prefix+p);
+                if(input&&input.value&&s.type!=='file')queryParams.push(encodeURIComponent(p)+'='+encodeURIComponent(input.value));
+            });
+            const url=path+(queryParams.length?'?'+queryParams.join('&'):'');
+
+            try{
+                const usePost=methods.includes('POST');
+                const opts={};
+                if(usePost){
+                    const hasFile=params.some(p=>{
+                        const s=paramSchema[p]||{};
+                        return s.type==='file';
+                    });
+                    if(hasFile){
+                        const fd=new FormData();
+                        params.forEach(p=>{
+                            const el=document.getElementById('pg-'+path.replace(/\//g,'-')+'-'+p);
+                            if(!el)return;
+                            if(el.type==='file'&&el.files.length){fd.append(p,el.files[0]);}
+                            else if(el.value){fd.append(p,el.value);}
+                        });
+                        opts.method='POST';
+                        opts.body=fd;
+                    }else{
+                        const body={};
+                        params.forEach(p=>{
+                            const el=document.getElementById('pg-'+path.replace(/\//g,'-')+'-'+p);
+                            if(el&&el.value)body[p]=el.value;
+                        });
+                        opts.method='POST';
+                        opts.headers={'Content-Type':'application/json'};
+                        opts.body=JSON.stringify(body);
+                    }
+                }
+                const r=await fetch(usePost?path:url,opts);
+                const ct=r.headers.get('content-type')||'';
+                const statusText=r.status+' '+r.statusText;
+
+                if(ct.includes('image/')){
+                    const blob=await r.blob();
+                    const imgUrl=URL.createObjectURL(blob);
+                    const size=(blob.size/1024).toFixed(1)+'KB';
+                    let ext='jpg';
+                    if(ct.includes('png'))ext='png';else if(ct.includes('webp'))ext='webp';else if(ct.includes('gif'))ext='gif';
+                    resultEl.innerHTML=makeToolbar('Image',statusText,size)+`
+                        <div class="media-container">
+                            <div class="img-wrapper">
+                                <img src="${imgUrl}" alt="Response">
+                            </div>
+                            <a href="${imgUrl}" download="response.${ext}" class="download-btn"><i class="fas fa-download"></i> Download</a>
+                        </div>`;
+                    return;
+                }
+
+                if(ct.includes('video/')){
+                    const blob=await r.blob();
+                    const vidUrl=URL.createObjectURL(blob);
+                    const size=(blob.size/1024/1024).toFixed(2)+'MB';
+                    let ext='mp4';if(ct.includes('webm'))ext='webm';
+                    resultEl.innerHTML=makeToolbar('Video',statusText,size)+`
+                        <div class="media-container">
+                            <video src="${vidUrl}" controls style="max-width:100%;max-height:400px;border-radius:6px"></video>
+                            <a href="${vidUrl}" download="response.${ext}" class="download-btn"><i class="fas fa-download"></i> Download</a>
+                        </div>`;
+                    return;
+                }
+
+                if(ct.includes('audio/')){
+                    const blob=await r.blob();
+                    const audUrl=URL.createObjectURL(blob);
+                    const size=(blob.size/1024).toFixed(1)+'KB';
+                    let ext='mp3';if(ct.includes('ogg'))ext='ogg';else if(ct.includes('wav'))ext='wav';
+                    resultEl.innerHTML=makeToolbar('Audio',statusText,size)+`
+                        <div class="media-container">
+                            <audio src="${audUrl}" controls style="width:100%"></audio>
+                            <a href="${audUrl}" download="response.${ext}" class="download-btn"><i class="fas fa-download"></i> Download</a>
+                        </div>`;
+                    return;
+                }
+
+                if(ct.includes('application/pdf')){
+                    const blob=await r.blob();
+                    const pdfUrl=URL.createObjectURL(blob);
+                    const size=(blob.size/1024).toFixed(1)+'KB';
+                    resultEl.innerHTML=makeToolbar('PDF',statusText,size)+`
+                        <div class="media-container">
+                            <iframe src="${pdfUrl}" style="width:100%;height:500px;border:1px solid var(--border);border-radius:6px;background:#fff"></iframe>
+                            <a href="${pdfUrl}" download="response.pdf" class="download-btn"><i class="fas fa-download"></i> Download PDF</a>
+                        </div>`;
+                    return;
+                }
+
+                if(ct.includes('application/zip')||ct.includes('application/x-rar')||ct.includes('application/gzip')||ct.includes('application/x-7z-compressed')){
+                    const blob=await r.blob();
+                    const arcUrl=URL.createObjectURL(blob);
+                    const size=(blob.size/1024).toFixed(1)+'KB';
+                    let ext='bin';
+                    if(ct.includes('zip'))ext='zip';else if(ct.includes('rar'))ext='rar';else if(ct.includes('gzip'))ext='gz';else if(ct.includes('7z'))ext='7z';
+                    resultEl.innerHTML=makeToolbar(ext.toUpperCase(),statusText,size)+`
+                        <div class="media-container">
+                            <div class="binary-preview"><i class="fas fa-file-archive" style="font-size:3rem;opacity:0.4;margin-bottom:0.5rem;display:block"></i><span>Archive file — ${size}</span></div>
+                            <a href="${arcUrl}" download="response.${ext}" class="download-btn"><i class="fas fa-download"></i> Download</a>
+                        </div>`;
+                    return;
+                }
+
+                if(ct.includes('text/csv')||ct.includes('application/csv')){
+                    const text=await r.text();
+                    const rows=text.split('\n').slice(0,50);
+                    const html='<table class="csv-table">'+rows.map((row,i)=>{
+                        const tag=i===0?'th':'td';
+                        return '<tr>'+row.split(',').map(c=>`<${tag}>${esc(c.trim())}</${tag}>`).join('')+'</tr>';
+                    }).join('')+'</table>';
+                    resultEl.innerHTML=makeToolbar('CSV',statusText,(text.length/1024).toFixed(1)+'KB')+`
+                        <div class="csv-container" style="max-height:400px;overflow:auto;border:1px solid var(--border);border-radius:6px">${html}</div>`;
+                    return;
+                }
+
+                if(!ct.includes('text/')&&!ct.includes('json')&&!ct.includes('javascript')&&!ct.includes('xml')&&!ct.includes('html')){
+                    const blob=await r.blob();
+                    const blobUrl=URL.createObjectURL(blob);
+                    const size=(blob.size/1024).toFixed(1)+'KB';
+                    let ext='bin';
+                    if(ct.includes('octet-stream'))ext='bin';
+                    resultEl.innerHTML=makeToolbar('Binary',statusText,size)+`
+                        <div class="media-container">
+                            <div class="binary-preview"><i class="fas fa-file" style="font-size:3rem;opacity:0.4;margin-bottom:0.5rem;display:block"></i><span>Binary file — ${size}</span></div>
+                            <a href="${blobUrl}" download="response.${ext}" class="download-btn"><i class="fas fa-download"></i> Download</a>
+                        </div>`;
+                    return;
+                }
+
+                const text=await r.text();
+                try{
+                    const parsed=JSON.parse(text);
+                    const json=JSON.stringify(parsed,null,2);
+                    resultEl.innerHTML=makeToolbar('JSON',statusText,(text.length/1024).toFixed(1)+'KB')+'<pre></pre>';
+                    resultEl.querySelector('pre').textContent=json;
+                }catch{
+                    const isHtml=text.trim().startsWith('<!DOCTYPE')||text.trim().startsWith('<html');
+                    resultEl.innerHTML=makeToolbar(isHtml?'HTML':'Text',statusText,(text.length/1024).toFixed(1)+'KB')+'<pre></pre>';
+                    resultEl.querySelector('pre').textContent=text.slice(0,10000);
+                }
+            }catch(err){
+                resultEl.innerHTML=makeToolbar('Error','','')+'<pre></pre>';
+                resultEl.querySelector('pre').textContent='Error: '+err.message;
+            }
+        }
+
+        function showExampleCode(path,methods,params,paramSchema,prefix,domain){
+            const queryParams=[];
+            const bodyParams={};
+            const fileParams=[];
+            params.forEach(p=>{
+                const s=paramSchema[p]||{};
+                const input=document.getElementById(prefix+p);
+                const val=input?input.value:'';
+                if(s.type==='file'){
+                    fileParams.push(p);
+                } else if(val){
+                    queryParams.push(encodeURIComponent(p)+'='+encodeURIComponent(val));
+                    bodyParams[p]=val;
+                }
+            });
+            const url=domain+path+(queryParams.length?'?'+queryParams.join('&'):'');
+            const method=methods.includes('POST')?'POST':'GET';
+            const hasParams=params.length>0;
+            const hasFileUpload=fileParams.length>0;
+            const resultEl=document.getElementById('result-'+path.replace(/\//g,'-'));
+            if(!resultEl)return;
+
+            const languages=hasFileUpload ? [
+                {
+                    name:'cURL',
+                    code:`curl -X POST "${domain+path}" \\\n  ${fileParams.map(p=>`-F "${p}=@/path/to/file"`).join(' \\\n  ')}${Object.keys(bodyParams).length?' \\\n  '+Object.entries(bodyParams).map(([k,v])=>`-F "${k}=${v}"`).join(' \\\n  '):''}`
+                },
+                {
+                    name:'Node.js',
+                    code:`const formData = new FormData();\n${fileParams.map(p=>`formData.append("${p}", fs.createReadStream("/path/to/file"));`).join('\n')}${Object.keys(bodyParams).length?'\n'+Object.entries(bodyParams).map(([k,v])=>`formData.append("${k}", "${v}");`).join('\n'):''}\n\nconst response = await fetch("${domain+path}", {\n  method: "POST",\n  body: formData\n});\nconst data = await response.json();\nconsole.log(data);`
+                },
+                {
+                    name:'Axios',
+                    code:`const axios = require("axios");\nconst FormData = require("form-data");\nconst fs = require("fs");\n\nconst formData = new FormData();\n${fileParams.map(p=>`formData.append("${p}", fs.createReadStream("/path/to/file"));`).join('\n')}${Object.keys(bodyParams).length?'\n'+Object.entries(bodyParams).map(([k,v])=>`formData.append("${k}", "${v}");`).join('\n'):''}\n\nconst { data } = await axios.post("${domain+path}", formData, {\n  headers: formData.getHeaders()\n});\nconsole.log(data);`
+                },
+                {
+                    name:'Python',
+                    code:`import requests\n\nresponse = requests.post(\n    "${domain+path}",\n    files=${JSON.stringify(Object.fromEntries(fileParams.map(p=>[p, 'open("/path/to/file", "rb")'])))}${Object.keys(bodyParams).length?',\n    data='+pythonDict(bodyParams):''}\n)\ndata = response.json()\nprint(data)`
+                },
+                {
+                    name:'Go',
+                    code: `package main\n\nimport (\n\t"bytes"\n\t"fmt"\n\t"io"\n\t"mime/multipart"\n\t"net/http"\n\t"os"\n)\n\nfunc main() {\n\tbody := &bytes.Buffer{}\n\twriter := multipart.NewWriter(body)\n` + fileParams.map(p=>'\tfile, _ := os.Open("/path/to/file")\n\tdefer file.Close()\n\tpart, _ := writer.CreateFormFile("'+p+'", "file")\n\tio.Copy(part, file)').join('\n') + (Object.keys(bodyParams).length?'\n'+Object.entries(bodyParams).map(([k,v])=>'\twriter.WriteField("'+k+'", "'+v+'")').join('\n'):'') + `\n\twriter.Close()\n\n\tresp, _ := http.Post(\n\t\t"${domain+path}",\n\t\twriter.FormDataContentType(),\n\t\tbody,\n\t)\n\tdefer resp.Body.Close()\n\trespBody, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(respBody))\n}`
+                },
+                {
+                    name:'PHP',
+                    code:`<?php\n$ch = curl_init("${domain+path}");\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_POST, true);\n$curlFile = curl_file_create("/path/to/file");\n$fields = [${fileParams.map(p=>`"${p}" => $curlFile`).join(', ')}${Object.keys(bodyParams).length?', '+Object.entries(bodyParams).map(([k,v])=>`"${k}" => "${v}"`).join(', '):''}];\ncurl_setopt($ch, CURLOPT_POSTFIELDS, $fields);\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);`
+                },
+                {
+                    name:'Java',
+                    code: (function(){
+                        var lines = ['import java.net.http.*;', 'import java.net.URI;', '', 'HttpClient client = HttpClient.newHttpClient();', 'var builder = HttpRequest.newBuilder()', '    .uri(URI.create("' + domain + path + '"));', '', 'var boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW";', 'var body = "--" + boundary + "\\r\\n"'];
+                        fileParams.forEach(function(p){ lines.push('    + "Content-Disposition: form-data; name=\\"' + p + '\\"; filename=\\"file\\"\\r\\n"'); lines.push('    + "Content-Type: application/octet-stream\\r\\n\\r\\n"'); lines.push('    + new String(java.nio.file.Files.readAllBytes(java.nio.file.Path.of("/path/to/file"))) + "\\r\\n"'); lines.push('    + "--" + boundary'); });
+                        Object.entries(bodyParams).forEach(function([k,v]){ lines.push('    + "Content-Disposition: form-data; name=\\"' + k + '\\"\\r\\n\\r\\n" + "' + v + '" + "\\r\\n" + "--" + boundary'); });
+                        lines.push('    + "--\\r\\n";');
+                        lines.push('', 'HttpRequest request = builder', '    .header("Content-Type", "multipart/form-data; boundary=" + boundary)', '    .POST(HttpRequest.BodyPublishers.ofString(body))', '    .build();', 'HttpResponse<String> response = client.send(', '    request, HttpResponse.BodyHandlers.ofString()', ');', 'System.out.println(response.body());');
+                        return lines.join('\\n');
+                    })()
+                },
+            ] : [
+                {
+                    name:'cURL',
+                    code: method==='GET'
+                        ?`curl "${url}"`
+                        :`curl -X POST "${domain+path}" \\\n  -H "Content-Type: application/json" \\\n  -d '${JSON.stringify(bodyParams)}'`
+                },
+                {
+                    name:'Node.js',
+                    code: method==='GET'
+                        ?`const response = await fetch("${url}");\nconst data = await response.json();\nconsole.log(data);`
+                        :`const response = await fetch("${domain+path}", {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: JSON.stringify(${JSON.stringify(bodyParams, null, 2).split('\n').map((l,i)=>i?`  ${l}`:l).join('\n')})\n});\nconst data = await response.json();\nconsole.log(data);`
+                },
+                {
+                    name:'Axios',
+                    code: method==='GET'
+                        ?`const axios = require("axios");\n\nconst { data } = await axios.get("${url}");\nconsole.log(data);`
+                        :`const axios = require("axios");\n\nconst { data } = await axios.post("${domain+path}", ${JSON.stringify(bodyParams, null, 2).split('\n').map((l,i)=>i?`  ${l}`:l).join('\n')});\nconsole.log(data);`
+                },
+                {
+                    name:'Python',
+                    code: method==='GET'
+                        ?`import requests\n\nresponse = requests.get("${url}")\ndata = response.json()\nprint(data)`
+                        :`import requests\n\nresponse = requests.post(\n    "${domain+path}",\n    json=${pythonDict(bodyParams)}\n)\ndata = response.json()\nprint(data)`
+                },
+                {
+                    name:'Go',
+                    code: method==='GET'
+                        ?`package main\n\nimport (\n\t"fmt"\n\t"io"\n\t"net/http"\n)\n\nfunc main() {\n\tresp, err := http.Get("${url}")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\tdefer resp.Body.Close()\n\tbody, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(body))\n}`
+                        :`package main\n\nimport (\n\t"bytes"\n\t"fmt"\n\t"io"\n\t"net/http"\n)\n\nfunc main() {\n\tjson := \`${JSON.stringify(bodyParams)}\`\n\tresp, err := http.Post(\n\t\t"${domain+path}",\n\t\t"application/json",\n\t\tbytes.NewBuffer([]byte(json)),\n\t)\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\tdefer resp.Body.Close()\n\tbody, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(body))\n}`
+                },
+                {
+                    name:'PHP',
+                    code: method==='GET'
+                        ?`<?php\n$response = file_get_contents("${url}");\n$data = json_decode($response, true);\nprint_r($data);`
+                        :`<?php\n$ch = curl_init("${domain+path}");\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_POST, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);\ncurl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(${JSON.stringify(bodyParams)}));\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);`
+                },
+                {
+                    name:'Java',
+                    code: method==='GET'
+                        ?`import java.net.http.*;\nimport java.net.URI;\n\nHttpClient client = HttpClient.newHttpClient();\nHttpRequest request = HttpRequest.newBuilder()\n    .uri(URI.create("${url}"))\n    .build();\nHttpResponse<String> response = client.send(\n    request, HttpResponse.BodyHandlers.ofString()\n);\nSystem.out.println(response.body());`
+                        :`import java.net.http.*;\nimport java.net.URI;\n\nHttpClient client = HttpClient.newHttpClient();\nString json = ${JSON.stringify(JSON.stringify(bodyParams))};\nHttpRequest request = HttpRequest.newBuilder()\n    .uri(URI.create("${domain+path}"))\n    .header("Content-Type", "application/json")\n    .POST(HttpRequest.BodyPublishers.ofString(json))\n    .build();\nHttpResponse<String> response = client.send(\n    request, HttpResponse.BodyHandlers.ofString()\n);\n                    System.out.println(response.body());`
+                },
+            ];
+
+            let activeTab=0;
+            function render(){
+                resultEl.innerHTML=`<div class="result-toolbar">
+                    <div class="toolbar-left">
+                        <span style="padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.06);font-family:var(--mono);font-size:10px;color:var(--text-2);text-transform:uppercase">Example</span>
+                        <span style="font-family:var(--mono);font-size:10px;color:var(--text-3)">${method} ${esc(path)}</span>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="toolbar-btn" onclick="copyResultText(this)" title="Copy"><i class="fas fa-copy"></i></button>
+                        <button class="toolbar-btn" onclick="this.closest('.pg-result').style.display='none'" title="Close"><i class="fas fa-xmark"></i></button>
+                    </div>
+                </div>
+                <div class="example-tabs">${languages.map((l,i)=>`<button class="example-tab${i===activeTab?' active':''}" data-idx="${i}">${esc(l.name)}</button>`).join('')}</div>
+                <pre>${esc(languages[activeTab].code)}</pre>`;
+                resultEl.style.display='flex';
+                resultEl.querySelectorAll('.example-tab').forEach(tab=>{
+                    tab.addEventListener('click',()=>{
+                        activeTab=parseInt(tab.dataset.idx);
+                        resultEl.querySelector('pre').textContent=languages[activeTab].code;
+                        resultEl.querySelectorAll('.example-tab').forEach((t,i)=>t.classList.toggle('active',i===activeTab));
+                    });
+                });
+            }
+            render();
+        }
+
+        function pythonDict(obj){
+            return JSON.stringify(obj).replace(/"/g,"'").replace(/:/g,': ').replace(/,/g,', ');
+        }
+
+        function showToast(msg){
+            const t=document.getElementById('toast');
+            document.getElementById('toastMsg').textContent=msg;
+            t.classList.add('show');
+            setTimeout(()=>t.classList.remove('show'),2000);
+        }
+
+        function showNotification(message, type = 'success') {
+            let notif = document.getElementById('url-copy-notification');
+            if (!notif) {
+                notif = document.createElement('div');
+                notif.id = 'url-copy-notification';
+                notif.style.cssText = 'position:fixed;bottom:1.5rem;right:1.5rem;z-index:99999;';
+                document.body.appendChild(notif);
+            }
+            const bgColor = type === 'success' ? '#10b981' : '#ef4444';
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+
+            notif.innerHTML = `
+                <div style="background:${bgColor};color:#fff;padding:0.75rem 1.25rem;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,0.6);display:flex;align-items:center;gap:10px;font-size:0.875rem;font-weight:500;animation:slideInRight 0.3s ease-out;">
+                    <i class="fas ${icon}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            setTimeout(() => { notif.innerHTML = ''; }, 2500);
+        }
+
+        // Announcement bell
+        function toggleAnnounce(){
+            document.getElementById('announcePanel').classList.toggle('show');
+            document.getElementById('bellBadge').style.display='none';
+            document.getElementById('bellBtn').classList.remove('has-notif');
+        }
+
+        // Fetch announcements into bell dropdown
+        async function loadAnnouncements(){
+            try{
+                const r=await fetch('/configuration?_='+Date.now());
+                const d=await r.json();
+                const items=d.announcements?.items;
+                if(!items||!items.length)return;
+                document.getElementById('bellBadge').style.display='block';
+                document.getElementById('bellBtn').classList.add('has-notif');
+                const list=document.getElementById('announceList');
+                list.innerHTML=items.slice(0,8).map(a=>`
+                    <div class="announce-item">
+                        <div class="a-title">${esc(a.title)}</div>
+                        <div class="a-desc">${esc(a.description||'')}</div>
+                        <div class="a-meta">
+                            ${a.releaseVersion?`<span class="a-ver">v${esc(a.releaseVersion)}</span>`:''}
+                            <span class="a-date">${esc(a.date||'')}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }catch(e){}
+        }
+
+        // ============= HEALTH MONITORING =============
+        let healthInterval = null;
+        let healthData = { status: 'online', latency: 0, uptime: 0, uptimePercent: '100.00', version: '—', totalRequests: 0, rpm: 0 };
+        let endpointLatencies = {}; // path -> { latency, timestamp }
+        let lastHealthFetch = 0;
+
+        function formatUptime(seconds) {
+            const d = Math.floor(seconds / 86400);
+            const h = Math.floor((seconds % 86400) / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = Math.floor(seconds % 60);
+            const parts = [];
+            if (d > 0) parts.push(d+'d');
+            if (h > 0) parts.push(h+'h');
+            if (m > 0) parts.push(m+'m');
+            if (s > 0 || parts.length === 0) parts.push(s+'s');
+            return parts.join(' ');
+        }
+
+        async function updateHealthStats() {
+            try {
+                const r = await fetch('/health?_='+Date.now(), { signal: AbortSignal.timeout(5000) });
+                const d = await r.json();
+                if (!d || !d.status) return;
+                healthData = d;
+                lastHealthFetch = Date.now();
+
+                // Update health bar
+                const statusEl = document.getElementById('healthStatus');
+                if (statusEl) {
+                    if (d.status === 'online') {
+                        statusEl.innerHTML = '<span class="h-dot" style="background:#22c55e"></span>Online';
+                    } else {
+                        statusEl.innerHTML = '<span class="h-dot" style="background:#ef4444"></span>Offline';
+                    }
+                }
+                document.getElementById('healthLatency').innerHTML = d.latency+' <span class="h-sub">ms</span>';
+                document.getElementById('healthUptime').textContent = d.uptimePercent+'%';
+                document.getElementById('healthVersion').textContent = d.version || '—';
+                document.getElementById('healthEndpoints').textContent = allEndpoints.length || '—';
+
+                // Update any visible latency badges
+                if (endpointLatencies && Object.keys(endpointLatencies).length > 0) {
+                    Object.keys(endpointLatencies).forEach(path => {
+                        const badge = document.getElementById('lb-'+path.replace(/[^a-zA-Z0-9]/g,'-'));
+                        if (badge) {
+                            const ep = endpointLatencies[path];
+                            const ms = ep.latency;
+                            const cls = ms < 300 ? 'lb-fast' : ms < 1000 ? 'lb-mid' : 'lb-slow';
+                            badge.className = 'latency-badge '+cls;
+                            badge.innerHTML = '<i class="fas fa-bolt"></i>'+ms+'ms';
+                        }
+                    });
+                }
+            } catch (e) {
+                // Silent fail for health polling
+                const statusEl = document.getElementById('healthStatus');
+                if (statusEl && Date.now() - lastHealthFetch > 15000) {
+                    statusEl.innerHTML = '<span class="h-dot" style="background:#888"></span>Unknown';
+                }
+            }
+        }
+
+        function startHealthPolling() {
+            updateHealthStats();
+            if (healthInterval) clearInterval(healthInterval);
+            healthInterval = setInterval(updateHealthStats, 30000);
+        }
+
+        function recordEndpointLatency(path, ms) {
+            if (!path) return;
+            endpointLatencies[path] = { latency: ms, timestamp: Date.now() };
+            // Update badge if visible
+            const badge = document.getElementById('lb-'+path.replace(/[^a-zA-Z0-9]/g,'-'));
+            if (badge) {
+                const cls = ms < 300 ? 'lb-fast' : ms < 1000 ? 'lb-mid' : 'lb-slow';
+                badge.className = 'latency-badge '+cls;
+                badge.innerHTML = '<i class="fas fa-bolt"></i>'+ms+'ms';
+            }
+        }
+
+        function getLatencyBadgeHTML(path) {
+            const ep = endpointLatencies[path];
+            const bid = 'lb-'+path.replace(/[^a-zA-Z0-9]/g,'-');
+            if (ep) {
+                const ms = ep.latency;
+                const cls = ms < 300 ? 'lb-fast' : ms < 1000 ? 'lb-mid' : 'lb-slow';
+                return '<span class="latency-badge '+cls+'" id="'+bid+'"><i class="fas fa-bolt"></i>'+ms+'ms</span>';
+            }
+            return '<span class="latency-badge lb-none" id="'+bid+'"><i class="fas fa-bolt"></i>—</span>';
+        }
+
+        // Patch renderEndpoints to add latency badge
+        const _origRenderEndpoints = renderEndpoints;
+        renderEndpoints = function(eps) {
+            const container = document.getElementById('endpointsContainer');
+            if (!eps.length) { container.innerHTML = '<div class="loading">No endpoints found.</div>'; return; }
+
+            const grouped = {};
+            eps.forEach(ep => {
+                const cat = ep.category || 'Uncategorized';
+                if (!grouped[cat]) grouped[cat] = [];
+                grouped[cat].push(ep);
+            });
+
+            let html = '';
+            Object.keys(grouped).sort().forEach(cat => {
+                const items = grouped[cat];
+                html += `<div class="category">
+                    <div class="cat-head">${cat} <span class="cat-count">${items.length}</span></div>
+                    <div class="ep-grid">`;
+                items.forEach(ep => {
+                    const methods = Array.isArray(ep.methods) ? ep.methods : (ep.method || 'GET').split(',').map(m => m.trim().toUpperCase());
+                    const status = ep.status || 'online';
+                    const sClass = 's-' + status;
+                    const desc = ep.description || '';
+                    const path = ep.route || ep.path || '';
+                    let params = [...(ep.params || [])];
+                    let paramSchema = { ...(ep.paramsSchema || {}) };
+                    
+                    const isPremium = ep.status === 'premium' || ep.status === 'vip' || ep.premium === true || ep.premium === 'true' || ep.requirePremium === true || ep.requirePremium === 'true' || ep.isPremium === true || ep.isPremium === 'true' || (ep.badge && (ep.badge.toUpperCase() === 'PREMIUM' || ep.badge.toUpperCase() === 'VIP'));
+                    if (isPremium) {
+                        if (!params.includes('apikey')) {
+                            params.push('apikey');
+                        }
+                        paramSchema['apikey'] = paramSchema['apikey'] || { type: 'string', required: true };
+                    }
+                    const domain = window.location.origin;
+                    const latBadge = getLatencyBadgeHTML(path);
+
+                    html += `<div class="ep-card" onclick="toggleEp(event,this)">
+                        <div class="ep-head">
+                            ${methods.map(m => `<span class="ep-method ${m === 'GET' ? 'method-get' : 'method-post'}">${m}</span>`).join('')}
+                            <span class="ep-path">${esc(path)}</span>
+                            ${latBadge}
+                            <span class="ep-status ${sClass}"><span class="dot"></span>${status}</span>
+                        </div>
+                        <div class="ep-desc">${esc(desc)}</div>
+                        <div class="ep-body">
+                            ${params.length ? `<div class="ep-params">
+                                <h4>Parameters</h4>
+                                ${params.map(p => {
+                                    const s = paramSchema[p] || {};
+                                    const req = s.required === true ? '<span class="param-req" style="color:#ef4444;font-size:10px;font-weight:700">REQUIRED</span>' : '';
+                                    return `<div class="param-row">
+                                        <span class="param-name">${esc(p)}</span>
+                                        ${req}
+                                    </div>`;
+                                }).join('')}
+                            </div>` : ''}
+                            <div class="playground">
+                                ${status==='offline'||status==='maintenance'||status==='error'?`<div class="status-warning-banner" style="margin-bottom:14px;padding:12px 16px;border-radius:8px;background:${status==='maintenance'?'rgba(245,158,11,0.12)':'rgba(239,68,68,0.12)'};border:1px solid ${status==='maintenance'?'rgba(245,158,11,0.35)':'rgba(239,68,68,0.35)'};color:${status==='maintenance'?'#f59e0b':'#ef4444'};display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px">
+                                    <i class="fas ${status==='maintenance'?'fa-tools':'fa-exclamation-triangle'}" style="font-size:16px"></i>
+                                    <div>
+                                        <b style="text-transform:uppercase;letter-spacing:0.05em">Endpoint ${status.toUpperCase()}</b><br>
+                                        <span style="font-size:11px;opacity:0.9;font-family:var(--font)">Mohon maaf, endpoint ini sedang berstatus <b>${status.toUpperCase()}</b> sehingga fitur pengujian (Try) dinonaktifkan sementara.</span>
+                                    </div>
+                                </div>`:''}
+                                <div class="pg-header"><span>Playground</span></div>
+                                <div class="pg-url">
+                                    ${methods.map(m => `<span class="pg-method-badge ${m === 'GET' ? 'method-get' : 'method-post'}">${m}</span>`).join('')}
+                                    <span class="pg-url-text">${domain}${path}</span>
+                                </div>
+                                ${params.length ? `<div class="pg-inputs">
+                                    ${params.map(p => {
+                                        const s = paramSchema[p] || {};
+                                        const ph = s.default || s.enum?.[0] || p;
+                                        const req = s.required === true;
+                                        const reqStar = req ? '<span style="color:#ef4444;margin-left:2px">*</span>' : '';
+                                        const inputId = 'pg-' + path.replace(/\//g, '-') + '-' + p;
+                                        const reqAttr = req ? ' data-required="true"' : '';
+                                        if (s.enum && s.enum.length) {
+                                            const defVal = s.default || s.example || s.enum[0] || '';
+                                            const opts = s.enum.map(v => `<option value="${esc(v)}" ${v === defVal ? 'selected' : ''}>${esc(v)}</option>`).join('');
+                                            return `<div class="pg-input-group">
+                                                <label>${esc(p)}${reqStar}</label>
+                                                <select class="pg-input pg-select" id="${inputId}"${reqAttr}>
+                                                    ${!req ? '<option value="">-- optional --</option>' : ''}
+                                                    ${opts}
+                                                </select>
+                                            </div>`;
+                                        }
+                                        if (s.type === 'file') {
+                                            return `<div class="pg-input-group">
+                                                <label>${esc(p)}${reqStar}</label>
+                                                <input class="pg-input" type="file" id="${inputId}"${reqAttr} style="padding:6px 8px">
+                                            </div>`;
+                                        }
+                                        return `<div class="pg-input-group">
+                                            <label>${esc(p)}${reqStar}</label>
+                                            <input class="pg-input" id="${inputId}" placeholder="${esc(ph)}" value="${esc(s.default || s.example || '')}"${reqAttr}>
+                                        </div>`;
+                                    }).join('')}
+                                </div>` : ''}
+                                <div class="pg-actions">
+                                    <button class="btn btn-white btn-try${status==='offline'||status==='maintenance'||status==='error'?' btn-disabled-status':''}"${status==='offline'||status==='maintenance'||status==='error'?' disabled':''} data-path="${esc(path)}" data-status="${esc(status)}" data-methods='${JSON.stringify(methods)}' data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"${status==='offline'||status==='maintenance'||status==='error'?' style="opacity:0.4;cursor:not-allowed;pointer-events:none;border:1px solid '+(status==='maintenance'?'rgba(245,158,11,0.4);color:#f59e0b;background:rgba(245,158,11,0.08)':'rgba(239,68,68,0.4);color:#ef4444;background:rgba(239,68,68,0.08)')+'" title="Endpoint sedang '+status.toUpperCase()+', tidak dapat dicoba saat ini"':''}><i class="fas ${status==='offline'||status==='maintenance'||status==='error'?'fa-ban':'fa-play'}"></i> ${status==='offline'||status==='maintenance'||status==='error'?'Try ('+status.toUpperCase()+')':'Try'}</button>
+                                    <button class="btn btn-ghost btn-copy" data-url="${domain}${esc(path)}" data-path="${esc(path)}" data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"><i class="fas fa-copy"></i> Copy URL</button>
+                                    <button class="btn btn-ghost btn-example" data-path="${esc(path)}" data-methods='${JSON.stringify(methods)}' data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"><i class="fas fa-code"></i> Example</button>
+                                </div>
+                                <div class="pg-result" id="result-${path.replace(/\//g, '-')}"></div>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                html += `</div></div>`;
+            });
+            container.innerHTML = html;
+        };
+
+        // Patch runTryEndpoint to capture timing + show metrics
+        const _origRunTryEndpoint = runTryEndpoint;
+        runTryEndpoint = async function(path, methods, params, paramSchema) {
+            const resultId = 'result-' + path.replace(/\//g, '-');
+            const resultEl = document.getElementById(resultId);
+            if (!resultEl) return;
+
+            const tryBtnEl = document.querySelector(`.btn-try[data-path="${path}"]`);
+            const epStatus = (tryBtnEl && tryBtnEl.dataset.status) ? tryBtnEl.dataset.status : 'online';
+            if (epStatus === 'offline' || epStatus === 'maintenance' || epStatus === 'error') {
+                showToast(`⚠️ Endpoint berstatus ${epStatus.toUpperCase()}: Tidak dapat diuji coba saat ini.`);
+                resultEl.style.display = 'block';
+                resultEl.innerHTML = `<div class="result-toolbar" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3)">
+                    <div class="toolbar-left" style="color:#ef4444;font-family:var(--mono);font-size:11px;font-weight:700">
+                        <i class="fas fa-exclamation-circle" style="margin-right:6px"></i> ENDPOINT ${epStatus.toUpperCase()}
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="toolbar-btn" onclick="this.closest('.pg-result').style.display='none'" title="Close"><i class="fas fa-xmark"></i></button>
+                    </div>
+                </div>
+                <div style="padding:16px;font-family:var(--mono);font-size:12px;color:#fca5a5;background:rgba(0,0,0,0.35);line-height:1.6">
+                    ❌ <b>Pengujian dinonaktifkan:</b> Endpoint <code>${esc(path)}</code> saat ini berstatus <span style="padding:2px 6px;border-radius:4px;background:rgba(239,68,68,0.2);color:#ff8080;font-weight:700">${esc(epStatus.toUpperCase())}</span>.<br>
+                    Silakan coba kembali setelah layanan kembali online / maintenance selesai.
+                </div>`;
+                return;
+            }
+
+            const prefix = 'pg-' + path.replace(/\//g, '-') + '-';
+            const missing = [];
+            params.forEach(p => {
+                const s = paramSchema[p] || {};
+                const input = document.getElementById(prefix + p);
+                if (!input) return;
+                if (input.dataset.required !== 'true') return;
+                if (s.type === 'file') {
+                    if (!input.files || !input.files.length) missing.push(p);
+                } else {
+                    if (!input.value.trim()) missing.push(p);
+                }
+                if (missing.includes(p)) {
+                    input.style.borderColor = '#ef4444';
+                    input.addEventListener('input', () => { input.style.borderColor = ''; }, { once: true });
+                    input.addEventListener('change', () => { input.style.borderColor = ''; }, { once: true });
+                }
+            });
+            if (missing.length) {
+                if (missing.includes('apikey')) {
+                    showToast('Premium API Key is required.');
+                } else {
+                    showToast('Required: ' + missing.join(', '));
+                }
+                return;
+            }
+
+            resultEl.style.cssText = 'display:flex;color:#888';
+            resultEl.innerHTML = makeToolbar('Loading', '...', '') + '<div style="padding:12px"><span style="font-family:var(--mono);font-size:12px;color:var(--text-3)">Fetching...</span></div>';
+
+            const queryParams = [];
+            params.forEach(p => {
+                const s = paramSchema[p] || {};
+                const input = document.getElementById(prefix + p);
+                if (input && input.value && s.type !== 'file') {
+                    queryParams.push(encodeURIComponent(p) + '=' + encodeURIComponent(input.value));
+                }
+            });
+            const url = path + (queryParams.length ? '?' + queryParams.join('&') : '');
+
+            const startTime = performance.now();
+
+            try {
+                const usePost = methods.includes('POST');
+                const opts = {};
+                if (usePost) {
+                    const hasFile = params.some(p => {
+                        const s = paramSchema[p] || {};
+                        return s.type === 'file';
+                    });
+                    if (hasFile) {
+                        const fd = new FormData();
+                        params.forEach(p => {
+                            const el = document.getElementById('pg-' + path.replace(/\//g, '-') + '-' + p);
+                            if (!el) return;
+                            if (el.type === 'file' && el.files.length) { fd.append(p, el.files[0]); }
+                            else if (el.value) { fd.append(p, el.value); }
+                        });
+                        opts.method = 'POST';
+                        opts.body = fd;
+                    } else {
+                        const body = {};
+                        params.forEach(p => {
+                            const el = document.getElementById('pg-' + path.replace(/\//g, '-') + '-' + p);
+                            if (el && el.value) body[p] = el.value;
+                        });
+                        opts.method = 'POST';
+                        opts.headers = opts.headers || {};
+                        opts.headers['Content-Type'] = 'application/json';
+                        opts.body = JSON.stringify(body);
+                    }
+                }
+                const r = await fetch(usePost ? path : url, opts);
+                const endTime = performance.now();
+                const responseTimeMs = Math.round(endTime - startTime);
+
+                // Record this endpoint's latency
+                recordEndpointLatency(path, responseTimeMs);
+
+                const ct = r.headers.get('content-type') || '';
+                const statusText = r.status + ' ' + r.statusText;
+
+                // Calculate payload size from Content-Length header or estimate
+                let payloadSize = '';
+                const cl = r.headers.get('content-length');
+                if (cl) {
+                    const bytes = parseInt(cl);
+                    payloadSize = bytes < 1024 ? bytes + ' B' : (bytes / 1024).toFixed(1) + ' KB';
+                }
+
+                // Determine status class
+                const statusClass = r.status < 300 ? 'm-status-2xx' : r.status < 500 ? 'm-status-4xx' : 'm-status-5xx';
+                const now = new Date();
+                const timestampStr = now.toISOString().replace('T', ' ').slice(0, 19);
+
+                // Detect server region from headers
+                const cfRay = r.headers.get('cf-ray') || '';
+                const cfRegion = r.headers.get('cf-region') || '';
+                const serverRegion = cfRegion || (cfRay ? cfRay.split('-')[1]?.slice(0,2).toUpperCase() : '') || 'SIN';
+
+                const metricsHTML = `<div class="metrics-panel show" id="metrics-${path.replace(/\//g, '-')}">
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <span class="m-label">Status</span>
+                            <span class="m-value m-status ${statusClass}">${r.status}</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="m-label">Response Time</span>
+                            <span class="m-value">${responseTimeMs} ms</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="m-label">Payload</span>
+                            <span class="m-value">${payloadSize || '—'}</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="m-label">Timestamp</span>
+                            <span class="m-value">${timestampStr}</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="m-label">Region</span>
+                            <span class="m-value">${serverRegion}</span>
+                        </div>
+                    </div>
+                </div>`;
+
+                if (ct.includes('image/')) {
+                    const blob = await r.blob();
+                    const imgUrl = URL.createObjectURL(blob);
+                    const size = (blob.size / 1024).toFixed(1) + 'KB';
+                    let ext = 'jpg';
+                    if (ct.includes('png')) ext = 'png'; else if (ct.includes('webp')) ext = 'webp'; else if (ct.includes('gif')) ext = 'gif';
+                    resultEl.innerHTML = makeToolbar('Image', statusText, size) +
+                        `<div class="media-container">
+                            <div class="img-wrapper">
+                                <img src="${imgUrl}" alt="Response">
+                            </div>
+                            <a href="${imgUrl}" download="response.${ext}" class="download-btn"><i class="fas fa-download"></i> Download</a>
+                        </div>` + metricsHTML;
+                    return;
+                }
+
+                if (ct.includes('video/')) {
+                    const blob = await r.blob();
+                    const vidUrl = URL.createObjectURL(blob);
+                    const size = (blob.size / 1024 / 1024).toFixed(2) + 'MB';
+                    let ext = 'mp4'; if (ct.includes('webm')) ext = 'webm';
+                    resultEl.innerHTML = makeToolbar('Video', statusText, size) +
+                        `<div class="media-container">
+                            <video src="${vidUrl}" controls style="max-width:100%;max-height:400px;border-radius:6px"></video>
+                            <a href="${vidUrl}" download="response.${ext}" class="download-btn"><i class="fas fa-download"></i> Download</a>
+                        </div>` + metricsHTML;
+                    return;
+                }
+
+                if (ct.includes('audio/')) {
+                    const blob = await r.blob();
+                    const audUrl = URL.createObjectURL(blob);
+                    const size = (blob.size / 1024).toFixed(1) + 'KB';
+                    let ext = 'mp3'; if (ct.includes('ogg')) ext = 'ogg'; else if (ct.includes('wav')) ext = 'wav';
+                    resultEl.innerHTML = makeToolbar('Audio', statusText, size) +
+                        `<div class="media-container">
+                            <audio src="${audUrl}" controls style="width:100%"></audio>
+                            <a href="${audUrl}" download="response.${ext}" class="download-btn"><i class="fas fa-download"></i> Download</a>
+                        </div>` + metricsHTML;
+                    return;
+                }
+
+                if (ct.includes('application/pdf')) {
+                    const blob = await r.blob();
+                    const pdfUrl = URL.createObjectURL(blob);
+                    const size = (blob.size / 1024).toFixed(1) + 'KB';
+                    resultEl.innerHTML = makeToolbar('PDF', statusText, size) +
+                        `<div class="media-container">
+                            <iframe src="${pdfUrl}" style="width:100%;height:500px;border:1px solid var(--border);border-radius:6px;background:#fff"></iframe>
+                            <a href="${pdfUrl}" download="response.pdf" class="download-btn"><i class="fas fa-download"></i> Download PDF</a>
+                        </div>` + metricsHTML;
+                    return;
+                }
+
+                if (ct.includes('application/zip') || ct.includes('application/x-rar') || ct.includes('application/gzip') || ct.includes('application/x-7z-compressed')) {
+                    const blob = await r.blob();
+                    const arcUrl = URL.createObjectURL(blob);
+                    const size = (blob.size / 1024).toFixed(1) + 'KB';
+                    let ext = 'bin';
+                    if (ct.includes('zip')) ext = 'zip'; else if (ct.includes('rar')) ext = 'rar'; else if (ct.includes('gzip')) ext = 'gz'; else if (ct.includes('7z')) ext = '7z';
+                    resultEl.innerHTML = makeToolbar(ext.toUpperCase(), statusText, size) +
+                        `<div class="media-container">
+                            <div class="binary-preview"><i class="fas fa-file-archive" style="font-size:3rem;opacity:0.4;margin-bottom:0.5rem;display:block"></i><span>Archive file — ${size}</span></div>
+                            <a href="${arcUrl}" download="response.${ext}" class="download-btn"><i class="fas fa-download"></i> Download</a>
+                        </div>` + metricsHTML;
+                    return;
+                }
+
+                if (ct.includes('text/csv') || ct.includes('application/csv')) {
+                    const text = await r.text();
+                    const rows = text.split('\\n').slice(0, 50);
+                    const chtml = '<table class="csv-table">' + rows.map((row, i) => {
+                        const tag = i === 0 ? 'th' : 'td';
+                        return '<tr>' + row.split(',').map(c => `<${tag}>${esc(c.trim())}</${tag}>`).join('') + '</tr>';
+                    }).join('') + '</table>';
+                    resultEl.innerHTML = makeToolbar('CSV', statusText, (text.length / 1024).toFixed(1) + 'KB') +
+                        `<div class="csv-container" style="max-height:400px;overflow:auto;border:1px solid var(--border);border-radius:6px">${chtml}</div>` + metricsHTML;
+                    return;
+                }
+
+                if (!ct.includes('text/') && !ct.includes('json') && !ct.includes('javascript') && !ct.includes('xml') && !ct.includes('html')) {
+                    const blob = await r.blob();
+                    const blobUrl = URL.createObjectURL(blob);
+                    const size = (blob.size / 1024).toFixed(1) + 'KB';
+                    let ext = 'bin';
+                    if (ct.includes('octet-stream')) ext = 'bin';
+                    resultEl.innerHTML = makeToolbar('Binary', statusText, size) +
+                        `<div class="media-container">
+                            <div class="binary-preview"><i class="fas fa-file" style="font-size:3rem;opacity:0.4;margin-bottom:0.5rem;display:block"></i><span>Binary file — ${size}</span></div>
+                            <a href="${blobUrl}" download="response.${ext}" class="download-btn"><i class="fas fa-download"></i> Download</a>
+                        </div>` + metricsHTML;
+                    return;
+                }
+
+                const text = await r.text();
+                try {
+                    const parsed = JSON.parse(text);
+                    const json = JSON.stringify(parsed, null, 2);
+                    resultEl.innerHTML = makeToolbar('JSON', statusText, (text.length / 1024).toFixed(1) + 'KB') + '<pre></pre>' + metricsHTML;
+                    resultEl.querySelector('pre').textContent = json;
+                } catch {
+                    const isHtml = text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html');
+                    resultEl.innerHTML = makeToolbar(isHtml ? 'HTML' : 'Text', statusText, (text.length / 1024).toFixed(1) + 'KB') + '<pre></pre>' + metricsHTML;
+                    resultEl.querySelector('pre').textContent = text.slice(0, 10000);
+                }
+            } catch (err) {
+                resultEl.innerHTML = makeToolbar('Error', '', '') + '<pre></pre>';
+                resultEl.querySelector('pre').textContent = 'Error: ' + err.message;
+            }
+        };
+
+        // Init
+        document.addEventListener('DOMContentLoaded',()=>{
+            loadEndpoints();
+            loadAnnouncements();
+            startHealthPolling();
+            loadGlobalConfigUI();
+        });
+
+        async function loadGlobalConfigUI() {
+            try {
+                const r = await fetch('/configuration?_=' + Date.now());
+                const cfg = await r.json();
+                
+                // 1. Notifications popup
+                if (cfg.notifications && cfg.notifications.enabled === true) {
+                    const closedKey = 'notif_closed_' + (cfg.notifications.title || 'global');
+                    if (!sessionStorage.getItem(closedKey)) {
+                        const modal = document.createElement('div');
+                        modal.id = 'globalNotifModal';
+                        modal.className = 'notif-modal-overlay';
+                        modal.innerHTML = `
+                            <div class="notif-modal-box">
+                                <button class="notif-close-btn" onclick="closeGlobalNotif('${closedKey}')">&times;</button>
+                                <div class="notif-icon"><i class="fa-solid fa-bell"></i></div>
+                                <h3 class="notif-title">${esc(cfg.notifications.title || 'Notifikasi')}</h3>
+                                <p class="notif-message">${esc(cfg.notifications.message || '')}</p>
+                                ${cfg.notifications.sourceCodeUrl ? `
+                                <a href="${cfg.notifications.sourceCodeUrl}" target="_blank" class="notif-action-btn" onclick="closeGlobalNotif('${closedKey}')">
+                                    ${esc(cfg.notifications.buttonText || cfg.notifications.sourceCodeText || 'KUNJUNGI WEB')} <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>` : ''}
+                            </div>
+                        `;
+                        document.body.appendChild(modal);
+                        setTimeout(() => modal.classList.add('show'), 100);
+                    }
+                }
+
+                // 2. Feedback button
+                if (cfg.feedbackButton && cfg.feedbackButton.enabled === true && cfg.feedbackButton.url) {
+                    let fbBtn = document.getElementById('globalFeedbackBtn');
+                    if (!fbBtn) {
+                        fbBtn = document.createElement('a');
+                        fbBtn.id = 'globalFeedbackBtn';
+                        fbBtn.className = 'feedback-float-btn';
+                        fbBtn.href = cfg.feedbackButton.url;
+                        fbBtn.target = '_blank';
+                        fbBtn.innerHTML = `<i class="fa-solid fa-bug"></i> <span>Feedback</span>`;
+                        document.body.appendChild(fbBtn);
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function closeGlobalNotif(key) {
+            sessionStorage.setItem(key, 'true');
+            const modal = document.getElementById('globalNotifModal');
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => modal.remove(), 300);
+            }
+        }
+    </script>
+</body>
+</html>

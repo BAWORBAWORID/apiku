@@ -1,0 +1,1353 @@
+{
+    "maintenance": false,
+    "notifications": {
+        "enabled": false,
+        "title": "News Channel",
+        "message": "Masuk Ke Channel Baru",
+        "buttonText": "Masuk",
+        "sourceCodeText": "KUNJUNGI WEB",
+        "sourceCodeUrl": "https://whatsapp.com/channel/0029Vb8EfuN35fM5AX25AT1W"
+    },
+    "feedbackButton": {
+        "enabled": false,
+        "url": "https://github.com"
+    },
+    "announcements": {
+        "enabled": true,
+        "items": [
+            {
+                "title": "New AI Chat & Fun Tools — NoteGPTv2, AnimeHub VIP & Fixes",
+                "description": "Pembaruan endpoint baru & perbaikan:\n1) NoteGPTv2 AI Chat (/api/ai/notegptv2) — AI chat gratis via anonymous session + WASM signing (gemini-3.1-flash-lite), support multi-turn conversation (conversation_id + parent_message_id), web search, tone/length/language/chat_mode parameter. Total 8 model enum tersedia.\n2) AnimeHub VIP Manager (/api/fun/animehub) — Cek status VIP (check), buat VIP (prem), hapus VIP (remove) via email. Parsing JSON response terstruktur.\n3) Fix: notegptv2 paramsSchema enum rapih multi-line. AnimeHub response JSON parse otomatis.\nTotal endpoint: 425.",
+                "date": "September 16, 2026",
+                "releaseVersion": ""
+            },
+            {
+                "title": "Fix — Search Pinterest Bypass IP Soft-Block",
+                "date": "September 15, 2026",
+                "releaseVersion": "",
+                "description": "Perbaikan endpoint /api/search/pinterest yang sebelumnya error 403 Invalid Resource Request & empty results: 1) Update format payload Aragon (scope: pins, page_size, refine_search_with_filters) yang ditolak Pinterest dengan payload lama. 2) Rotasi otomatis 12 CORS proxy (caliph, rpoxy, prox, aged, wave, hill, icy, fazri, spring, sizable, jiashu, eu) untuk bypass soft-block IP datacenter — Pinterest sengaja mengembalikan 200 + results: [] untuk IP datacenter. 3) Endpoint diaktifkan kembali (status: online). Contoh: /api/search/pinterest?query=mountain&limit=5"
+            },
+            {
+                "title": "New Endpoints — TutorGPT AI, Akinator Game, Wallpaper 4K & MAGMA Fix",
+                "description": "1) TutorGPT AI (/api/ai/tutorgpt) — AI chat gratis multi-turn (session), pilihan model, tone & length output. 2) Akinator Game (/api/games/akinator) — game tebak karakter action start/answer/back/exclude/stop, 3 tema (characters, animals, objects). 3) Search Wallpaper 4K (/api/search/4kwallpapers) — scraper wallpaper 4K dengan 9 action: recent, popular, featured, random, search, category, categories, collections, collection detail. 4) MAGMA Gunung Api fix (/api/tools/magma/status & /catalog) — status realtime Level I-IV dan katalog 69 gunung, sebelumnya error 500 (stale CSRF). Total endpoint: 423.",
+                "date": "September 14, 2026",
+                "releaseVersion": "2.1.3"
+            },
+            {
+                "title": "New Endpoint — ZeroGPT AI (Chat & Detector)",
+                "date": "September 13, 2026",
+                "releaseVersion": "2.1.2",
+                "description": "Endpoint baru /api/ai/zerogpt — ZeroGPT AI dengan 2 mode: 1) Chat (default) — Chat interaktif dengan ZeroGPT AI Assistant via WebSocket streaming, support multi-turn conversation (parameter: text, conversation_id). 2) Detect — Deteksi apakah teks dibuat oleh AI/GPT atau ditulis manusia, hasil lengkap: verdict (ai/human/uncertain), fake_percentage, ai_words, text_words, feedback, detected_language (parameter: text, action=detect). Contoh: /api/ai/zerogpt?text=Halo siapa kamu? | /api/ai/zerogpt?action=detect&text=..."
+            },
+            {
+                "title": "New Update — WhatsApp Channel Reactions, Anime AV1 & Engine ByCF",
+                "date": "September 13, 2026",
+                "releaseVersion": "2.1.2",
+                "description": "Pembaruan fitur & endpoint baru: 1) Reach CH (/api/fun/reach-ch) — Kirim reaksi emoji otomatis ke postingan WhatsApp Channel via Cloudflare Turnstile bypass (engine bycf) dan sistem rotasi proxy dinamis, mendukung mode Free dan VIP Key. 2) Anime AV1 (/api/anime/animeav1) — Streaming & download anime codec AV1 kualitas tinggi dengan daftar server dan episode lengkap. 3) Upscaler v2 Upgrade (/api/imagehd/upscalev2) — Peningkatan engine bypass ke modul bycf untuk proses AI Image Upscale yang jauh lebih cepat tanpa lag. 4) Luna AI (/api/ai/luna) — Endpoint asisten AI Chat interaktif baru dengan multi-turn memory. 5) Check Ban WA (/api/checknumber/checkban) — Cek status nomor WhatsApp apakah aktif atau terblokir/banned secara akurat."
+            },
+            {
+                "title": "New Update — SnapAny & GetDL Universal Downloaders, GetContact Stalker",
+                "date": "September 8, 2026",
+                "releaseVersion": "2.0.0",
+                "description": "3 endpoint baru: 1) SnapAny Downloader (/api/downloader/snapany) — universal media downloader via SnapAny API, support 1000+ situs (YouTube, TikTok, Instagram, X, dll), HMAC auto-signed, return langsung URL media video/audio. 2) GetDL Downloader (/api/downloader/getdl) — downloader multi-platform via getdl.space dengan auto-detect platform (TikTok, Douyin, Instagram, Facebook, YouTube, X, Threads, CapCut, Spotify, SoundCloud, Pinterest, BiliBili, dll) — hasil lengkap: MP4 no-watermark (HD), MP4 with watermark & MP3 audio plus metadata. 3) GetContact Stalker (/api/stalker/getcontact) — cek data nomor HP via GetContact (auth WhatsApp): profil (nama, foto, bio, verifikasi) & tags dari database publik."
+            },
+            {
+                "title": "New Endpoints — Winbu & LiveChart Anime, ClearPNG & Optimole Upscaler",
+                "date": "September 7, 2026",
+                "releaseVersion": "2.0.0",
+                "description": "4 endpoint baru: 1) Winbu (/api/anime/winbu) — scraper streaming anime, donghua, series & film dari winbu.org: action home, search, series (detail + 1000+ episode list), film (player + download), stream (resolve 13 server embed via AJAX + link download 360p-1080p di Gofile/Mp4Upload/MEGA/MegaUp), category, genre, genres. 2) LiveChart Anime (/api/anime/livechart) — LiveChart.me: action season & year (list anime per musim), detail, streams (Crunchyroll, Muse Asia, Netflix, Prime Video, dll), info (detail+streams), rankings, studios (120+), tags/genres (170+), franchises. 3) ClearPNG Upscaler (/api/imagehd/clearpng) — upscale 2x/4x via cleanpng.com, response langsung gambar (format png/jpg). 4) Optimole Upscaler (/api/imagehd/optimole) — AI upscale via Replicate, output WebP kualitas tertinggi, response langsung gambar."
+            },
+            {
+                "title": "Maintenance & Fix Update — Downloader, Image Maker, TikTok Stalker",
+                "date": "September 5, 2026",
+                "releaseVersion": "2.0.0",
+                "description": "System updates and fixes: 1) Added Facebook Downloader (/api/downloader/facebook) using getmyfb.com. 2) Added Image Resize Maker (/api/maker/resize) with direct PNG, JPG, and WebP image responses. 3) Upgraded SaveTube Downloader (/api/downloader/savetube) with fast stream support, 1440p/2160p quality, MP3 output, and GET/POST support. 4) Fixed All-In-One Downloader (/api/downloader/allinone) with automatic retatube.com fallback when downr.org returns action_forbidden. 5) Fixed TikTok Stalker (/api/stalker/tiktok) using TikTok embed data for complete profile statistics and recent videos. 6) Removed Grok V2 because its upstream model deployments were deprecated."
+            },
+            {
+                "title": "New Update — Qwen Guest AI, DeepL Translate, Omnify AIO & More",
+                "date": "September 4, 2026",
+                "releaseVersion": "2.0.0",
+                "description": "12 endpoint baru: 1) Qwen Guest AI (/api/ai/qwenguest) — chat Qwen 3.7 tanpa akun via guest mode, persistent browser (12-14s warm), support deep thinking & web search. 2) DeepL Translate (/api/tools/translate) — translator 3-engine (DeepL → Neural GTX → MyMemory), 35+ bahasa, alias lokal (jepang/korea/dll), voice TTS & alternatives. 3) Omnify AIO (/api/downloader/omnify) — all-in-one downloader (TikTok, IG, YouTube, CapCut, Spotify, GDrive, TeraBox, Mega, dll), auto-detect platform. 4) YouTube Downloader v4 (/api/downloader/youtube4) — via scriptmind.co, auto-merge video+audio ffmpeg jadi MP4. 5) TikTokIO Downloader (/api/downloader/tiktokio) — provider tiktokio.com, support photo slide. 6) CapCut Downloader v2 (/api/downloader/capcutv2) — backend 3bic.com. 7) LK21 Stream v2 (/api/downloader/lk21v2) — TMDB API resmi + embed streaming 3 server. 8) TempMail Chat (/api/tempmail/tempmailchat) — tempmail.chat provider ke-14, action create/inbox/wait/auto/delete. 9) AskMe AI (/api/ai/askme) — chat + image vision, session multi-turn. 10) Anichin Help (/api/anime/anichin-help) — donghua anichin.help. 11) Anichi (/api/anime/anichi) — anime streaming anichi.to. 12) Voratoon Updates (/api/search/voratoon) — manga update list. Fix: Wikipedia (User-Agent deskriptif sesuai robot policy WMF, 403 resolved)."
+            },
+            {
+                "title": "New Endpoint — Anichin Donghua (Streaming & Download)",
+                "description": "Endpoint baru /api/anime/anichin — Scraper donghua (anime China) dari anichin.cafe. Action: search (cari donghua), ongoing (sedang tayang), completed (tamat), schedule (jadwal rilis per hari), genres (daftar genre: Action, Cultivation, Fantasy, dll.), genre (filter genre), detail (sinopsis, rating, episode list, batch download), episode (stream server & download 360p-1080p). Contoh: /api/anime/anichin?action=search&query=soul+land | /api/anime/anichin?action=genre&genre=cultivation | /api/anime/anichin?action=detail&query=tales-of-herding-gods",
+                "date": "September 1, 2026",
+                "releaseVersion": "2.0.0"
+            },
+            {
+                "title": "New Update — FreeForAI Image Gen, ChatGPTis AI & More",
+                "description": "1) FreeForAI Image Generator (/api/imageai/freeforai): FLUX.1 Dev/Kontext model, free unlimited, no login, 3 size options. 2) ChatGPTis AI Chat (/api/ai/chatgptis): 8 model (GPT, Claude, Gemini, Grok, DeepSeek, Qwen, Kimi, Perplexity) free unlimited. 3) AI Seek (/api/ai/aiseek): multi-model chat + vision + image generation via AI Seek API. 4) APKModY Downloader (/api/downloader/apkmody): search, detail, history, download APK/OBB/ZIP.",
+                "date": "August 18, 2026",
+                "releaseVersion": "2.0.0"
+            },
+            {
+                "title": "New Update — Instagram Stalker, AlightMotion & More",
+                "description": "1) Instagram Stalker: cek profil, statistik post, hashtag & analytics, plus pencarian akun. 2) AlightMotion Premium: kirim link verifikasi & aktivasi premium otomatis. 3) AI Chat baru: DeepAI (10 model) & Jolly AI. 4) Pencarian data sekolah Dapodik (Kemendikdasmen).",
+                "date": "August 5, 2026",
+                "releaseVersion": "2.0.0"
+            },
+            {
+                "title": "System Update — API Key Save Fix & Crash Fixes",
+                "description": "Update perbaikan sistem (fixed errors): 1) Critical bug fix — perubahan Status Restrictions (allowedEndpoints/allowedStatuses) pada API key kini tersimpan dengan benar. Sebelumnya terjadi race condition antara dua cache terpisah yang menyebabkan pengaturan admin hilang/tertimpa; kini di-refactor menjadi satu shared store (apiKeysStore) dengan sinkronisasi otomatis. 2) Fixed crash pada /api/ai/gpt5-4 — error response dengan circular JSON kini ditangani dengan aman. 3) Perbaikan endpoint proxy OpenAI /api/v1/chat/completions (import path logger).",
+                "date": "August 1, 2026",
+                "releaseVersion": "2.0.0"
+            },
+            {
+                "title": "v2.0.0 — API Key Restrictions & Router Hot Swap (No-Restart HMR)",
+                "description": "Pembaruan besar v2.0.0: 1) API Key Restrictions — Menambahkan field `allowedEndpoints` (mendukung wildcard seperti /api/am/*) dan `allowedStatuses` pada API key untuk membatasi akses endpoint tertentu saja (misal untuk pembeli AM saja). 2) Router Hot Swap — Peningkatan arsitektur server di mana file engine utama (`src/app/index.js` & file `src/`) di-load secara dinamis via HMR, update middleware/sistem kini langsung aktif secara instan tanpa perlu restart server atau matikan port. 3) UI Admin Dashboard & Docs — Dashboard admin kini dilengkapi form input pembatasan allowedEndpoints/allowedStatuses saat generate/edit key, dan dokumentasi interaktif API Key pada docs.html.",
+                "date": "July 26, 2026",
+                "releaseVersion": "2.0.0"
+            },
+            {
+                "title": "v2.0.0 — Subdomain Finder Rewrite & DNS Bruteforce Engine",
+                "description": "Update besar v2.0.0: 1) /api/tools/subdomain-finder di-rewrite total — 7 sumber data (hackertarget, alienvault, rapiddns, urlscan, certspotter, threatminer, dns_bruteforce). 2) DNS Bruteforce Engine — scan 400+ subdomain umum otomatis, return IP untuk tiap subdomain yang live. 3) Per-source result count di response. 4) Response format baru: { subdomain, ips }.",
+                "date": "July 25, 2026",
+                "releaseVersion": "2.0.0"
+            },
+            {
+                "title": "Agent v2 & Premium API Key System dengan Expiration",
+                "description": "Fitur baru: 1) Agent v2 endpoints: /api/v2/models (daftar 16 model Genspark) & /api/v2/chat/completions (OpenAI-compatible via Genspark  Claude 4, GPT-5, Gemini 3, Grok 4). 2) Premium API Key system upgrade — sekarang ada paket 3/7/14/30 Hari dengan auto-expiration. Key expired otomatis disabled, admin bisa renewal via dashboard.",
+                "date": "July 24, 2026",
+                "releaseVersion": "2.0.0"
+            },
+            {
+                "title": "Genspark AI Hadir! Browser Automation Chat dengan 15+ Model Keren",
+                "description": "Endpoint baru /api/ai/genspark hadir dengan teknologi browser automation, support model Claude 4, GPT-5, Gemini 3, Grok 4, dan masih banyak lagi. Login sekali, nikmati session permanen!",
+                "date": "July 23, 2026",
+                "releaseVersion": "2.0.0"
+            },
+            {
+                "title": "New AI: Genspark AI, VoidChat, Image HD v3-v7, Nulis Maker & CloudStorage CDN",
+                "description": "Endpoint AI baru: /api/ai/genspark (Puppeteer-based, multi-model: Claude 4, GPT-5, Gemini 3, Grok 4). VoidChat via Cloudflare Worker. 5 engine upscale HD: v3-v7. Maker: /api/maker/nulis (handwriting). CloudStorage S3 (1TB) sebagai CDN ke-3.",
+                "date": "July 23, 2026",
+                "releaseVersion": "2.0.0"
+            },
+            {
+                "title": "Copilot Endpoint Removed",
+                "description": "Endpoint /api/ai/copilot dihapus karena Cloudflare memblokir IP datacenter server (43.156.70.52) dari copilot.microsoft.com. Tidak ada workaround tanpa residential proxy.",
+                "date": "July 22, 2026",
+                "releaseVersion": "2.0.0"
+            },
+            {
+                "title": "Security Hardening v1.9.8",
+                "description": "Pembaruan keamanan: 1) IP Spoofing Fix — rate limiter sekarang track IP real, spoofed headers diabaikan. 2) SSRF Protection — blokir request ke private IPs, DNS rebinding, file://, gopher://. 3) Session Secret — random ephemeral secret, tidak lagi hardcode. 4) Bot Shield — firewall otomatis blokir scanner berbahaya.",
+                "date": "July 18, 2026",
+                "releaseVersion": "2.0.0"
+            },
+            {
+                "title": "Smart Fallback AI & API Docs Standarization",
+                "description": "Pembaruan sistem & AI: 1) Smart Fallback AI — /api/ai/freetochat dilengkapi auto-fallback ke Pollinations jika terkena verifikasi Turnstile, menjaga respons tetap sukses 100%. 2) API Docs Upgrade — parameter stream & model pada /api/ai/chatai terstandarisasi lengkap dengan enum, default, & required. 3) Optimasi Infrastruktur — integrasi Swap RAM 5GB + penyesuaian kernel swappiness untuk stabilitas memori.",
+                "date": "July 17, 2026",
+                "releaseVersion": "1.9.8"
+            },
+            {
+                "title": "New TempMail v11 — Free Temp Mail (Fmail)",
+                "description": "Menambahkan endpoint baru /api/tempmail/freetempmail menggunakan provider free-temp-mail.eu.org (Fmail/Livewire). Aksi: create (generate email acak & simpan cookie sesi ke in-memory Map) dan check / inbox (periksa kotak masuk secara praktis hanya dengan input pendek sessionId).",
+                "date": "July 14, 2026",
+                "releaseVersion": "1.9.8"
+            },
+            {
+                "title": "TempMail Re-routes, FakeNotif WA, AM v2 & Nano Banana V3",
+                "description": "Pembaruan sistem: 1) 10 Endpoint TempMail direstrukturisasi ke nama provider resmi. 2) Endpoint baru /api/maker/fakenotifwa — Generator Lockscreen WhatsApp Notif (iOS/Modern) 100% offline-first. 3) Endpoint baru /api/am/sendv2 & /api/am/verifyv2 — Alight Motion v2. 4) Endpoint baru /api/image/nanobananav3 — AI Image Editor.",
+                "date": "July 13, 2026",
+                "releaseVersion": "1.9.8"
+            },
+            {
+                "title": "AlightMotion Premium: Send, Verify & Bulk",
+                "description": "Kategori AlightMotion kini premium. /api/am/send (kirim email verifikasi), /api/am/verify (verifikasi link → aktifkan premium), dan /api/am/bulk (generate banyak akun via Generator.email + auto verify, maks 5). Butuh X-API-Key.",
+                "date": "July 7, 2026",
+                "releaseVersion": "1.9.7"
+            },
+            {
+                "title": "New Payment: QRIS Static v2 (Logo + JPG)",
+                "description": "Endpoint baru /api/payment/qris-static-v2 — Generate QRIS static dengan amount + logo di tengah (composite via sharp). Langsung mengembalikan bytes gambar JPEG (bukan JSON URL). Support GET & POST.",
+                "date": "July 7, 2026",
+                "releaseVersion": "1.9.7"
+            },
+            {
+                "title": "New TempMail v10 — tempmail.ing",
+                "description": "Menambahkan endpoint baru /api/tempmail/tempmailv10 menggunakan provider tempmail.ing. Aksi: create (generate email) dan inbox (cek pesan masuk). API mengembalikan alamat email + list pesan.",
+                "date": "July 7, 2026",
+                "releaseVersion": "1.9.7"
+            },
+            {
+                "title": "New Tool: Web2Apk — Website ke APK",
+                "description": "Endpoint baru /api/tools/web2apk — Konversi website menjadi APK Android via webappcreator.amethystlab.org. Parameter: url, appName, icon, packageName.",
+                "date": "July 7, 2026",
+                "releaseVersion": "1.9.7"
+            },
+            {
+                "title": "New Downloader: Wow Downloader (wow-dl)",
+                "description": "Endpoint baru /api/downloader/wow-dl — Multi-platform downloader via wowdownloader.com (YouTube, TikTok, IG, FB, Twitter, Spotify, dll). Parameter: url, tool.",
+                "date": "July 7, 2026",
+                "releaseVersion": "1.9.7"
+            },
+            {
+                "title": "NIK Parser Upgrade — Zodiak, Kodepos & Usia Detail",
+                "description": "Endpoint /api/tools/nikparse di-rewrite dengan data wilayah lokal (data/wilayah.json). Tambahan: zodiak, kodepos, hari lahir, dan perhitungan usia (tahun + bulan/hari). Fix mapping Jakarta Barat/Pusat.",
+                "date": "July 7, 2026",
+                "releaseVersion": "1.9.7"
+            },
+            {
+                "title": "Spam OTP — Background Mode & 13 Layanan",
+                "description": "Endpoint /api/tools/spam-otp di-rewrite: pengiriman berurutan via background task, polling status via ?phone=x&status=true. Mendukung 13 layanan Indonesia.",
+                "date": "July 7, 2026",
+                "releaseVersion": "1.9.7"
+            },
+            {
+                "title": "New Image HD: Image Upscaler — 2x/4x/6x Upscale!",
+                "description": "Endpoint baru /api/imagehd/imageupscaler — Upscale gambar 2x/4x/6x via imageupscaler.com. WordPress AJAX scraper dengan session auto-renew. Support GET & POST.",
+                "date": "June 28, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "DeepSeek Flash & Gemini Flash Revived",
+                "description": "Endpoint /api/ai/deepseek-flash dan /api/ai/gemini-flash kembali aktif setelah perbaikan. Sebelumnya hanya mengembalikan error 503.",
+                "date": "June 28, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "Pinterest Video Search Fix",
+                "description": "Endpoint /api/search/pinvid-search diperbaiki dari file kosong menjadi Pinterest video search scraper yang berfungsi penuh.",
+                "date": "June 28, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "New Tool: OCR — Image to Text",
+                "description": "Menambahkan endpoint baru /api/tools/ocr — Ekstrak teks dari gambar menggunakan Tesseract.js. Support berbagai bahasa (eng, ind, jpn, dll). Upload file via POST.",
+                "date": "June 26, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "Recaptcha V2 — Performance Boost & Shared Browser",
+                "description": "Optimasi besar /api/solve/recaptcha-v2: response time turun dari ~36s jadi ~6s. Hapus endpoint /api/solve/hcaptcha karena tidak stabil.",
+                "date": "June 26, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "New AI Chat: Sakana AI",
+                "description": "Menambahkan endpoint baru /api/ai/sakana — Chat dengan Sakana AI (Namazu). Support 5 model (namazu, sakana, namazu-v2, namazu-pro, llama), web search, dan thinking mode. Guest auth via Firebase.",
+                "date": "June 26, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "New Tool: BMKG Cuaca Scraper",
+                "description": "Menambahkan endpoint baru /api/tools/cuaca-bmkg — Informasi prakiraan cuaca dari BMKG. 7 actions: search, weather, current, provinces, districts, subdistricts, villages.",
+                "date": "June 26, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "Docs & Params Refactory",
+                "description": "Menyederhanakan tampilan Parameters di halaman docs — hanya menampilkan nama parameter + REQUIRED badge. Semua parameter enum di endpoint AI dijadikan required: true. Playground auto-fill dengan default/example value.",
+                "date": "June 26, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "New AI Chat: FreeToChat AI",
+                "description": "Menambahkan endpoint baru /api/ai/freetochat — AI Chat gratis dengan 15 model AI (Grok 4.3, GPT-5 Mini, DeepSeek V4, Kimi K2.7, dll). Default model: grok-4.3. Mendukung session multi-turn.",
+                "date": "June 26, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "New AI Chat: MiniMax M3",
+                "description": "Menambahkan endpoint baru /api/ai/minimax — AI Chat model MiniMax M3 via notegpt.io. Support input gambar via parameter image.",
+                "date": "June 26, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "Restore & Simplified TempMail v9",
+                "description": "Menambahkan kembali endpoint /api/tempmail/tempmailv9 menggunakan provider mail-server.1timetech.com. Pengecekan inbox kini disederhanakan dan hanya memerlukan input parameter 'email' saja.",
+                "date": "June 25, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "New AI & Maker Endpoints: TurboSeek AI, Fake Tweet, TTQC & Fake Notif WA",
+                "description": "Menambahkan 4 endpoint baru: /api/ai/turboseek (AI Web Research dengan referensi sumber), /api/maker/fake-tweet (Fake Tweet Generator), /api/maker/ttqc (Tiktok Quote Chat) dan /api/maker/fake-notif-wa (Fake Whatsapp Notification). Semua endpoint Maker berjalan secara lokal dengan aset offline.",
+                "date": "June 23, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "New Category: AlightMotion (AM)",
+                "description": "Menambahkan endpoint baru untuk kategori AlightMotion: /api/am/email (mengirim email verifikasi) dan /api/am/verify (memverifikasi link). Mendukung parameter dari query (GET) maupun body (POST).",
+                "date": "June 21, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "Tri Check Parameter Fix & WA Reaction Endpoints Deprecated",
+                "description": "Memperbaiki parsing parameter 'number' pada endpoint /api/checknumber/tricheck agar mendukung request body secara benar. Menghapus 2 endpoint reaksi WhatsApp Channel (/api/fun/react-wa dan /api/fun/reach-wa-v2) yang tidak lagi aktif.",
+                "date": "June 21, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "Canvas Category Removed — All 18 Endpoints Deprecated",
+                "description": "Menghapus seluruh folder api/canvas/ beserta 18 endpoint generator gambar/video Canvas (boarding-nasa, brat, brat-anime, brat-gojo, brat-vermeil, bratvid-gojo, bratvid-vermeil, carbon, createlogo, reminder, roblox, sertifikat-tolol, struk-generator, welcomev1-4, wmp). Total endpoint: 219.",
+                "date": "June 21, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "Maker Cleanup — fake-wa & fakenotif Deprecated",
+                "description": "Menghapus endpoint /api/maker/fake-wa dan /api/maker/fakenotif karena upstream template host (tmpfile.link) sudah expired (>13 hari TTL). Endpoint Maker lain (fakeig, saldo-dana, saldo-gopay, motivasi, wafat) tetap aktif. Total endpoint: 237.",
+                "date": "June 21, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "New AI Endpoint — Nova AI Chat",
+                "description": "Endpoint baru /api/ai/nova-ai — AI chat via upstream Cloud Functions (okhttp Android v1.4.0). Response disederhanakan: result field berupa string AI reply (bukan nested moderation JSON). Mendukung GET & POST, input validation (maxLength 2000), optional multi-turn session memory via src/utils/session, dan observability headers (X-NovaAI-Endpoint, X-NovaAI-Model, X-NovaAI-Turn). Total endpoint: 238.",
+                "date": "June 21, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "Dead Endpoint Cleanup & Homepage Health Bar",
+                "description": "Menghapus endpoint mati: /api/ai/mimo (Invalid API key) dan /api/ai/qwen-codex-v2 (duplikat dari qwen-coder-v2). Menghapus OpenAI API Proxy /api/v1/chat/completions & /api/v1/models karena upstream down (HTTP 500). Menambahkan health-bar (API Status, Avg Latency, Uptime, Version, Endpoints) di halaman utama agar seragam dengan halaman /docs. Total endpoint kini 237.",
+                "date": "June 20, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "Search & TempMail Cleanup & Categorization Update",
+                "description": "Menambahkan endpoint pencarian baru /api/search/jadwal-sepakbola (scraped dari jadwaltv.net). Menyelaraskan seluruh kategori search (prodi, jadwalbola, jadwaltv) menjadi SEARCH agar terkelompok dengan rapi. Parameter 'mode' di /api/search/prodi kini bersifat opsional dengan default 'all'. Menghapus endpoint tempmailv7 dan tempmailv9 yang tidak aktif dari server eksternal.",
+                "date": "June 20, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "System Upgrade & New Endpoints — Tiktok View",
+                "description": "Menambahkan endpoint baru /api/fun/tiktokview & tiktokviewstatus untuk injeksi view Tiktok. Update besar pada sistem HMR & index.js: Anti-Crash global error handling dan auto-retry module loading. File API bisa diubah/ditambahkan tanpa restart server.",
+                "date": "June 15, 2026",
+                "releaseVersion": "1.9.6"
+            },
+            {
+                "title": "New Endpoint — TikTok v4 (ssstik.io)",
+                "description": "Endpoint baru /api/downloader/tiktokv4 — Download video TikTok tanpa watermark menggunakan scraper dari ssstik.io. Total endpoint: 238.",
+                "date": "June 14, 2026",
+                "releaseVersion": "1.9.5"
+            },
+            {
+                "title": "New Maker Endpoint — Motivasi",
+                "description": "Endpoint baru /api/maker/motivasi — Generate gambar quotes motivasi estetik secara otomatis menggunakan Canvas. Tersedia di kategori Maker. Total endpoint: 238.",
+                "date": "June 14, 2026",
+                "releaseVersion": "1.9.5"
+            },
+            {
+                "title": "New AI Endpoint — Halodoc Hilda",
+                "description": "Endpoint baru /api/ai/halodoc — AI Konsultasi Kesehatan dari Halodoc (Hilda) untuk pertanyaan seputar kesehatan dan rekomendasi obat-obatan. Total endpoint: 238.",
+                "date": "June 14, 2026",
+                "releaseVersion": "1.9.5"
+            },
+            {
+                "title": "v1.9.5 Release — Cleanups & Parameter Fixes & New Category 'Maker'",
+                "description": "Pembersihan besar-besaran untuk endpoint yang rusak/mati (Bstation, Facebook, Sfile, dll). Memperbaiki parsing parameter POST untuk YouTube Downloader v2 dan YouTube-Analytic. Menambahkan folder/kategori baru 'Maker' untuk generator notifikasi dan saldo palsu.",
+                "date": "June 14, 2026",
+                "releaseVersion": "1.9.5"
+            },
+            {
+                "title": "New AI Endpoints — Mistral AI & MuslimAI v2",
+                "description": "Endpoint baru /api/ai/mistral — Mistral AI (Le Chat) gratis via tRPC scraper. MuslimAI diupgrade ke versi streaming /api/chat dengan Quran sources. Total endpoint: 244.",
+                "date": "June 13, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "NEW: TikTok Like Booster (TikBoost) — Naikkan Likes/Views Instan!",
+                "description": "Menambahkan endpoint baru /api/fun/tikboost untuk mengirim likes/views otomatis pada video TikTok target (Maksimal 50) dengan input manual.",
+                "date": "June 13, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "NEW: YouTube Downloader — Download Video & Audio Mudah!",
+                "description": "Menambahkan endpoint baru /api/downloader/youtube3 untuk mempermudah unduhan video (MP4) dan audio (MP3) dari YouTube via VidsSave.",
+                "date": "June 13, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "NEW: Jadwal Sepakbola — Dapatkan Jadwal Siaran Langsung Bola!",
+                "description": "Menambahkan endpoint baru /api/search/jadwalbola untuk memantau jadwal siaran langsung sepakbola terpopuler secara real-time dari jadwaltv.net.",
+                "date": "June 13, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "NEW: Jadwal TV Nasional — Akses Jadwal Acara TV Favoritmu!",
+                "description": "Menambahkan endpoint baru /api/search/jadwaltv untuk memantau jadwal acara stasiun TV nasional terpopuler (RCTI, SCTV, TransTV, GTV, Indosiar, TVRI, ANTV, Moji, dll) secara real-time dalam satu endpoint terintegrasi menggunakan parameter enum.",
+                "date": "June 13, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "NEW: Audit Internal & Penambahan 22+ Endpoint Baru ke API!",
+                "description": "Fitur Baru besar-besaran! Menambahkan 22+ endpoint baru hasil manual scan yang mencakup: AI Humanizer (/api/ai/humanizer via ZeroGPT), Qwen Coder V2 & Qwen3 Coder (/api/ai/qwen-coder-v2, /api/ai/qwen3-coder), Canvas Brat Vermeil & Bratvid Vermeil (/api/canvas/brat-vermeil, /api/canvas/bratvid-vermeil), Sertifikat Tolol (/api/canvas/sertifikat-tolol), Downloader Drama/LK21/TikTokv3-v5, Video & Image Upscaler Wink HD, DeepAI Image Edit, Solve Turnstile (/api/solve/turnstile), dan Crypto/Search Tools lainnya.",
+                "date": "June 13, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "New MathGPT AI & Fake WA Notification — 2 Endpoint Baru!",
+                "description": "Dua endpoint baru: /api/ai/mathgpt — AI Chat untuk matematika via math-gpt.ai. Menyelesaikan soal aljabar, kalkulus, trigonometri dengan step-by-step. Support reasoning mode & upload gambar soal (S3 upload). Tested: 2⁵ × 2⁹ × √2x + √8⁴ = 16384√2x + 64 ✅. Response ~4-7 detik. Juga: /api/canvas/fake-wa — generate fake WhatsApp notification image dengan custom nama & pesan. Pakai @napi-rs/canvas + font Poppins. Tested: response ~70ms, PNG 37KB.",
+                "date": "June 10, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "Turnstile Solver Fix — Browser-Based Manual Bypass Berhasil!",
+                "description": "Endpoint /api/solve/turnstile berhasil diperbaiki! Browser-based manual bypass (rebrowser-puppeteer + stealth). Coordinate click + polling tiap 1.5s + Xvfb fallback. Response time ~5-7 detik (headless). Berhasil dapat token dari 2captcha demo dalam 5035ms. File lama turnstile.js (API-based) dihapus, turnstilev2.js di-rename jadi turnstile.js. bypassadlink.js juga dihapus. Solve module kini 7 endpoint: bypasslink, bypasslinkv2, bypass-safelinku, recaptcha-v2, recaptcha-v3, turnstile, uam, waf.",
+                "date": "June 10, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "New Image to Lego Converter — Ubah Gambar Jadi Lego Pixel Art!",
+                "description": "Endpoint baru /api/image/lego — transformasi gambar menjadi Lego brick pixel art. 24 warna Lego palette. Parameter: url (wajib), cols (default 40, max 150), brick (default 20, min 8). Sudah di-test: 25KB PNG dalam 159ms. Pakai canvas (tanpa ImageMagick). Powered by NexaDev.",
+                "date": "June 10, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "Audit Lengkap — 13+ Endpoint Baru Ditemukan & CLAUDE.md Diperbarui!",
+                "description": "Audit menyeluruh menemukan 13 endpoint baru yang belum tercatat: /api/ai/deepseek-r1 (DeepSeek R1 AI), /api/ai/geminiv2 (Gemini V2), /api/canvas/carbon (Carbon code screenshot), /api/fun/anime-quotes & philosopher-quotes, /api/search/wikipedia, /api/image/removewm (EZRemove AI), /api/tempmail/tempmailv7 & tempmailv8, /api/solve/bypasslink, bypasslinkv2, bypass-safelinku, waf. Solve module di-expand dari 4 ke 7 endpoint. Total endpoint kini 208. CLAUDE.md sudah diperbarui sesuai realita.",
+                "date": "June 10, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "v1.9.4 Update — Solve Module Upgrade & Docs Fix",
+                "description": "UAM Solver diupgrade ke rebrowser-puppeteer + stealth — berhasil bypass Cloudflare UAM dan dapat cf_clearance (~7-10s). reCAPTCHA v3 bekerja dengan response time ~95ms. Turnstile endpoint dihapus. Copy URL di docs kini otomatis include default parameter. Parameter recaptcha-v3 disederhanakan: hanya url + sitekey.",
+                "date": "June 9, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "New: Quil Image — AI Image Generator via Quillbot!",
+                "description": "Endpoint baru /api/imageai/quil-image — generate gambar AI via Quillbot image generator. Parameter: prompt. Support GET & POST.",
+                "date": "June 8, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "Update: React WA Channel Dipindah ke /api/fun/react-wa",
+                "description": "Endpoint React WA Channel telah dipindahkan dari /api/tools/react-wa ke /api/fun/react-wa (kategori baru: Fun). Fungsionalitas tetap sama — kirim reaksi emoji ke postingan WhatsApp Channel. Update URL jika kamu menggunakan endpoint ini.",
+                "date": "June 8, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "New: React WA Channel — Kirim Reaksi ke Postingan WhatsApp Channel!",
+                "description": "Endpoint baru /api/tools/react-wa — kirim reaksi emoji ke postingan WhatsApp Channel. Masukkan URL postingan (format: https://whatsapp.com/channel/CHANNEL_ID/POST_ID) dan emoji yang ingin dikirim (pisahkan dengan koma, default: 🔥,✨,☝️). Support GET & POST.",
+                "date": "June 7, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "New: Blackbox AI — AI Chat via app.blackbox.ai!",
+                "description": "Endpoint baru /api/ai/blackbox — AI chat powered oleh Blackbox AI (VscodeAgent). Auto-refresh validated token jika expired. Support reasoning output (field 'think') untuk chain-of-thought. Parameter: teks. Support GET & POST.",
+                "date": "June 6, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "v1.9.4 — 4 Endpoint Baru, Optimasi I/O Besar-besaran & UI Fix!",
+                "description": "Release v1.9.4: 4 endpoint baru — /api/ai/deepseek-v3 (DeepSeek V3 via deep-seek.ai), /api/ai/wormgpt (WormGPT AI), /api/tempmail/tempmailv6 (TempMail via tempamail.com support create & inbox), /api/canvas/brat-patrick (Patrick Star image generator). Optimasi I/O: UUID caching tempmailv6, stream timeout fix (langchain & z-ai), async fs di 8 file (pakasir-create, pakasir-status, brat-anime, fakeig, saldo-gopay, toanimev2, upload, upload2). brat-anime & toanimev2 kini pure in-memory (zero disk write). Response sederhana di sparkpix. UI fix: header legal pages & docs di-center, route /legal/privacy-policy & /legal/terms-of-service diperbaiki. 4 endpoint deprecated dihapus (claude, deepimg, dream, neko). Total: 194 endpoint.",
+                "date": "June 6, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "3 Endpoint Baru + Optimasi I/O & UI Fix!",
+                "description": "Update Juni 6, 2026: 3 endpoint baru ditambahkan — /api/ai/deepseek-v3 (DeepSeek V3 via deep-seek.ai), /api/tempmail/tempmailv6 (TempMail via tempamail.com, support create & inbox), /api/canvas/brat-patrick (Patrick Star image generator). Optimasi I/O: UUID caching tempmailv6, stream timeout fix (langchain, z-ai), async fs di 8 file (pakasir, brat-anime, fakeig, saldo-gopay, toanimev2, upload). brat-anime & toanimev2 kini pure in-memory (zero disk write). UI fix: header legal pages & docs di-center, route /legal/privacy-policy & /legal/terms-of-service diperbaiki.",
+                "date": "June 6, 2026",
+                "releaseVersion": "1.9.4"
+            },
+            {
+                "title": "🔥 reCAPTCHA v2 & v3 FIXED — Sekarang Berfungsi Penuh!",
+                "description": "Endpoint /api/solve/recaptcha-v2 telah diperbaiki! Sekarang menggunakan Qwen AI login (bukan guest mode) untuk menganalisis dan menyelesaikan image challenge captcha. Terverifikasi: solve 2captcha demo dalam ~53-88 detik. /api/solve/recaptcha-v3 juga bekerja dengan response time hanya ~118ms via request langsung ke Google API. Parameter: url, sitekey, qwenEmail, qwenPassword, timeout, maxAttempts.",
+                "date": "June 2, 2026",
+                "releaseVersion": "1.9.3"
+            },
+            {
+                "title": "New: NVIDIA NIM AI — 15 Model Gratis!",
+                "description": "Endpoint baru /api/ai/nvidia — AI chat powered oleh NVIDIA NIM dengan 15 model gratis: Nemotron 3 Nano (reasoning), Mistral Large 675B, Qwen3 Coder 480B, Llama 4 Maverick, Gemma 3n, GLM 5.1, Seed OSS 36B, dan lainnya. Support reasoning output untuk model Nemotron. Parameter: teks & model (dropdown selector).",
+                "date": "May 31, 2026",
+                "releaseVersion": "1.9.3"
+            },
+            {
+                "title": "New: ChatGPT Org & ZelAI — 2 AI Chat Baru!",
+                "description": "2 endpoint AI chat baru: /api/ai/chatgpt-org (ChatGPT multi-model via chatgpt.org — GPT-4o Mini, Claude Haiku, DeepSeek, Qwen, Perplexity) dan /api/ai/zelai (Tini AI by ZelApi Team dengan 3 mode: instant, thinking, web search).",
+                "date": "May 31, 2026",
+                "releaseVersion": "1.9.3"
+            },
+            {
+                "title": "v1.9.3 — Auto-Update Endpoint Count & UI Improvements!",
+                "description": "Release v1.9.3: Endpoint count sekarang auto-update di semua halaman (index, docs) via JavaScript — tidak perlu edit manual lagi. Meta tags (description, OG, Twitter, JSON-LD) juga auto-update. Brat Gojo canvas endpoints fix (welcomev4 URL validation). Total endpoint: 190.",
+                "date": "May 29, 2026",
+                "releaseVersion": "1.9.3"
+            },
+            {
+                "title": "New Canvas Endpoints — Brat Gojo Image & Video!",
+                "description": "2 endpoint canvas baru: /api/canvas/brat-gojo (generate gambar Gojo dengan teks custom — auto center, auto wrap, auto resize font) dan /api/canvas/bratvid-gojo (generate video Gojo dengan teks muncul bertahap per kata). Powered by Poppins font + ffmpeg. Total endpoint: 190.",
+                "date": "May 29, 2026",
+                "releaseVersion": "1.9.2"
+            },
+            {
+                "title": "New ML Stalker, Play Store Search, reCAPTCHA v2 & FF Stalker Upgrade!",
+                "description": "Release v1.9.2 menghadirkan: ML Stalker (/api/stalker/ml) — cek akun Mobile Legends by User ID & Zone ID, Play Store Search (/api/search/playstore), reCAPTCHA v2 Solver (/api/solve/recaptcha-v2) dengan Puppeteer + Qwen AI, Free Fire Stalker upgrade ke freefirehub.com dengan data lebih lengkap. Total endpoint: 195.",
+                "date": "May 27, 2026",
+                "releaseVersion": "1.9.2"
+            },
+            {
+                "title": "New Endpoints, Docs Fix & Quality Updates!",
+                "description": "Release v1.9.1 menghadirkan: Spotify Downloader (/api/downloader/spotify), Claude V2 Sonnet 4.6 & Opus 4.7 (/api/ai/claude-v2), Gemini Pro, NowSecure, Pinterest, TempMail v5. Docs Playground sekarang support upload file (FormData) dan badge POST. WA channel references dihapus dari source code. Upload fix: URL output sekarang pakai domain. Total: 191 endpoints.",
+                "date": "May 27, 2026",
+                "releaseVersion": "1.9.1"
+            },
+            {
+                "title": "New Spotify Downloader — Download Spotify Tracks as MP3!",
+                "description": "Endpoint baru /api/downloader/spotify — download lagu dari Spotify langsung sebagai MP3. Masukkan URL track Spotify, dapatkan audio stream. Powered by SpotiSoft. Support GET & POST.",
+                "date": "May 27, 2026",
+                "releaseVersion": "1.9.1"
+            },
+            {
+                "title": "New Claude V2 — Direct claude.ai API (Sonnet 4.6 & Opus 4.7)",
+                "description": "Endpoint baru /api/ai/claude-v2 — akses langsung ke claude.ai dengan model terbaru Sonnet 4.6 dan Opus 4.7. Membutuhkan session cookie & orgId dari akun Claude. Support web search, artifacts, dan SSE streaming.",
+                "date": "May 27, 2026",
+                "releaseVersion": "1.9.1"
+            },
+            {
+                "title": "Improved Docs Playground — Upload File & POST Method Support",
+                "description": "Halaman /docs diperbaiki! Playground sekarang support upload file (FormData multipart) untuk endpoint POST seperti /api/tools/upload. Badge method GET & POST ditampilkan dengan benar. Upload file dari browser langsung ke API.",
+                "date": "May 27, 2026",
+                "releaseVersion": "1.9.1"
+            },
+            {
+                "title": "4 New Endpoints — Gemini Pro, NowSecure, Pinterest, TempMail v5",
+                "description": "Endpoint baru: /api/ai/gemini-pro (Google Gemini Pro), /api/search/nowsecure (NowSecure mobile security search), /api/search/pinterest (Pinterest image search), /api/tempmail/tempmailv5 (TempMail v5 via Boomlify API). Total endpoint: 191.",
+                "date": "May 26, 2026",
+                "releaseVersion": "1.9.1"
+            },
+            {
+                "title": "Improved Solve Module — Playwright-Based Turnstile & UAM",
+                "description": "Endpoint /api/solve/turnstile dan /api/solve/uam di-rewrite! Sekarang menggunakan Playwright langsung (bukan localhost proxy) dengan anti-detection scripts — lebih reliable dan tidak butuh solver external. reCAPTCHA v3 juga diupgrade: support GET+POST, default values, enums (action, hl), dan response timing.",
+                "date": "May 26, 2026",
+                "releaseVersion": "1.9.1"
+            },
+            {
+                "title": "New Dynamic Rate Limiter — Config via Admin Dashboard",
+                "description": "Rate limiter sekarang fully config-driven! Max Requests, Window (ms), Max Violations, dan Max Unique IPs bisa diubah langsung dari Admin Dashboard → Settings tanpa restart server. Spam Detection settings juga ditambahkan ke dashboard.",
+                "date": "May 26, 2026",
+                "releaseVersion": "1.9.1"
+            },
+            {
+                "title": "Claude Endpoint Fix & Method Updates",
+                "description": "Endpoint /api/ai/claude diperbaiki — internal references sudah benar (Claude Sonnet, bukan DeepSeek). /api/ai/mimo diubah ke GET only. /api/tools/ssweb sekarang support GET+POST.",
+                "date": "May 26, 2026",
+                "releaseVersion": "1.9.1"
+            },
+            {
+                "title": "MiMo AI Fix — API Key Authentication",
+                "description": "Endpoint /api/ai/mimo diperbaiki! Upstream API sekarang membutuhkan API key. Sudah diupdate dengan authentication yang valid — 5 model Xiaomi MiMo (V2.5 Pro, V2 Pro, V2.5, V2 Omni, V2 Flash) berfungsi normal.",
+                "date": "May 24, 2026",
+                "releaseVersion": "1.9.0"
+            },
+            {
+                "title": "Random Waifu Fix — Switched to waifu.im",
+                "description": "Endpoint /api/random/waifu diperbaiki! Provider lama (waifu.pics) sudah tidak aktif, diganti dengan waifu.im — gambar anime berkualitas tinggi, random setiap request, anti-cache.",
+                "date": "May 24, 2026",
+                "releaseVersion": "1.9.0"
+            },
+            {
+                "title": "New SparkPix Free HD Upscale — 4K/6K/8K + Face Enhance!",
+                "description": "Endpoint baru /api/imagehd/sparkpix — upscale gambar hingga resolusi 8K (4x) dengan optional face enhancement. Powered by SparkPix AI. Support URL input, 3 level kualitas (4K/6K/8K), dan face enhance toggle.",
+                "date": "May 24, 2026",
+                "releaseVersion": "1.9.0"
+            },
+            {
+                "title": "v1.9.0 - 26 New Features & Major Updates!",
+                "description": "Release v1.9.0 menghadirkan: Nano Banana WASM AI Image Edit, Admin Dashboard lengkap dengan login & API Key auth, Solve Module (reCAPTCHA v3, Turnstile, UAM), 6 AI models baru (Mimo, Deep AI, GPT-4o-mini, GPT-4.1 Nano, Lumo, GPT-5), Canvas Effects baru (Fake IG, Saldo Dana, Saldo GoPay, Reminder), Games baru (Tebak Bendera 2, Tebak Kabupaten), XL Check, Search endpoints (Lazada, Webtoon, MCPEDL, TikTok Search, YouTube Search), Downloader baru (RedNote, Terabox, Webtoon), YouTube Stalker fix, dan TextPro 81 efek typography!",
+                "date": "May 23, 2026",
+                "releaseVersion": "1.9.0"
+            },
+            {
+                "title": "New Admin Dashboard & API Key Auth",
+                "description": "Panel admin baru di /admin/dashboard dengan sistem login, manajemen API keys, rate stats, unban IP, dan real-time monitoring. Endpoint kini mendukung API Key authentication via X-API-Key header.",
+                "date": "May 23, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "New Nano Banana — AI Image Editing dengan WASM",
+                "description": "Edit gambar pakai AI via /api/image/nanobanana! Powered by easemate.ai dengan WASM-based signing. Upload gambar + prompt text, dapatkan hasil edit langsung. Support PNG/JPEG/WebP output.",
+                "date": "May 23, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "New Solve Module: reCAPTCHA v3, Turnstile & UAM",
+                "description": "Tiga endpoint solver baru: /api/solve/recaptcha-v3, /api/solve/turnstile, dan /api/solve/uam. Kategori terpisah dari tools untuk kemudahan akses. Bypass Cloudflare Turnstile, Google reCAPTCHA v3, dan UAM protection.",
+                "date": "May 23, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "Added Ephoto 360 API",
+                "description": "Integrasi ephoto360.com dengan 62 efek text: glitch, neon, Blackpink, PUBG, Naruto, Deadpool, Dragon Ball, Captain America, dan masih banyak lagi! Output otomatis detect image/video (MP4/GIF/PNG/JPEG/WebP). Lengkap dengan endpoint /list & cache 1 jam.",
+                "date": "May 18, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "Improved Rate Limit — Ditingkatkan",
+                "description": "Rate limit dinaikkan dari 200 req/menit menjadi 500 req/hari. X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, dan X-Violation-Count kini muncul di SETIAP response API (termasuk IP baru, reset harian, localhost, dan whitelist).",
+                "date": "May 18, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "Added Photooxy Integration",
+                "description": "Photooxy effects dari ephoto.js sudah diintegrasikan ke endpoint /api/ephoto/photooxy dengan berbagai efek teks keren seperti 3D glowing, vintage, typography artistik, dan lainnya.",
+                "date": "May 18, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "System Bug Fix & Optimization",
+                "description": "Perbaikan bug pada sistem: fix logger.debug → info di unwatermark, perbaikan endpoint nanobanana v4/v5/toanime/tofigure (dihapus karena API eksternal berubah), integrasi turnstile solver ke tozombiev, normalisasi category endpoint, dan update status endpoint di configuration.",
+                "date": "May 17, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "Improved Donation Center Redesigned",
+                "description": "Halaman Donasi total diremake dengan UI lebih modern, animasi halus, QR zoom preview, countdown real-time, leaderboard otomatis, dan session recovery. Tampilan konsisten dengan halaman docs.",
+                "date": "May 17, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "Changelog Page Added",
+                "description": "Halaman Changelog baru (/changelog) dengan timeline interaktif yang menarik data dari configuration.json. Menampilkan riwayat rilis dan update secara real-time.",
+                "date": "May 17, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "Improved Unified Navigation Menu",
+                "description": "Menu navigasi 3-titik sekarang konsisten di SEMUA halaman (Home, Docs, Support, Status, Changelog, Request, Donasi) dengan ikon dan styling seragam.",
+                "date": "May 17, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "New Canvas TextPro Effects — 81 Efek Typography Keren!",
+                "description": "TextPro effects sudah terintegrasi ke Canvas API! 81 efek typography: 3D, neon, glow, logo Avengers, fire, dan masih banyak lagi. Coba: /api/canvas/textpro?effect=neon-light&text=HALO&text2=DUA",
+                "date": "May 23, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "13 Scraper Features Added to API",
+                "description": "Integrated all scraper features: Qwen3, FeelBetter, Olabiba, Unlimited AI, Claude OverChat, GPT-5 Nano, DeepSeek V4 Flash, Gemini Flash Lite, Text2Image v1/v2/v3, Canvas Reminder, & TempMail Generator. Sessions moved to data/session/, canvas output saved to files/.",
+                "date": "May 16, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "Stalker API Update",
+                "description": "YouTube Stalker fixed & improved with caching. GitHub rate limit error fixed. Removed deprecated Instagram stalker.",
+                "date": "May 15, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "New Nano Banana v4 Released",
+                "description": "Introducing the latest version with major performance improvements and new features.",
+                "date": "March 5, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "API System Update",
+                "description": "We have recently modified and enhanced the security of the API system.",
+                "date": "February 22, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "Documentation Update",
+                "description": "API documentation has been completely rewritten with better examples.",
+                "date": "Feb 18, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "New Features Added",
+                "description": "Added support for better performance and lower latency.",
+                "date": "Feb 3, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "Fix Security Patch Released",
+                "description": "Critical security update deployed to protect user data.",
+                "date": "January 10, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "New API Version 1.0.5 Beta",
+                "description": "Beta testing for API v1.0.5 now available for select users.",
+                "date": "January 10, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "Improved Rate Limit Increase",
+                "description": "Free tier rate limit increased from 100 to 200 requests per minute.",
+                "date": "Jan 7, 2026",
+                "releaseVersion": "1.8.0"
+            },
+            {
+                "title": "Happy New Year 2026",
+                "description": "Thank you for being part of our community. Here's to a great year ahead!",
+                "date": "Jan 1, 2026",
+                "releaseVersion": "1.8.0"
+            }
+        ]
+    },
+    "releases": [
+        {
+            "version": "2.1.2",
+            "date": "September 13, 2026",
+            "changelog": [
+                "New Endpoint — /api/fun/reach-ch: Kirim reaksi emoji otomatis ke postingan WhatsApp Channel via bycf Turnstile solver & proxy pool",
+                "New Endpoint — /api/anime/animeav1: Scraper streaming & unduh anime codec AV1 kualitas tinggi",
+                "Engine Upgrade — /api/imagehd/upscalev2: Migrasi solver Turnstile Cloudflare ke modul bycf",
+                "AI Assistant — /api/ai/luna: AI Chat interaktif dengan multi-turn memory",
+                "Check Number — /api/checknumber/checkban: Pengecekan status nomor WhatsApp banned/aktif",
+                "Captcha Solver — /api/solve/wellbypass: Bypass shortlink & protector",
+                "Total endpoint: 420"
+            ]
+        },
+        {
+            "version": "2.0.0",
+            "date": "July 25, 2026",
+            "changelog": [
+                "Subdomain Finder Rewrite — /api/tools/subdomain-finder rewritten with 7 sources + DNS bruteforce engine",
+                "DNS Bruteforce — Auto-scan 400+ common subdomains via DNS resolution, returns live IPs",
+                "Response Format — New format { subdomain, ips } showing resolved IPs for each subdomain",
+                "Per-source Count — Each source reports its result count in response",
+                "New Sources — AlienVault OTX, URLScan, RapidDNS, CertSpotter, ThreatMiner (replaced dead sources)",
+                "Wildcard Filtering — *.domain entries and root domain excluded from results",
+                "Total endpoint: 305+"
+            ]
+        },
+        {
+            "version": "1.9.8",
+            "date": "July 18, 2026",
+            "changelog": [
+                "IP Spoofing Fix — getClientIP() rewrite: hanya trust cf-connecting-ip dari Cloudflare edge IP, trust proxy: 1",
+                "Session Secret Hardcoded — hapus fallback SCBOT, random ephemeral secret + startup warning",
+                "SSRF Protection — centralized middleware blokir private IPs, DNS rebinding, non-HTTP protocols",
+                "Bot Shield — smart firewall blokir scanner/probe berbahaya",
+                "Path Traversal Fix — path.basename() + startsWith check di /files/:filename dan /src/images/:filename",
+                "Endpoint Sync — rescan filesystem: 265 → 303 endpoints",
+                "New Categories — nsfw/ (2), v1/ (2)",
+                "New Utils — safeFetch, botShield, apiCache, cacheCleaner, chromePath, gameCache, circuitBreaker, logApiRequest",
+                "New Endpoint — /api/maker/jarvis-meme (Jarvis meme generator, auto-shrink text, offline-first)",
+                "New Endpoint — /api/maker/fakecall-ios (Fake call iOS generator, offline template, Apple emoji)",
+                "Endpoint Sync — 303 → 305 endpoints"
+            ]
+        },
+        {
+            "version": "1.9.7",
+            "date": "July 5, 2026",
+            "changelog": [
+                "SQLite → JSON — Migrasi api-stats.db ke api-stats.json (zero external deps)",
+                "Hapus better-sqlite3 dependency",
+                "Path traversal fix — /files/:filename dan /src/images/:filename aman dari directory traversal",
+                "Hardcoded credentials — fix session secret fallback SCBOT, hapus GitHub PAT di recaptcha-v2.js, fix AES key di waf.js",
+                "HMR Notifications — endpoint added / changed / removed otomatis log",
+                "Cleanup — hapus data/session/, api/v1/messages.js, stale endpoint dari api-stats.json",
+                "Stale endpoint stats cleanup — 13 endpoint mati dihapus dari api-stats.json",
+                "Total endpoint: 275"
+            ]
+        },
+        {
+            "version": "1.9.6",
+            "date": "July 3, 2026",
+            "changelog": [
+                "Qwen V2 Rewrite — /api/ai/qwenv2 rewritten using kitsulabs Android wrapper, auto-login, no recaptcha dependency",
+                "FF Topup Fix — PACKAGES array refreshed with current tokogame product codes, all packages now work",
+                "NVIDIA API Key — Updated across nvidia, mistral, qwen3-coder endpoints",
+                "V1 Proxy Simplified — /api/v1/chat/completions pure passthrough, no tools/rate limiting",
+                "QR Auto-Delete — QRIS images auto-delete after 5 minutes (ff, ml, dana topup)",
+                "QR Tracker — data/topup.json tracks generated QR files, auto-cleanup on expired/missing files",
+                "Recaptcha V2 Fix — Fixed CHROME_PATH resolution, shared browser init error handling",
+                "Stats Cleanup — Removed orphaned api-stats entries (react-wa, reachch, bypasslinkv3)",
+                "Gacha Feature Removed — Deleted gacha endpoints and related files",
+                "HMR Config — Updated ignoreFiles to exclude middleware/rateLimiter.js and function/chrome",
+                "Topup Cek Fix — Simplified error response, use actual tokogame HTTP status code",
+                "Duplicate Directory Removed — Deleted apiku/apiku/ duplicate folder",
+                "Config Cleanup — Removed stale data/topup-config.json, simplified README.md",
+                "Total endpoint: 265"
+            ]
+        },
+        {
+            "version": "1.9.5",
+            "date": "June 14, 2026",
+            "changelog": [
+                "Total endpoint: 240",
+                "Features: Maker Motivasi — /api/maker/motivasi untuk generate quote canvas",
+                "Features: Halodoc AI — /api/ai/halodoc untuk AI konsultasi kesehatan (Hilda)",
+                "Features: Kategori baru 'Maker' (/api/maker) untuk fake-wa, fakeig, fakenotif, saldo-dana, dan saldo-gopay",
+                "Fixed: Memperbaiki parsing parameter POST untuk /api/downloader/youtube2 dan /api/downloader/youtube-analytic",
+                "Fixed: Memperbaiki circular dependency isu di /api/downloader/tiktok menggunakan fallback global.getRandomProxy",
+                "Improved: Validasi parameter ketat untuk savefrom.js (type: vidio/audio) dan savetube.js (quality enum)",
+                "Removed: Pembersihan API yang sudah mati/tidak berfungsi (Bstation, Facebook, Github, ReelsVidio, Sfile, YouTube v1, TikTok v3, TikTok v4, Brat Patrick, FreeLikeTikTok)",
+                "Features: Penambahan reverse proxy untuk kompatibilitas client OpenAI (/api/v1/chat/completions dan /api/v1/models)"
+            ]
+        },
+        {
+            "version": "1.9.4",
+            "date": "June 13, 2026",
+            "changelog": [
+                "Features: Mistral AI Chat — /api/ai/mistral untuk AI chat via Mistral Le Chat (tRPC scraper)",
+                "Improved: MuslimAI v2 — Upgrade ke streaming /api/chat dengan Quran sources (dari 2-step ke 1-step)",
+                "Total endpoint: 244",
+                "Features: TikTok Like Booster (TikBoost) — /api/fun/tikboost untuk menaikkan likes/views video TikTok secara instan (Maks 50)",
+                "Features: YouTube Downloader — /api/downloader/youtube3 untuk mengunduh video dan audio YouTube via VidsSave",
+                "Features: Jadwal Sepakbola — /api/search/jadwalbola untuk memantau jadwal siaran langsung sepakbola hari ini",
+                "Features: Jadwal TV Nasional — /api/search/jadwaltv untuk memantau jadwal stasiun TV terpopuler dengan parameter enum",
+                "Features: Audit Internal & Penambahan 22+ Endpoint Baru ke API",
+                "Features: ZeroGPT AI Humanizer — /api/ai/humanizer untuk mengubah teks buatan AI agar lebih natural",
+                "Features: Qwen Coder V2 & Qwen3 Coder — Model AI coding /api/ai/qwen-coder-v2 & /api/ai/qwen3-coder",
+                "Features: Canvas Brat Vermeil & Bratvid Vermeil — Card generator baru /api/canvas/brat-vermeil & /api/canvas/bratvid-vermeil",
+                "Features: Sertifikat Tolol — Generator sertifikat /api/canvas/sertifikat-tolol (port dari Generator-Sertifikat-Tolol)",
+                "Improved: Downloader Baru — Penambahan allinone, allinoneTEMP, tiktokv3-v5, drama, frama, lk21",
+                "Improved: Wink HD Video & Image Upscaler — Pemrosesan HD /api/hdvidio/wink-hd-video & /api/imagehd/wink-hd",
+                "Improved: DeepAI Image Edit — Endpoint edit gambar /api/image/deepai-edit",
+                "Improved: Crypto & Search Tools — Tambahan utility kriptografi /api/tools/crypto dan pencarian lagu /api/search/search-song, /api/search/spotify",
+                "Improved: Solve Turnstile — Pembaruan bypass manual /api/solve/turnstile",
+                "Features: Windows Media Player Canvas — Endpoint baru /api/canvas/wmp, overlay teks ke template WMP (NexaDev)",
+                "Image to Lego — Endpoint baru /api/image/lego, ubah gambar jadi Lego pixel art (24 warna, canvas-based)",
+                "Telegram Stalker — Endpoint baru /api/stalker/telegram, scrape t.me untuk info profil publik",
+                "WhatsApp Stalker — Endpoint baru /api/stalker/whatsapp, scrape WhatsApp Channel (nama, followers, deskripsi)",
+                "Stalker kategori — Kini 7 endpoint (freefire, github, ml, telegram, tiktok, whatsapp, youtube)",
+                "Audit endpoint — Ditemukan 13 endpoint yang belum tercatat di dokumentasi",
+                "DeepSeek R1 — Endpoint baru /api/ai/deepseek-r1, model reasoning DeepSeek R1",
+                "Gemini V2 — Endpoint baru /api/ai/geminiv2, versi baru Google Gemini",
+                "Carbon — Endpoint baru /api/canvas/carbon, code screenshot generator",
+                "Solve Module Upgrade — bypass.js diganti dengan 4 endpoint baru: bypasslink, bypasslinkv2, bypass-safelinku, waf",
+                "TempMail v7 & v8 — 2 endpoint temp mail baru",
+                "Fun — 2 endpoint baru: anime-quotes & philosopher-quotes",
+                "Wikipedia Search — Endpoint baru /api/search/wikipedia",
+                "Remove Watermark — Endpoint baru /api/image/removewm via EZRemove AI",
+                "CLAUDE.md — Dokumentasi diperbarui (208 endpoint, real count)",
+                "DeepSeek V3 — Endpoint baru /api/ai/deepseek-v3 via deep-seek.ai, model deepseek-v3.2",
+                "WormGPT — Endpoint baru /api/ai/wormgpt, WormGPT AI chat",
+                "TempMail v6 — Endpoint baru /api/tempmail/tempmailv6 via tempamail.com, support create & inbox",
+                "Brat Patrick — Endpoint baru /api/canvas/brat-patrick, Patrick Star image generator",
+                "Optimasi I/O — UUID caching tempmailv6, stream timeout fix di langchain & z-ai",
+                "Async fs — 8 file dioptimasi: pakasir-create, pakasir-status, brat-anime, fakeig, saldo-gopay, toanimev2, upload, upload2",
+                "Zero Disk Write — brat-anime & toanimev2 kini pure in-memory (pakai getBufferAsync)",
+                "SparkPix Response — Response di-sederhanakan (langsung result & download URL)",
+                "UI Fix — Header legal pages & docs di-center, route /legal/* diperbaiki",
+                "4 Endpoint Dihapus — claude (not working), deepimg & dream (deprecated API), neko (not working)",
+                "Total endpoint: 244"
+            ]
+        },
+        {
+            "version": "1.9.3",
+            "date": "May 29, 2026",
+            "changelog": [
+                "Auto-Update Endpoint Count — Semua halaman (index, docs) sekarang auto-update jumlah endpoint dari API, tidak perlu edit manual",
+                "Auto-Update Meta Tags — Meta description, OG tags, Twitter cards, dan JSON-LD schema auto-update via JavaScript",
+                "Brat Gojo Image — Endpoint baru /api/canvas/brat-gojo, generate gambar Gojo dengan teks custom (auto center, wrap, resize font)",
+                "Brat Gojo Video — Endpoint baru /api/canvas/bratvid-gojo, generate video Gojo dengan teks muncul bertahap per kata (ffmpeg)",
+                "Welcome v4 Fix — URL validation diperbaiki, sekarang support semua URL image (tidak hanya whitelist hostname)",
+                "Total endpoint: 190"
+            ]
+        },
+        {
+            "version": "1.9.2",
+            "date": "May 27, 2026",
+            "changelog": [
+                "ML Stalker — Endpoint baru /api/stalker/ml, cek akun Mobile Legends by User ID & Zone ID via pizzoshop.com",
+                "Play Store Search — Endpoint baru /api/search/playstore, cari aplikasi dari Google Play Store",
+                "reCAPTCHA v2 Solver — Endpoint baru /api/solve/recaptcha-v2, browser-based bypass dengan Puppeteer + Qwen AI",
+                "Free Fire Stalker Upgrade — /api/stalker/freefire sekarang pakai freefirehub.com dengan data jauh lebih lengkap",
+                "Total endpoint: 195"
+            ]
+        },
+        {
+            "version": "1.9.1",
+            "date": "May 27, 2026",
+            "changelog": [
+                "Spotify Downloader — Endpoint baru /api/downloader/spotify, download lagu Spotify sebagai MP3 via SpotiSoft",
+                "Claude V2 — Endpoint baru /api/ai/claude-v2 dengan akses langsung ke claude.ai, support model Sonnet 4.6 & Opus 4.7",
+                "Gemini Pro — Endpoint baru /api/ai/gemini-pro, Google Gemini 2.5 Pro via MiniToolAI",
+                "NowSecure Search — Endpoint baru /api/search/nowsecure, pencarian aplikasi mobile security verified",
+                "Pinterest Search — Endpoint baru /api/search/pinterest, pencarian gambar dari Pinterest",
+                "TempMail v5 — Endpoint baru /api/tempmail/tempmailv5, temporary email via Boomlify API",
+                "Docs Playground Fix — Support upload file (FormData multipart) untuk endpoint POST, badge GET & POST ditampilkan dengan benar",
+                "Upload URL Fix — /api/tools/upload sekarang mengembalikan URL dengan domain (bukan localhost)",
+                "WA Channel References Dihapus — Source code dibersihkan dari referensi WhatsApp channel external",
+                "Method Fix — /api/ai/mimo diubah ke GET only",
+                "Total endpoint: 191"
+            ]
+        },
+        {
+            "version": "1.9.0",
+            "date": "May 23, 2026",
+            "changelog": [
+                "Nano Banana WASM AI Image Edit — /api/image/nanobanana dengan easemate.ai integration, support PNG/JPEG/WebP",
+                "Admin Dashboard & Authentication — Panel admin (/admin/dashboard) dengan login, API Key auth, real-time monitoring",
+                "Solve Module — 3 endpoint baru: recaptcha-v3, turnstile, uam (kategori terpisah dari tools)",
+                "6 AI Models Baru — Mimo, Deep AI, GPT-4o-mini, GPT-4.1 Nano, Lumo, GPT-5",
+                "Canvas Effects Baru — Fake IG, Saldo Dana, Saldo GoPay, Reminder (4 endpoint baru)",
+                "Games Baru — Tebak Bendera 2 & Tebak Kabupaten",
+                "XL Check — Provider XL/Tri checker tool",
+                "Search Endpoints — Lazada, Webtoon, MCPEDL, Movie Detail, SoundCloud, TikTok Search, YouTube Search",
+                "Downloader Baru — RedNote, Terabox, Webtoon downloader",
+                "YouTube Stalker — Fixed with improved caching & rate limit handling",
+                "TextPro 81 Efek Typography — Terintegrasi penuh via /api/ephoto/textpro",
+                "Organisasi endpoint — TempMail & Solve dipindah ke kategori terpisah untuk navigasi lebih rapi",
+                "Bug fixes & performance improvements di berbagai endpoint"
+            ]
+        },
+        {
+            "version": "1.8.0",
+            "date": "May 23, 2026",
+            "changelog": [
+                "Ephoto 360 API — 62 efek teks keren dengan dukungan image & video output (MIME auto-detect)",
+                "Rate limit ditingkatkan jadi 500 request/hari dengan X-RateLimit headers di semua response",
+                "Photooxy effects diintegrasikan ke API endpoint /api/ephoto/photooxy",
+                "Donation Center - total redesign with modern UI, QR zoom, countdown, leaderboard",
+                "Changelog page (/changelog) added with interactive dynamic timeline",
+                "Unified navigation menu with Changelog link across all HTML pages",
+                "Consistent Tailwind config, scrollbar, and CSS styling across all pages",
+                "Donasi page - shadow-neon, selection colors, boxShadow utilities from docs",
+                "Improved responsive design for mobile and tablet breakpoints"
+            ]
+        }
+    ],
+    "rateLimit": {
+        "enabled": false,
+        "windowMs": 86400000,
+        "maxRequests": 20000,
+        "message": "Rate limit exceeded - your IP has been blocked."
+    },
+    "spamDetection": {
+        "windowMs": 120000,
+        "maxRequests": 100,
+        "maxViolations": 20,
+        "maxUniqueIPs": 1000
+    },
+    "popularLimit": 50,
+    "endpointsStatus": {
+        "/api/ai/felo": "online",
+        "/api/ai/gpt4": "online",
+        "/api/ai/quily-ai": "online",
+        "/api/games/asahotak": "online",
+        "/api/games/caklontong": "online",
+        "/api/games/cc-sd": "online",
+        "/api/games/family100": "online",
+        "/api/games/lengkapikalimat": "online",
+        "/api/games/math": "online",
+        "/api/games/susunkata": "online",
+        "/api/games/tebakan": "online",
+        "/api/games/tebakbendera": "online",
+        "/api/games/tebakgambar": "online",
+        "/api/games/tebakgame": "online",
+        "/api/games/tebakheroml": "online",
+        "/api/games/tebakjkt48": "online",
+        "/api/games/tebakkalimat": "online",
+        "/api/games/tebakkarakterff": "online",
+        "/api/games/tebakkartun": "online",
+        "/api/games/tebakkata": "online",
+        "/api/games/tebakkimia": "online",
+        "/api/games/tebaklagu": "online",
+        "/api/games/tebaklirik": "online",
+        "/api/games/tebaklogo": "online",
+        "/api/games/tebaksiapa": "online",
+        "/api/games/tebaksurah": "online",
+        "/api/games/tebakwarna": "online",
+        "/api/games/tekateki": "online",
+        "/api/ai/deepseek": "online",
+        "/api/ai/muslimai": "online",
+        "/api/ai/venice": "online",
+        "/api/ai/gpt4v2": "online",
+        "/api/ai/chatgpt-org": "online",
+        "/api/ai/chatgpt": "online",
+        "/api/ai/chatai": "online",
+        "/api/ai/gemini": "online",
+        "/api/ai/freetochat": "online",
+        "/api/imagehd/ai-enhance": "online",
+        "/api/imagehd/ai-enhancev2": "online",
+        "/api/imagehd/upscale": "online",
+        "/api/imagehd/upscalev2": "online",
+        "/api/downloader/allinone": "online",
+        "/api/downloader/9xbuddy": "online",
+        "/api/downloader/mediafire": "online",
+        "/api/downloader/mediafirev2": "online",
+        "/api/downloader/meganz": "online",
+        "/api/downloader/savefrom": "online",
+        "/api/downloader/savetube": "online",
+        "/api/downloader/tiktok": "online",
+        "/api/downloader/tiktokv2": "online",
+        "/api/downloader/youtube-analytic": "online",
+        "/api/downloader/ytplay": "online",
+        "/api/downloader/capcut": "online",
+        "/api/downloader/zippyshare": "online",
+        "/api/ephoto/ephoto": "online",
+        "/api/hdvidio/ai-upscale-vidio": "online",
+        "/api/hdvidio/tohd": "online",
+        "/api/image/blur": "online",
+        "/api/image/faceswap": "online",
+        "/api/image/gibli": "online",
+        "/api/image/removebg": "online",
+        "/api/image/removebgbgv2": "online",
+        "/api/image/toanimev2": "online",
+        "/api/image/unblur": "online",
+        "/api/image/unblurv2": "online",
+        "/api/image/unwatermark": "online",
+        "/api/imageai/bingimg": "online",
+        "/api/image/lego": "online",
+        "/api/image/nanobanana": "online",
+        "/api/payment/qris-static": "online",
+        "/api/primbon/artinama": "online",
+        "/api/primbon/cocokpasangan": "online",
+        "/api/primbon/nomorhoki": "online",
+        "/api/primbon/penyakit": "online",
+        "/api/primbon/ramalanjodohbali": "online",
+        "/api/primbon/ramaljodoh": "online",
+        "/api/primbon/rezekihokiweton": "online",
+        "/api/primbon/sifatusaha": "online",
+        "/api/primbon/tafsirmimpi": "online",
+        "/api/primbon/zodiac": "offline",
+        "/api/random/blue-archive": "online",
+        "/api/random/lahelu": "online",
+        "/api/random/quotesanime": "online",
+        "/api/random/seegore": "online",
+        "/api/random/waifu": "online",
+        "/api/stalker/freefire": "online",
+        "/api/stalker/github": "online",
+        "/api/stalker/tiktok": "online",
+        "/api/tools/binner2text": "online",
+        "/api/tools/catbox": "online",
+        "/api/tools/encrypt": "online",
+        "/api/tools/fakedata": "online",
+        "/api/tools/font": "online",
+        "/api/fun/tiktokview": "online",
+        "/api/tools/html2img": "online",
+        "/api/tools/kodepos": "online",
+        "/api/tools/ngl-spam": "online",
+        "/api/tools/nikparse": "online",
+        "/api/tools/password-generator": "online",
+        "/api/tools/qr2text": "online",
+        "/api/tools/scanweb": "online",
+        "/api/tools/ssweb": "online",
+        "/api/tools/teks2binner": "online",
+        "/api/tools/text2qr": "online",
+        "/api/ai/perplexity": "online",
+        "/api/downloader/terabox": "online",
+        "/api/imagehd/upscalev3": "online",
+        "/api/imagehd/sparkpix": "online",
+        "/api/solve/recaptcha-v3": "online",
+        "/api/solve/uam": "online",
+        "/api/checknumber/tricheck": "online",
+        "/api/checknumber/xlcheck": "online",
+        "/api/downloader/rednote": "online",
+        "/api/downloader/webtoon": "online",
+        "/api/imageai/pollinations": "online",
+        "/api/search/lazada": "offline",
+        "/api/search/webtoon": "online",
+        "/api/ai/lumo": "online",
+        "/api/ai/gpt5": "online",
+        "/api/stalker/youtube": "online",
+        "/api/search/mcpedl": "online",
+        "/api/search/moviedetail": "online",
+        "/api/search/soundcloud": "online",
+        "/api/search/tokusatsu": "online",
+        "/api/search/youtube-search": "online",
+        "/api/ai/feelbetter": "online",
+        "/api/ai/olabiba": "online",
+        "/api/ai/unlimited": "online",
+        "/api/ai/deepseek-flash": "online",
+        "/api/ai/gemini-flash": "online",
+        "/api/ai/gemini-pro": "online",
+        "/api/ai/kimi": "online",
+        "/api/imageai/text2image": "online",
+        "/api/imageai/text2imgv2": "online",
+        "/api/imageai/text2imgv3": "online",
+        "/api/ephoto/textpro": "online",
+        "/api/ephoto/photooxy": "online",
+        "/api/ai/deep-ai": "online",
+        "/api/ai/gpt4o-mini": "online",
+        "/api/games/tebakbendera2": "online",
+        "/api/games/tebakkabupaten": "online",
+        "/api/search/nowsecure": "online",
+        "/api/search/pinterest": "online",
+        "/api/ai/claude-v2": "online",
+        "/api/downloader/spotify": "online",
+        "/api/solve/recaptcha-v2": "online",
+        "/api/search/playstore": "online",
+        "/api/stalker/ml": "online",
+        "/api/stalker/telegram": "online",
+        "/api/stalker/whatsapp": "online",
+        "/api/ai/langchain": "online",
+        "/api/ai/scite-ai": "online",
+        "/api/ai/nvidia": "online",
+        "/api/ai/deepseek-v3": "online",
+        "/api/ai/wormgpt": "online",
+        "/api/ai/deepseek-r1": "online",
+        "/api/ai/geminiv2": "online",
+        "/api/fun/anime-quotes": "online",
+        "/api/fun/philosopher-quotes": "online",
+        "/api/image/removewm": "online",
+        "/api/imageai/quil-image": "online",
+        "/api/search/wikipedia": "online",
+        "/api/solve/waf": "online",
+        "/api/solve/turnstile": "online",
+        "/api/ai/mathgpt": "online",
+        "/api/ai/humanizer": "online",
+        "/api/ai/zerogpt": "online",
+        "/api/ai/qwen-coder-v2": "online",
+        "/api/ai/qwen3-coder": "online",
+        "/api/downloader/allinonev2": "online",
+        "/api/downloader/tiktokv3": "online",
+        "/api/downloader/tiktokv4": "online",
+        "/api/hdvidio/wink-hd-video": "online",
+        "/api/imagehd/wink-hd": "online",
+        "/api/search/search-song": "online",
+        "/api/search/spotify": "online",
+        "/api/downloader/drama": "online",
+        "/api/downloader/frama": "online",
+        "/api/downloader/lk21": "online",
+        "/api/tools/crypto": "online",
+        "/api/tools/crypto-price": "online",
+        "/api/search/jadwaltv": "online",
+        "/api/search/jadwalbola": "online",
+        "/api/fun/tikboost": "online",
+        "/api/stalker/roblox": "online",
+        "/api/maker/fakeig": "online",
+        "/api/maker/fake-tele": "online",
+        "/api/maker/resize": "online",
+        "/api/maker/saldo-dana": "online",
+        "/api/maker/saldo-gopay": "online",
+        "/api/ai/halodoc": "online",
+        "/api/maker/motivasi": "online",
+        "/api/fun/tiktokviewstatus": "online",
+        "/api/search/prodi": "online",
+        "/api/search/jadwal-sepakbola": "online",
+        "/api/ai/nova-ai": "online",
+        "/api/maker/wafat": "online",
+        "/api/maker/fake-afinitas-ml": "online",
+        "/api/canvas/boarding-nasa": "online",
+        "/api/canvas/brat-anime": "online",
+        "/api/canvas/brat-gojo": "online",
+        "/api/canvas/brat-vermeil": "online",
+        "/api/canvas/brat": "online",
+        "/api/canvas/bratvid-gojo": "online",
+        "/api/canvas/bratvid-vermeil": "online",
+        "/api/canvas/carbon": "online",
+        "/api/canvas/createlogo": "online",
+        "/api/canvas/reminder": "online",
+        "/api/canvas/roblox": "online",
+        "/api/canvas/sertifikat-tolol": "online",
+        "/api/canvas/struk-generator": "online",
+        "/api/canvas/welcomev1": "online",
+        "/api/canvas/welcomev2": "online",
+        "/api/canvas/welcomev3": "online",
+        "/api/canvas/welcomev4": "online",
+        "/api/canvas/wmp": "online",
+        "/api/downloader/pinvid": "online",
+        "/api/ai/turboseek": "online",
+        "/api/maker/fake-tweet": "online",
+        "/api/maker/ttqc": "online",
+        "/api/ai/heck-ai": "online",
+        "/api/ai/cloudai": "online",
+        "/api/maker/fakedev": "online",
+        "/api/maker/saldo-ovo": "online",
+        "/api/search/ipa-pelajaran": "online",
+        "/api/ai/sakana": "online",
+        "/api/imagehd/clearpng": "online",
+        "/api/imagehd/optimole": "online",
+        "/api/imagehd/imageupscaler": "online",
+        "/api/tools/cuaca-bmkg": "online",
+        "/api/tools/ocr": "online",
+        "/api/maker/iqc-dark": "online",
+        "/api/topup/cek": "online",
+        "/api/topup/dana": "online",
+        "/api/topup/ff": "online",
+        "/api/topup/ml": "online",
+        "/api/maker/quotecard": "online",
+        "/api/checknumber/simdopul": "online",
+        "/api/downloader/gdrive": "online",
+        "/api/maker/fakenotif": "online",
+        "/api/search/pinvid-search": "online",
+        "/api/maker/fakeboard": "online",
+        "/api/maker/fakebook": "online",
+        "/api/v1/chat/completions": "premium",
+        "/api/maker/igstory": "online",
+        "/api/v1/models": "online",
+        "/api/ai/qwenv2": "online",
+        "/api/image/nanobananav2": "premium",
+        "/api/maker/iqc": "online",
+        "/api/maker/post-ig": "online",
+        "/api/maker/quotes-anime": "online",
+        "/api/maker/fake-ff": "online",
+        "/api/maker/fake-ml": "online",
+        "/api/am/bulk": "offline",
+        "/api/downloader/wow-dl": "online",
+        "/api/tools/web2apk": "online",
+        "/api/payment/qris-static-v2": "online",
+        "/api/maker/qcwa": "online",
+        "/api/tools/cekplat": "online",
+        "/api/search/douyin-search": "online",
+        "/api/tools/proxy": "online",
+        "/api/tools/proxy2": "online",
+        "/api/maker/sertifikat-nasa": "online",
+        "/api/nsfw/foot": "premium",
+        "/api/nsfw/masturbation": "premium",
+        "/api/canvas/drake": "online",
+        "/api/maker/twobuttons": "online",
+        "/api/imagehd/super-resolution": "online",
+        "/api/maker/fakebca": "online",
+        "/api/maker/fakeigprofile": "online",
+        "/api/tempmail/mailtm": "online",
+        "/api/tempmail/guerrilla": "online",
+        "/api/tempmail/temporarymail": "online",
+        "/api/tempmail/boomlify": "online",
+        "/api/tempmail/tempamail": "online",
+        "/api/tempmail/tempmailio": "online",
+        "/api/tempmail/1timetech": "online",
+        "/api/tempmail/tmailor": "online",
+        "/api/tempmail/multidomain": "online",
+        "/api/tempmail/tempmailing": "online",
+        "/api/maker/fakenotifwa": "online",
+        "/api/maker/fakenote": "online",
+        "/api/image/nanobananav3": "premium",
+        "/api/tempmail/freetempmail": "online",
+        "/api/tempmail/emailtick": "online",
+        "/api/canvas/applemusic": "online",
+        "/api/ai/chatilm": "online",
+        "/api/tempmail/imailedu": "online",
+        "/api/tools/spam-otp": "online",
+        "/api/maker/rusdi-quote": "online",
+        "/api/maker/fake-profile-ff": "online",
+        "/api/maker/fakecall-ios": "online",
+        "/api/maker/fakeigprofilev2": "online",
+        "/api/maker/jarvis-meme": "online",
+        "/api/maker/profilejson": "online",
+        "/api/search/murotal-quran": "online",
+        "/api/search/gempa": "online",
+        "/api/tools/upload-v3": "online",
+        "/api/downloader/pinterest-dl": "online",
+        "/api/maker/iqc-pink": "online",
+        "/api/ai/notrack": "online",
+        "/api/search/manhwaland": "online",
+        "/api/ai/genspark": "online",
+        "/api/ai/voidchat": "online",
+        "/api/imagehd/ai-enhancev3": "premium",
+        "/api/imagehd/ai-enhancev4": "online",
+        "/api/imagehd/ai-enhancev5": "premium",
+        "/api/imagehd/ai-enhancev6": "online",
+        "/api/imagehd/ai-enhancev7": "premium",
+        "/api/maker/bounty": "online",
+        "/api/maker/nulis": "online",
+        "/api/ai/duckai": "online",
+        "/api/v3/chat/completions": "vip",
+        "/api/v3/models": "online",
+        "/api/tools/sub4unlock": "online",
+        "/api/downloader/weibo": "online",
+        "/api/imageai/dezgo": "online",
+        "/api/maker/fakecall-andro": "online",
+        "/api/search/anime": "online",
+        "/api/ai/edubrain": "online",
+        "/api/imagehd/ai-enhancev8": "online",
+        "/api/search/manhwaindo": "online",
+        "/api/downloader/pinterest": "online",
+        "/api/payment/sociabuzz-create": "online",
+        "/api/payment/sociabuzz-status": "online",
+        "/api/ai/gpt5-4": "online",
+        "/api/solve/getsitekey": "online",
+        "/api/maker/fake-nokia": "online",
+        "/api/search/cookpad": "online",
+        "/api/search/dapodik": "online",
+        "/api/search/cekbansos": "online",
+        "/api/ai/deepai": "online",
+        "/api/ai/jolly": "online",
+        "/api/am/send": "premium",
+        "/api/am/verify": "premium",
+        "/api/maker/fakech": "online",
+        "/api/imagehd/webability": "online",
+        "/api/stalker/ml-id": "online",
+        "/api/ai/notegpt": "online",
+        "/api/ai/aiseek": "online",
+        "/api/ai/chatgptis": "online",
+        "/api/am/sendv2": "offline",
+        "/api/am/verifv2": "offline",
+        "/api/downloader/apkmody": "online",
+        "/api/downloader/insvid": "online",
+        "/api/downloader/tiktokv5": "online",
+        "/api/imageai/aiseek": "online",
+        "/api/imageai/freeforai": "online",
+        "/api/stalker/x": "online",
+        "/api/search/tiktok-search": "online",
+        "/api/anime/animexin": "online",
+        "/api/anime/anichin": "online",
+        "/api/maker/ektp": "online",
+        "/api/search/livescore": "online",
+        "/api/imageai/nanobanana": "online",
+        "/api/maker/fakegc": "online",
+        "/api/ai/apodex": "online",
+        "/api/search/spotifyv2": "online",
+        "/api/maker/textvideo": "online",
+        "/api/search/voratoon": "online",
+        "/api/downloader/tiktokio": "online",
+        "/api/anime/anichin-help": "online",
+        "/api/ai/askme": "online",
+        "/api/anime/anichi": "online",
+        "/api/anime/winbu": "online",
+        "/api/anime/livechart": "online",
+        "/api/downloader/lk21v2": "online",
+        "/api/downloader/capcutv2": "online",
+        "/api/downloader/omnify": "online",
+        "/api/downloader/facebook": "online",
+        "/api/tempmail/tempmailchat": "online",
+        "/api/ai/qwenguest": "online",
+        "/api/tools/translate": "online",
+        "/api/ai/aichatting": "online",
+        "/api/downloader/getdl": "online",
+        "/api/downloader/snapany": "online",
+        "/api/imagehd/nexupscale": "online",
+        "/api/search/bacakomik": "online",
+        "/api/stalker/deepsearch": "online",
+        "/api/stalker/getcontact": "offline",
+        "/api/image/nsfw-check": "online",
+        "/api/imagehd/remini": "online",
+        "/api/image/removewm-v2": "online",
+        "/api/ai/manus": "online",
+        "/api/imagehd/photoihancer": "online",
+        "/api/search/cinesubz": "online",
+        "/api/search/nasa": "online",
+        "/api/checknumber/checkban": "online",
+        "/api/search/sinopsis": "online",
+        "/api/downloader/gtw": "online",
+        "/api/search/otakudesu": "online",
+        "/api/tempmail/akunlama": "online",
+        "/api/ai/luna": "online",
+        "/api/image/nanobanana-lite": "online",
+        "/api/tools/upload": "online",
+        "/api/tools/upload2": "online",
+        "/api/downloader/savefromins": "online",
+        "/api/search/flac": "online",
+        "/api/tools/magma/status": "online",
+        "/api/ai/qwen": "online",
+        "/api/anime/animeav1": "online",
+        "/api/fun/reach-ch": "offline",
+        "/api/ai/tutorgpt": "online",
+        "/api/tempmail/tempmailplus": "online",
+        "/api/downloader/igexport": "online",
+        "/api/tools/vccgen": "online",
+        "/api/ai/strom-ai": "online",
+        "/api/games/akinator": "online",
+        "/api/imageai/strom-img": "online",
+        "/api/search/4kwallpapers": "online",
+        "/api/tools/ccgenerator": "online",
+        "/api/tools/magma/catalog": "online",
+        "/api/ai/notegptv2": "online",
+        "/api/search/genius": "online",
+        "/api/fun/animehub": "online",
+        "/api/downloader/youtubev1": "online",
+        "/api/downloader/youtubev2": "online",
+        "/api/downloader/youtubev3": "online",
+        "/api/downloader/youtubev4": "online",
+        "/api/tools/trackip": "online",
+        "/api/downloader/allinonev3": "online",
+        "/api/downloader/mcpelife": "online",
+        "/api/kalender/hari-ini": "online",
+        "/api/kalender/hari-libur": "online",
+        "/api/search/kodepos": "online",
+        "/api/solve/altcha": "online",
+        "/api/solve/cloudflare": "online",
+        "/api/solve/friendly": "online",
+        "/api/tools/hash": "online",
+        "/api/tools/timestamp": "online",
+        "/api/tools/useragent": "online",
+        "/api/tools/uuid": "online",
+        "/api/search/musixmatch": "online",
+        "/api/bypass/bypasslink": "online",
+        "/api/bypass/bypasslinkv2": "online",
+        "/api/bypass/bypasslinkv3": "online",
+        "/api/bypass/ouo-bypass": "online",
+        "/api/bypass/shrinkme": "online",
+        "/api/bypass/wellbypass": "online",
+        "/api/bypass/safelink": "online"
+    },
+    "version": "2.1.2"
+}

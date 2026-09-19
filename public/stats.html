@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="generator" content="Zyyvor Api'S Platform">
+    <title>Zyyvor Api'S | Server Telemetry — Real-Time Monitoring</title>
+    <meta name="description" content="Real-time server monitoring and telemetry for Zyyvor Api'S — CPU, memory, disk usage, API request stats, endpoint health, and latency metrics.">
+    <meta name="keywords" content="server monitoring, api telemetry, server status, uptime, latency, api stats, zyvor">
+    <meta name="author" content="Zyyvor Api'S Team">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#050505">
+    <link rel="icon" href="/src/images/logo.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/src/images/logo.jpg">
+    <link rel="canonical" href="https://api.zyvor.my.id/stats">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://api.zyvor.my.id/stats">
+    <meta property="og:title" content="Zyyvor Api'S — Server Telemetry">
+    <meta property="og:description" content="Real-time server monitoring: CPU, memory, disk, API stats, and latency.">
+    <meta property="og:image" content="https://api.zyvor.my.id/src/images/logo.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Zyyvor Server Telemetry">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:site_name" content="Zyyvor Api'S">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ZyyvorAPI">
+    <meta name="twitter:creator" content="@ZyyvorAPI">
+    <meta name="twitter:title" content="Zyyvor Api'S — Server Telemetry">
+    <meta name="twitter:description" content="Real-time server monitoring: CPU, memory, disk, API stats.">
+    <meta name="twitter:image" content="https://api.zyvor.my.id/src/images/logo.jpg">
+    <meta name="twitter:image:alt" content="Zyyvor Server Telemetry">
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "SiteNavigationElement",
+                "@id": "https://api.zyvor.my.id/#navigation",
+                "name": "Main Navigation",
+                "description": "Primary site navigation links for Zyyvor API platform",
+                "url": "https://api.zyvor.my.id",
+                "hasPart": [
+                    {"@type": "SiteNavigationElement", "name": "Home", "url": "https://api.zyvor.my.id/"},
+                    {"@type": "SiteNavigationElement", "name": "Documentation", "url": "https://api.zyvor.my.id/docs"},
+                    {"@type": "SiteNavigationElement", "name": "Support", "url": "https://api.zyvor.my.id/support"},
+                    {"@type": "SiteNavigationElement", "name": "Status", "url": "https://api.zyvor.my.id/stats"},
+                    {"@type": "SiteNavigationElement", "name": "Changelog", "url": "https://api.zyvor.my.id/changelog"},
+                    {"@type": "SiteNavigationElement", "name": "Request", "url": "https://api.zyvor.my.id/request-report"}
+                ]
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://api.zyvor.my.id/#website",
+                "name": "Zyyvor Api'S",
+                "url": "https://api.zyvor.my.id",
+                "inLanguage": "en-US"
+            },
+            {
+                "@type": "WebAPI",
+                "@id": "https://api.zyvor.my.id/#webapi",
+                "name": "Zyyvor REST API Platform",
+                "url": "https://api.zyvor.my.id",
+                "documentation": "https://api.zyvor.my.id/docs"
+            },
+            {
+                "@type": "WebPage",
+                "@id": "https://api.zyvor.my.id/stats#webpage",
+                "name": "Zyyvor Server Telemetry",
+                "description": "Real-time server monitoring and telemetry for Zyyvor API — CPU, memory, disk, API request stats, endpoint health, and latency metrics.",
+                "url": "https://api.zyvor.my.id/stats",
+                "isPartOf": { "@id": "https://api.zyvor.my.id/#website" },
+                "about": { "@id": "https://api.zyvor.my.id/#webapi" }
+            },
+            {
+                "@type": "Dataset",
+                "@id": "https://api.zyvor.my.id/stats#dataset",
+                "name": "Zyyvor API Server Telemetry",
+                "description": "Real-time server telemetry data for the Zyyvor API platform including CPU load, memory usage, disk utilization, API request statistics, endpoint health, and latency metrics.",
+                "url": "https://api.zyvor.my.id/stats",
+                "measurementTechnique": "Real-time monitoring",
+                "variableMeasured": [
+                    "CPU Load", "Memory Usage", "Disk Utilization",
+                    "API Request Count", "Endpoint Latency", "Uptime", "Visitor Count"
+                ],
+                "isPartOf": { "@id": "https://api.zyvor.my.id/#webapi" }
+            },
+            {
+                "@type": "Organization",
+                "@id": "https://api.zyvor.my.id/#organization",
+                "name": "Zyyvor Api'S",
+                "url": "https://api.zyvor.my.id",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://api.zyvor.my.id/src/images/logo.jpg",
+                    "width": 1200,
+                    "height": 630
+                },
+                "sameAs": [
+                    "https://t.me/ZyyvorAPI",
+                    "https://github.com/BAWORBAWORID/apiku"
+                ],
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "contactType": "technical support",
+                    "email": "contact@api.zyvor.my.id",
+                    "url": "https://t.me/ZyyvorAPI",
+                    "availableLanguage": ["English", "Indonesian"]
+                }
+            },
+            {
+                "@type": "BreadcrumbList",
+                "@id": "https://api.zyvor.my.id/stats#breadcrumb",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://api.zyvor.my.id"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Server Telemetry",
+                        "item": "https://api.zyvor.my.id/stats"
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --bg:#050505;--surface:#0a0a0a;--border:rgba(255,255,255,0.06);
+            --text:#fff;--text-2:#888;--text-3:#555;
+            --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;--display:'Syne',sans-serif;
+        }
+        body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+        .grid-bg{position:fixed;top:0;left:0;width:100%;height:100vh;background-image:radial-gradient(rgba(255,255,255,0.06) 1px,transparent 1px);background-size:32px 32px;z-index:-1;pointer-events:none}
+        .grid-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 0%,var(--bg) 80%)}
+        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+
+        /* Nav */
+        .nav{position:fixed;top:0;left:0;right:0;background:rgba(5,5,5,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:1000;height:56px}
+        .nav-inner{max-width:1200px;margin:0 auto;padding:0 2rem;height:100%;display:flex;justify-content:space-between;align-items:center}
+        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:white}
+        .logo img{width:32px;height:32px;border-radius:6px;object-fit:cover}
+        .logo-text{font-family:var(--display);font-weight:700;font-size:1rem;letter-spacing:-0.02em}
+        .logo-sub{font-family:var(--mono);font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.15em}
+        .menu-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--text-2);cursor:pointer;transition:all 0.2s}
+        .menu-btn:hover{border-color:rgba(255,255,255,0.15);color:white}
+        .dropdown{position:absolute;top:100%;left:0;margin-top:8px;width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:none;z-index:100}
+        .dropdown.show{display:block}
+        .dropdown a{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;color:var(--text-2);text-decoration:none;transition:all 0.15s}
+        .dropdown a:hover{background:rgba(255,255,255,0.05);color:white}
+        .dropdown a i{width:16px;text-align:center;font-size:12px}
+        .dropdown .sep{height:1px;background:var(--border);margin:4px 0}
+
+        /* Hero */
+        .hero{padding:8rem 2rem 2rem;max-width:1200px;margin:0 auto;text-align:center}
+        .hero h1{font-family:var(--display);font-size:clamp(2rem,5vw,3.5rem);font-weight:800;letter-spacing:-0.03em;color:white;margin-bottom:12px}
+        .hero p{font-size:1rem;color:var(--text-2);max-width:600px;margin:0 auto 2rem}
+
+        /* Stats Row */
+        .stats-row{display:flex;gap:2rem;margin-bottom:2rem;flex-wrap:wrap;justify-content:center}
+        .stat-item{text-align:center}
+        .stat-val{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:white}
+        .stat-label{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em}
+
+        /* Content */
+        .content{max-width:1200px;margin:0 auto;padding:0 2rem 4rem;overflow-x:hidden}
+
+        /* Section Head */
+        .section-head{font-family:var(--display);font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:-0.01em;color:white;margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+        .section-head i{font-size:14px;color:var(--text-3)}
+
+        /* Metric Grid */
+        .metric-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:2.5rem}
+        .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;transition:border-color 0.2s}
+        .metric-card:hover{border-color:rgba(255,255,255,0.12)}
+        .metric-icon{font-size:14px;color:var(--text-3);margin-bottom:8px}
+        .metric-label{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px}
+        .metric-value{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:white;font-variant-numeric:tabular-nums}
+        .metric-sub{font-family:var(--mono);font-size:11px;color:var(--text-3);margin-top:4px;word-break:break-word}
+
+        /* Progress Bar */
+        .progress-track{background:rgba(255,255,255,0.06);border-radius:4px;height:4px;overflow:hidden;margin-top:8px}
+        .progress-bar{height:100%;border-radius:4px;transition:width 1.2s ease;background:white}
+        .progress-bar.mem{background:#888}
+        .progress-bar.disk{background:#666}
+
+        /* Status indicator */
+        .status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px}
+        .status-online{background:#22c55e;box-shadow:0 0 6px rgba(34,197,94,0.4)}
+        .status-warn{background:#eab308;box-shadow:0 0 6px rgba(234,179,8,0.4)}
+        .status-offline{background:#ef4444}
+
+        /* Table */
+        .data-table{width:100%;border-collapse:collapse}
+        .data-table thead th{position:sticky;top:0;background:var(--bg);z-index:10;font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;padding:10px 16px;text-align:left;border-bottom:1px solid var(--border);font-weight:500}
+        .data-table thead th:last-child{text-align:right}
+        .data-table tbody td{padding:10px 16px;border-bottom:1px solid var(--border);font-size:13px}
+        .data-table tbody tr:hover{background:rgba(255,255,255,0.02)}
+        .data-table .ep-path{font-family:var(--mono);font-size:12px;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+        .data-table .ep-hits{font-family:var(--mono);font-size:13px;font-weight:600;color:white;text-align:right}
+        .data-table .ep-rate{font-family:var(--mono);font-size:11px;display:inline-flex;align-items:center;gap:5px}
+        .rate-good{color:#22c55e}
+        .rate-warn{color:#f59e0b}
+        .rate-bad{color:#ef4444}
+
+        /* Grid card (6 cols for sys info) */
+        .info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:2.5rem}
+
+        /* Footer */
+        .footer{border-top:1px solid var(--border);padding:2rem;max-width:1200px;margin:0 auto}
+        .footer-inner{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text-3)}
+        .footer-inner a{color:var(--text-3);text-decoration:none;margin-left:1rem}
+        .footer-inner a:hover{color:white}
+
+        /* Responsive */
+        @media(max-width:768px){
+            .hero{padding:6rem 1.5rem 2rem}
+            .content{padding:0 1.5rem 3rem}
+            .stats-row{gap:1.5rem}
+            .metric-grid{grid-template-columns:1fr 1fr}
+            .info-grid{grid-template-columns:1fr 1fr}
+            .footer-inner{flex-direction:column;gap:0.5rem}
+        }
+        @media(max-width:480px){
+            .metric-grid{grid-template-columns:1fr}
+            .info-grid{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+
+    <!-- Nav -->
+    <nav class="nav" aria-label="Main navigation">
+        <div class="nav-inner">
+            <div style="display:flex;align-items:center;gap:16px">
+                <div style="position:relative">
+                    <button class="menu-btn" onclick="toggleMenu()" aria-label="Menu"><i class="fas fa-ellipsis-v"></i></button>
+                    <div id="navMenu" class="dropdown">
+                        <a href="/"><i class="fas fa-home"></i>Home</a>
+                        <div class="sep"></div>
+                        <a href="/docs"><i class="fas fa-book"></i>Documentation</a>
+                        <a href="/support"><i class="fas fa-headset"></i>Support</a>
+                        <a href="/stats"><i class="fas fa-chart-line"></i>Status</a>
+                        <a href="/changelog"><i class="fas fa-clock-rotate-left"></i>Changelog</a>
+                        <div class="sep"></div>
+                        <a href="/request-report"><i class="fas fa-bug"></i>Request</a>
+                        <a href="/admin/login"><i class="fas fa-shield-alt"></i>Admin</a>
+                    </div>
+                </div>
+                <a href="/" class="logo">
+                    <img src="/src/images/logo.jpg" alt="Zyyvor" onerror="this.style.display='none'">
+                    <div>
+                        <div class="logo-text">Zyyvor</div>
+                        <div class="logo-sub">Server Telemetry</div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1>Server Telemetry</h1>
+        <p>Real-time performance metrics for Zyyvor Api'S server infrastructure.</p>
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="stat-val" id="statVersion">—</div>
+                <div class="stat-label">Version</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-val" id="statLatency">—</div>
+                <div class="stat-label">Latency</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-val" id="statEndpoints">—</div>
+                <div class="stat-label">Endpoints</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content" role="main" aria-label="Server telemetry content">
+        <!-- Visitors -->
+        <div class="section-head"><i class="fas fa-eye"></i> Visitors</div>
+        <div class="metric-grid" id="visitorGrid"></div>
+
+        <!-- System Metrics -->
+        <div class="section-head"><i class="fas fa-microchip"></i> System Metrics</div>
+        <div class="metric-grid" id="metricGrid"></div>
+
+        <!-- API Usage -->
+        <div class="section-head"><i class="fas fa-chart-bar"></i> API Usage</div>
+        <div class="metric-grid" id="apiStatsGrid"></div>
+
+        <!-- Popular Endpoints -->
+        <div class="section-head"><i class="fas fa-fire"></i> Popular Endpoints</div>
+        <div style="max-height:280px;overflow-y:auto;margin-bottom:2.5rem;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.01);scrollbar-width:thin">
+            <table class="data-table" style="width:100%;table-layout:fixed">
+                <colgroup>
+                    <col style="width:50px">
+                    <col>
+                    <col style="width:80px">
+                    <col style="width:80px">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th style="text-align:center">No</th>
+                        <th>Endpoint</th>
+                        <th style="text-align:right">Hits</th>
+                        <th style="text-align:right">Success</th>
+                    </tr>
+                </thead>
+                <tbody id="popularBody"></tbody>
+            </table>
+        </div>
+
+        <!-- System Info -->
+        <div class="section-head"><i class="fas fa-server"></i> System Info</div>
+        <div class="info-grid" id="sysInfoGrid"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" aria-label="Site footer">
+        <div class="footer-inner">
+            <div style="display:flex;align-items:center;gap:8px">
+                <img src="/src/images/logo.jpg" alt="" style="width:20px;height:20px;border-radius:4px;object-fit:cover" onerror="this.style.display='none'">
+                <span>&copy; 2026 Zyyvor Api'S</span>
+            </div>
+            <div id="footerVer">—</div>
+        </div>
+    </footer>
+
+<script>
+/* Nav toggle */
+function toggleMenu(){document.getElementById('navMenu').classList.toggle('show')}
+document.addEventListener('click',e=>{
+    if(!e.target.closest('.menu-btn')&&!e.target.closest('#navMenu'))document.getElementById('navMenu').classList.remove('show');
+});
+
+/* Helpers */
+function fmtBytes(b){
+    if(!b||b<0)return '0 B';
+    if(b<1024)return b+' B';
+    if(b<1048576)return(b/1024).toFixed(1)+' KB';
+    if(b<1073741824)return(b/1048576).toFixed(1)+' MB';
+    return(b/1073741824).toFixed(2)+' GB';
+}
+function fmtNum(n){
+    return Number(n).toLocaleString('id-ID');
+}
+
+/* Render */
+function render(d){
+    if (!d || (d.status === 'error' && !d.cpu)) return; // protect against temporary 500 errors
+    const isOn=d.status==='online';
+
+    /* Hero stats — latency pakai _realLatency dari /api/stats biar sama kayak docs */
+    document.getElementById('statVersion').textContent='v'+(d.version||'—');
+    document.getElementById('statLatency').textContent=d._realLatency||d.latency||'—';
+    document.getElementById('statEndpoints').textContent=d.endpoints?.total||'—';
+    const el=document.getElementById('statUptime');if(el)el.textContent=d.uptime_human||'—';
+    document.getElementById('footerVer').textContent='v'+(d.version||'—');
+
+
+
+    /* System Metrics */
+    const cpuPct=d.cpu?.currentLoad?.toFixed(1)||'0';
+    const memPct=d.mem?.usagePercent||'0';
+    const diskPct=d.disk?.[0]?.usePercent||'0';
+
+    const cacheSize = d.cache?.size || 0;
+    const cacheMax = d.cache?.maxEntries || 500;
+    const cachePct = Math.min(100, Math.round((cacheSize / cacheMax) * 100));
+
+    const osName = (d.os?.distro || d.os?.platform || 'Linux') + ' ' + (d.os?.release || '');
+    const cpuDesc = (d.cpu?.totalCores || '—') + ' cores · Load ' + (d.cpu?.loadAverage?.['1min'] || '0.00');
+    const memDesc = (d.mem?.used_human || '0 B') + ' / ' + (d.mem?.total_human || '0 B');
+    const diskDesc = (d.disk?.[0]?.used_human || '0 B') + ' / ' + (d.disk?.[0]?.size_human || '0 B');
+    const procDesc = (d.processes?.total || 0) + ' processes (' + (d.processes?.running || 0) + ' running)';
+
+    document.getElementById('metricGrid').innerHTML=[
+        metricCard('fas fa-circle-check','Status',isOn?'<span class="status-dot status-online" style="margin-right:4px"></span>Online':'<span class="status-dot status-offline" style="margin-right:4px"></span>Offline',
+            osName),
+        metricCard('fas fa-microchip','CPU Load',cpuPct+'%',
+            cpuDesc,cpuPct),
+        metricCard('fas fa-memory','Memory',memPct+'%',
+            memDesc,memPct,'mem'),
+        metricCard('fas fa-hard-drive','Disk',diskPct+'%',
+            diskDesc,diskPct,'disk'),
+        metricCard('fas fa-bolt','Requests',fmtNum(d.apiStats?.hits?.allTime||0),
+            fmtNum(d.apiStats?.hits?.today||0)+' today'),
+        metricCard('fas fa-clock','Uptime',d.uptime_human||'—',
+            procDesc),
+        metricCard('fas fa-shield-halved','Upstream Health','<span class="status-dot status-online" style="margin-right:4px"></span>Live',
+            'Direct connection · no failover breaker'),
+        metricCard('fas fa-layer-group','RAM Cache Engine',cacheSize+' / '+cacheMax,
+            'Fast < 5ms LRU memory cache',cachePct,'mem')
+    ].join('');
+
+    /* Animate bars */
+    requestAnimationFrame(()=>{setTimeout(()=>{
+        document.querySelectorAll('[data-pct]').forEach(el=>{el.style.width=el.dataset.pct+'%'});
+    },100)});
+
+    /* API Stats */
+    const h=d.apiStats?.hits||{};
+    document.getElementById('apiStatsGrid').innerHTML=[
+        apiCard('fas fa-calendar-day','Today',fmtNum(h.today||0)),
+        apiCard('fas fa-calendar-week','This Week',fmtNum(h.thisWeek||0)),
+        apiCard('fas fa-calendar-alt','This Month',fmtNum(h.month||h.thisMonth||0)),
+        apiCard('fas fa-infinity','All Time',fmtNum(h.allTime||0))
+    ].join('');
+
+    /* Popular Endpoints */
+    const pop=d.apiStats?.popularEndpoints||[];
+    document.getElementById('popularBody').innerHTML=pop.length
+        ?pop.map((ep,idx)=>{
+            const rate=ep.successRate;
+            const cls=rate>=75?'rate-good':rate>=40?'rate-warn':'rate-bad';
+            const dotCls=rate>=75?'status-online':rate>=40?'status-warn':'status-offline';
+            return `<tr>
+                <td style="text-align:center;color:var(--text-3);font-family:var(--mono);font-size:11px">${idx+1}</td>
+                <td><span class="ep-path">${esc(ep.endpoint)}</span></td>
+                <td style="text-align:right"><span class="ep-hits">${fmtNum(ep.hits)}</span></td>
+                <td style="text-align:right"><span class="ep-rate ${cls}"><span class="status-dot ${dotCls}" style="width:5px;height:5px"></span>${rate}%</span></td>
+            </tr>`;
+        }).join('')
+        :'<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-3);font-size:13px">No data yet</td></tr>';
+
+    /* System Info */
+    document.getElementById('sysInfoGrid').innerHTML=[
+        infoCard('fab fa-node-js','Node.js',d.software?.nodejs||'—'),
+        infoCard('fas fa-box','npm',d.software?.npm||'—'),
+        infoCard('fas fa-fingerprint','PID',d.pid||'—'),
+        infoCard('fas fa-microchip','CPU Cores',d.cpu?.totalCores||'—'),
+        infoCard('fas fa-network-wired','Network RX',fmtBytes(d.network?.stats?.rxBytes||0)),
+        infoCard('fas fa-network-wired','Network TX',fmtBytes(d.network?.stats?.txBytes||0))
+    ].join('');
+}
+
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+function metricCard(icon,label,value,sub,pct,barCls){
+    const bar=pct!==undefined?`<div class="progress-track"><div class="progress-bar ${barCls||''}" style="width:0%" data-pct="${pct}"></div></div>`:'';
+    return`<div class="metric-card">
+        <div class="metric-icon"><i class="${icon}"></i></div>
+        <div class="metric-label">${label}</div>
+        <div class="metric-value">${value}</div>
+        ${sub?`<div class="metric-sub">${sub}</div>`:''}
+        ${bar}
+    </div>`;
+}
+
+function apiCard(icon,label,value){
+    return`<div class="metric-card">
+        <div class="metric-icon"><i class="${icon}"></i></div>
+        <div class="metric-label">${label}</div>
+        <div class="metric-value">${value}</div>
+    </div>`;
+}
+
+function infoCard(icon,label,value){
+    return`<div class="metric-card">
+        <div class="metric-icon"><i class="${icon}"></i></div>
+        <div class="metric-label">${label}</div>
+        <div class="metric-value" style="font-size:1rem">${value}</div>
+    </div>`;
+}
+
+/* Fetch visitors */
+async function loadVisitors(){
+    try{
+        const r=await fetch('/visitors');
+        const d=await r.json();
+        if(d.success){
+            document.getElementById('visitorGrid').innerHTML=[
+                apiCard('fas fa-users','Today',fmtNum(d.today||0)),
+                apiCard('fas fa-globe','All Time',fmtNum(d.total||0))
+            ].join('');
+        }
+    }catch(e){}
+}
+
+/* Fetch — ambil latency dari /api/stats (sama kayak docs), sistem dari /status */
+let isFetchingStats = false;
+async function loadStatsData(){
+    if (isFetchingStats) return;
+    isFetchingStats = true;
+    try{
+        // Ambil real latency dari /api/stats (rolling average, sama kayak docs)
+        let realLatency = '—';
+        try {
+            const sr = await fetch('/api/stats');
+            const sd = await sr.json();
+            if (sd.success && sd.latency) {
+                realLatency = sd.latency.average + ' ms';
+            }
+        } catch {}
+
+        const r=await fetch('/status');
+        const d=await r.json();
+        
+        // Inject real latency dari /api/stats, bukan self-measured dari /status
+        d._realLatency = realLatency;
+        
+        if (d.status === 'online' || d.cpu) {
+            render(d);
+        }
+
+        // Update version from configuration.json
+        try {
+            const cfgRes = await fetch('/configuration');
+            const cfg = await cfgRes.json();
+            if (cfg.releases?.[0]?.version) {
+                document.getElementById('statVersion').textContent = 'v' + cfg.releases[0].version;
+                document.getElementById('footerVer').textContent = 'v' + cfg.releases[0].version;
+            }
+        } catch (e) {
+            if (d.version) {
+                document.getElementById('statVersion').textContent = 'v' + d.version;
+                document.getElementById('footerVer').textContent = 'v' + d.version;
+            }
+        }
+    }catch(e){
+        console.error('Status fetch failed:',e);
+    } finally {
+        isFetchingStats = false;
+    }
+}
+loadStatsData();
+loadVisitors();
+setInterval(loadStatsData,1500);
+</script>
+</body>
+</html>

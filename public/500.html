@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 — Server Error | Zyyvor API</title>
+    <meta name="description" content="Something went wrong on our end. The server encountered an internal error.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://api.zyvor.my.id/">
+    <link rel="icon" href="/src/images/logo.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/src/images/logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #050505;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(rgba(239,68,68,0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 40%, rgba(239,68,68,0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+            max-width: 500px;
+        }
+
+        .error-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            margin-bottom: 2.5rem;
+        }
+
+        .error-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ef4444;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .error-number {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(7rem, 20vw, 12rem);
+            font-weight: 800;
+            line-height: 0.9;
+            color: rgba(239,68,68,0.1);
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            user-select: none;
+        }
+
+        .server-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: #555;
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 0.3rem 0.75rem;
+            border-radius: 100px;
+            margin-bottom: 2rem;
+        }
+
+        .server-tag .dot-red {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #ef4444;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .error-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
+        }
+
+        .error-desc {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            max-width: 360px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #dc2626;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #999;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .btn-secondary:hover {
+            color: #fff;
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .meta-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            align-items: center;
+        }
+
+        .meta-info .time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: #444;
+        }
+
+        .meta-info .error-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: #333;
+        }
+
+        .meta-info .support-link {
+            font-size: 0.75rem;
+            color: #555;
+            margin-top: 0.5rem;
+        }
+
+        .meta-info .support-link a {
+            color: #ef4444;
+            text-decoration: none;
+        }
+
+        .meta-info .support-link a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-note {
+            margin-top: 2.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: #2a2a2a;
+            letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 480px) {
+            .actions { flex-direction: column; align-items: center; }
+            .btn { width: 100%; max-width: 240px; justify-content: center; }
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="error-badge">
+            <span class="dot"></span>
+            Error 500
+        </div>
+        <div class="error-number">500</div>
+        <div class="server-tag">
+            <span class="dot-red"></span>
+            atlantic-server
+        </div>
+        <h1 class="error-title">Server Error</h1>
+        <p class="error-desc">Terjadi kesalahan pada server. Tim teknis telah diberitahu dan sedang memperbaiki masalah ini.</p>
+        <div class="actions">
+            <button onclick="window.location.reload()" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                Coba Lagi
+            </button>
+            <a href="/" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Kembali
+            </a>
+        </div>
+        <div class="meta-info">
+            <div class="time"><span id="server-time">--:--:--</span> WIB</div>
+            <div class="error-id">Error ID: <span id="error-id">500-ATL-000000</span></div>
+            <div class="support-link">Butuh bantuan? <a href="mailto:support@api.zyvor.my.id">support@api.zyvor.my.id</a></div>
+        </div>
+        <div class="footer-note">Zyyvor API — v<span id="v">1.9.1</span></div>
+    </div>
+
+    <script>
+        function updateServerTime() {
+            const now = new Date();
+            document.getElementById('server-time').textContent = now.toLocaleTimeString('id-ID', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+        updateServerTime();
+        setInterval(updateServerTime, 1000);
+
+        function generateErrorId() {
+            const chars = '0123456789ABCDEF';
+            let id = '500-ATL-';
+            for (let i = 0; i < 6; i++) id += chars[Math.floor(Math.random() * 16)];
+            document.getElementById('error-id').textContent = id;
+        }
+        generateErrorId();
+
+        (async function() {
+            try {
+                const r = await fetch('/configuration');
+                const c = await r.json();
+                if (c.releases?.[0]?.version) document.getElementById('v').textContent = c.releases[0].version;
+            } catch(e) {}
+        })();
+    </script>
+</body>
+</html>

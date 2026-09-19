@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zyyvor Api'S - Changelog — Release Notes & Updates</title>
+    <meta name="description" content="Release notes and changelog for Zyyvor API — Track every update, improvement, new endpoint, and security fix across all versions.">
+    <meta name="keywords" content="Changelog, Release Notes, Updates, API Version, Zyyvor, API Platform">
+    <meta name="author" content="Zyyvor Api'S Team">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#050505">
+    <link rel="icon" href="/src/images/logo.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/src/images/logo.jpg">
+    <link rel="canonical" href="https://api.zyvor.my.id/changelog">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://api.zyvor.my.id/changelog">
+    <meta property="og:title" content="Zyyvor Api'S — Changelog & Release Notes">
+    <meta property="og:description" content="Track every update, improvement, and fix to the Zyyvor API platform.">
+    <meta property="og:image" content="https://api.zyvor.my.id/src/images/logo.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Zyyvor API Changelog">
+    <meta property="og:site_name" content="Zyyvor Api'S">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ZyyvorAPI">
+    <meta name="twitter:title" content="Zyyvor Api'S — Changelog">
+    <meta name="twitter:description" content="Track every update, improvement, and fix to the API platform.">
+    <meta name="twitter:image" content="https://api.zyvor.my.id/src/images/logo.jpg">
+    <meta name="twitter:image:alt" content="Zyyvor API Changelog">
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Zyyvor API Changelog",
+        "description": "Release notes and changelog for Zyyvor API — Track every update, improvement, and fix.",
+        "url": "https://api.zyvor.my.id/changelog",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Zyyvor API",
+            "url": "https://api.zyvor.my.id"
+        }
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Syne', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        bg: '#050505',
+                        surface: '#0a0a0a',
+                        border: 'rgba(255,255,255,0.06)',
+                        muted: '#888888',
+                        dim: '#555555',
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #050505;
+            color: #e5e5e5;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Dot Grid Background */
+        .dot-grid {
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 32px 32px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+        /* Glass Header */
+        .glass-header {
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* Timeline */
+        .timeline-track {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 14px;
+            top: 8px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #050505;
+            border: 1.5px solid #444;
+            z-index: 2;
+        }
+        .timeline-dot.major {
+            width: 15px;
+            height: 15px;
+            left: 13px;
+            background: #fff;
+            border-color: #fff;
+        }
+
+        /* Cards */
+        .card {
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            transition: border-color 0.2s;
+        }
+        .card:hover {
+            border-color: rgba(255,255,255,0.12);
+        }
+
+        .release-card {
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+        }
+
+        /* Type Badges */
+        .badge {
+            font-size: 0.6rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .badge-new {
+            background: #fff;
+            color: #000;
+        }
+        .badge-fix {
+            background: transparent;
+            color: #999;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .badge-improved {
+            background: #222;
+            color: #ccc;
+        }
+        .badge-release {
+            background: #fff;
+            color: #000;
+            font-weight: 700;
+        }
+
+        /* Filter */
+        .filter-pill {
+            padding: 0.35rem 0.85rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #888;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: 'Inter', sans-serif;
+        }
+        .filter-pill:hover { color: #ccc; border-color: rgba(255,255,255,0.2); }
+        .filter-pill.active { color: #fff; background: #111; border-color: rgba(255,255,255,0.2); }
+
+        /* Quick stat */
+        .quick-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.875rem;
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            font-size: 0.7rem;
+        }
+        .quick-stat .num {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            color: #fff;
+        }
+        .quick-stat .label { color: #666; }
+
+        /* Fade-in */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .timeline-track { left: 12px; }
+            .timeline-dot { left: 6px; width: 11px; height: 11px; }
+            .timeline-dot.major { left: 5px; width: 13px; height: 13px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dot-grid"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 glass-header h-14">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="relative z-50">
+                    <button onclick="toggleNavMenu()" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/5 text-gray-500 hover:text-white transition-colors focus:outline-none">
+                        <i class="fas fa-ellipsis-v text-sm"></i>
+                    </button>
+                    <div id="navMenu" class="hidden absolute top-full left-0 mt-3 w-48 bg-[#0a0a0a] border border-[rgba(255,255,255,0.06)] rounded-xl shadow-2xl overflow-hidden origin-top-left">
+                        <div class="py-1">
+                            <a href="/" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors group">
+                                <i class="fas fa-home w-5 text-center text-gray-600 group-hover:text-white text-xs"></i>
+                                <span class="font-medium">Home</span>
+                            </a>
+                            <div class="h-px bg-[rgba(255,255,255,0.06)] mx-2 my-1"></div>
+                            <a href="/docs" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors group">
+                                <i class="fas fa-book w-5 text-center text-gray-600 group-hover:text-white text-xs"></i>
+                                <span class="font-medium">Documentation</span>
+                            </a>
+                            <div class="h-px bg-[rgba(255,255,255,0.06)] mx-2 my-1"></div>
+                            <a href="/support" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors group">
+                                <i class="fas fa-headset w-5 text-center text-gray-600 group-hover:text-white text-xs"></i>
+                                <span class="font-medium">Support</span>
+                            </a>
+                            <a href="/stats" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors group">
+                                <i class="fas fa-chart-line w-5 text-center text-gray-600 group-hover:text-white text-xs"></i>
+                                <span class="font-medium">Status</span>
+                            </a>
+                            <a href="/changelog" class="flex items-center gap-3 px-4 py-2.5 text-sm text-white bg-white/5 transition-colors group">
+                                <i class="fas fa-clock-rotate-left w-5 text-center text-xs"></i>
+                                <span class="font-medium">Changelog</span>
+                            </a>
+                            <div class="h-px bg-[rgba(255,255,255,0.06)] mx-2 my-1"></div>
+                            <a href="/request-report" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors group">
+                                <i class="fas fa-bug w-5 text-center text-gray-600 group-hover:text-white text-xs"></i>
+                                <span class="font-medium">Request</span>
+                            </a>
+                            <a href="/admin/login" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors group">
+                                <i class="fas fa-shield-alt w-5 text-center text-gray-600 group-hover:text-white text-xs"></i>
+                                <span class="font-medium">Admin</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <a href="/" class="flex items-center gap-3 group">
+                    <img src="/src/images/logo.jpg" alt="Logo" class="w-7 h-7 rounded object-cover opacity-80 group-hover:opacity-100 transition-opacity" onerror="this.style.display='none'">
+                    <div class="flex flex-col">
+                        <span class="font-display font-bold text-sm leading-none text-white tracking-tight">Zyyvor</span>
+                        <span class="text-[9px] text-muted font-mono tracking-widest uppercase">Changelog</span>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Main -->
+    <main class="pt-24 pb-16 px-4 sm:px-6 max-w-5xl mx-auto">
+
+        <!-- Hero -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#111] border border-[rgba(255,255,255,0.06)] text-muted text-xs font-mono mb-6">
+                <i class="fas fa-code-branch text-[10px]"></i>
+                <span id="versionLabel">Loading...</span>
+            </div>
+            <h1 class="font-display text-4xl md:text-5xl font-extrabold text-white uppercase tracking-tight mb-4">
+                Changelog
+            </h1>
+            <p class="text-muted text-base max-w-xl mx-auto leading-relaxed">Track every update, improvement, and fix to the API platform.</p>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="flex justify-center gap-3 flex-wrap mb-8">
+            <div class="quick-stat">
+                <span class="num" id="statVersion">--</span>
+                <span class="label">Latest</span>
+            </div>
+            <div class="quick-stat">
+                <span class="num" id="statReleases">--</span>
+                <span class="label">Releases</span>
+            </div>
+            <div class="quick-stat">
+                <span class="num" id="statUpdates">--</span>
+                <span class="label">Updates</span>
+            </div>
+            <div class="quick-stat">
+                <span class="num" id="statDate">--</span>
+                <span class="label">Last Update</span>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex justify-center gap-2 flex-wrap mb-10">
+            <button class="filter-pill active" onclick="filterItems('all', this)">All</button>
+            <button class="filter-pill" onclick="filterItems('release', this)">Releases</button>
+            <button class="filter-pill" onclick="filterItems('feature', this)">Features</button>
+            <button class="filter-pill" onclick="filterItems('fix', this)">Fixed</button>
+            <button class="filter-pill" onclick="filterItems('improved', this)">Improved</button>
+        </div>
+
+        <!-- Timeline -->
+        <div class="relative pl-10 sm:pl-12" id="timeline">
+            <div class="timeline-track"></div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="text-center py-20">
+            <div class="inline-block w-5 h-5 border border-[#444] border-t-white rounded-full animate-spin"></div>
+            <p class="text-muted mt-4 text-xs font-mono">Loading changelog...</p>
+        </div>
+
+        <!-- Error -->
+        <div id="error" class="hidden text-center py-20">
+            <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-[#111] border border-[rgba(255,255,255,0.06)] flex items-center justify-center">
+                <i class="fas fa-exclamation-triangle text-lg text-muted"></i>
+            </div>
+            <p class="text-muted font-medium text-sm">Failed to load changelog</p>
+            <p class="text-dim text-xs mt-1">Please try again later</p>
+        </div>
+
+        <!-- Empty -->
+        <div id="emptyState" class="hidden text-center py-20">
+            <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-[#111] border border-[rgba(255,255,255,0.06)] flex items-center justify-center">
+                <i class="fas fa-bell-slash text-lg text-dim"></i>
+            </div>
+            <p class="text-muted font-medium text-sm">No changelog entries yet</p>
+            <p class="text-dim text-xs mt-1">Check back later for updates</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-[rgba(255,255,255,0.06)] py-10 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="font-display text-xs font-bold text-white uppercase tracking-wider mb-3">Endpoints</h4>
+                    <div class="space-y-2">
+                        <a href="/docs" class="block text-xs text-muted hover:text-white transition-colors">Documentation</a>
+                        <a href="/stats" class="block text-xs text-muted hover:text-white transition-colors">Status</a>
+                        <a href="/changelog" class="block text-xs text-muted hover:text-white transition-colors">Changelog</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-display text-xs font-bold text-white uppercase tracking-wider mb-3">Resources</h4>
+                    <div class="space-y-2">
+                        <a href="/docs" class="block text-xs text-muted hover:text-white transition-colors">API Reference</a>
+                        <a href="/support" class="block text-xs text-muted hover:text-white transition-colors">Support</a>
+                        <a href="/request-report" class="block text-xs text-muted hover:text-white transition-colors">Report Issue</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-display text-xs font-bold text-white uppercase tracking-wider mb-3">Legal</h4>
+                    <div class="space-y-2">
+                        <a href="/legal/privacy-policy" class="block text-xs text-muted hover:text-white transition-colors">Privacy Policy</a>
+                        <a href="/legal/terms-of-service" class="block text-xs text-muted hover:text-white transition-colors">Terms of Service</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-display text-xs font-bold text-white uppercase tracking-wider mb-3">Connect</h4>
+                    <div class="space-y-2">
+                        <a href="mailto:contact@api.zyvor.my.id" class="block text-xs text-muted hover:text-white transition-colors">Contact</a>
+                        <a href="/admin/login" class="block text-xs text-muted hover:text-white transition-colors">Admin</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-[rgba(255,255,255,0.06)] pt-6 flex flex-col items-center gap-2">
+                <span class="text-[11px] text-dim font-mono text-center">&copy; 2026 Zyyvor Api'S. All rights reserved.</span>
+                <span class="text-[11px] text-dim font-mono text-center">v<span id="footer-version">—</span></span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let allItems = [];
+        let currentFilter = 'all';
+
+        // Menu
+        function toggleNavMenu() {
+            document.getElementById('navMenu').classList.toggle('hidden');
+        }
+        window.addEventListener('click', (e) => {
+            const menu = document.getElementById('navMenu');
+            const btn = document.querySelector('button[onclick="toggleNavMenu()"]');
+            if (menu && !menu.classList.contains('hidden')) {
+                if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                    menu.classList.add('hidden');
+                }
+            }
+        });
+
+        // Helpers
+        function parseIndoDate(dateStr) {
+            if (!dateStr) return new Date();
+            const months = { 'januari': 'january', 'februari': 'february', 'maret': 'march', 'mei': 'may', 'juni': 'june', 'juli': 'july', 'agustus': 'august', 'oktober': 'october', 'desember': 'december' };
+            let str = dateStr.toLowerCase();
+            for (const [id, en] of Object.entries(months)) str = str.replace(id, en);
+            const d = new Date(str);
+            return isNaN(d.getTime()) ? new Date(dateStr) : d;
+        }
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const d = parseIndoDate(dateStr);
+            if (isNaN(d.getTime())) return dateStr;
+            return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+        function formatDateShort(dateStr) {
+            if (!dateStr) return '--';
+            const d = parseIndoDate(dateStr);
+            if (isNaN(d.getTime())) return dateStr;
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+        function getTypeInfo(type) {
+            const t = (type || '').toLowerCase();
+            if (t.includes('added') || t.includes('add') || t.includes('new')) return { icon: 'fas fa-plus', badge: 'badge-new', label: 'Features' };
+            if (t.includes('fixed') || t.includes('fix') || t.includes('security') || t.includes('breaking')) return { icon: 'fas fa-bug', badge: 'badge-fix', label: 'Fixed' };
+            if (t.includes('improved') || t.includes('improve') || t.includes('perf') || t.includes('performance')) return { icon: 'fas fa-arrow-up', badge: 'badge-improved', label: 'Improved' };
+            if (t.includes('removed') || t.includes('remove') || t.includes('deprecated')) return { icon: 'fas fa-minus', badge: 'badge-fix', label: 'Removed' };
+            if (t.includes('feature') || t.includes('release')) return { icon: 'fas fa-rocket', badge: 'badge-release', label: 'Release' };
+            return { icon: 'fas fa-circle', badge: 'badge-improved', label: 'Update' };
+        }
+
+        // Filter
+        function filterItems(filter, el) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
+            if (el) el.classList.add('active');
+            renderTimeline();
+        }
+
+        // Render
+        function renderTimeline() {
+            const timeline = document.getElementById('timeline');
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const emptyState = document.getElementById('emptyState');
+
+            loading.classList.add('hidden');
+            error.classList.add('hidden');
+            emptyState.classList.add('hidden');
+
+            let filtered = allItems;
+            if (currentFilter === 'release') {
+                filtered = allItems.filter(item => item.isRelease);
+            } else if (currentFilter !== 'all') {
+                filtered = allItems.filter(item => {
+                    if (item.isRelease) return true;
+                    const type = (item.title || '').toLowerCase();
+                    if (currentFilter === 'feature') return type.includes('feature') || type.includes('new') || type.includes('added');
+                    if (currentFilter === 'fix') return type.includes('fix') || type.includes('security') || type.includes('breaking');
+                    if (currentFilter === 'improved') return type.includes('improve') || type.includes('perf') || type.includes('performance');
+                    return true;
+                });
+            }
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+                timeline.innerHTML = '<div class="timeline-track"></div>';
+                return;
+            }
+
+            const releases = [];
+            const standaloneAnnouncements = [];
+            const annMap = {};
+
+            filtered.forEach(item => {
+                if (item.isRelease) {
+                    releases.push(item);
+                } else if (item.releaseVersion) {
+                    if (!annMap[item.releaseVersion]) annMap[item.releaseVersion] = [];
+                    annMap[item.releaseVersion].push(item);
+                } else {
+                    standaloneAnnouncements.push(item);
+                }
+            });
+
+            Object.keys(annMap).forEach(ver => {
+                if (!releases.some(r => r.version === ver)) {
+                    standaloneAnnouncements.push(...annMap[ver]);
+                    delete annMap[ver];
+                }
+            });
+
+            let html = '<div class="timeline-track"></div>';
+            let idx = 0;
+
+            standaloneAnnouncements.forEach((item) => {
+                const typeInfo = getTypeInfo(item.title);
+                const delay = Math.min(idx * 60, 400);
+                html += `
+                    <div class="relative pb-6 fade-up" style="transition-delay:${delay}ms">
+                        <div class="timeline-dot"></div>
+                        <div class="card p-4 sm:p-5">
+                            <div class="flex items-start justify-between gap-3 flex-wrap">
+                                <div class="flex items-center gap-2">
+                                    <span class="badge ${typeInfo.badge}">${typeInfo.label}</span>
+                                    <h3 class="text-sm font-medium text-white">${item.title || 'Update'}</h3>
+                                </div>
+                                <span class="text-[11px] text-dim font-mono">${formatDate(item.date)}</span>
+                            </div>
+                            <p class="text-xs text-muted mt-2 leading-relaxed">${item.description || ''}</p>
+                        </div>
+                    </div>
+                `;
+                idx++;
+            });
+
+            releases.forEach((item) => {
+                const releaseAnnouncements = annMap[item.version] || [];
+                const delay = Math.min(idx * 60, 400);
+                html += `
+                    <div class="relative pb-8 fade-up" style="transition-delay:${delay}ms">
+                        <div class="timeline-dot major"></div>
+                        <div class="release-card p-5 sm:p-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="badge badge-release"><i class="fas fa-rocket mr-1 text-[8px]"></i> RELEASE</span>
+                                <div class="h-px flex-1 bg-[rgba(255,255,255,0.06)]"></div>
+                                <span class="text-[11px] text-dim font-mono">${formatDate(item.date)}</span>
+                            </div>
+                            <h3 class="font-display text-lg font-bold text-white tracking-tight mb-4">
+                                v${item.version}
+                            </h3>
+                            <ul class="space-y-2">
+                                ${item.changelog.map(c => `
+                                    <li class="flex items-start gap-3 text-sm text-[#999] bg-[rgba(255,255,255,0.02)] rounded-lg p-2.5 border border-[rgba(255,255,255,0.04)]">
+                                        <span class="w-4 h-4 rounded-full bg-[#111] border border-[rgba(255,255,255,0.1)] flex items-center justify-center shrink-0 mt-0.5">
+                                            <i class="fas fa-check text-[7px] text-muted"></i>
+                                        </span>
+                                        <span class="leading-relaxed">${c}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                            ${releaseAnnouncements.length > 0 ? `
+                                <div class="mt-5 pt-4 border-t border-[rgba(255,255,255,0.06)]">
+                                    <h4 class="text-[10px] font-bold text-muted uppercase tracking-wider mb-3 flex items-center gap-2 font-mono">
+                                        <i class="fas fa-bullhorn text-[9px]"></i> Announcements
+                                    </h4>
+                                    <div class="space-y-2">
+                                        ${releaseAnnouncements.map(a => {
+                                            const typeInfo = getTypeInfo(a.title);
+                                            return `
+                                                <div class="flex items-start gap-3 p-2.5 rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.04)]">
+                                                    <span class="w-4 h-4 rounded-full bg-[#111] border border-[rgba(255,255,255,0.1)] flex items-center justify-center shrink-0 mt-0.5">
+                                                        <i class="${typeInfo.icon} text-[7px] text-muted"></i>
+                                                    </span>
+                                                    <div class="flex-1 min-w-0">
+                                                        <div class="flex items-center gap-2 flex-wrap">
+                                                            <span class="badge ${typeInfo.badge}">${typeInfo.label}</span>
+                                                            <span class="text-xs font-medium text-white">${a.title || 'Update'}</span>
+                                                            <span class="text-[10px] text-dim font-mono ml-auto">${formatDate(a.date)}</span>
+                                                        </div>
+                                                        <p class="text-xs text-muted mt-1 leading-relaxed">${a.description || ''}</p>
+                                                    </div>
+                                                </div>
+                                            `;
+                                        }).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                idx++;
+            });
+
+            timeline.innerHTML = html;
+
+            // Trigger fade-in
+            requestAnimationFrame(() => {
+                timeline.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
+            });
+        }
+
+        // Load
+        async function loadChangelog() {
+            try {
+                const res = await fetch('/configuration?_='+Date.now());
+                const config = await res.json();
+
+                const latestRelease = config.releases?.[0] || {};
+                const version = latestRelease.version || '-';
+                let date = latestRelease.date || '';
+                
+                const latestAnn = config.announcements?.items?.[0];
+                if (latestAnn && latestAnn.date) {
+                    date = latestAnn.date;
+                }
+
+                document.getElementById('versionLabel').textContent = `v${version}${date ? ' — ' + formatDate(date) : ''}`;
+                document.getElementById('footer-version').textContent = version;
+                document.getElementById('statVersion').textContent = `v${version}`;
+                document.getElementById('statDate').textContent = formatDateShort(date);
+                document.getElementById('statReleases').textContent = config.releases?.length || 0;
+
+                const items = [];
+
+                if (config.releases?.length) {
+                    config.releases.forEach(r => {
+                        if (r.changelog?.length) {
+                            items.push({ isRelease: true, version: r.version, date: r.date, changelog: r.changelog });
+                        }
+                    });
+                } else if (config.release?.changelog?.length) {
+                    items.push({ isRelease: true, version: config.release.version, date: config.release.date, changelog: config.release.changelog });
+                }
+
+                const announcements = config.announcements?.items || [];
+                announcements.forEach(item => {
+                    items.push({ isRelease: false, title: item.title, description: item.description, date: item.date, releaseVersion: item.releaseVersion || null });
+                });
+
+                allItems = items;
+                document.getElementById('statUpdates').textContent = announcements.length;
+                document.getElementById('loading').classList.add('hidden');
+                renderTimeline();
+            } catch (err) {
+                console.error('Failed to load changelog:', err);
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('error').classList.remove('hidden');
+            }
+        }
+
+        loadChangelog();
+    </script>
+</body>
+</html>

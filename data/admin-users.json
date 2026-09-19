@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "username": "admin",
+      "password": "$2b$10$XCD3xgIZUzbxPHLrpN1I8ueMr3S360HQYrgrVXM4uR4jCUAVm3z9e",
+      "role": "superadmin",
+      "createdAt": "2026-07-02T00:00:00.000Z",
+      "updatedAt": "2026-07-07T00:00:00.000Z"
+    },
+    {
+      "username": "lann",
+      "password": "$2b$10$M/EKXE.IDmZ2KinEFOxCievvbpPtgyW7UJIPj4QdDOSG7CXr6EIcK",
+      "role": "admin",
+      "createdAt": "2026-07-24T13:41:31.883Z",
+      "updatedAt": "2026-07-24T13:41:31.883Z"
+    },
+    {
+      "username": "rehan",
+      "password": "$2b$10$yX3Q1oXKf3164QypGYTTQ.Es99eWFahrgVGfTJCAGvU5wXWZZd..G",
+      "role": "admin",
+      "createdAt": "2026-07-26T01:37:18.649Z",
+      "updatedAt": "2026-07-26T01:37:18.649Z"
+    }
+  ]
+}

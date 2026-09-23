@@ -39,7 +39,7 @@ async function getSimilarQuestions(query, sources) {
 export default {
   name: "TurboSeek AI",
   description: "AI Web Research with Sources using TurboSeek",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text"],
   paramsSchema: {

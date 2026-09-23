@@ -9,7 +9,7 @@ function formatText(text) {
 export default {
   name: "EduBrain AI",
   description: "Homework Helper & AI tutor (GraphQL API). Sangat baik untuk soal matematika, sains, dan pelajaran sekolah lainnya.",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text"],
   paramsSchema: {

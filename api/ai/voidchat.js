@@ -17,7 +17,7 @@ const MODELS = [
 export default {
   name: "VoidChat",
   description: "AI chat multi-model",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "model"],
 

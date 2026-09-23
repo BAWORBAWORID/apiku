@@ -681,7 +681,7 @@ async function getClient() {
 export default {
   name: "Apodex AI (Full SDK - mail.tm/justlann)",
   description: "Deep Research AI (standard/pro/heavy) — 72+ endpoints including chat, auth, upload, library, memory, history, org, vip, asr, feedback. Auto-fresh account via TempMail. Session auto-saved to data/apodex.json",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "mode", "version", "action"],
   paramsSchema: {

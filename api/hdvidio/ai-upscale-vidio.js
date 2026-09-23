@@ -53,7 +53,7 @@ const VideoResolution = {
 export default {
   name: "Video Upscale AI",
   description: "Upscale video resolution and quality (supports up to 4K)",
-  category: "HD VIDEO",
+  category: "HD Video",
   methods: ["GET"],
   params: ["url", "resolution"],
 

@@ -1603,7 +1603,7 @@
         // Fetch real-time stats from API
         async function fetchStats() {
             try {
-                const response = await fetch('/status');
+                const response = await fetch('/stats');
                 if (!response.ok) throw new Error('Failed to fetch stats');
                 document.getElementById('uptime-percent').textContent = '99.99%';
                                 

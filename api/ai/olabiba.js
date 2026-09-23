@@ -15,7 +15,7 @@ function getSessionFile(sessionId) {
 export default {
   name: "Olabiba AI",
   description: "AI Chat dengan Puppeteer bypass",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks", "session"],
 

@@ -148,7 +148,7 @@ async function generate(prompt, options = {}) {
 export default {
   name: "Nano Banana AI",
   description: "Generate gambar AI — auto free credits, zero-login",
-  category: "IMAGE AI",
+  category: "Image AI",
   methods: ["GET", "POST"],
   params: ["prompt", "ratio", "resolution"],
   paramsSchema: {

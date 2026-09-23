@@ -102,7 +102,7 @@ async function downloadImage(url) {
 export default {
   name: "AI Enhance HD v3",
   description: "Upscale via upload, task, dan polling",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["GET", "POST"],
   params: ["url"],
 

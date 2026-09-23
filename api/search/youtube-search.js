@@ -25,7 +25,7 @@ async function searchYouTube(query) {
 export default {
   name: "YouTube Search",
   description: "Cari video di YouTube.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["query"],
 

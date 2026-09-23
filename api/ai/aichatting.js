@@ -12,7 +12,7 @@ const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 const PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDCAdf/EyIbLBxjGqmh7qLU6/CPCzru+75+82OSPZ+nf4BFvg88drpZ6KigNW0J8TNgxe6Yms1irCZNVDyu+RXsl4y/7c2KOHc4OGTzHB5fUMiMasFUvcEs2P70e6yA/sKHZfBLG1XPhlb84Ibs3nhD3W5e2SuC+4EuVkaqzN08LQIDAQAB";
 const PUBLIC_KEY_PEM = `-----BEGIN PUBLIC KEY-----\n${PUBLIC_KEY}\n-----END PUBLIC KEY-----`;
 
-const MODELS = ["gpt-5.6-luna", "gpt-5.6-terra"];
+const MODELS = ["gpt-5.6-luna"];
 const DEFAULT_MODEL = "gpt-5.6-luna";
 
 const newVisitor = () => {
@@ -106,7 +106,7 @@ async function streamChat({ vToken, model, messages }) {
 export default {
   name: "AIChatting",
   description: "Chat AI gratis (model ChatGPT gpt-5.6). Mendukung percakapan multi-turn dengan parameter session.",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "model", "session"],
 

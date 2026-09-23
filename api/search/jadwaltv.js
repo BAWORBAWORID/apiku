@@ -82,7 +82,7 @@ async function fetchJadwalTV(channel) {
 export default {
   name: "Jadwal TV",
   description: "Dapatkan jadwal acara TV nasional hari ini.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["channel"],
 

@@ -770,7 +770,7 @@ async function dispatch(action, params) {
 export default {
   name: "Winbu",
   description: "Scraper streaming anime, donghua, series & film: home, search, detail series (+episodes), detail film (player+download), stream (resolve embed AJAX + direct download), category, genre, genres",
-  category: "ANIME",
+  category: "Anime",
   methods: ["GET", "POST"],
   params: ["action", "query", "url", "slug", "page", "category", "genre"],
   paramsSchema: {

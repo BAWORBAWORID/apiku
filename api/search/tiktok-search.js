@@ -732,7 +732,7 @@ process.once('SIGTERM', () => { cleanupAllResources(); process.exit(0) })
 export default {
   name: "TikTok Search v2 (CDP Browser)",
   description: "TikTok search dengan CDP browser automation, precision scoring, multi-datacenter aweme enrich, oEmbed, direct download resolver (SSSTik/LoveTik)",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["query", "page", "region", "type", "count"],
   paramsSchema: {

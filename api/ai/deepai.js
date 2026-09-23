@@ -112,7 +112,7 @@ async function ask(model, history) {
 export default {
   name: "DeepAI AI Code Chat",
   description: "DeepAI AI Code Chat - No API Key Required. 10 model tersedia (DeepSeek V3.2, Gemini 2.5 Flash Lite, GPT-5 Nano, Llama 4 Scout, dll)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["prompt", "model"],
   paramsSchema: {

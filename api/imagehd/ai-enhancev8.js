@@ -69,7 +69,7 @@ async function pollResult(clientId, originalFilename, interval = 2000, timeout =
 export default {
   name: "AI Enhance HD v8",
   description: "Upscale gambar — support scale 2x/4x, face enhancement",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["GET", "POST"],
   params: ["url", "scale", "model"],
   paramsSchema: {

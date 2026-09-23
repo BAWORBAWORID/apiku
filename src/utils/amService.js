@@ -7,7 +7,6 @@ import crypto from "crypto";
  */
 class AlightMotionService {
   constructor() {
-    this.ORDER_ID = "zyvorapi";
     this.API_KEY = "AIzaSyDtG1AU22ErnQD60AzBAcaknySiz9_CEq0";
     this.PRODUCT_ID = "am.full.sub.annual.19q4";
     this.TOKEN = "mmgaobamlahbbeccfplmbkbb.AO-J1OzqG0or_GJJIx-ms8GrTm-jaglCRfhQSRPUZKpl2YspYS-oN7_94uv8RC5vQbvd_Ios2pPDStZ2n7F0hLE3FiOU7HS3R6Fquulv5xLXFECSv4ctElw";
@@ -22,7 +21,13 @@ class AlightMotionService {
   }
 
   generateCodeOrder() {
-    return crypto.randomInt(10000, 99999).toString();
+    // Format: GPA.{4}.{4}.{4}.{5}
+    const r = (len) => {
+      let str = "";
+      for (let i = 0; i < len; i++) str += crypto.randomInt(0, 10);
+      return str;
+    };
+    return `GPA.${r(4)}.${r(4)}.${r(4)}.${r(5)}`;
   }
 
   extractOobCode(fullUrl) {
@@ -111,7 +116,7 @@ class AlightMotionService {
           productId: this.PRODUCT_ID,
           token: this.TOKEN,
           skuType: this.SKU_TYPE,
-          orderId: this.ORDER_ID + "-" + codeorder
+          orderId: codeorder
         }
       }, { headers: headers });
       return { success: true, data: response.data, codeorder: codeorder };

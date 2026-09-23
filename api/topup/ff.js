@@ -293,7 +293,7 @@ export default {
           await QRCode.toFile(filePath, qrisContent, { scale: 8, margin: 1 })
           scheduleDelete(filePath)
           trackQR(orderId, orderCode, "ff", filePath, `${req.protocol}://${req.get("host")}/files/${filename}`)
-          qrImageUrl = `${req.protocol}://${req.get("host")}/files/${filename}`
+          qrImageUrl = `https://api.zyvor.my.id/files/${filename}`
         } catch (qrErr) {
           logger.warn(`[TOPUP-FF] QR generation failed | ${qrErr.message}`)
         }

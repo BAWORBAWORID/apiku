@@ -34,7 +34,7 @@ function extractUrl(output) {
 export default {
   name: "Text to Image v2 (FLUX)",
   description: "Generate gambar dari teks menggunakan FLUX model",
-  category: "IMAGE AI",
+  category: "Image AI",
   methods: ["GET"],
   params: ["teks"],
 

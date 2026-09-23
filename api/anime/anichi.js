@@ -217,7 +217,7 @@ const scraper = new AnichiScraper();
 export default {
   name: "Anichi",
   description: "Scraper anime — search, latest, popular, genre, detail, watch (episode info)",
-  category: "ANIME",
+  category: "Anime",
   methods: ["GET", "POST"],
   params: ["action", "query", "url", "genre"],
   paramsSchema: {

@@ -69,7 +69,7 @@ export default {
   name: "Nova AI",
   description:
     "Nova AI Chat dengan optional session memory (Android client v1.4.0)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks", "session"],
 

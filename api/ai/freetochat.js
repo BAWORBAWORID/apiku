@@ -79,7 +79,7 @@ function getSessionFile(sessionId) {
 export default {
   name: "FreeToChat AI",
   description: "AI Chat gratis dengan banyak model AI. Default: grok-4.3.",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks", "model", "session"],
 

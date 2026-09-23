@@ -341,7 +341,7 @@ const TYPE_CONFIG = {
 export default {
   name: 'NASA Search',
   description: 'Scrape nasa.gov — News Releases 2026, Misi A-Z, dan Image of the Day. Tanpa API key.',
-  category: 'SEARCH',
+  category: 'Search',
   methods: ['GET', 'POST'],
   params: ['type', 'limit', 'query', 'detail'],
   paramsSchema: {

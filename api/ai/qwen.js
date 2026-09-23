@@ -191,7 +191,7 @@ async function qwenai(prompt, model = 'qwen3.7-plus') {
 export default {
   name: "Qwen AI Chat",
   description: "Qwen AI Chat (Guest Mode)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks"],
   paramsSchema: {

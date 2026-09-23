@@ -378,7 +378,7 @@ async function handleEpisode(urlOrSlug) {
 export default {
   name: "Anichin Donghua",
   description: "Scraper donghua — search, ongoing, completed, schedule, genres, genre, detail, episode streaming & download",
-  category: "ANIME",
+  category: "Anime",
   methods: ["GET", "POST"],
   params: ["action", "query", "url", "genre"],
   paramsSchema: {

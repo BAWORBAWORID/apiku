@@ -1,218 +1,192 @@
-/* Scrape Voratoon Pengganti Komikcast
-   Feature : ambil update manga list
-   By: Claidex( Alfi )
-   Ch: https://whatsapp.com/channel/0029VbCOLKRKrWQtIO1vzN0E */
+/**
+ * Voratoon Updates Scraper - HTML parsing version
+ * GET /api/search/voratoon?page=1
+ * POST /api/search/voratoon
+ * Body: { "page": 1 }
+ */
+
+import fetch from "node-fetch";
+import logger from "../../src/utils/logger.js";
+
 const BASE = "https://v1.voratoon.com";
 
-async function fetchRSCData(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const html = await res.text();
-  const pushRe = /self\.__next_f\.push\(/g;
-  let m;
-  const starts = [];
-  while ((m = pushRe.exec(html)) !== null) starts.push(m.index);
-  let inner = "";
-  for (let j = 0; j < starts.length; j++) {
-    const end = j + 1 < starts.length ? starts[j + 1] : html.length;
-    const chunk = html.slice(starts[j], end);
-    if (chunk.includes("initialData")) {
-      inner = chunk.slice(chunk.indexOf('[1,"') + 4, chunk.lastIndexOf('"]'));
-      break;
-    }
-  }
-  if (!inner) return [];
-  let raw = inner
-    .replace(/\\"/g, '"')
-    .replace(/\\\\/g, "\\")
-    .replace(/\\n/g, "\n")
-    .replace(/\\r/g, "");
-  raw = raw.replace(/[\x00-\x1f]/g, "");
-  const markerObj = '"initialData":{';
-  const objIdx = raw.indexOf(markerObj);
-  if (objIdx !== -1) {
-    const objStart = objIdx + markerObj.length - 1;
-    let depth = 0;
-    for (let i = objStart; i < raw.length; i++) {
-      if (raw[i] === "{") depth++;
-      else if (raw[i] === "}") {
-        depth--;
-        if (depth === 0) {
-          try {
-            const obj = JSON.parse(raw.slice(objStart, i + 1));
-            const s = obj.series?.[0];
-            if (s) {
-              const chapters = (obj.chapters ?? []).map(ch => ({
-                chapterIndex: ch.data?.index,
-                id: ch.id,
-                data: ch.data,
-              }));
-              return [{ id: s.id, data: s.data, chapters, updatedAt: s.updatedAt }];
-            }
-          } catch { return []; }
-          break;
-        }
-      }
-    }
-  }
-  const marker = '"initialData":[';
-  const idx = raw.indexOf(marker);
-  if (idx === -1) return [];
-  const arrStart = idx + marker.length - 1;
-  let depth2 = 0;
-  for (let i = arrStart; i < raw.length; i++) {
-    if (raw[i] === "[") depth2++;
-    else if (raw[i] === "]") {
-      depth2--;
-      if (depth2 === 0) {
-        try { return JSON.parse(raw.slice(arrStart, i + 1)); }
-        catch { return []; }
-      }
-    }
-  }
-  return [];
-}
-
-function timeAgo(iso) {
-  if (!iso) return "";
-  const diff = Date.now() - new Date(iso).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins}m lalu`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}j lalu`;
-  const days = Math.floor(hrs / 24);
-  if (days < 30) return `${days}h lalu`;
-  return `${Math.floor(days / 30)}bln lalu`;
-}
-
-function fmtDate(iso) {
-  if (!iso) return "?";
-  return new Date(iso).toLocaleDateString("id-ID", {
-    day: "2-digit", month: "short", year: "numeric", timeZone: "Asia/Jakarta",
+async function fetchHTML(url) {
+  const res = await fetch(url, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+      Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
+    },
+    signal: AbortSignal.timeout(15000),
   });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.text();
 }
 
-function seriesURL(slug) { return `${BASE}/series/${slug}`; }
-function chapterURL(slug, ch) { return `${BASE}/series/${encodeURIComponent(slug)}/chapter/${encodeURIComponent(ch)}`; }
-
-function extractSeries(item) {
-  const d = item.data ?? {};
-  const chapters = item.chapters ?? [];
-  const latest = chapters[0];
-  const genres = (d.genres ?? []).map(g => g.data?.name).filter(Boolean).join(", ");
+function parseSeriesItem(item) {
+  const genres = (item.genres || []).map(g => g.name || g).join(", ");
+  const latest = item.latestChapter;
   return {
-    title: d.title,
-    nativeTitle: d.nativeTitle,
-    slug: d.slug,
-    coverImage: d.coverImage,
-    synopsis: d.synopsis,
-    author: d.author,
-    rating: d.rating,
-    status: d.status,
-    format: d.format,
-    totalChapters: d.totalChapters,
-    genres,
-    url: seriesURL(d.slug),
-    latestChapter: latest ? {
-      index: latest.chapterIndex,
-      id: latest.id,
-      url: chapterURL(d.slug, latest.chapterIndex),
-    } : null,
-    updatedAt: item.updatedAt,
-    updatedAtHuman: timeAgo(item.updatedAt),
-    updatedAtDate: fmtDate(item.updatedAt),
+    title: item.title || item.name || null,
+    nativeTitle: item.nativeTitle || item.originalTitle || null,
+    slug: item.slug || null,
+    coverImage: item.coverImage || item.thumbnail || item.image || null,
+    synopsis: item.synopsis || item.description || null,
+    author: item.author || item.authorName || null,
+    rating: item.rating || item.rate || null,
+    status: item.status || item.statusName || null,
+    format: item.format || item.type || null,
+    totalChapters: item.totalChapters || item.chapterCount || null,
+    genres: genres || null,
+    url: item.slug ? `https://v1.voratoon.com/series/${item.slug}` : null,
+    latestChapter: latest
+      ? {
+          index: latest.chapterIndex || latest.index || null,
+          id: latest.id || null,
+          url: `https://v1.voratoon.com/series/${item.slug}/chapter/${latest.chapterIndex || latest.index}`,
+        }
+      : null,
+    updatedAt: item.updatedAt || item.updated_at || null,
   };
 }
 
-async function fetchUpdatesPages(pages) {
-  const allItems = [];
-  for (const p of pages) {
-    const url = p === 1 ? `${BASE}/updates` : `${BASE}/updates?page=${p}`;
-    const items = await fetchRSCData(url);
-    if (!items.length) break;
-    allItems.push(...items);
-    if (pages.length > 1) await new Promise(r => setTimeout(r, 300));
-  }
-  const seen = new Set();
-  return allItems.filter(item => {
-    const slug = item.data?.slug;
-    if (seen.has(slug)) return false;
-    seen.add(slug);
-    return true;
-  });
+function parseSeriesData(series) {
+  if (!Array.isArray(series)) return [];
+  return series.map(parseSeriesItem).filter(item => item.title);
 }
 
-async function getUpdates(opts = {}) {
-  let pages;
-  if (opts.all) {
-    pages = Array.from({ length: 20 }, (_, i) => i + 1);
-  } else if (opts.pages) {
-    pages = opts.pages;
-  } else {
-    pages = [opts.page || 1];
+function parseUpdatesData(updates) {
+  if (!Array.isArray(updates)) return [];
+  const results = [];
+  for (const item of updates) {
+    const series = item.series || item.data || item;
+    if (!series) continue;
+    const genres = (series.genres || []).map(g => g.name || g).join(", ");
+    const latest = series.latestChapter;
+    results.push({
+      title: series.title || null,
+      nativeTitle: series.nativeTitle || null,
+      slug: series.slug || null,
+      coverImage: series.coverImage || series.thumbnail || series.image || null,
+      synopsis: series.synopsis || series.description || null,
+      author: series.author || series.authorName || null,
+      rating: series.rating || series.rate || null,
+      status: series.status || series.statusName || null,
+      format: series.format || series.type || null,
+      totalChapters: series.totalChapters || series.chapterCount || null,
+      genres: genres || null,
+      url: series.slug ? `https://v1.voratoon.com/series/${series.slug}` : null,
+      latestChapter: latest
+        ? {
+            index: latest.chapterIndex || latest.index || null,
+            id: latest.id || null,
+            url: `https://v1.voratoon.com/series/${series.slug}/chapter/${latest.chapterIndex || latest.index}`,
+          }
+        : null,
+      updatedAt: item.updatedAt || item.updated_at || null,
+    });
   }
-  return fetchUpdatesPages(pages);
+  return results.filter(item => item.title);
+}
+
+function parseHTMLDirect(html) {
+  const results = [];
+  const cardRegex =
+    /<a[^>]*href="\/series\/([^"]+)"[^>]*>[\s\S]*?<img[^>]*src="([^"]+)"[^>]*>[\s\S]*?<[^>]*class="[^"]*title[^"]*"[^>]*>([^<]+)<\/[^>]*>/gi;
+  let m;
+  while ((m = cardRegex.exec(html)) !== null) {
+    const [, slug, image, title] = m;
+    results.push({
+      title: title.trim(),
+      slug,
+      coverImage: image,
+      url: `https://v1.voratoon.com/series/${slug}`,
+      nativeTitle: null,
+      synopsis: null,
+      author: null,
+      rating: null,
+      status: null,
+      format: null,
+      totalChapters: null,
+      genres: null,
+      latestChapter: null,
+      updatedAt: null,
+    });
+  }
+  return results.filter(item => item.title);
+}
+
+
+function extractSeriesFromHTML(html) {
+  // JSON-LD scripts
+  const scriptMatches = html.match(/<script[^>]*type="application\/json"[^>]*>([\s\S]*?)<\/script>/gi);
+  if (scriptMatches) {
+    for (const script of scriptMatches) {
+      const content = script.replace(/<script[^>]*>/, "").replace(/<\/script>/g, "").trim();
+      try {
+        const data = JSON.parse(content);
+        if (data.props?.pageProps?.series) return parseSeriesData(data.props.pageProps.series);
+        if (data.series) return parseSeriesData(data.series);
+        if (data.updates) return parseUpdatesData(data.updates);
+      } catch (e) {}
+    }
+  }
+
+  // __NEXT_DATA__
+  const nextHtml = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+  if (nextHtml) {
+    try {
+      const data = JSON.parse(nextHtml[1]);
+      if (data.props?.pageProps?.series) return parseSeriesData(data.props.pageProps.series);
+      if (data.query?.series) return parseSeriesData(data.query.series);
+      if (data.props?.pageProps?.updates) return parseUpdatesData(data.props.pageProps.updates);
+    } catch (e) {}
+  }
+
+  return parseHTMLDirect(html);
+}
+
+async function getUpdates(page = 1) {
+  const url = `${BASE}/updates${page === 1 ? "" : `?page=${page}`}`;
+  const html = await fetchHTML(url);
+  return extractSeriesFromHTML(html);
 }
 
 export default {
   name: "Voratoon Updates",
-  description: "Scrape update manga list — ambil manga terbaru, multi-page, atau semua sekaligus.",
-  category: "SEARCH",
+  description: "Latest manga/manhwa/manhua updates from Voratoon",
+  category: "Search",
   methods: ["GET", "POST"],
-  params: ["action", "page", "pages", "all"],
+  params: ["page"],
   paramsSchema: {
-    action: {
-      type: "string",
-      required: false,
-      default: "updates",
-      description: "Action: updates (default)",
-      enum: ["updates"],
-    },
     page: {
-      type: "number",
+      type: "integer",
       required: false,
       default: 1,
-      description: "Halaman update (1 = paling baru)",
-    },
-    pages: {
-      type: "number",
-      required: false,
-      default: 1,
-      description: "Jumlah halaman yang diambil berurutan (maks 20)",
-    },
-    all: {
-      type: "boolean",
-      required: false,
-      default: false,
-      description: "Ambil 20 halaman sekaligus (true/false)",
+      minimum: 1,
+      maximum: 20,
+      description: "Page number (1-20)",
     },
   },
-
   async run(req, res) {
+    const { page = 1 } = { ...req.query, ...req.body };
+    const n = Math.min(Math.max(parseInt(page) || 1, 1), 20);
+
     try {
-      const { action = "updates", page, pages, all } = { ...req.query, ...req.body };
-      const allFlag = all === true || all === "true" || all === "1";
-      const p = parseInt(page) || 1;
-      const pCount = parseInt(pages) || 1;
-
-      let result;
-      switch (action) {
-        case "updates": {
-          let opts;
-          if (allFlag) opts = { all: true };
-          else if (pCount > 1) opts = { pages: Array.from({ length: Math.min(pCount, 20) }, (_, i) => i + 1) };
-          else opts = { page: p };
-          const items = await getUpdates(opts);
-          result = items.map(extractSeries);
-          break;
-        }
-        default:
-          return res.status(400).json({ status: false, message: `Unknown action: ${action}` });
+      const items = await getUpdates(n);
+      if (!items.length) {
+        return res.status(404).json({ status: false, message: "No updates found for this page" });
       }
-
-      res.json({ status: true, result });
-    } catch (err) {
-      res.status(500).json({ status: false, message: err.message || "Request failed" });
+      return res.json({
+        status: true,
+        page: n,
+        total: items.length,
+        results: items,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (e) {
+      logger.error(`[Voratoon Updates] Error: ${e.message}`);
+      return res.status(500).json({ status: false, error: e.message, timestamp: new Date().toISOString() });
     }
   },
 };

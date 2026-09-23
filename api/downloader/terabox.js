@@ -7,6 +7,7 @@
  *
  * GET  /api/downloader/terabox?url=https://terabox.app/s/1HSEb8PZRUE7Z1Tvd3ZtT0g
  * POST /api/downloader/terabox  (JSON: { url })
+ * Supports: https://terabox.app/s/xxx, https://terabox.app/wap/share/filelist?surl=xxx
  */
 
 import fs from "fs";
@@ -56,8 +57,20 @@ function cleanFiles(list) {
     }));
 }
 
+function extractSurl(url) {
+  const str = String(url).trim();
+  // Try /s/ format first
+  const sMatch = str.split("/s/")[1]?.split(/[?#]/)[0];
+  if (sMatch) return sMatch;
+  // Try ?surl= query parameter
+  const surlMatch = str.match(/[?&]surl=([^&]+)/);
+  if (surlMatch) return surlMatch[1];
+  // Fallback: use whole string
+  return str;
+}
+
 async function getShareList(url) {
-  const surl = String(url).split("/s/")[1]?.split(/[?#]/)[0] || String(url).trim();
+  const surl = extractSurl(url);
   const short_url = surl.startsWith("1") ? surl.slice(1) : surl;
   const cookie = loadCookie();
 
@@ -88,74 +101,60 @@ async function getShareList(url) {
       "User-Agent": UA,
       Accept: "application/json, text/plain, */*",
       "Accept-Language": "en-US,en;q=0.9",
-      "X-Requested-With": "XMLHttpRequest",
-      Referer: `https://dm.terabox.app/sharing/link?surl=${short_url}&clearCache=1`,
-      "Content-Type": "application/x-www-form-urlencoded",
-      Origin: "https://dm.terabox.app",
+      Referer: "https://www.terabox.com/",
       Cookie: cookie,
+      Connection: "keep-alive",
     },
-    redirect: "follow",
-    signal: AbortSignal.timeout(20000),
+    signal: AbortSignal.timeout(30000),
   });
 
+  if (!api.ok) throw new Error(`Terabox API error: ${api.status}`);
   const json = await api.json();
+  if (json.errno !== 0) throw new Error(`Terabox API error errno=${json.errno} (${json.errmsg || "unknown"})`);
 
-  if (json.errno !== 0) {
-    throw new Error(`Terabox API error errno=${json.errno} (${json.err_msg || "unknown"})`);
-  }
+  const files = json.list || [];
+  const dirs = files.filter(f => f.isdir === "1");
+  const clean = cleanFiles(files);
 
   return {
-    url: String(url).trim(),
-    title: json.title || null,
-    file_count: (json.list || []).length,
-    files: cleanFiles(json.list),
+    surl,
+    short_url,
+    jsToken,
+    uk: json.uk || null,
+    shareid: json.shareid || null,
+    total: files.length,
+    dirs: dirs.length,
+    files: clean.length,
+    list: clean,
   };
 }
 
 export default {
   name: "Terabox Downloader",
-  description: "Download file dari Terabox — metadata + thumbnail",
+  description: "Download file dari Terabox (via share/list API)",
   category: "Downloader",
   methods: ["GET", "POST"],
   params: ["url"],
   paramsSchema: {
-    url: {
-      type: "string",
-      required: true,
-      description: "URL share Terabox (terabox.app/s/..., 1024terabox.com/s/..., terabox.com/s/...)",
-      example: "https://terabox.app/s/1HSEb8PZRUE7Z1Tvd3ZtT0g",
-    },
+    url: { type: "string", required: true, description: "Terabox share URL", example: "https://terabox.app/s/1HSEb8PZRUE7Z1Tvd3ZtT0g" }
   },
-
   async run(req, res) {
-    try {
-      const { url } = { ...req.query, ...req.body };
+    const { url } = { ...req.query, ...req.body };
 
-      if (!url || !String(url).trim()) {
-        return res.status(400).json({
-          status: false,
-          message: "URL wajib diisi",
-        });
-      }
-
-      const result = await getShareList(String(url).trim());
-
-      return res.status(200).json({
-        status: true,
-        result,
-        timestamp: new Date().toISOString(),
-      });
-    } catch (error) {
-      return res.status(500).json({
-        status: false,
-        message: error.message || "Gagal memproses link Terabox",
-        timestamp: new Date().toISOString(),
-      });
+    if (!url || !String(url).includes("terabox")) {
+      return res.status(400).json({ status: false, error: "URL Terabox tidak valid" });
     }
-  },
-};
 
-// Cookie override — biarkan data/terabox-cookie.json berisi { "ndus": "..." } untuk cookie custom
-export function setCookie(ndus) {
-  fs.writeFileSync(COOKIE_FILE, JSON.stringify({ ndus }));
-}
+    try {
+      const result = await getShareList(url);
+      return res.json({
+        status: true,
+        input: url,
+        ...result,
+        timestamp: new Date().toISOString()
+      });
+    } catch (e) {
+      return res.status(500).json({ status: false, message: e.message, timestamp: new Date().toISOString() });
+    }
+  }
+};

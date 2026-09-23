@@ -59,7 +59,7 @@ async function uploadToCloudinary(buffer, filename, signature, timestamp) {
 export default {
   name: "AI Enhance HD v7",
   description: "Upscale via cloud AI — upload, signature, transform",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["GET", "POST"],
   params: ["url"],
 

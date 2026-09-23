@@ -130,7 +130,7 @@ async function cloudChat(question, { model = MODELS[0], deviceId = null, convers
 export default {
   name: "Cloud AI Chat",
   description: "AI Chat — Support streaming, conversation, & web search. Model: Claude Haiku 4.5",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks", "needSearch", "conversationId"],
   paramsSchema: {

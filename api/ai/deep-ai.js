@@ -154,7 +154,7 @@ async function askDeepAi(message, sessionUuid = null) {
 export default {
   name: "Deep-Ai",
   description: "AI Chat dengan DeepAi. Gratis tanpa API Key.",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks"],
 

@@ -59,7 +59,7 @@ async function dl(url) {
 export default {
   name: "CineSubz",
   description: "Scraper subtitle Sinhaloa — search film/series, detail episode, dan ambil link download langsung. Tanpa API key.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["q", "url", "action"],
   paramsSchema: {

@@ -63,7 +63,7 @@ function parseMangaCard($, el) {
 export default {
   name: "Manhwaland Search",
   description: "Cari manga/manhwa — homepage, latest, popular, genres, search, detail, chapter.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["action"],
   paramsSchema: {

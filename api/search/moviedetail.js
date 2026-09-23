@@ -262,7 +262,7 @@ async function getMovieDetail(url) {
 export default {
   name: "Movie Detail (TMDB)",
   description: "Ambil detail film/series secara lengkap.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["url"],
 

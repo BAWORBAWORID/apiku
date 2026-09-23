@@ -70,7 +70,7 @@ async function muslimAIChat(query) {
 export default {
   name: "Muslim AI Chat",
   description: "AI berbasis Al-Quran untuk menjawab pertanyaan seputar Islam (streaming)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks"],
   paramsSchema: {

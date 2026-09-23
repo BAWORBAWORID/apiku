@@ -3,7 +3,7 @@ import axios from 'axios';
 export default {
   name: "LangChain AI Chat",
   description: "LangChain AI chat powered by Gemini 3.1 Flash Lite",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks"],
   paramsSchema: {

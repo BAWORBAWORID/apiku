@@ -122,7 +122,7 @@ async function chatex(message, model = 'openai/gpt-5.4') {
 export default {
   name: "GPT 5.4",
   description: "AI Chat — support berbagai model GPT (default: openai/gpt-5.4)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks"],
 

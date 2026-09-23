@@ -63,9 +63,11 @@ export default {
 
       return res.json({
         status: true,
-        email: email.trim(),
         message: "Link verifikasi berhasil dikirim",
-        kind: result.kind
+        result: {
+          email: email.trim(),
+          kind: result.kind
+        }
       })
 
     } catch (err) {

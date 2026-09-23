@@ -64,7 +64,7 @@ function extractData(html) {
 export default {
   name: "Manhwaindo Detail",
   description: "Scrape detail info manhwa — title, alternative, status, type, author, rating, genres, synopsis, thumbnail",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["query"],
   paramsSchema: {

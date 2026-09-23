@@ -17,7 +17,7 @@ async function downloadImage(url) {
 export default {
   name: "AI Enhance HD v5",
   description: "Upscale via single POST",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["GET", "POST"],
   params: ["url"],
 

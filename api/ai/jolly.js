@@ -82,7 +82,7 @@ function stripLinks(text) {
 export default {
   name: "Jolly AI Chat",
   description: "Chat dengan Jolly AI (image/video generator assistant) — guest mode, hash dibuat otomatis setiap request",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text"],
   paramsSchema: {

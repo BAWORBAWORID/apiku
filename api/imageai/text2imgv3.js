@@ -35,7 +35,7 @@ function extractUrl(output) {
 export default {
   name: "Text to Image v3 (Baidu Ernie)",
   description: "Generate gambar dari teks menggunakan Baidu Ernie Image Turbo",
-  category: "IMAGE AI",
+  category: "Image AI",
   methods: ["GET"],
   params: ["teks"],
 

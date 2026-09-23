@@ -82,7 +82,7 @@ async function searchPinterestVideos(q, proxyUrl = null) {
 export default {
   name: "Pinterest Video Search",
   description: "Cari video dari Pinterest. Hasil berupa metadata video (URL .m3u8) yang bisa digunakan di endpoint /api/downloader/pinvid untuk diunduh.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["query"],
 

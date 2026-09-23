@@ -35,7 +35,7 @@ async function musixmatchScrape(url) {
 export default {
   name: "Musixmatch Lyrics",
   description: "Scrape lirik lagu & metadata dari Musixmatch",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
 
   params: ["url"],

@@ -68,7 +68,7 @@ async function gpt4(message, systemPrompt = null, temperature = 0.5) {
 export default {
   name: "GPT-4 Chat",
   description: "GPT-4 AI",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks"],
   paramsSchema: {

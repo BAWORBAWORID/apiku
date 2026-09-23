@@ -272,7 +272,7 @@ const scraper = new AnichinScraper();
 export default {
   name: "Anichin Help",
   description: "Scraper donghua — latest, popular, search, detail, episode, download (stream embed)",
-  category: "ANIME",
+  category: "Anime",
   methods: ["GET", "POST"],
   params: ["action", "query", "url"],
   paramsSchema: {

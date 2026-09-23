@@ -117,7 +117,7 @@ async function tryRestoreSession() {
 export default {
   name: "Genspark AI",
   description: "Chat AI multi-model via browser automation",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "model"],
 

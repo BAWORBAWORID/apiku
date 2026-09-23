@@ -5,11 +5,53 @@
  * POST /checknumber/xlcheck
  *
  * Base: https://xl-ku.my.id/
- * Creator: Nimzz
+ * Creator: Nimzz / Fixed: AI
  */
 
 import axios from "axios"
 import logger from "../../src/utils/logger.js"
+
+// Helper function to extract dynamic API key from xl-ku's JS
+async function getXlHeaders() {
+  const jsRes = await axios.get("https://xl-ku.my.id/xlkujs/check-package", {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "Referer": "https://xl-ku.my.id/"
+    }
+  });
+  
+  let js = jsRes.data;
+  
+  // Extract the code inside DOMContentLoaded listener
+  let codeToRun = js.replace('document.addEventListener("DOMContentLoaded", function () {', '');
+  codeToRun = codeToRun.substring(0, codeToRun.lastIndexOf('});'));
+
+  // Mock DOM
+  const domMock = `
+    const document = {
+      getElementById: () => ({ addEventListener: () => {}, value: "" })
+    };
+    const window = { location: { reload: () => {} } };
+    const alert = () => {};
+    const $ = () => ({ loadingModal: () => {} });
+  `;
+
+  // Find the variable or function that is spread into headers
+  const headerMatch = codeToRun.match(/"Content-Type"\s*:\s*"application\/json",\s*\.\.\.([a-zA-Z0-9_]+)/);
+  if (!headerMatch) {
+    throw new Error("Gagal menemukan fungsi generator API key di script xl-ku");
+  }
+  
+  const varName = headerMatch[1];
+  const fullCode = domMock + "\n" + codeToRun + `\nreturn typeof ${varName} === 'function' ? ${varName}() : ${varName};`;
+  
+  try {
+    const result = new Function(fullCode)();
+    return result; 
+  } catch(e) {
+    throw new Error("Gagal mengeksekusi script API key xl-ku: " + e.message);
+  }
+}
 
 export default {
   name: "XL Check",
@@ -43,11 +85,15 @@ export default {
         ? "0" + cleanNumber.slice(2)
         : cleanNumber
 
-      const { data } = await axios.get("https://xl-ku.my.id/end.php", {
-        params: {
-          check: "package",
-          number: formatted,
-          version: "2",
+      // Extract dynamic headers
+      const xlHeaders = await getXlHeaders();
+
+      const { data } = await axios.get(`https://xl-ku.my.id/check/all-info/${formatted}`, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "Accept": "application/json",
+          "Referer": "https://xl-ku.my.id/",
+          ...xlHeaders
         },
         timeout: 15000,
       })
@@ -60,12 +106,13 @@ export default {
       }
 
       const info = data.data.subs_info
-      const packages = data.data.package_info.packages
+      const packages = data.data.package_info.packages || []
 
       const result = {
         nomor: info.msisdn,
         operator: info.operator,
         jaringan: info.net_type,
+        verif_id: info.id_verified,
         masa_aktif: info.tenure,
         masa_berakhir: info.exp_date,
         tenggang_hingga: info.grace_until,
@@ -73,7 +120,7 @@ export default {
         paket: packages.map((pkg) => ({
           nama: pkg.name,
           berakhir: pkg.expiry,
-          kuota: pkg.quotas
+          kuota: (pkg.quotas || [])
             .filter(
               (q) =>
                 parseFloat(q.remaining) > 0 ||
@@ -83,7 +130,7 @@ export default {
               nama: q.name,
               total: q.total,
               sisa: q.remaining,
-              persen: q.percent.toFixed(1) + "%",
+              persen: q.percent + "%",
             })),
         })),
       }
@@ -95,12 +142,14 @@ export default {
         result: result,
       })
     } catch (error) {
-      logger.error(
-        `[XL-CHECK] Error | ip=${req.ip} | error=${error.message}`
-      )
+      let msg = error.message;
+      if (error.response && error.response.data && error.response.data.message) {
+        msg = error.response.data.message;
+      }
+      logger.error(`[XL-CHECK] Error | ip=${req.ip} | error=${msg}`)
       return res.status(500).json({
         status: false,
-        message: error.message || "Failed to check XL number",
+        message: msg || "Failed to check XL number",
       })
     }
   },

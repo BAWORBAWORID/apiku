@@ -131,7 +131,7 @@ function cleanupTempFile(filePath) {
 export default {
   name: "Image Upscaler",
   description: "Image Upscaler V2",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["POST"],
   params: ["image", "scale"],
   paramsSchema: {

@@ -14,7 +14,7 @@ const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 export default {
   name: "FlacDownloader Search",
   description: "Cari track musik berdasarkan judul atau artis",
-  category: "SEARCH",
+  category: "Search",
   methods: ["POST"],
   params: ["q"],
   paramsSchema: {

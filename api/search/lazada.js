@@ -97,7 +97,7 @@ async function searchLazada(keyword, page = 1) {
 export default {
   name: "Lazada Search",
   description: "Cari produk di Lazada Indonesia.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["keyword", "page"],
 

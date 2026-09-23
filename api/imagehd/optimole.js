@@ -51,7 +51,7 @@ async function optimoleUpscale(imageUrl) {
 export default {
   name: "Optimole Upscaler",
   description: "AI image upscale (model Replicate) — rekonstruksi detail, response langsung gambar WebP",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["GET", "POST"],
   params: ["url"],
 

@@ -304,7 +304,7 @@ export default {
   name: "Sinopsis Film",
   description:
     "Scrape sinopsisfilm.id lengkap: home (hero, popular, latest, genres), search (kata kunci), detail (sinopsis penuh, rating, genre, sutradara, aktor, durasi, trailer).",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["action", "query"],
 

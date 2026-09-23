@@ -111,7 +111,7 @@ async function getResult(taskId, identity) {
 export default {
   name: "AI Enhance HD",
   description: "Enhance image resolution and quality using AI (Premium v2)",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["GET"],
   params: ["url"],
 

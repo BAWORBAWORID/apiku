@@ -47,7 +47,7 @@ async function resolveImage(source) {
 export default {
   name: "NSFW Check",
   description: "Deteksi konten NSFW/porn dari sebuah gambar — return label + confidence",
-  category: "IMAGE",
+  category: "Image",
   methods: ["GET", "POST"],
   params: ["url"],
   paramsSchema: {

@@ -203,7 +203,7 @@ async function chatCompletion(prompt, auth, chatId = null) {
 export default {
   name: "ChatGPT Android App",
   description: "ChatGPT via official Android app API (model auto, multi-turn dengan session_id)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks", "session"],
   paramsSchema: {

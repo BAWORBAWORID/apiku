@@ -7,7 +7,7 @@ const MODEL = "gpt-5.4-mini-no-login";
 export default {
   name: "GPT-5.4 (SurfSense)",
   description: "Chat GPT-5.4 — gratis, tanpa login, streaming response",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["prompt"],
 

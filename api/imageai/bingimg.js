@@ -187,7 +187,7 @@ function sanitizeQuery(query) {
 export default {
   name: "AI Bing Image",
   description: "Search and get random images from Bing",
-  category: "IMAGE AI",
+  category: "Image AI",
   methods: ["GET"],
   params: ["query"],
 

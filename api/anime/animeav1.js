@@ -181,7 +181,7 @@ const ACTIONS = ["home", "search", "catalog", "schedule", "detail", "episode"];
 export default {
   name: "AnimeAV1",
   description: "Streaming anime & download episode: home, search, catalog, schedule, detail series, dan stream episode",
-  category: "ANIME",
+  category: "Anime",
   methods: ["GET", "POST"],
   params: ["action", "query", "slug", "episode", "page", "order"],
   paramsSchema: {

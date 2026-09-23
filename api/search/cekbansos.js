@@ -203,7 +203,7 @@ function parseResult(html, nik) {
 export default {
   name: "Cek Bansos (Kemensos)",
   description: "Cek data penerima bantuan sosial (Bansos) berdasarkan NIK — status DTKS/DTSEN, desil, Sembako, PKH, PBI-JK, dan KPD",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["nik"],
   paramsSchema: {

@@ -19,23 +19,31 @@ export default {
 
     if (!email || typeof email !== "string" || !email.includes("@")) {
       return res.status(400).json({
-        success: false,
-        error: "Parameter 'email' wajib diisi dan harus valid"
+        status: false,
+        message: "Parameter 'email' wajib diisi dan harus valid"
       });
     }
 
     try {
       const result = await amService.sendMagicLink(email.trim());
       if (!result.success) {
-        return res.status(502).json({ success: false, error: result.error || "Gagal mengirim magic link" });
+        return res.status(502).json({ 
+          status: false, 
+          message: result.error || "Gagal mengirim magic link" 
+        });
       }
       return res.json({
-        success: true,
-        email: email.trim(),
-        message: result.message
+        status: true,
+        message: result.message || "Link berhasil dikirim.",
+        result: {
+          email: email.trim()
+        }
       });
     } catch (err) {
-      return res.status(500).json({ success: false, error: err.message });
+      return res.status(500).json({ 
+        status: false, 
+        message: err.message 
+      });
     }
   }
 };

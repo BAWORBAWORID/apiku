@@ -55,7 +55,7 @@ async function fetchJadwalSepakbola() {
 export default {
   name: "Jadwal Sepakbola",
   description: "Dapatkan jadwal acara siaran langsung sepakbola hari ini.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: [],
 

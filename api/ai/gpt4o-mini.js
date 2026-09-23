@@ -116,7 +116,7 @@ async function ensureSession(sessionId) {
 export default {
   name: "GPT-4o-mini",
   description: "OpenAI GPT-4o-mini AI Chat. Support input gambar via URL.",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks", "image", "session"],
   paramsSchema: {

@@ -63,7 +63,7 @@ function listenForResults(jobId) {
 export default {
   name: "Text to Image (FreeGen)",
   description: "Generate gambar dari teks menggunakan WebSocket",
-  category: "IMAGE AI",
+  category: "Image AI",
   methods: ["GET"],
   params: ["teks", "ratio"],
 

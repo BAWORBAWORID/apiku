@@ -310,7 +310,7 @@ async function processVideo(url) {
 export default {
   name: "Wink HD Video Enhancer",
   description: "Enhance/Upscale video menggunakan AI — upload, transcode, delivery, polling hasil HD (maks ~10 menit).",
-  category: "HD VIDEO",
+  category: "HD Video",
   methods: ["GET", "POST"],
   params: ["url"],
   paramsSchema: {

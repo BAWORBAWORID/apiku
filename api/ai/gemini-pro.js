@@ -67,7 +67,7 @@ async function sendMessage(phpSessId, utoken, message) {
 export default {
   name: "Gemini Pro",
   description: "Google Gemini 2.5 Pro",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks"],
 

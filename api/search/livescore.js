@@ -62,7 +62,7 @@ function rapikan(dataMentah) {
 export default {
   name: "Livescore",
   description: "Jadwal dan skor langsung sepakbola",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["edisi", "raw"],
   paramsSchema: {

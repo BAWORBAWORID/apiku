@@ -36,7 +36,7 @@ async function humanizeText(text) {
 export default {
   name: "AI Humanizer",
   description: "Humanize teks AI menggunakan ZeroGPT — ubah teks AI-generated jadi lebih natural (min 50 karakter)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks"],
   paramsSchema: {

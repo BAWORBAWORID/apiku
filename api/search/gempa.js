@@ -169,7 +169,7 @@ async function getGempa() {
 export default {
   name: "Info Gempa BMKG",
   description: "Informasi gempa bumi terkini — gempa terbaru (autogempa), daftar gempa realtime, dan gempa yang dirasakan (dengan koordinat & peta)",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: [],
   paramsSchema: {},

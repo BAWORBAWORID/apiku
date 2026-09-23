@@ -4,7 +4,7 @@ import logger from "../../src/utils/logger.js"
 export default {
   name: "Pollinations AI Image",
   description: "Generate gambar AI. Mendukung berbagai prompt gambar.",
-  category: "IMAGE AI",
+  category: "Image AI",
   methods: ["GET"],
   params: ["prompt"],
 

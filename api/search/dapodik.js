@@ -85,7 +85,7 @@ class DapodikScraper {
 export default {
   name: "Dapodik Sekolah",
   description: "Pencarian data sekolah (Kementerian Pendidikan) — cari sekolah berdasarkan nama/kata kunci atau lihat detail lengkap per NPSN",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["action", "query", "npsn"],
   paramsSchema: {

@@ -3,7 +3,7 @@ import axios from 'axios';
 export default {
   name: "Scite AI Research",
   description: "AI research assistant powered by GPT-5 Nano with academic citations and references",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks"],
   paramsSchema: {

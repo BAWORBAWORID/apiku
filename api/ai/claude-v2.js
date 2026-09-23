@@ -183,7 +183,7 @@ export default {
   name: "Claude V2",
   description:
     "Claude AI — Sonnet 4.6 & Opus 4.7 (requires session cookie)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks", "model", "cookie", "orgId"],
   paramsSchema: {

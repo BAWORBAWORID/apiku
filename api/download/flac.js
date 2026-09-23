@@ -149,7 +149,7 @@ class Blowfish {
   _f(x) {
     const a = x >>> 24, b = (x >>> 16) & 255, c = (x >>> 8) & 255, d = x & 255
     const S = this.S
-    return (((S[0][a] + S[1][b]) >>> 0) ^ S[2][c]) + S[3][d]) >>> 0
+    return ((((S[0][a] + S[1][b]) >>> 0) ^ S[2][c]) + S[3][d]) >>> 0
   }
   _enc(xl, xr) {
     for (let i = 0; i < 16; i++) {
@@ -324,8 +324,8 @@ export default {
             const { stdout } = await new Promise((resolve, reject) => {
               exec('npx --yes haidarcf turnstile-min --url ' + BASE_URL + '/en --sitekey ' + '0x4AAAAAAD2MQMVORZcldmdE', { timeout: 30000 }, (err, stdout) => {
                 if (err) return reject(err)
-                resolve(stdout)
-              }
+                resolve({stdout})
+              })
             })
             const idx = stdout.indexOf('{')
             if (idx !== -1) {

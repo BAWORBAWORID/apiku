@@ -29,7 +29,7 @@ function extractApps(content) {
 export default {
   name: "Play Store Search",
   description: "Cari aplikasi di Google Play Store",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["query", "limit"],
 

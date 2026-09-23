@@ -87,7 +87,7 @@ async function clearPngUpscale(serverPath, ratio, format) {
 export default {
   name: "ClearPNG Upscaler",
   description: "AI image upscale 2x/4x — response langsung gambar (PNG/JPG)",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["GET", "POST"],
   params: ["url", "ratio", "format"],
 

@@ -33,7 +33,7 @@ function buildCookie(session) {
 export default {
   name: "Unlimited AI Chat",
   description: "AI Chat dengan UnlimitedAI.chat - dipaksa menjawab dalam Bahasa Indonesia",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks", "session"],
 

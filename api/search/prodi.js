@@ -112,7 +112,7 @@ async function pddikti(input) {
 export default {
   name: "PDDIKTI Search",
   description: "Cek data Mahasiswa, Dosen, Perguruan Tinggi, dan Program Studi Indonesia resmi",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["query", "mode", "mahasiswaId"],
   paramsSchema: {

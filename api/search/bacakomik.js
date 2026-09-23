@@ -399,7 +399,7 @@ async function getChapterImages(chapterUrl) {
 export default {
   name: "BacaKomik",
   description: "Scraper komik lengkap — search, update terbaru, populer, direktori, genre, detail komik + semua chapter, dan gambar reader chapter",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["action", "query", "url", "page"],
 

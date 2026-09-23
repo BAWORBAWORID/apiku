@@ -274,7 +274,7 @@ class ChatGpt {
 export default {
   name: "GPT-4 Chat v2",
   description: "GPT-4 AI using ChatGPT Wrapper",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks", "websearch"],
   paramsSchema: {

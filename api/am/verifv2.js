@@ -7,7 +7,6 @@ const VERIFY_PURCHASE_URL = 'https://us-central1-alight-creative.cloudfunctions.
 const PRODUCT_ID = 'am.full.sub.annual.19q4'
 const TOKEN = 'mmgaobamlahbbeccfplmbkbb.AO-J1OzqG0or_GJJIx-ms8GrTm-jaglCRfhQSRPUZKpl2YspYS-oN7_94uv8RC5vQbvd_Ios2pPDStZ2n7F0hLE3FiOU7HS3R6Fquulv5xLXFECSv4ctElw'
 const SKU_TYPE = 'subs'
-const ORDER_ID_PREFIX = 'zyvorapi'
 const FIREBASE_INSTANCE_ID_TOKEN = 'cSDnCyp3T-uwp07z3tL86T:APA91bFkmvvsHw5nnqa1SBFci-99DRsKClLiETdRrVcJjS5yBx1v_FbCb1d8WhBuea_zmwnYBktyTIzcRhN4b6uNOUur9wPc0gKXmJDoZic0LhNq5V2s0xI'
 
 const firebaseHeaders = {
@@ -35,7 +34,12 @@ function extractOobCode(fullUrl) {
 }
 
 function generateCodeOrder() {
-  return Math.floor(Math.random() * 90000) + 10000
+  const r = (len) => {
+    let str = "";
+    for (let i = 0; i < len; i++) str += Math.floor(Math.random() * 10);
+    return str;
+  };
+  return `GPA.${r(4)}.${r(4)}.${r(4)}.${r(5)}`;
 }
 
 async function signInWithEmailLink(email, oobCode) {
@@ -51,8 +55,9 @@ async function signInWithEmailLink(email, oobCode) {
   return response.data
 }
 
-async function applyPremium(idToken) {
+async function applyPremium(idToken, customOrderId) {
   const codeorder = generateCodeOrder()
+  const finalOrderId = customOrderId ? customOrderId : codeorder
   const headers = {
     ...purchaseHeaders,
     'authorization': `Bearer ${idToken}`,
@@ -63,9 +68,13 @@ async function applyPremium(idToken) {
       productId: PRODUCT_ID,
       token: TOKEN,
       skuType: SKU_TYPE,
-      orderId: `${ORDER_ID_PREFIX}-${codeorder}`
+      orderId: finalOrderId
     }
   }, { headers, timeout: 30000 })
+  
+  if (response.data && typeof response.data === 'object') {
+    response.data.applied_order_id = finalOrderId;
+  }
   return response.data
 }
 
@@ -74,15 +83,16 @@ export default {
   description: "Verifikasi email link & apply premium Alight Motion (signInWithEmailLink + verifyPurchase)",
   category: "AlightMotion",
   methods: ["GET", "POST"],
-  params: ["email", "link"],
+  params: ["email", "link", "orderid"],
   paramsSchema: {
     email: { type: "string", required: true, description: "Email yang dikirim magic link", example: "user@email.com" },
-    link: { type: "string", required: true, description: "Full link verifikasi dari email", example: "https://alightcreative.com/auth_action/?mode=signIn&oobCode=xxx&apiKey=AIzaSyDrZ9jr_Y16ltSBqsQR5IH6I04FRga6Ki0&lang=en" }
+    link: { type: "string", required: true, description: "Full link verifikasi dari email", example: "https://alightcreative.com/auth_action/?mode=signIn&oobCode=xxx" },
+    orderid: { type: "string", required: false, description: "Custom Order ID untuk Google Play (opsional)", example: "GPA.1234.5678.9012.34567" }
   },
 
   async run(req, res) {
     try {
-      const { email, link } = { ...req.query, ...req.body }
+      const { email, link, orderid } = { ...req.query, ...req.body }
 
       if (!email || typeof email !== 'string' || !email.includes('@')) {
         return res.status(400).json({ status: false, error: "Parameter 'email' wajib diisi dan harus valid" })
@@ -103,7 +113,7 @@ export default {
         return res.status(502).json({ status: false, error: "Gagal mendapatkan idToken dari verifikasi" })
       }
 
-      const premiumRes = await applyPremium(idToken)
+      const premiumRes = await applyPremium(idToken, orderid)
 
       return res.json({
         status: true,

@@ -179,7 +179,7 @@ async function generateImage(options = {}) {
 export default {
   name: "Dezgo Image Generator",
   description: "Generate gambar dengan 20 model AI (flux, realdream, grok_imagine, dll). Support puppeteer stealth bypass Cloudflare.",
-  category: "IMAGE AI",
+  category: "Image AI",
   methods: ["GET", "POST"],
   params: ["text", "model", "width", "height", "negative"],
 

@@ -37,7 +37,7 @@ async function mistralChat(teks) {
 export default {
   name: "Mistral Large 3",
   description: "Mistral Large 3 675B — AI coding assistant (parameter: teks)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks"],
   paramsSchema: {

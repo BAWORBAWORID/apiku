@@ -52,7 +52,7 @@ async function stromChat(prompt, mode = 'strom', sessionId = null) {
 export default {
   name: "Strom-AI Chat",
   description: "Chat AI via Strom-AI — 4 mode tersedia: strom (default), nightgpt, deepseek, llama4",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "mode", "session_id"],
   paramsSchema: {

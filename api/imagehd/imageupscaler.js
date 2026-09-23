@@ -42,7 +42,7 @@ async function _session() {
 export default {
   name: "Image Upscaler",
   description: "Upscale gambar 2x/4x/6x. Upload URL gambar dan dapatkan hasil upscaled.",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["GET", "POST"],
   params: ["url", "scale"],
 

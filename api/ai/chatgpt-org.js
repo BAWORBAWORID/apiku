@@ -47,7 +47,7 @@ async function getCookiesAndXsrf() {
 export default {
   name: "ChatGPT Org",
   description: "ChatGPT multi-model (GPT-4o Mini, Claude Haiku, DeepSeek, Qwen, Perplexity)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks", "model", "session"],
   paramsSchema: {

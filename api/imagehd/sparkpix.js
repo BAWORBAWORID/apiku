@@ -24,7 +24,7 @@ function parseQuality(input = "4k") {
 export default {
     name: "SparkPix HD Upscale",
     description: "Free HD image upscaler 4K/6K/8K with optional face enhancement",
-    category: "IMAGE HD",
+    category: "Image HD",
     methods: ["GET", "POST"],
     params: ["url", "quality", "face"],
 

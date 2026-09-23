@@ -122,7 +122,7 @@ async function askFelo(message) {
 export default {
   name: "Felo AI",
   description: "This API endpoint allows you to get an AI-generated response from Felo using query parameters. Felo is an AI service capable of processing natural language queries and providing structured answers, including potential sources. This endpoint is suitable for quick, text-based interactions, such as question-answering, summarization, or general information retrieval. The response includes the AI's answer and a list of sources if available.",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks"],
   paramsSchema: {

@@ -84,7 +84,7 @@ const getCategories = async () => {
 export default {
   name: "Search Wallpaper 4K",
   description: "Scraper wallpaper resolusi 4K: daftar terbaru/populer/featured, acak, pencarian, kategori, dan detail koleksi (link preview & download).",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["action", "query", "slug", "page"],
 

@@ -35,7 +35,7 @@ function runScraper(args, timeoutMs = 120000) {
 export default {
   name: "Quillbot Image Generator",
   description: "Generate gambar AI dengan berbagai style dan aspect ratio",
-  category: "IMAGE AI",
+  category: "Image AI",
   methods: ["GET", "POST"],
   params: ["prompt", "style", "aspect"],
   paramsSchema: {

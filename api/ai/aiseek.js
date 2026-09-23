@@ -143,7 +143,7 @@ async function askAISeek(prompt, auth, sessionId, model, imageS3Keys = []) {
 export default {
   name: "AI Seek",
   description: "AI Seek multi-model chat (DeepSeek, Gemini, Qwen) with streaming, vision, conversation memory",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["message", "model", "session_id", "image_url"],
   paramsSchema: {

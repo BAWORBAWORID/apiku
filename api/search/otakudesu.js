@@ -604,7 +604,7 @@ async function getSchedule() {
 export default {
   name: "OtakuDesu",
   description: "Scraper anime (home, ongoing, complete, search, detail anime, detail episode dengan stream & download, batch, schedule, genres)",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["action", "query", "page"],
 

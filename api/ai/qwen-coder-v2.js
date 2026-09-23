@@ -80,7 +80,7 @@ async function freeAIChat(message) {
 export default {
   name: "Qwen Coder V2",
   description: "Qwen3 Coder AI — parameter: teks",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks"],
   paramsSchema: {

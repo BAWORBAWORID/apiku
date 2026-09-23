@@ -217,7 +217,7 @@ async function handleLimitOrError(prompt, modelStr, retryCount, reason, imageUrl
 export default {
   name: "NoteGPT AI Chat",
   description: "NoteGPT multi-model AI chat (gpt-4o, gemini, deepseek) dengan auto temp-mail auth, vision, reasoning, token pool rotation",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["message", "model", "image_url", "conversation_id"],
   paramsSchema: {

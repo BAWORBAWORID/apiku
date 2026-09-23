@@ -388,7 +388,7 @@ export async function runChatAIWithRetry({ messages, model, attempt = 0 }) {
 export default {
   name: "ChatAI (Auto Proxy Request & Multi-Model Stream)",
   description: "Multi-model AI Chat (ChatGPT, Claude, Gemini, Grok, DeepSeek, Qwen, Kimi, Perplexity) dengan Auto Proxy Request & dukungan Server-Sent Events (stream=true)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks", "model", "session", "stream"],
   paramsSchema: {

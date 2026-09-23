@@ -54,7 +54,7 @@ async function nvidiaChat(teks, model) {
 export default {
   name: "NVIDIA NIM AI",
   description: "AI chat powered by NVIDIA NIM with 15 free models (Nemotron, Mistral, Qwen, Llama, Gemma, etc)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks", "model"],
   paramsSchema: {

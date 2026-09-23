@@ -152,7 +152,7 @@ async function spotifySearch(searchTerm, limit = 3) {
 export default {
   name: "Spotify Search",
   description: "Cari lagu/track di Spotify.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["query", "limit"],
 

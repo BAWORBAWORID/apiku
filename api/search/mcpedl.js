@@ -268,7 +268,7 @@ async function getComTags() {
 export default {
   name: "MCPEDL Search & Downloader",
   description: "Cari mod/addon/texture/map Minecraft Bedrock dari MCPEDL (.com & .org), lihat detail konten, dan dapatkan link direct download file (.mcpack, .mcaddon, .zip).",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["query", "url", "slug", "source", "action", "max", "page"],
 

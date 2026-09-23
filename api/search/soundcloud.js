@@ -32,7 +32,7 @@ async function searchSoundCloud(query) {
 export default {
   name: "SoundCloud Search",
   description: "Cari lagu di SoundCloud.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["query"],
 

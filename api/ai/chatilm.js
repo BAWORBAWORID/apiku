@@ -44,7 +44,7 @@ async function fetchChatILM(messages) {
 export default {
   name: "ChatILM (Islamic AI)",
   description: "AI Islami untuk konsultasi dan tanya jawab seputar agama Islam beserta dalil dan hukumnya",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks", "session", "stream"],
   paramsSchema: {

@@ -67,7 +67,7 @@ function deepseekV3Chat(prompt) {
 export default {
   name: "DeepSeek V3",
   description: "DeepSeek V3 AI Chat (model: deepseek-v3.2)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks"],
   paramsSchema: {

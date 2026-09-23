@@ -208,7 +208,7 @@ async function searchAnime(query) {
 export default {
   name: "Anime Search (LiveChart)",
   description: "Cari detail anime — title, genre, studio, rating, episode, sinopsis, dan lainnya",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["q"],
 

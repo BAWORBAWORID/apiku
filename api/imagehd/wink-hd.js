@@ -352,7 +352,7 @@ async function processImage(url) {
 export default {
   name: "Wink HD Enhancer",
   description: "Enhance/Upscale gambar menggunakan AI — upload, submit task, polling hasil Ultra HD.",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["GET", "POST"],
   params: ["url"],
   paramsSchema: {

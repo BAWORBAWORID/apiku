@@ -136,7 +136,7 @@ async function loadLists() {
 export default {
   name: "Murotal Quran",
   description: "Search and stream Quran recitation audio by reciter and surah",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["murotal", "surat"],
   paramsSchema: {

@@ -35,7 +35,7 @@ async function generateImage(prompt) {
 export default {
   name: "Strom-AI Text to Image",
   description: "Generate gambar dari teks prompt menggunakan Strom-AI (output: base64 PNG)",
-  category: "IMAGE AI",
+  category: "Image AI",
   methods: ["GET", "POST"],
   params: ["prompt"],
   paramsSchema: {

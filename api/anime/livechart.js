@@ -376,7 +376,7 @@ async function dispatch(action, params) {
 export default {
   name: "LiveChart Anime",
   description: "Scraper anime — season & year list anime, detail, streams (Crunchyroll/Netflix/dll), info (detail+streams), rankings, studios, tags, franchises",
-  category: "ANIME",
+  category: "Anime",
   methods: ["GET", "POST"],
   params: ["action", "season", "year", "id", "page"],
   paramsSchema: {

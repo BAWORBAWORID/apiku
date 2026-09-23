@@ -48,7 +48,7 @@ async function askmeChat(history) {
 export default {
   name: "AskMe AI",
   description: "AI chat + image vision — multi-turn chat (session), analisis gambar (URL/base64)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "image", "session", "system"],
   paramsSchema: {

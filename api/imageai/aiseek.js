@@ -116,7 +116,7 @@ async function generateImageAISeek(prompt, auth) {
 export default {
   name: "AI Seek Image",
   description: "AI image generation (text-to-image)",
-  category: "IMAGE AI",
+  category: "Image AI",
   methods: ["GET", "POST"],
   params: ["prompt"],
   paramsSchema: {

@@ -381,7 +381,7 @@ async function fetchEpisodeData(query) {
 export default {
   name: "Animexin Anime",
   description: "Scraper anime — home, popular, search, detail, episode streaming & download",
-  category: "ANIME",
+  category: "Anime",
   methods: ["GET", "POST"],
   params: ["action", "query", "url", "page", "genre"],
   paramsSchema: {

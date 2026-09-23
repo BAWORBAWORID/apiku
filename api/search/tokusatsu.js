@@ -297,7 +297,7 @@ async function fetchStreamLink(postId, tabName, refererUrl) {
 export default {
   name: "Tokusatsu Search",
   description: "Cari dan lihat info konten Tokusatsu (Kamen Rider, Super Sentai, Ultraman). Action: home, movie, movie-special, kamen-rider, super-sentai, ultraman, other, search, detail",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["action", "query", "url", "page"],
   paramsSchema: {

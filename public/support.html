@@ -85,8 +85,8 @@
             },
             {
                 "@type": "Person",
-                "@id": "https://api.zyvor.my.id/support#codex",
-                "givenName": "Codex",
+                "@id": "https://api.zyvor.my.id/support#zyyvor",
+                "givenName": "Zyyvor",
                 "jobTitle": "Project Owner & Full Stack Developer",
                 "description": "Building the future of APIs, one endpoint at a time.",
                 "url": "https://api.zyvor.my.id/support",
@@ -299,8 +299,8 @@
         <div class="profile-card main fade-up" style="margin-bottom:2rem;text-align:center">
             <div style="display:flex;gap:2rem;align-items:center;flex-wrap:wrap;justify-content:center">
                 <div style="flex-shrink:0;text-align:center">
-                    <img src="/src/images/codex.jpg" alt="Codex" class="avatar large" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300&h=300&fit=crop&crop=face'">
-                    <div class="profile-name" style="margin-top:1rem">Codex</div>
+                    <img src="/src/images/zyyvor.jpg" alt="Zyyvor" class="avatar large" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300&h=300&fit=crop&crop=face'">
+                    <div class="profile-name" style="margin-top:1rem">Zyyvor</div>
                     <div class="profile-role">Project Owner</div>
                 </div>
                 <div class="flex-1" style="min-width:280px;text-align:left">
@@ -331,29 +331,13 @@
                     <div class="socials">
                         <a href="https://github.com" target="_blank" class="social-btn gh"><i class="fab fa-github"></i>GitHub</a>
                         <a href="https://t.me/ZyyvorAPI" target="_blank" class="social-btn tg"><i class="fab fa-telegram"></i>Telegram</a>
-                        <a href="https://whatsapp.com/channel/0029Vb7bAFaCXC3E44TGgK3B" target="_blank" class="social-btn wa"><i class="fab fa-whatsapp"></i>WhatsApp</a>
+                        <a href="https://whatsapp.com/channel/0029Vb8rAprCBtx9febAey04" target="_blank" class="social-btn wa"><i class="fab fa-whatsapp"></i>WhatsApp</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Contributors -->
-        <div class="fade-up" style="margin-top:3rem">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.5rem">
-                <div class="section-num" style="margin-bottom:0">02 &mdash; Core Contributors</div>
-            </div>
-            <div class="contrib-grid" id="contributors-container"></div>
-        </div>
-
-        <!-- Supporters -->
-        <div class="fade-up" style="margin-top:3rem">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.5rem">
-                <div class="section-num" style="margin-bottom:0">03 &mdash; Friends & Supporters</div>
-            </div>
-            <div class="supporter-grid" id="supporters-container"></div>
-        </div>
-
-        <!-- Thank You CTA -->
+<!-- Thank You CTA -->
         <div class="cta-card fade-up">
             <h2>Thank You!</h2>
             <p>Terima kasih kepada semua yang telah berkontribusi, memberikan masukan, dan mendukung pengembangan Zyyvor Api'S.</p>
@@ -380,72 +364,7 @@
         function toggleMenu(){document.getElementById('navMenu').classList.toggle('show')}
         window.addEventListener('click',e=>{const m=document.getElementById('navMenu'),b=document.querySelector('.menu-btn');if(m&&!m.contains(e.target)&&!b.contains(e.target))m.classList.remove('show')});
 
-        // Contributors Data
-        const contributorsData = [
-            {
-                name: "Zyrex",
-                role: "Server Engineer",
-                image: "/src/images/zyrex.jpg",
-                email: "zyrex@xcure-store.my.id",
-                github: "https://github.com",
-                telegram: "https://t.me/Zyrexoffc3",
-                description: "Specialized in server optimization and database management. Makes everything run smoothly.",
-                skills: ["Node.js", "MongoDB", "Redis", "Docker"]
-            },
-            {
-                name: "Jian Code",
-                role: "Scraper Modder",
-                image: "/src/images/jian.jpg",
-                email: "",
-                github: "https://github.com/",
-                telegram: "https://t.me/JianCode",
-                description: "Creates function scraper modder.",
-                skills: ["React", "TypeScript", "Tailwind", "Figma"]
-            }
-        ];
-
-        const supportersData = [
-            { name: "Nanz", role: "Support", image: "/src/images/nanz.jpg" }
-        ];
-
         function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
-
-        function renderContributors(){
-            const c=document.getElementById('contributors-container');
-            if(!c)return;
-            c.innerHTML=contributorsData.map((p,i)=>`
-                <div class="profile-card fade-up" style="transition-delay:${i*80}ms">
-                    <div style="text-align:center">
-                        <img src="${escHtml(p.image)}" alt="${escHtml(p.name)}" class="avatar" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop&crop=face'">
-                        <div class="profile-name">${escHtml(p.name)}</div>
-                        <div class="profile-role">${escHtml(p.role)}</div>
-                        <div class="profile-desc">${escHtml(p.description)}</div>
-                        <div class="tags" style="justify-content:center">
-                            ${p.skills.map(s=>`<span class="tag">${escHtml(s)}</span>`).join('')}
-                        </div>
-                        <div class="socials" style="justify-content:center">
-                            ${p.email?`<a href="mailto:${escHtml(p.email)}" class="social-btn email" title="Email"><i class="fas fa-envelope"></i></a>`:''}
-                            ${p.github?`<a href="${escHtml(p.github)}" target="_blank" class="social-btn gh" title="GitHub"><i class="fab fa-github"></i></a>`:''}
-                            ${p.telegram?`<a href="${escHtml(p.telegram)}" target="_blank" class="social-btn tg" title="Telegram"><i class="fab fa-telegram"></i></a>`:''}
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderSupporters(){
-            const c=document.getElementById('supporters-container');
-            if(!c)return;
-            c.innerHTML=supportersData.map(s=>`
-                <div class="supporter-card">
-                    <img src="${escHtml(s.image)}" alt="${escHtml(s.name)}" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face'">
-                    <div>
-                        <div class="s-name">${escHtml(s.name)}</div>
-                        <div class="s-role">${escHtml(s.role)}</div>
-                    </div>
-                </div>
-            `).join('');
-        }
 
         // Intersection Observer for fade-up
         const obs=new IntersectionObserver(entries=>{
@@ -457,8 +376,6 @@
         }
 
         document.addEventListener('DOMContentLoaded',()=>{
-            renderContributors();
-            renderSupporters();
             observeFade();
         });
     </script>

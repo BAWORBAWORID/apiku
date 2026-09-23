@@ -112,14 +112,14 @@ export default {
       type: "number",
       required: false,
       default: 1,
-      description: "Jumlah akun yang diproses (maks 100)",
+      description: "Jumlah akun yang diproses (maks 3)",
     },
   },
 
   async run(req, res) {
     try {
       const { count } = { ...req.query, ...req.body };
-      const n = Math.min(parseInt(count) || 1, 100);
+      const n = Math.min(parseInt(count) || 1, 3);
 
       const results = [];
       for (let i = 0; i < n; i++) {

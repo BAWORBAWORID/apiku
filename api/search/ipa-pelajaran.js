@@ -79,7 +79,7 @@ async function getDetailIPA(slug) {
 export default {
   name: "IPA Pelajaran Search",
   description: "Cari materi pelajaran IPA. Mendukung pencarian dengan pagination dan detail artikel.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["query", "page", "slug"],
 

@@ -603,7 +603,7 @@
 
         let lastStartTime = null;
         setInterval(() => {
-            fetch('/status').then(r => r.json()).then(d => {
+            fetch('/stats').then(r => r.json()).then(d => {
                 if (!lastStartTime) lastStartTime = d.startTime;
                 else if (lastStartTime !== d.startTime) location.reload();
             }).catch(() => {});

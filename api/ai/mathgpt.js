@@ -124,7 +124,7 @@ async function mathgpt({ query, enableReasoning = false, attachedImage = null } 
 export default {
   name: "MathGPT AI",
   description: "AI Chat untuk matematika - No API Key Required. Mendukung perhitungan, rumus, dan upload gambar soal.",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks", "enableReasoning"],
   paramsSchema: {

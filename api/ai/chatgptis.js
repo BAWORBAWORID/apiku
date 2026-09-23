@@ -22,7 +22,7 @@ const BASE_URL = 'https://chatgptis.org'
 export default {
   name: "ChatGPTis AI Chat",
   description: "ChatGPTis multi-model AI chat (GPT, Claude, Gemini, Grok, DeepSeek, Qwen, Kimi, Perplexity) - free unlimited",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["message", "model", "conversation_id"],
   paramsSchema: {

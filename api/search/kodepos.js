@@ -71,7 +71,7 @@ async function cariKodepos(query) {
 export default {
   name: "Search KodePos",
   description: "Cari kode pos berdasarkan kode pos atau nama desa/kelurahan",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
 
   params: ["kodepos"],

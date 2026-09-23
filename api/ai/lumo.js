@@ -207,7 +207,7 @@ async function askLumo(prompt) {
 export default {
   name: "Lumo AI",
   description: "AI Chat dengan Proton Lumo. Mendukung berbagai pertanyaan dengan enkripsi end-to-end.",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks"],
 

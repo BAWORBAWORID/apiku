@@ -14,7 +14,7 @@ import logger from "../../src/utils/logger.js"
 export default {
   name: "Upscale AI",
   description: "Upscale image resolution and quality",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["GET"],
   params: ["url"],
 

@@ -85,7 +85,7 @@ class Scraper {
 export default {
   name: "Jadwal Sepakbola (StarLabs)",
   description: "Dapatkan jadwal pertandingan sepakbola live.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["date"],
 

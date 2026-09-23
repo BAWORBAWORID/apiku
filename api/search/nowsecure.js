@@ -71,7 +71,7 @@ async function nowSecureSearch(query, platform = "android") {
 export default {
   name: "NowSecure Search",
   description: "Cari aplikasi Android di NowSecure.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["query", "platform"],
 

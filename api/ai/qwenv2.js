@@ -196,7 +196,7 @@ initShared()
 export default {
   name: "Qwen V2",
   description: "Qwen AI Chat V2 (Android API) — support streaming, thinking, web search. Auto-login with default account.",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "model", "stream", "thinking", "search"],
 

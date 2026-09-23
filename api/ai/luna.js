@@ -107,7 +107,7 @@ async function chat({idToken,localId,prompt,model}){
 export default {
   name: "Luna - GPT-5.6 Luna",
   description: "Chat Luna gratis dengan auto session — support model gpt-5.6-luna, gpt-5-mini, gpt-5-nano, gpt-4o-mini, auto",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET","POST"],
   params: ["teks","model"],
 

@@ -108,7 +108,7 @@ function chat(token, sid, msg, maxMs = 120000) {
 export default {
   name: "Manus AI Chat",
   description: "Manus AI WebSocket - Session token statis",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text"],
   paramsSchema: {

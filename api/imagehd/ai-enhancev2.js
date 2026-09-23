@@ -140,7 +140,7 @@ const downloadImage = async (url) => {
 export default {
     name: "AI Enhance HD v2",
     description: "Enhance image resolution using AI with scale options (2x,4x,6x,8x max)",
-    category: "IMAGE HD",
+    category: "Image HD",
     methods: ["GET"],
     params: ["url", "size"],
 

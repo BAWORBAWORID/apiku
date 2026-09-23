@@ -63,7 +63,7 @@ async function askHilda(message) {
 export default {
   name: "Halodoc AI",
   description: "AI Konsultasi Kesehatan (Hilda)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["teks"],
   paramsSchema: {

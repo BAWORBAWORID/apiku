@@ -79,7 +79,7 @@ async function tutorgptChat(message, options = {}) {
 export default {
   name: "TutorGPT AI",
   description: "AI chat gratis — multi-turn sesuai session, banyak pilihan model, opsi tone & length",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "session", "model", "tone", "length"],
   paramsSchema: {

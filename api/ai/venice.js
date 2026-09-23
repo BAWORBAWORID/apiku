@@ -74,7 +74,7 @@ async function veniceChat(message, systemPrompt = "", temperature = 0.8) {
 export default {
   name: "Venice AI Chat",
   description: "Venice AI (dolphin-3.0-mistral-24b)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks"],
   paramsSchema: {

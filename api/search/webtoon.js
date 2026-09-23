@@ -35,7 +35,7 @@ async function searchWebtoon(query) {
 export default {
   name: "Webtoon Search",
   description: "Cari informasi komik Webtoon berdasarkan judul.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["query"],
 

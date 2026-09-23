@@ -120,7 +120,7 @@ async function searchSong(query) {
 export default {
   name: "Search Song",
   description: "Cari judul lagu berdasarkan lirik atau deskripsi",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["query"],
 

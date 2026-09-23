@@ -3,7 +3,7 @@
  *  1. kyuux-r.indevs.in/api/check-whatsapp   (status Safe/Unsafe, device/email)
  *  2. api.neosoft.best/api/tools/checker-ban-wa (status Safe/Blocked, exists, detail OTP)
  *
- * GET  /api/checknumber/checkban?nomor=6288297563383
+ * GET  /api/checknumber/checkban?nomor=6285167361633
  * POST /api/checknumber/checkban
  */
 
@@ -100,8 +100,8 @@ export default {
     nomor: {
       type: "string", required: true,
       description: "Nomor WhatsApp (format 628xx, 08xx, +62xx, atau kode negara lain)",
-      example: "6288297563383",
-      default: "6288297563383",
+      example: "6285167361633",
+      default: "6285167361633",
       minLength: 8,
       maxLength: 15
     }
@@ -142,21 +142,41 @@ export default {
       const successProviders = providers.filter(p => p.success)
       const lastGood = successProviders[successProviders.length - 1]
 
-      const summary = {
-        nomor: normalized,
-        nomor_asli: nomor,
-        banned: successProviders.some(p => isBanned(p.provider)),
-        exists: successProviders.some(p => p.provider.exists),
-        status: lastGood?.provider?.status || "Unknown"
+      const p1Data = successProviders.find(p => p.provider.name === "kyuux-r.indevs.in")?.provider || {}
+      const p2Data = successProviders.find(p => p.provider.name === "api.neosoft.best")?.provider || {}
+
+      const isBannedSummary = successProviders.some(p => isBanned(p.provider))
+      const isExistsSummary = p2Data.exists ?? true // if neosoft succeeds, it accurately tells if exists
+
+      const result = {
+        phone: normalized,
+        phone_masked: p2Data.masked || p1Data.number || null,
+        status: isBannedSummary ? "Banned" : (lastGood?.provider?.status || "Safe"),
+        is_banned: isBannedSummary,
+        is_registered: isExistsSummary,
+        device: p1Data.info?.device && p1Data.info.device !== "Unknown" ? p1Data.info.device : null,
+        email: p1Data.info?.email && p1Data.info.email !== "Unknown" ? p1Data.info.email : null,
+      }
+
+      if (p2Data.detail) {
+        result.otp = {
+          methods: p2Data.detail.fallback_methods || [],
+          wait_times_seconds: {
+            sms: p2Data.detail.sms_wait || 0,
+            voice: p2Data.detail.voice_wait || 0,
+            flash: p2Data.detail.flash_wait || 0,
+            email: p2Data.detail.email_otp_wait || 0
+          }
+        }
       }
 
       return res.json({
         status: true,
-        result: {
-          ...summary,
-          provider_count: successProviders.length,
-          providers: successProviders.map(p => p.provider),
-          errors: providers.filter(p => !p.success).map(p => ({ message: p.message }))
+        message: "Berhasil mengecek status WhatsApp",
+        result,
+        _providers: {
+          total_success: successProviders.length,
+          errors: providers.filter(p => !p.success).map(p => p.message)
         }
       })
     } catch (err) {

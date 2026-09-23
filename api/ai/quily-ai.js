@@ -18,7 +18,7 @@ const anonId = () => Math.random().toString(16).substring(2, 18);
 export default {
   name: "Quilbot AI",
   description: "Quilbot AI Chat",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks"],  
   paramsSchema: {

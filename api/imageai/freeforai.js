@@ -62,7 +62,7 @@ async function generateImage(prompt, size = '1024*1024', model = 'flux-dev') {
 export default {
   name: "FreeForAI Image Generator",
   description: "FreeForAI FLUX.1 Dev/Kontext AI image generation (free, unlimited, no login)",
-  category: "IMAGE AI",
+  category: "Image AI",
   methods: ["GET", "POST"],
   params: ["prompt", "model", "size"],
   paramsSchema: {

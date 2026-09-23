@@ -314,7 +314,7 @@ async function chatStream(prompt, session, conversationId = null, parentMessageI
 export default {
   name: "NoteGPT AI Chat v2 (Anonymous)",
   description: "NoteGPT AI Chat via anonymous session + WASM signing (gemini-3.1-flash-lite, web search, multi-turn)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["message", "model", "conversation_id", "parent_message_id", "web_search", "tone", "length", "language", "chat_mode"],
   paramsSchema: {

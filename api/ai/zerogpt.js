@@ -223,7 +223,7 @@ async function detectAI(text, timeoutMs = 20000) {
 export default {
   name: "ZeroGPT AI",
   description: "Chat interaktif dengan ZeroGPT AI Assistant (mendukung mode chat dan deteksi AI)",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "action", "conversation_id"],
   paramsSchema: {

@@ -312,7 +312,7 @@ const spotifyClient = new SpotifyPureAPI(SP_DC);
 export default {
   name: "Spotify Search V2",
   description: "Cari lagu di Spotify & lihat detail track (search / track) menggunakan sesi sp_dc (Pathfinder API).",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["action", "query", "url", "limit"],
   paramsSchema: {

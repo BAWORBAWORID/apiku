@@ -116,7 +116,7 @@ async function heck(prompt, model = 'gpt-5.4-mini', sessionKey = null, search = 
 export default {
   name: "Heck Ai",
   description: "Chat AI with support for multi-models, sessions, real-time search, and deep think.",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "model", "session", "search", "deepThink"],
   paramsSchema: {

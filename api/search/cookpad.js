@@ -95,7 +95,7 @@ async function detail(idOrUrl) {
 export default {
   name: "Cookpad",
   description: "Cari resep masakan Indonesia serta lihat detail lengkapnya (bahan, langkah, gambar).",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["action", "query", "id"],
 

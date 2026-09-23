@@ -325,7 +325,7 @@ const cleanup = async (files) => {
 export default {
   name: "HD Video Processor",
   description: "Enhance video quality with custom FPS, resolution, and filters",
-  category: "HD VIDEO",
+  category: "HD Video",
   
   methods: ["POST"],
   

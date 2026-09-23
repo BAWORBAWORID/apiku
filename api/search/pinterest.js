@@ -89,7 +89,7 @@ async function searchPinterest(query, options = {}, proxyUrl = null) {
 export default {
   name: "Search Pinterest",
   description: "Cari gambar/video dari Pinterest.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["query", "limit"],
 

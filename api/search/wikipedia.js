@@ -154,7 +154,7 @@ async function getFullArticle(title) {
 export default {
   name: "Wikipedia",
   description: "Cari dan ambil artikel Wikipedia lengkap beserta sections, infobox, dan gambar.",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET", "POST"],
   params: ["query"],
 

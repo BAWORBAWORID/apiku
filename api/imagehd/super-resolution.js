@@ -35,7 +35,7 @@ async function enhanceImage(buffer) {
 export default {
   name: "AI Super Resolution",
   description: "Enhance image resolution and quality up to HD/4K using Visual Paradigm AI",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["GET"],
   params: ["url"],
 

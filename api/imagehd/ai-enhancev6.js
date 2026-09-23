@@ -17,7 +17,7 @@ async function downloadImage(url) {
 export default {
   name: "AI Enhance HD v6",
   description: "Super-resolution via FormData — cepat, tanpa auth",
-  category: "IMAGE HD",
+  category: "Image HD",
   methods: ["GET", "POST"],
   params: ["url"],
 

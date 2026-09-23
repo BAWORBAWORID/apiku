@@ -248,7 +248,7 @@ async function chatWithDuckAI(session, text, model = "gpt-4o-mini", imageUrl) {
 export default {
   name: "Duck.ai Chat",
   description: "AI Chat — GPT-5.4, Claude, Mistral, vision support",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "model", "image", "session_id"],
 

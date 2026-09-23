@@ -105,7 +105,7 @@ async function wormgptChat(question) {
 export default {
   name: "WormGPT",
   description: "WormGPT AI Chat",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks"],
   paramsSchema: {

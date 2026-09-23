@@ -204,7 +204,7 @@ export default {
   name: "Qwen Guest AI",
   description:
     "Chat Qwen AI tanpa akun via guest mode (persistent browser — cepat setelah request pertama). Support deep thinking & web search otomatis.",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "timeout"],
   paramsSchema: {

@@ -3,7 +3,7 @@ import { loadSession, saveSession } from "../../src/utils/session.js";
 export default {
   name: "NoTrack AI",
   description: "Chat dengan NoTrack AI (uncensored). Support multi-turn via session.",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
   params: ["text", "session_id"],
   paramsSchema: {

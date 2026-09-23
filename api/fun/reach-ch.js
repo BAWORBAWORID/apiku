@@ -384,7 +384,7 @@ function formatEmojis(str) {
 export default {
   name: "Reach CH",
   description: "Kirim reaksi emoji otomatis ke postingan WhatsApp Channel",
-  category: "FUN",
+  category: "Fun",
   methods: ["GET", "POST"],
   params: ["url", "emoji"],
   paramsSchema: {

@@ -61,7 +61,7 @@ async function search(query) {
 export default {
   name: 'Genius Lyrics',
   description: 'Cari lagu atau ambil detail + lirik dari Genius. Tanpa API key.',
-  category: 'SEARCH',
+  category: 'Search',
   methods: ['GET', 'POST'],
   params: ['query', 'id'],
   paramsSchema: {

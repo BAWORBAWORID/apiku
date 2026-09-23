@@ -159,7 +159,7 @@ class DouyinSearch {
 export default {
   name: "Douyin Search",
   description: "Cari video di Douyin (TikTok China).",
-  category: "SEARCH",
+  category: "Search",
   methods: ["GET"],
   params: ["query"],
 

@@ -43,7 +43,7 @@ const DEFAULT_ASSISTANT = "Hi, I'm FeelBetterBot — I'm here to listen and help
 export default {
   name: "FeelBetter AI",
   description: "AI Chat dengan FeelBetterBot - AI companion",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET"],
   params: ["teks", "session"],
 

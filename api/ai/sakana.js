@@ -183,7 +183,7 @@ class SakanaAI {
 export default {
   name: "Sakana AI",
   description: "Chat dengan Sakana AI (Namazu) — support web search, thinking mode, 5 model AI",
-  category: "AI CHAT",
+  category: "AI Chat",
   methods: ["GET", "POST"],
 
   params: ["text", "model", "search", "thinking"],

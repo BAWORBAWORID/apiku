@@ -1,14 +1,20 @@
-import { performance } from "perf_hooks";
+export interface ModJallResult {
+    success: boolean;
+    token?: string;
+    original_url: string;
+    execution_time_ms?: number;
+    error?: string;
+}
 
-export async function bypassModJall(rawUrl) {
+export async function bypassModJall(rawUrl: string): Promise<ModJallResult> {
     const startTime = performance.now();
     const userAgent =
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
 
-    const cookies = {};
+    const cookies: Record<string, string> = {};
 
-    function updateCookies(res) {
-        const raw = (res.headers && typeof res.headers.getSetCookie === 'function') ? res.headers.getSetCookie() : [];
+    function updateCookies(res: Response) {
+        const raw = (res.headers as any).getSetCookie ? (res.headers as any).getSetCookie() : [];
         for (const c of raw) {
             const [pair] = c.split(";");
             const [k, ...v] = pair.split("=");
@@ -179,7 +185,7 @@ export async function bypassModJall(rawUrl) {
             execution_time_ms: Math.round(endTime - startTime)
         };
 
-    } catch (err) {
+    } catch (err: any) {
         const endTime = performance.now();
         return {
             success: false,
@@ -190,11 +196,12 @@ export async function bypassModJall(rawUrl) {
     }
 }
 
-// Node.js ESM script runner check
-import { fileURLToPath } from 'url';
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+async function main() {
     const inputUrl = process.argv[2] || "https://mod.jall.my.id/token?data=nZth2CkIPTyH2dHkqk4VYyR%2B52ILv8ONdfuDk1Ot%2FMIDrMx2Ybxl08%2FBUIdZgjkE&hmac=0478833a5fe0b159eb2d92a47f8d842fb897e29ca5d408cb79bbf3c97b30b62d";
-    bypassModJall(inputUrl).then(result => {
-        console.log(JSON.stringify(result, null, 2));
-    });
+    const result = await bypassModJall(inputUrl);
+    console.log(JSON.stringify(result, null, 2));
+}
+
+if (import.meta.main) {
+    main();
 }

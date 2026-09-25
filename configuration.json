@@ -178,12 +178,6 @@
                 "releaseVersion": "1.9.7"
             },
             {
-                "title": "New Downloader: Wow Downloader (wow-dl)",
-                "description": "Endpoint baru /api/downloader/wow-dl — Multi-platform downloader via wowdownloader.com (YouTube, TikTok, IG, FB, Twitter, Spotify, dll). Parameter: url, tool.",
-                "date": "July 7, 2026",
-                "releaseVersion": "1.9.7"
-            },
-            {
                 "title": "NIK Parser Upgrade — Zodiak, Kodepos & Usia Detail",
                 "description": "Endpoint /api/tools/nikparse di-rewrite dengan data wilayah lokal (data/wilayah.json). Tambahan: zodiak, kodepos, hari lahir, dan perhitungan usia (tahun + bulan/hari). Fix mapping Jakarta Barat/Pusat.",
                 "date": "July 7, 2026",
@@ -1155,7 +1149,6 @@
         "/api/maker/fake-ml": "online",
         "/api/am/bulk": "online",
         "/api/am/bulkv2": "premium",
-        "/api/downloader/wow-dl": "online",
         "/api/tools/web2apk": "online",
         "/api/payment/qris-static-v2": "online",
         "/api/maker/qcwa": "online",

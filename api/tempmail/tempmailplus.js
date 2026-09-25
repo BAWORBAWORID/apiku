@@ -139,7 +139,7 @@ export async function waitForEmail(email, maxWaitSec = 60, intervalSec = 4) {
 export default {
   name: "TempMail Plus",
   description: "Temporary disposable email service dari tempmail.plus dengan 9 pilihan domain gratis",
-  category: "TempMail",
+  category: "Email",
   methods: ["GET", "POST"],
   params: ["action", "email", "name", "domain", "id", "timeout"],
   paramsSchema: {

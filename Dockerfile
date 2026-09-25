@@ -68,11 +68,9 @@ RUN mkdir -p /app/src/function/chrome/chrome/linux-150.0.7843.0 && \
 COPY package*.json ./
 
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 
 RUN npm install
-
-# Install Chrome for Puppeteer (auto-match version pinned by puppeteer package)
-RUN npm exec --yes --package=puppeteer@24.43.1 -- puppeteer browsers install chrome
 
 # Copy source
 COPY . .

@@ -63,23 +63,26 @@ async function startGame(theme = "characters", childMode = false) {
   const $ = cheerio.load(res.body);
   const question = $("#question-label").text().trim();
   const sessionMatch = res.body.match(/name="session"[^>]*value="([^"]+)"/);
-  const signatureMatch = res.body.match(/name="signature"[^>]*value="([^"]+)"/);
+  // Akinator sudah menghapus field "signature" dari form (0 kemunculan di
+  // HTML). Dulu endpoint mewajibkannya sehingga start selalu gagal. Sekarang
+  // signature tidak lagi dikirim ke /answer maupun /cancel_answer.
   const akitudeMatch = res.body.match(/akitude[^"]*"[^"]*([^/]+\.png)"/);
 
   const session = sessionMatch ? sessionMatch[1] : null;
-  const signature = signatureMatch ? signatureMatch[1] : null;
   const akitude = akitudeMatch ? akitudeMatch[1] : "defi.png";
 
-  if (!session || !signature) {
-    return { status: false, error: "Gagal mengambil session/signature Akinator." };
+  if (!session) {
+    return { status: false, error: "Gagal mengambil session Akinator." };
   }
 
   return {
     status: true,
     session,
-    signature,
     question,
-    step: 0,
+    // Browser mengirim step=1 untuk pertanyaan pertama (lihat localStorage
+    // awal: step '1', progression '0'). Nilai 0 membuat /answer ditolak.
+    step: 1,
+    stepLastProposition: 0,
     progression: 0,
     akitude,
     sid,
@@ -113,8 +116,8 @@ async function answerGame(game, ans) {
       sid: String(game.sid),
       cm: String(game.childMode),
       answer: String(answerId),
+      step_last_proposition: String(game.stepLastProposition ?? 0),
       session: game.session,
-      signature: game.signature,
     },
     headers: {
       "content-type": "application/x-www-form-urlencoded",
@@ -147,12 +150,16 @@ async function answerGame(game, ans) {
     };
   }
 
+  game.step = parseInt(data.step);
+  game.progression = parseFloat(data.progression);
+
   return {
     status: true,
     won: false,
     question: data.question,
-    step: parseInt(data.step),
-    progression: parseFloat(data.progression),
+    questionId: data.question_id ?? null,
+    step: game.step,
+    progression: game.progression,
     akitude: data.akitude,
   };
 }
@@ -168,7 +175,6 @@ async function backGame(game) {
       sid: String(game.sid),
       cm: String(game.childMode),
       session: game.session,
-      signature: game.signature,
     },
     headers: {
       "content-type": "application/x-www-form-urlencoded",
@@ -199,13 +205,14 @@ async function excludeGame(game) {
     url: `${BASE_URL}/exclude`,
     method: "POST",
     form: {
+      // Payload nyata dari continuePartie() di situsnya: forward_answer wajib,
+      // dan field pid/identifiant/charac_* tidak ikut dikirim.
       step: String(game.step),
       progression: String(game.progression),
       sid: String(game.sid),
       cm: String(game.childMode),
       session: game.session,
-      signature: game.signature,
-      step_last_proposition: String(game.step),
+      forward_answer: "1",
     },
     headers: {
       "content-type": "application/x-www-form-urlencoded",
@@ -233,7 +240,6 @@ async function excludeGame(game) {
     }
 
     const newSession = res.body.match(/name="session"[^>]*value="([^"]+)"/);
-    const newSignature = res.body.match(/name="signature"[^>]*value="([^"]+)"/);
 
     return {
       status: true,
@@ -242,7 +248,6 @@ async function excludeGame(game) {
       progression: 0,
       akitude: "defi.png",
       newSession: newSession ? newSession[1] : game.session,
-      newSignature: newSignature ? newSignature[1] : game.signature,
     };
   }
 }
@@ -357,7 +362,6 @@ export default {
         }
         if (resultExclude.newSession) {
           game.session = resultExclude.newSession;
-          game.signature = resultExclude.newSignature;
         }
         Object.assign(game, {
           question: resultExclude.question,

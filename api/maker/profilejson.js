@@ -108,7 +108,7 @@ export default {
       type: "string",
       required: true,
       description: "Nama lengkap",
-      example: "Alwayscodex"
+      example: "Zyvor"
     },
     title: {
       type: "string",
@@ -135,10 +135,10 @@ export default {
     try {
       const data = { ...req.query, ...req.body };
       const result = generateProfileJSON({
-        name: data.name || "",
-        title: data.title || "",
-        email: data.email || "",
-        link: data.link || ""
+        name: data.name || "Zyvor",
+        title: data.title || "Development",
+        email: data.email || "contact@zyvor.my.id",
+        link: data.link || "https://api.zyvor.my.id"
       });
       const duration = Date.now() - startTime;
 

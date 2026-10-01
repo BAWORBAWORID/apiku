@@ -58,8 +58,25 @@ function decodeHtmlEntities(text) {
     .replace(/&#39;/g, "'")
     .replace(/&#x27;/g, "'")
     .replace(/&#x2F;/g, "/")
-    .replace(/&#(\d+);/g, (_match, dec) => String.fromCharCode(dec))
-    .replace(/&#x([0-9a-f]+);/gi, (_match, hex) => String.fromCharCode(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_match, dec) => {
+      try {
+        return String.fromCodePoint(parseInt(dec, 10))
+      } catch {
+        return ""
+      }
+    })
+    .replace(/&#x([0-9a-f]+);/gi, (_match, hex) => {
+      try {
+        return String.fromCodePoint(parseInt(hex, 16))
+      } catch {
+        return ""
+      }
+    })
+}
+
+function cleanTrailingJoin(text) {
+  if (!text) return ""
+  return text.replace(/\.?\s*Join\s+[\d,.KMBkmb]+\s+followers?\s+(?:to\s+|for\s+).*$/i, "").trim()
 }
 
 function parseDescription(desc) {
@@ -72,7 +89,7 @@ function parseDescription(desc) {
   if (channelFormat) {
     return {
       followers: channelFormat[1].trim(),
-      cleanDescription: channelFormat[2].trim(),
+      cleanDescription: cleanTrailingJoin(channelFormat[2].trim()),
     }
   }
 
@@ -91,11 +108,11 @@ function parseDescription(desc) {
     const descWithoutFollowers = clean.replace(/^[\s\S]*?\b[\d,.]+\s*followers?\s*•?\s*/i, "").trim()
     return {
       followers: followerMatch[1],
-      cleanDescription: descWithoutFollowers || "",
+      cleanDescription: cleanTrailingJoin(descWithoutFollowers),
     }
   }
 
-  return { followers: null, cleanDescription: clean }
+  return { followers: null, cleanDescription: cleanTrailingJoin(clean) }
 }
 
 function parseNumber(text) {
@@ -187,26 +204,20 @@ async function stalkWhatsApp(inputData) {
    MAIN API
 ================================ */
 export default {
-  name: "WhatsApp Channel Stalker",
-  description: "Get public WhatsApp Channel profile info — name, avatar, followers, description",
+  name: "WhatsApp Stalker",
+  description: "Stalk informasi WhatsApp Channel & WhatsApp Group melalui link",
   category: "Stalker",
   methods: ["GET", "POST"],
 
-  params: ["link", "channel"],
+  params: ["link"],
 
   paramsSchema: {
     link: {
       type: "string",
       required: true,
-      description: "WhatsApp Channel ID/URL atau WhatsApp Group Invite URL (chat.whatsapp.com/xxx)",
+      default: "https://chat.whatsapp.com/KfTAZgFu9mtA1U8vZejXaD",
+      description: "Link WhatsApp Channel (whatsapp.com/channel/xxx) atau WhatsApp Group (chat.whatsapp.com/xxx)",
       example: "https://chat.whatsapp.com/KfTAZgFu9mtA1U8vZejXaD",
-      minLength: 1
-    },
-    channel: {
-      type: "string",
-      required: false,
-      description: "Alias dari 'link' — accept channel ID atau full URL",
-      example: "https://www.whatsapp.com/channel/0029Vb7bAFaCXC3E44TGgK3B",
       minLength: 1
     }
   },
@@ -215,16 +226,16 @@ export default {
     const startTime = Date.now()
 
     try {
-      const { link, channel, url } = { ...req.query, ...req.body };
-      const input = link ?? channel ?? url;
+      const { link, url } = { ...req.query, ...req.body };
+      const input = link ?? url;
 
       if (!input || typeof input !== "string" || !input.trim()) {
         return res.status(400).json({
           status: false,
-          message: "Parameter 'link' wajib diisi — bisa channel ID, URL channel, atau URL grup",
+          message: "Parameter 'link' wajib diisi (URL Channel atau URL Group)",
           example: {
-            GET: "/api/stalker/whatsapp?link=0029Vb7bAFaCXC3E44TGgK3B",
-            POST: { link: "https://www.whatsapp.com/channel/0029Vb7bAFaCXC3E44TGgK3B" }
+            group: "/api/stalker/whatsapp?link=https://chat.whatsapp.com/KfTAZgFu9mtA1U8vZejXaD",
+            channel: "/api/stalker/whatsapp?link=https://www.whatsapp.com/channel/0029Vb7bAFaCXC3E44TGgK3B"
           }
         })
       }

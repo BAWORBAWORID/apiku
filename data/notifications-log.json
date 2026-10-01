@@ -2,8 +2,13 @@
   "sent": [
     {
       "ip": "system",
+      "type": "monthly_reset",
+      "timestamp": 1790787649210
+    },
+    {
+      "ip": "system",
       "type": "stats",
-      "timestamp": 1790121600227
+      "timestamp": 1790812800117
     }
   ]
 }

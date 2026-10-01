@@ -5,17 +5,17 @@
  */
 import axios from "axios"
 
-const API_BASE = "https://tempmail-backend.hasnaintariq142.workers.dev"
-const CREATE_API = `${API_BASE}/api/create-inbox`
-const INBOX_API = `${API_BASE}/api/inbox`
-const DELETE_API = `${API_BASE}/api/delete-inbox`
+const API_BASE = "https://api.lmngh.site/api"
+const CREATE_API = `${API_BASE}/create-inbox`
+const INBOX_API = `${API_BASE}/inbox`
+const DELETE_API = `${API_BASE}/delete-inbox`
 
 const HEADERS = {
-  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-  "Accept": "application/json",
+  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Accept": "application/json, text/plain, */*",
   "Content-Type": "application/json",
-  "Origin": "https://tempmail.chat",
-  "Referer": "https://tempmail.chat/"
+  "Origin": "https://lmngh.site",
+  "Referer": "https://lmngh.site/"
 }
 
 function delay(ms) {
@@ -85,6 +85,17 @@ async function waitForEmail(token, maxWait) {
   return null
 }
 
+function extractLinks(body) {
+  if (!body) return []
+  const links = new Set()
+  const hrefRe = /href=['"]([^'"]+)['"]/gi
+  let m
+  while ((m = hrefRe.exec(body)) !== null) links.add(m[1])
+  const urlRe = /https?:\/\/[^\s<>'"]+/gi
+  while ((m = urlRe.exec(body)) !== null) links.add(m[0])
+  return Array.from(links)
+}
+
 function normalizeMessages(messages) {
   return messages.map((m, index) => ({
     index: index + 1,
@@ -95,9 +106,68 @@ function normalizeMessages(messages) {
     subject: m.subject || null,
     body: m.text_body || null,
     html: m.html_body || null,
+    links: extractLinks(m.html_body || m.text_body || ""),
     date: m.received_at || null,
-    expires: m.expires_at || null
+    expires: m.expires_at ? formatExpiresData(m.expires_at).expires : null
   }))
+}
+
+function formatRemaining(s) {
+  if (s <= 0) return "expired";
+  const hours = Math.floor(s / 3600);
+  const minutes = Math.floor((s % 3600) / 60);
+
+  if (hours >= 24 && hours % 24 === 0 && minutes === 0) {
+    return `${hours} jam`;
+  }
+  if (hours >= 24) {
+    const days = Math.floor(hours / 24);
+    const remH = hours % 24;
+    return remH > 0 ? `${days} hari ${remH} jam` : `${days} hari`;
+  }
+  if (hours > 0) {
+    return minutes > 0 ? `${hours} jam ${minutes} menit` : `${hours} jam`;
+  }
+  return `${Math.max(1, minutes)} menit`;
+}
+
+function formatExpiresData(expiresInOrAt) {
+  const pad = (n) => String(n).padStart(2, "0");
+  const formatDate = (d) =>
+    `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+
+  if (!expiresInOrAt) return { expires: null, expires_human: null };
+
+  let targetDate;
+  let remainingSec = 0;
+
+  if (typeof expiresInOrAt === "number" || /^\d+$/.test(String(expiresInOrAt).trim())) {
+    remainingSec = Number(expiresInOrAt);
+    targetDate = new Date(Date.now() + remainingSec * 1000);
+  } else {
+    const raw = String(expiresInOrAt).trim();
+    // Upstream sends "YYYY-MM-DD HH:mm:ss" in UTC
+    const iso = raw.includes("T") ? raw : raw.replace(" ", "T") + (raw.endsWith("Z") ? "" : "Z");
+    targetDate = new Date(iso);
+    if (isNaN(targetDate.getTime())) {
+      targetDate = new Date(raw);
+    }
+    if (!isNaN(targetDate.getTime())) {
+      remainingSec = Math.max(0, Math.floor((targetDate.getTime() - Date.now()) / 1000));
+    }
+  }
+
+  if (!targetDate || isNaN(targetDate.getTime())) {
+    return {
+      expires: String(expiresInOrAt),
+      expires_human: null
+    };
+  }
+
+  return {
+    expires: formatDate(targetDate),
+    expires_human: formatRemaining(remainingSec)
+  };
 }
 
 export default {
@@ -147,12 +217,14 @@ export default {
         const hasil = await createInbox()
 
         if (hasil.status === 200 && hasil.data?.success) {
+          const exp = formatExpiresData(hasil.data.expires_in || hasil.data.expires_at);
           return res.json({
             status: true,
             data: {
               email: hasil.data.email,
               token: hasil.data.access_token,
-              expires: hasil.data.expires_at || null
+              expires: exp.expires,
+              expires_human: exp.expires_human
             }
           })
         }
@@ -174,11 +246,13 @@ export default {
 
         if (hasil.status === 200 && hasil.data?.success) {
           const messages = normalizeMessages(hasil.data.messages || [])
+          const exp = formatExpiresData(hasil.data.expires_at || hasil.data.expires_in);
           return res.json({
             status: true,
             data: {
               email: hasil.data.email || null,
-              expires: hasil.data.expires_at || null,
+              expires: exp.expires,
+              expires_human: exp.expires_human,
               total: messages.length,
               messages
             }
@@ -202,11 +276,13 @@ export default {
 
         if (hasil) {
           const messages = normalizeMessages(hasil.messages || [])
+          const exp = formatExpiresData(hasil.expires_at || hasil.expires_in);
           return res.json({
             status: true,
             data: {
               email: hasil.email || null,
-              expires: hasil.expires_at || null,
+              expires: exp.expires,
+              expires_human: exp.expires_human,
               total: messages.length,
               messages
             }
@@ -232,12 +308,14 @@ export default {
 
         if (hasil) {
           const messages = normalizeMessages(hasil.messages || [])
+          const exp = formatExpiresData(hasil.expires_at || hasil.expires_in);
           return res.json({
             status: true,
             data: {
               email: hasil.email || buat.data.email,
               token: buat.data.access_token,
-              expires: hasil.expires_at || null,
+              expires: exp.expires,
+              expires_human: exp.expires_human,
               total: messages.length,
               messages
             }

@@ -37,7 +37,10 @@ async function generateFakeData(type, count) {
         name: faker.company.name(),
         catchPhrase: faker.company.catchPhrase(),
         buzzPhrase: faker.company.buzzPhrase(),
-        suffix: faker.company.suffix(),
+        // faker.company.suffix() dihapus di @faker-js/faker v10
+        suffix: faker.helpers.arrayElement([
+          "Inc", "LLC", "Ltd", "Corp", "GmbH", "S.A.", "Group", "Holdings", "Partners"
+        ]),
         address: {
           street: faker.location.streetAddress(),
           city: faker.location.city(),
@@ -91,7 +94,7 @@ async function generateFakeData(type, count) {
       data = Array.from({ length: Number(count) }, () => ({
         id: faker.string.uuid(),
         email: faker.internet.email(),
-        username: faker.internet.userName(),
+        username: faker.internet.username(),
         displayName: faker.internet.displayName(),
         password: faker.internet.password({ length: 12 }),
         avatar: faker.image.avatar(),
@@ -131,7 +134,9 @@ async function generateFakeData(type, count) {
         fuel: faker.vehicle.fuel(),
         color: faker.vehicle.color(),
         vin: faker.vehicle.vin(),
-        licensePlate: faker.vehicle.licensePlate(),
+        // faker.vehicle.licensePlate() dihapus di v10; vrm() adalah
+        // padanan terdekat (nomor registrasi kendaraan).
+        licensePlate: faker.vehicle.vrm(),
         year: faker.date.past({ years: 30 }).getFullYear(),
         mileage: faker.number.int({ min: 0, max: 300000 }),
         price: faker.commerce.price({ min: 50000000, max: 1000000000, dec: 0 })

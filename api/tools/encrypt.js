@@ -2,6 +2,8 @@
 // SIMPLE ENCRYPT/DECRYPT TOOLS
 // =====================
 
+import { cipherEncrypt, cipherDecrypt, isCipherAlgo, listCipherAlgos } from "../../src/utils/cipherTools.js";
+
 // =====================
 // TEXT TO BINARY
 // =====================
@@ -286,11 +288,11 @@ console.log(encryptDecrypt("Svool", "decrypt", "atbash"));
 // =====================
 export default {
     name: "Simple Encrypt/Decrypt Tools",
-    description: "Convert text using various encryption methods (no key needed)",
+    description: "Encoding tanpa kunci (base64, base32, hex, rot13, atbash, dll) plus enkripsi simetris berkunci: AES-256-GCM, AES-256-CBC, dan 3DES (des-ede3). Untuk algo berkunci, kunci acak dibuat per-request dan dikembalikan di result.key.",
     category: "Tools",
     methods: ["GET", "POST"],
     
-    params: ["text", "mode", "method"],
+    params: ["text", "mode", "method", "key", "iv", "tag", "ciphertext"],
     
     paramsSchema: {
         text: {
@@ -308,40 +310,97 @@ export default {
         method: {
             type: "string",
             required: false,
-            enum: ["base64", "base32", "binary", "hex", "octal", "rot13", "atbash"],
+            enum: ["base64", "base32", "binary", "hex", "octal", "rot13", "atbash", "aes-256-gcm", "aes-256-cbc", "des-ede3"],
             default: "base64",
-            description: "Encryption method"
+            description: "Metode. base64/rot13/atbash/dll = encoding tanpa kunci. aes-256-gcm/aes-256-cbc/des-ede3 = enkripsi simetris berkunci."
+        },
+        key: {
+            type: "string",
+            required: false,
+            description: "Kunci base64. Untuk mode=encrypt DIJALANKAN acak dan dikembalikan di result.key. Untuk mode=decrypt wajib diisi dengan kunci itu."
+        },
+        iv: {
+            type: "string",
+            required: false,
+            description: "IV base64 dari result encrypt. Wajib untuk decrypt."
+        },
+        tag: {
+            type: "string",
+            required: false,
+            description: "Auth tag base64. Hanya untuk aes-256-gcm."
+        },
+        ciphertext: {
+            type: "string",
+            required: false,
+            description: "Ciphertext base64 dari result encrypt. Wajib untuk decrypt algo ber-key."
         }
     },
     
     run(req, res) {
         try {
-            const { 
-                text, 
-                mode = "encrypt", 
-                method = "base64" 
-            } = req.query;
-            
+            const { text, mode = "encrypt", method = "base64", key, iv, tag, ciphertext } = {
+                ...req.query,
+                ...req.body
+            };
+
+            // ---- Algo berkunci: pisahkan dari encoding ringan ----
+            if (isCipherAlgo(method)) {
+                if (mode === "decrypt") {
+                    const out = cipherDecrypt({ ciphertext, key, iv, tag, algo: method });
+                    return res.json({
+                        status: true,
+                        mode,
+                        method,
+                        result: out
+                    });
+                }
+
+                // Tanpa cek ini String(undefined) jadi "undefined" lalu
+                // terenkripsi, jadi request kosong balik 200 dengan isi "undefined".
+                if (text === undefined || text === null || text === "") {
+                    return res.status(400).json({
+                        status: false,
+                        error: "Parameter 'text' wajib diisi untuk mode=encrypt."
+                    });
+                }
+
+                const out = cipherEncrypt(text, method);
+                return res.json({
+                    status: true,
+                    mode,
+                    method,
+                    result: out
+                });
+            }
+
             if (!text) {
                 return res.status(400).json({
                     status: false,
                     error: "Parameter 'text' is required"
                 });
             }
-            
+
+            if (mode === "decrypt" && ["key", "iv", "ciphertext"].some((f) => req.query?.[f])) {
+                return res.status(400).json({
+                    status: false,
+                    error:
+                        "Parameter 'key'/'iv'/'ciphertext' hanya dipakai untuk mode=decrypt dengan method aes-256-gcm, aes-256-cbc, atau des-ede3."
+                });
+            }
+
             const result = encryptDecrypt(text, mode, method);
-            
+
             if (!result.success) {
                 return res.status(400).json(result);
             }
-            
+
             return res.json({
                 status: true,
                 ...result
             });
-            
+
         } catch (error) {
-            return res.status(500).json({
+            return res.status(400).json({
                 status: false,
                 error: error.message
             });

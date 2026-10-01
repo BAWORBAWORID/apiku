@@ -43,6 +43,14 @@ import setupMiddleware from "../middleware/index.js";
 import setupResponseFormatter from "./responseFormatter.js";
 import rateLimiter from '../middleware/rateLimiter.js';
 import sendReport from '../update/report.js';
+import QRCode from 'qrcode';
+import {
+  createDonation,
+  checkDonationStatus,
+  getDonationSummary,
+  MIN_AMOUNT,
+  MAX_AMOUNT,
+} from '../utils/donasi.js';
 import bcrypt from 'bcryptjs';
 import adminAuth from '../middleware/adminAuth.js';
 import { initDb, recordHit, getStatsSummary, loadAllStats, migrateFromJson, isConnected, closeDb } from '../utils/apiStatsDb.js';
@@ -2343,6 +2351,81 @@ app.get('/support', (req, res) => {
 
 app.get('/changelog', (req, res) => {
   res.sendFile(path.join(process.cwd(), 'public', 'changelog.html'));
+});
+
+/* ------------------------------ halaman donasi ----------------------------- */
+app.get('/donasi', (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'public', 'donate.html'));
+});
+
+// Buat invoice QRIS baru
+app.post('/api/donasi', express.json(), async (req, res) => {
+  try {
+    const { amount, name, message, username } = req.body || {};
+    const record = await createDonation({ amount, name, message, username });
+    res.json({
+      status: true,
+      message: 'QRIS berhasil dibuat. Selesaikan pembayaran sebelum QRIS kedaluwarsa.',
+      data: record,
+    });
+  } catch (err) {
+    res.status(400).json({ status: false, message: err.message });
+  }
+});
+
+// Polling status pembayaran
+app.get('/api/donasi/status', async (req, res) => {
+  try {
+    const id = req.query.id;
+    if (!id) return res.status(400).json({ status: false, message: 'Parameter id wajib diisi.' });
+    // Cek keberadaan dulu supaya "tidak ditemukan" jadi 404, bukan 400.
+    const { getDonation } = await import('../utils/donasi.js');
+    const existing = await getDonation(id);
+    if (!existing) {
+      return res.status(404).json({ status: false, message: 'Invoice tidak ditemukan (atau sudah kedaluwarsa).' });
+    }
+    const record = await checkDonationStatus(id);
+    res.json({ status: true, data: record });
+  } catch (err) {
+    res.status(400).json({ status: false, message: err.message });
+  }
+});
+
+// Ringkasan donasi untuk landing page
+app.get('/api/donasi/summary', async (req, res) => {
+  try {
+    res.json({ status: true, data: await getDonationSummary(req.query.username) });
+  } catch (err) {
+    res.status(500).json({ status: false, message: err.message });
+  }
+});
+
+// Render QRIS dari invoice yang tersimpan
+app.get('/api/donasi/qr/:file', async (req, res) => {
+  try {
+    const raw = path.basename(String(req.params.file || ''), '.png');
+    const { getDonation } = await import('../utils/donasi.js');
+    const record = await getDonation(raw);
+    if (!record?.qrString) return res.status(404).json({ status: false, message: 'QRIS tidak tersedia.' });
+
+    const png = await QRCode.toBuffer(record.qrString, {
+      type: 'png',
+      width: 480,
+      margin: 1,
+      errorCorrectionLevel: 'M',
+      color: { dark: '#000000', light: '#ffffff' },
+    });
+    res.set('Content-Type', 'image/png');
+    res.set('Cache-Control', 'no-store');
+    res.send(png);
+  } catch (err) {
+    res.status(400).json({ status: false, message: err.message });
+  }
+});
+
+// Metadata nominal untuk integrasi frontend
+app.get('/api/donasi/config', (req, res) => {
+  res.json({ status: true, data: { minAmount: MIN_AMOUNT, maxAmount: MAX_AMOUNT, method: 'qris' } });
 });
 
 app.get('/sitemap.xml', (req, res) => {

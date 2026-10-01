@@ -133,7 +133,15 @@ export default {
       session.messages.push(userMessage, { ...assistantPlaceholder, content: answer, parts: [{ type: "text", text: answer }] })
       await saveSession(getSessionFile(sessionId && typeof sessionId === "string" ? sessionId.trim() : ""), session)
 
-      res.json({ status: true, chatId: session.chatId, input: teks.trim(), result: answer, session_id: sessionId?.trim() || null })
+      return res.json({
+        status: true,
+        data: {
+          chatId: session.chatId,
+          input: teks.trim(),
+          result: answer,
+          session_id: sessionId?.trim() || null
+        }
+      })
 
     } catch (err) {
       res.status(500).json({ status: false, message: err.message || "UnlimitedAI request failed" })

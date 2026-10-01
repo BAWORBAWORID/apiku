@@ -22,3 +22,14 @@ Thumbs.db
 
 # Temporary session / solver tokens
 .fd_sp*
+
+# Tooling kredensial / state lokal (jangan pernah di-commit)
+.gtc/
+tmail.json
+qqtube_orders.log
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+data/donasi.json

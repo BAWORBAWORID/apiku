@@ -195,5 +195,55 @@
     "supporter": null,
     "message": null,
     "username": "ranzryuu0101"
+  },
+  {
+    "id": "TRX-17907204339685745",
+    "order_id": "fca5db24-bc53-11f1-afa0-cee239a73494",
+    "payment_url": "https://sociabuzz.com/payment/x/fca5db24-bc53-11f1-afa0-cee239a73494",
+    "payment_info": {
+      "method": "qris",
+      "payment_method": "qris",
+      "type_payment": "qris",
+      "source_payment": "xendit",
+      "qr_string": "00020101021226650013CO.XENDIT.WWW01189360084800000039790215cqVYDD66RpHQkFT0303UME51370014ID.CO.QRIS.WWW0215ID20253920885355204509953033605405100705802ID5923PT Komunika Lintas Maya6015JAKARTA SELATAN61051294062290525PfavgdeBqSQUnKyH5waea2tJm6304322D",
+      "inv_id": "TRIBE-IDR-260930-FCF7EB3ABC5311F1A981CEE239A73494",
+      "pending_url": "https://sociabuzz.com/payment/pending?type=qris&inv_id=TRIBE-IDR-260930-FCF7EB3ABC5311F1A981CEE239A73494",
+      "transaction_id": "TRIBE-IDR-260930-FCF7EB3ABC5311F1A981CEE239A73494"
+    },
+    "amount": 10000,
+    "total_amount": 10070,
+    "fee": 70,
+    "status": "pending",
+    "created_at": "2026-09-29T22:20:33.968Z",
+    "expired_at": "2026-09-29T22:23:33.000Z",
+    "paid_at": null,
+    "supporter": "Zyvor",
+    "message": "test integrasi",
+    "username": "zyvor"
+  },
+  {
+    "id": "TRX-17907205011407221",
+    "order_id": "24c0ce5c-bc54-11f1-b78f-cee239a73494",
+    "payment_url": "https://sociabuzz.com/payment/x/24c0ce5c-bc54-11f1-b78f-cee239a73494",
+    "payment_info": {
+      "method": "qris",
+      "payment_method": "qris",
+      "type_payment": "qris",
+      "source_payment": "xendit",
+      "qr_string": "00020101021226650013CO.XENDIT.WWW01189360084800000039790215cqVYDD66RpHQkFT0303UME51370014ID.CO.QRIS.WWW0215ID20253920885355204509953033605405151065802ID5923PT Komunika Lintas Maya6015JAKARTA SELATAN61051294062290525n8hdyc9mSeNzhQZM4A8fXxFnZ6304E5FA",
+      "inv_id": "TRIBE-IDR-260930-25002778BC5411F1BB6CCEE239A73494",
+      "pending_url": "https://sociabuzz.com/payment/pending?type=qris&inv_id=TRIBE-IDR-260930-25002778BC5411F1BB6CCEE239A73494",
+      "transaction_id": "TRIBE-IDR-260930-25002778BC5411F1BB6CCEE239A73494"
+    },
+    "amount": 15000,
+    "total_amount": 15106,
+    "fee": 106,
+    "status": "pending",
+    "created_at": "2026-09-29T22:21:41.140Z",
+    "expired_at": "2026-09-29T22:24:41.000Z",
+    "paid_at": null,
+    "supporter": "Zyvor ",
+    "message": null,
+    "username": "zyvor"
   }
 ]

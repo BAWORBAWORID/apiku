@@ -1848,12 +1848,12 @@
       }
     },
     "2026-10-01": {
-      "total": 29,
+      "total": 44,
       "byEndpoint": {
-        "/api/imagehd/ai-enhance": 3,
+        "/api/imagehd/ai-enhance": 6,
         "/api/bypass/bypasslinkv2": 2,
         "/api/donasi/summary": 3,
-        "/api/am/bulkv3": 2,
+        "/api/am/bulkv3": 9,
         "/api/am/sendv2": 2,
         "/api/am/verifv2": 5,
         "/api/tools/ccgenerator": 1,
@@ -1862,7 +1862,11 @@
         "/api/tools/ngl-spam": 1,
         "/api/hdvidio/tohd": 1,
         "/api/downloader/9xbuddy": 1,
-        "/api/downloader/allinone": 5
+        "/api/downloader/allinone": 6,
+        "/api/fun/netflix": 1,
+        "/api/phpinfo.php": 1,
+        "/api/maker/fake-afinitas-ml": 1,
+        "/api/maker/fake-ml": 1
       }
     }
   },
@@ -2551,7 +2555,7 @@
       }
     },
     "2026-W40": {
-      "total": 2955,
+      "total": 2970,
       "byEndpoint": {
         "/api/am/bulkv2": 24,
         "/api/hdvidio/tohd": 5,
@@ -2847,7 +2851,7 @@
         "/api/checknumber/xlcheck": 12,
         "/api/download/flac": 1,
         "/api/downloader/allinonev2": 13,
-        "/api/downloader/allinone": 22,
+        "/api/downloader/allinone": 23,
         "/api/downloader/apkmody": 1,
         "/api/downloader/allinonev3": 4,
         "/api/downloader/capcut": 1,
@@ -2952,7 +2956,7 @@
         "/api/imageai/text2image": 1,
         "/api/imageai/text2imgv2": 1,
         "/api/imageai/text2imgv3": 1,
-        "/api/imagehd/ai-enhance": 13,
+        "/api/imagehd/ai-enhance": 16,
         "/api/imagehd/ai-enhancev2": 9,
         "/api/imagehd/ai-enhancev3": 1,
         "/api/imagehd/ai-enhancev4": 3,
@@ -2975,9 +2979,9 @@
         "/api/image/nanobanana": 1,
         "/api/maker/bounty": 8,
         "/api/maker/ektp": 10,
-        "/api/maker/fake-afinitas-ml": 2,
+        "/api/maker/fake-afinitas-ml": 3,
         "/api/maker/fake-ff": 12,
-        "/api/maker/fake-ml": 2,
+        "/api/maker/fake-ml": 3,
         "/api/maker/fake-nokia": 4,
         "/api/maker/fake-profile-ff": 9,
         "/api/maker/fake-tele": 2,
@@ -3134,14 +3138,14 @@
         "/api/tempmail/imailedu": 1,
         "/api/downloader/allinonev4": 11,
         "/api/ai/islamiai": 2,
-        "/api/am/bulkv3": 90,
+        "/api/am/bulkv3": 97,
         "/api/downloader/pinvid": 3,
-        "/api/fun/netflix": 200,
+        "/api/fun/netflix": 201,
         "/api/mcp": 3,
         "/api/search/goal": 7,
         "/api/search/apkcombo": 2,
         "/api/%20am/verify": 1,
-        "/api/phpinfo.php": 2,
+        "/api/phpinfo.php": 3,
         "/apikey.txt": 1,
         "/api/search/bilibili": 7,
         "/api/ai/gitreverse": 3,
@@ -4058,7 +4062,7 @@
       }
     },
     "2026-10": {
-      "total": 84,
+      "total": 99,
       "byEndpoint": {
         "/api/tools/dummylabs": 2,
         "/api/tools/vccgen": 1,
@@ -4079,24 +4083,27 @@
         "/api/donasi": 1,
         "/api/donasi/qr/DNR-MUOP89ZD-E41D.png": 1,
         "/api/donasi/status": 2,
-        "/api/am/bulkv3": 6,
+        "/api/am/bulkv3": 13,
         "/api/bypass/bypasslink": 1,
         "/api/am/bulk": 3,
         "/api/bypass/bypasslinkv3": 1,
-        "/api/fun/netflix": 2,
-        "/api/imagehd/ai-enhance": 3,
+        "/api/fun/netflix": 3,
+        "/api/imagehd/ai-enhance": 6,
         "/api/bypass/bypasslinkv2": 2,
         "/api/tools/ccgenerator": 1,
         "/api/tools/font": 2,
         "/api/tools/ngl-spam": 1,
         "/api/hdvidio/tohd": 1,
         "/api/downloader/9xbuddy": 1,
-        "/api/downloader/allinone": 5
+        "/api/downloader/allinone": 6,
+        "/api/phpinfo.php": 1,
+        "/api/maker/fake-afinitas-ml": 1,
+        "/api/maker/fake-ml": 1
       }
     }
   },
   "allTime": {
-    "total": 119166,
+    "total": 119181,
     "byEndpoint": {
       "/api/am/verify": {
         "total": 138,
@@ -4211,9 +4218,9 @@
         }
       },
       "/api/imagehd/ai-enhance": {
-        "total": 49,
+        "total": 52,
         "byStatus": {
-          "2": 21,
+          "2": 24,
           "3": 1,
           "4": 27
         }
@@ -4225,9 +4232,9 @@
         }
       },
       "/api/downloader/allinone": {
-        "total": 31,
+        "total": 32,
         "byStatus": {
-          "2": 26,
+          "2": 27,
           "4": 5
         }
       },
@@ -4336,9 +4343,9 @@
         }
       },
       "/api/phpinfo.php": {
-        "total": 11,
+        "total": 12,
         "byStatus": {
-          "4": 11
+          "4": 12
         }
       },
       "/api/anime/livechart": {
@@ -5023,9 +5030,9 @@
         }
       },
       "/api/maker/fake-ml": {
-        "total": 31,
+        "total": 32,
         "byStatus": {
-          "2": 22,
+          "2": 23,
           "4": 1,
           "5": 8
         }
@@ -5407,9 +5414,9 @@
         }
       },
       "/api/maker/fake-afinitas-ml": {
-        "total": 25,
+        "total": 26,
         "byStatus": {
-          "2": 8,
+          "2": 9,
           "4": 1,
           "5": 16
         }
@@ -8800,9 +8807,9 @@
         }
       },
       "/api/am/bulkv3": {
-        "total": 113,
+        "total": 120,
         "byStatus": {
-          "2": 113
+          "2": 120
         }
       },
       "/api/downloader/pinvid": {
@@ -8813,9 +8820,9 @@
         }
       },
       "/api/fun/netflix": {
-        "total": 263,
+        "total": 264,
         "byStatus": {
-          "2": 188,
+          "2": 189,
           "4": 75
         }
       },
@@ -9472,7 +9479,7 @@
     }
   },
   "_metadata": {
-    "lastUpdated": "2026-10-01T01:37:27.579Z",
+    "lastUpdated": "2026-10-01T02:48:10.097Z",
     "version": "json"
   }
 }

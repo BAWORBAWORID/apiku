@@ -1,19 +1,19 @@
 /**
- * Photo Editor AI — Image Generator & Editor
+ * Nano Banana V4 — AI Image Generator & Editor
  *
- * Creator: IzzXd
  * Base   : https://api.photoeditorai.io
+ * Support: Text-to-Image & Image-to-Image (Edit)
+ * Proxy  : SOCKS5 Auto Rotation
  *
- * GET  /api/imageai/photoeditorai?prompt=a cat
- * GET  /api/imageai/photoeditorai?prompt=remove background&image=https://...
- * POST /api/imageai/photoeditorai
- * Body : { "prompt": "...", "image": "https://...", "model": "photoeditor_3.0", "ratio": "1:1" }
+ * GET  /api/image/nanobananav4?prompt=a cute cat
+ * GET  /api/image/nanobananav4?url=https://...&prompt=make it smile
+ * POST /api/image/nanobananav4
+ * Body : { "prompt": "...", "url": "https://...", "model": "photoeditor_3.0", "ratio": "1:1" }
  */
 
 import https from "https";
 import crypto from "crypto";
 import { SocksProxyAgent } from "socks-proxy-agent";
-import { HttpsProxyAgent } from "https-proxy-agent";
 import logger from "../../src/utils/logger.js";
 
 const BASE = "https://api.photoeditorai.io";
@@ -51,7 +51,7 @@ const PROXY_API =
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-// ─── Proxy Fetcher ────────────────────────────────────────────
+// ─── Proxy Fetcher & Rotation ─────────────────────────────────
 
 let cachedProxies = [];
 let proxyFetchedAt = 0;
@@ -82,10 +82,6 @@ async function getProxies() {
   }
 }
 
-function pickProxy(list) {
-  return list[Math.floor(Math.random() * list.length)];
-}
-
 // ─── Image Download ───────────────────────────────────────────
 
 async function downloadBuffer(url) {
@@ -103,7 +99,7 @@ function mimeOf(ext) {
   );
 }
 
-// ─── Core API Calls (low-level via node https for proxy support) ──────────────
+// ─── Multipart & HTTP Request ─────────────────────────────────
 
 function buildMultipart(fields, files) {
   const boundary = `----Boundary${Date.now()}`;
@@ -158,7 +154,10 @@ function httpsRequest(url, { method = "POST", headers, body, agent, timeoutMs = 
         }
       });
     });
-    req.on("timeout", () => { req.destroy(); reject(new Error("Request timeout")); });
+    req.on("timeout", () => {
+      req.destroy();
+      reject(new Error("Request timeout"));
+    });
     req.on("error", reject);
     if (body) req.write(body);
     req.end();
@@ -182,7 +181,7 @@ async function postCreateJob({ prompt, imageBuffer, imageExt, model, ratio, imag
 
   const { body, boundary } = buildMultipart(fields, files);
 
-  const result = await httpsRequest(`${BASE}/pe/photo-editor/create-job`, {
+  return httpsRequest(`${BASE}/pe/photo-editor/create-job`, {
     method: "POST",
     headers: {
       "User-Agent": UA,
@@ -196,8 +195,6 @@ async function postCreateJob({ prompt, imageBuffer, imageExt, model, ratio, imag
     agent,
     timeoutMs: 30000,
   });
-
-  return result;
 }
 
 async function getJob(jobId, agent) {
@@ -213,13 +210,13 @@ async function getJob(jobId, agent) {
   });
 }
 
-// ─── Main Logic ───────────────────────────────────────────────
+// ─── Core Runner with Proxy ───────────────────────────────────
 
 async function runWithProxy(params, proxyUrl) {
   const agent = proxyUrl ? new SocksProxyAgent(proxyUrl) : undefined;
   const tag = proxyUrl ? proxyUrl.slice(0, 35) : "direct";
 
-  logger.info(`[PhotoEditorAI] Try ${tag}`);
+  logger.info(`[NANOBANANA-V4] Try ${tag}`);
 
   const createRes = await postCreateJob({ ...params, agent });
 
@@ -236,7 +233,7 @@ async function runWithProxy(params, proxyUrl) {
   }
 
   const jobId = d.result.job_id || d.result.id;
-  logger.info(`[PhotoEditorAI] Job ${jobId} created via ${tag}`);
+  logger.info(`[NANOBANANA-V4] Job ${jobId} created via ${tag}`);
 
   // Poll
   const deadline = Date.now() + 90000;
@@ -263,37 +260,43 @@ function extractUrls(result) {
 // ─── API Export ───────────────────────────────────────────────
 
 export default {
-  name: "Photo Editor AI",
+  name: "Nano Banana V4",
   description:
-    "AI Image generator & photo editor via PhotoEditorAI. Support text-to-image & image-to-image. Model: photoeditor_3.0, nano_banana, qwen, seedream, gpt_image_2, dll. Auto rotate proxy socks5 untuk bypass rate limit.",
-  category: "Image AI",
+    "AI image generator & editor via PhotoEditorAI (Text-to-Image / Image-to-Image) with auto-rotating SOCKS5 proxy",
+  category: "Image",
   methods: ["GET", "POST"],
-  params: ["prompt", "image", "model", "ratio"],
+  params: ["prompt", "url", "image", "model", "ratio"],
 
   paramsSchema: {
     prompt: {
       type: "string",
       required: true,
-      description: "Deskripsi atau instruksi edit gambar",
-      example: "a futuristic city at night",
+      description: "Deskripsi gambar atau instruksi editing",
+      example: "a futuristic cyberpunk cat in neon city",
+    },
+    url: {
+      type: "string",
+      required: false,
+      description: "URL gambar sumber untuk mode Image-to-Image / Edit (opsional)",
+      example: "https://example.com/photo.jpg",
     },
     image: {
       type: "string",
       required: false,
-      description: "URL gambar sumber untuk image-to-image / edit (opsional)",
+      description: "Alias parameter untuk url gambar (opsional)",
       example: "https://example.com/photo.jpg",
     },
     model: {
       type: "string",
       required: false,
       default: DEFAULT_MODEL,
-      description: `Model. Pilihan: ${Object.values(MODELS).join(", ")}`,
+      description: `Model AI. Pilihan: ${Object.values(MODELS).join(", ")}`,
       example: "photoeditor_3.0",
     },
     ratio: {
       type: "string",
       required: false,
-      description: "Rasio output. Contoh: 1:1, 16:9, 9:16. Default: 1:1 (txt2img) atau match_input_image (img2img)",
+      description: "Rasio output gambar (1:1, 16:9, 9:16, 3:4). Default: 1:1 (text2img) atau match_input_image (img2img)",
       example: "1:1",
     },
   },
@@ -301,15 +304,16 @@ export default {
   async run(req, res) {
     const startTime = Date.now();
     const params = { ...req.query, ...req.body };
-    const { prompt, image: imageUrl, model: modelInput, ratio } = params;
+    const { prompt, url, image, model: modelInput, ratio } = params;
+    const imageUrl = url || image;
 
     if (!prompt) {
       return res.status(400).json({
         status: false,
         message: "Parameter 'prompt' wajib diisi",
         example: {
-          get: "/api/imageai/photoeditorai?prompt=a futuristic city",
-          post: { prompt: "a futuristic city", model: "photoeditor_3.0" },
+          text2image: "/api/image/nanobananav4?prompt=a futuristic city",
+          image2image: "/api/image/nanobananav4?url=https://example.com/photo.jpg&prompt=make it cyber",
         },
       });
     }
@@ -319,7 +323,7 @@ export default {
       (Object.values(MODELS).includes(modelInput) ? modelInput : DEFAULT_MODEL);
     const finalRatio = ratio || (imageUrl ? "match_input_image" : "1:1");
 
-    // Download image jika ada
+    // Download image jika disediakan
     let imageBuffer = null;
     let imageExt = "jpg";
     if (imageUrl) {
@@ -328,20 +332,23 @@ export default {
         imageBuffer = dl.buffer;
         imageExt = dl.ext;
       } catch (err) {
-        return res.status(400).json({ status: false, message: `Gagal download image: ${err.message}` });
+        return res.status(400).json({
+          status: false,
+          message: `Gagal download image: ${err.message}`,
+        });
       }
     }
 
     const jobParams = { prompt, imageBuffer, imageExt, model, ratio: finalRatio };
 
-    // Fetch proxy list (non-blocking, max 8s)
+    // Fetch proxy list
     const proxies = await Promise.race([getProxies(), sleep(8000).then(() => [])]);
-    logger.info(`[PhotoEditorAI] ${proxies.length} proxies loaded | model=${model} prompt="${prompt}"`);
+    logger.info(`[NANOBANANA-V4] ${proxies.length} proxies loaded | model=${model} prompt="${prompt}"`);
 
     let result = null;
     let lastErr = null;
 
-    // Shuffle & try up to 10 proxies
+    // Coba hingga 10 proxy random
     const tryList = [...proxies].sort(() => Math.random() - 0.5).slice(0, 10);
 
     for (const proxyUrl of tryList) {
@@ -350,14 +357,14 @@ export default {
         break;
       } catch (err) {
         lastErr = err;
-        if (err.message === "DAILY_LIMIT") break; // no point retrying
-        logger.warn(`[PhotoEditorAI] Proxy failed: ${err.message.slice(0, 80)}`);
+        if (err.message === "DAILY_LIMIT") break;
+        logger.warn(`[NANOBANANA-V4] Proxy fail: ${err.message.slice(0, 80)}`);
       }
     }
 
-    // Fallback direct
+    // Fallback direct jika proxy gagal
     if (!result) {
-      logger.info("[PhotoEditorAI] All proxies failed or none available, trying direct...");
+      logger.info("[NANOBANANA-V4] All proxies failed, trying direct...");
       try {
         result = await runWithProxy(jobParams, null);
       } catch (err) {
@@ -368,11 +375,11 @@ export default {
     if (!result) {
       const msg =
         lastErr?.message === "CREDITS_EMPTY"
-          ? "Insufficient credits — semua proxy & direct limit habis"
+          ? "Insufficient credits — seluruh kuota proxy habis"
           : lastErr?.message === "DAILY_LIMIT"
           ? "Daily limit reached"
           : lastErr?.message || "Generation failed";
-      logger.error(`[PhotoEditorAI] Final fail: ${msg}`);
+      logger.error(`[NANOBANANA-V4] Final fail: ${msg}`);
       return res.status(500).json({
         status: false,
         message: msg,
@@ -382,10 +389,13 @@ export default {
 
     const images = extractUrls(result);
     if (!images.length) {
-      return res.status(500).json({ status: false, message: "Tidak ada URL gambar di hasil API" });
+      return res.status(500).json({
+        status: false,
+        message: "Tidak ada URL gambar pada hasil pemrosesan",
+      });
     }
 
-    logger.info(`[PhotoEditorAI] Done — ${images.length} image(s) in ${Date.now() - startTime}ms`);
+    logger.info(`[NANOBANANA-V4] Done — ${images.length} image(s) in ${Date.now() - startTime}ms`);
 
     return res.json({
       status: true,

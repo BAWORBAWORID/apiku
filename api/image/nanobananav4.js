@@ -265,7 +265,7 @@ export default {
     "AI image generator & editor via PhotoEditorAI (Text-to-Image / Image-to-Image) with auto-rotating SOCKS5 proxy",
   category: "Image",
   methods: ["GET", "POST"],
-  params: ["prompt", "url", "image", "model", "ratio"],
+  params: ["prompt", "url", "model", "ratio"],
 
   paramsSchema: {
     prompt: {
@@ -280,23 +280,20 @@ export default {
       description: "URL gambar sumber untuk mode Image-to-Image / Edit (opsional)",
       example: "https://example.com/photo.jpg",
     },
-    image: {
-      type: "string",
-      required: false,
-      description: "Alias parameter untuk url gambar (opsional)",
-      example: "https://example.com/photo.jpg",
-    },
     model: {
       type: "string",
       required: false,
       default: DEFAULT_MODEL,
-      description: `Model AI. Pilihan: ${Object.values(MODELS).join(", ")}`,
+      enum: Object.values(MODELS),
+      description: `Pilihan model AI: ${Object.values(MODELS).join(", ")}`,
       example: "photoeditor_3.0",
     },
     ratio: {
       type: "string",
       required: false,
-      description: "Rasio output gambar (1:1, 16:9, 9:16, 3:4). Default: 1:1 (text2img) atau match_input_image (img2img)",
+      default: "1:1",
+      enum: ["1:1", "16:9", "9:16", "3:4", "4:3", "match_input_image"],
+      description: "Rasio output gambar (1:1, 16:9, 9:16, 3:4, 4:3, match_input_image)",
       example: "1:1",
     },
   },
@@ -304,8 +301,7 @@ export default {
   async run(req, res) {
     const startTime = Date.now();
     const params = { ...req.query, ...req.body };
-    const { prompt, url, image, model: modelInput, ratio } = params;
-    const imageUrl = url || image;
+    const { prompt, url: imageUrl, model: modelInput, ratio } = params;
 
     if (!prompt) {
       return res.status(400).json({

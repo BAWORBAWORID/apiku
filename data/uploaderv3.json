@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "id": "14bff427c1c91582.mp4",
+    "originalName": "ssstik.io_@marsel_adtyy_1790772950761.mp4",
+    "size": 2412732,
+    "mimetype": "video/mp4",
+    "urls": [
+      {
+        "cdn": "cloudstorage",
+        "url": "https://amplify-mindbytebackend-j-mindbyteappbucket40d036a-nhen0zx97aq3.s3.us-east-1.amazonaws.com/public/uploads/1790898701653-14bff427c1c91582.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAQ4WWJG7ZMKYW3F7H%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T235144Z&X-Amz-Expires=86400&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEMD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQCxIwO2%2B1UKwZlJPmt8OkcwPjf1hMDFbDppv7fcwB3hsQIhANt2OmsimBkfd6wmUgyUOjwEnTWFDu8nLZHht4Y281FcKrcFCIn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMMDYxNjUyNjc4NjQyIgy8YOi%2FHvyswm1i6ooqiwV10sGIIqRDQNcagdLJiZSnpZWKZyaklEkhnpl7DsPqmC%2BUhsWupXvyO3c9%2BOfvQOx%2F0HokxzNm5%2BwtgQ21q4Btm8hbQi3lEsKSXgdNsohkW9qRM547tt9mC%2FVYmqJOANh67JrXZWM1%2BIYfqY6%2FzAzHEYzjiGUVHZH7suVx6xmi5gkU0iEBOTJDOiy78zZr2dRvpXcb6SzS8%2BEcXwYs0rngmfHGK9C2WyaUAIsT3Qg5sQ4mfAOfek2DwHTsDQMDLpzD%2BA7MrLpQmWZsDL37wc31KYhEssE1UVbvvzkcvvOz3VPKV4tfltF0BBvkbQ19fDveWrq0J8yyTWAKQ7xqk56czJCAYSs4zdDyxyt0dbabNnfKzI86f8vpP14TthYzfGcmGjndJfziKUc6R3AO4OJUg6Y9K5BO7T9coh3hSGrxAp0eg548rjj3Qw7ovy7ER0TPJfJ5IjZRtnDJFiqdy414pQ3KZ4xetrKefs7iiRr%2FKZQerCaNEOh5NHPHS6YKaptMdjSdvSXjbE51EOu07PBBBOxNJnsLeDMg%2FJNNFuMvVOsf9VU5altpvQqgV25iUSfgoUKQqwGOnSiL9%2FdNIhODcTDPSLHiiApyWsbo7Xd%2BhA1jAB6aSgivtswfiVXsI9u%2F2Rv0TC8Wt9ctQS13OLvx5sPjNOn6BJIs%2BwnXJDa7SN0hTzny%2FgDX3AaEXStBGUNVjl2yv56S9HUJjL6CWw5x8S9k2lxeLwLkg%2Bd16U14XmZuTw5yFIYw1bI2W0v0eFExyv%2BjekREHAfEt9FQbSxdyQKqN77DpboxrVcdO3JzFJ0v9oCsXEAcVZUGvAyyyc4ZMU2sLhwbnYKi0ds4V2d%2FDPd55cEO%2BA3WgS0wjeT71QY63QK18rGsBDX%2FLkI9AqM3M9z%2BWLaBo2ZIo11YefriGcvlhlBXvp9Mbc2X8n%2FRZABdELzXUsxi1CvLKP2B7csXUkfpI4K8ApguGAX356h4VRfRbh3JzVGFI1WpRWuJpYZX0o%2FiTSxlTlljd%2BckZHSLzPHMhkcctGfTblbFfQXJ%2FOh4rplU9RnRKFHYOC5diuCtmkerVT21G26jfGubE3hG%2Bcq0wnG464dH6Y5ZX4Q5qP95%2BiJL3fj70BDk9dFPeQ2P1LFkUwLOs60OCC2R5uwAyuAcChorlwE9i0h8%2FmWkGmhAZ4x2oXqOMdzXSI%2FRCFWoLaVxbNGqD8GCMqhiOTNkWK3JkzDhSC1U22pu%2BkwVyFdsR3SbRRTdcS2GyUQSAxWzgQj55Ka6y%2F9YaEl66KlYofvmiG9FrCQv%2FEyf5RjZFj8nHFQ3%2BqNlKNaFs7RjFHrA9MUkUZY9uTIyyNghmPj0&X-Amz-Signature=0787877c3353fcad8f0d3e63df5a1335128427972b30166d6d4445c023e14992&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+      },
+      {
+        "cdn": "poners",
+        "url": "https://u.pone.rs/zytrynko.mp4"
+      },
+      {
+        "cdn": "nekohime",
+        "url": "https://cdn.nekohime.site/file/h4mivcl8.mp4"
+      },
+      {
+        "cdn": "zasscdn",
+        "url": "https://cdn.zass.in/UuTrgxdDwS.mp4"
+      },
+      {
+        "cdn": "aceimg",
+        "url": "https://cdn.aceimg.com/MQ8GzScmN.mp4"
+      }
+    ],
+    "expiresAt": "2026-10-02T08:51:53.176Z",
+    "createdAt": "2026-10-01T23:51:53.176Z"
+  }
+]

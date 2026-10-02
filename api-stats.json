@@ -1848,27 +1848,159 @@
       }
     },
     "2026-10-01": {
-      "total": 48,
+      "total": 542,
       "byEndpoint": {
-        "/api/imagehd/ai-enhance": 6,
-        "/api/bypass/bypasslinkv2": 2,
-        "/api/donasi/summary": 3,
-        "/api/am/bulkv3": 9,
-        "/api/am/sendv2": 2,
-        "/api/am/verifv2": 5,
+        "/api/imagehd/ai-enhance": 10,
+        "/api/bypass/bypasslinkv2": 5,
+        "/api/donasi/summary": 8,
+        "/api/am/bulkv3": 35,
+        "/api/am/sendv2": 6,
+        "/api/am/verifv2": 46,
         "/api/tools/ccgenerator": 1,
-        "/api/tools/dummylabs": 1,
+        "/api/tools/dummylabs": 3,
         "/api/tools/font": 2,
-        "/api/tools/ngl-spam": 1,
+        "/api/tools/ngl-spam": 8,
         "/api/hdvidio/tohd": 1,
         "/api/downloader/9xbuddy": 1,
-        "/api/downloader/allinone": 7,
-        "/api/fun/netflix": 1,
+        "/api/downloader/allinone": 20,
+        "/api/fun/netflix": 23,
         "/api/phpinfo.php": 1,
-        "/api/maker/fake-afinitas-ml": 1,
-        "/api/maker/fake-ml": 1,
-        "/api/solve/turnstile": 2,
-        "/api/tools/web2apk": 1
+        "/api/maker/fake-afinitas-ml": 3,
+        "/api/maker/fake-ml": 2,
+        "/api/solve/turnstile": 32,
+        "/api/tools/web2apk": 3,
+        "/api/image/nanobananav4": 4,
+        "/api/bypass/bypasslink": 5,
+        "/api/bypass/wellbypass": 2,
+        "/api/maker/students": 1,
+        "/api/stalker/tiktok": 3,
+        "/api/tools/fakedata": 2,
+        "/api/tools/proxy2": 1,
+        "/api/topup/cek": 2,
+        "/api/topup/dana": 1,
+        "/api/random/blue-archive": 4,
+        "/api/am/verify": 7,
+        "/api/stalker/freefire": 11,
+        "/api/stalker/instagram": 1,
+        "/api/canvas/applemusic": 1,
+        "/api/canvas/createlogo": 2,
+        "/api/canvas/roblox": 1,
+        "/api/canvas/sertifikat-tolol": 1,
+        "/api/canvas/welcomev4": 1,
+        "/api/canvas/welcomev3": 2,
+        "/api/ephoto/ephoto": 1,
+        "/api/fun/capcut": 9,
+        "/api/fun/reach-ch2": 11,
+        "/api/fun/philosopher-quotes": 2,
+        "/api/ai/aichatting": 17,
+        "/api/ai/askme": 1,
+        "/api/ai/aiseek": 1,
+        "/api/ai/chatai": 1,
+        "/api/v1/models": 2,
+        "/api/v2/models": 2,
+        "/api/v3/models": 3,
+        "/api/am/bulk": 8,
+        "/api/v2/chat/completions": 5,
+        "/api/v1/chat/completions": 1,
+        "/api/fun/tiktokviewstatus": 9,
+        "/bypass/bypasslink": 9,
+        "/bypass/bypasslinkv2": 8,
+        "/bypass/bypasslinkv3": 8,
+        "/api/bypass/bypasslinkv3": 6,
+        "/bypass/safelink": 8,
+        "/api/bypass/safelink": 2,
+        "/bypass/wellbypass": 8,
+        "/api/stalker/ml": 4,
+        "/api/am/send": 36,
+        "/api/tools/encrypt": 2,
+        "/api/am/sendv3": 14,
+        "/api/downloader/youtubev4": 3,
+        "/api/downloader/youtubev2": 3,
+        "/api/downloader/youtubev1": 6,
+        "/api/downloader/youtubev3": 3,
+        "/api/tools/spam-otp": 4,
+        "/api/stalker/deepsearch": 1,
+        "/api/maker/wafat": 1,
+        "/api/tools/kodepos": 1,
+        "/api/tools/password-generator": 1,
+        "/api/tools/qr2text": 1,
+        "/api/tools/useragent": 4,
+        "/api/tools/uuid": 2,
+        "/api/solve/getsitekey": 1,
+        "/api/search/apkcombo": 1,
+        "/api/maker/bounty": 2,
+        "/api/tools/vccgen": 3,
+        "/api/imagehd/upscalev2": 10,
+        "/api/tools/upload2": 2,
+        "/api/maker/fakecall-andro": 1,
+        "/api/maker/fake-ff": 3,
+        "/api/movie/publicdomain": 1,
+        "/api/tempmail/1timetech": 1,
+        "/api/stalker/ml-id": 1,
+        "/api/anime/anichi": 1,
+        "/api/image/nsfw-check": 2,
+        "/api/downloader/meganz": 1,
+        "/api/tools/upload": 3,
+        "/api/maker/iqc": 1,
+        "/api/maker/fake-profile-ff": 2,
+        "/api/maker/fakech": 1,
+        "/api/maker/saldo-dana": 1,
+        "/api/imageai/freeforai": 1,
+        "/api/primbon/nomorhoki": 1,
+        "/api/search/7reels": 1,
+        "/api/search/spotifyv2": 1,
+        "/api/search/tiktok-search": 1,
+        "/api/checknumber/xlcheck": 3,
+        "/api/tools/proxy": 1,
+        "/api/canvas/wmp": 5,
+        "/api/checknumber/checknumber": 1,
+        "/api/imagehd/wink-hd": 1,
+        "/api/canvas/boarding-nasa": 1,
+        "/api/canvas/drake": 1,
+        "/api/canvas/carbon": 2,
+        "/api/tempmail/multidomain": 1,
+        "/api/payment/qris-static-v2": 1,
+        "/api/topup/ff": 1,
+        "/api/status": 2,
+        "/api/downloader/igexport": 3,
+        "/api/downloader/allinonev3": 2,
+        "/api/downloader/allinonev2": 1,
+        "/api/tools/catbox": 2,
+        "/api/tools/upload-v3": 1
+      }
+    },
+    "2026-10-02": {
+      "total": 128,
+      "byEndpoint": {
+        "/api/downloader/allinone": 1,
+        "/api/bypass/bypasslinkv3": 2,
+        "/api/image/nanobananav4": 1,
+        "/api/am/send": 3,
+        "/api": 2,
+        "/api/am/verifv2": 2,
+        "/api/tempmail/instanttempemail": 10,
+        "/api/am/verify": 1,
+        "/api/solve/turnstile": 22,
+        "/api/stalker/ml": 1,
+        "/api/stalker/freefire": 1,
+        "/api/am/sendv2": 2,
+        "/api/fun/netflix": 1,
+        "/api/am/bulkv2": 1,
+        "/api/search/sigstick": 29,
+        "/api/tools/proxy": 1,
+        "/api/tools/proxy2": 1,
+        "/api/fun/reach-ch": 17,
+        "/fun/reach-ch": 1,
+        "/api/am/bulkv3": 2,
+        "/api/topup/ml": 3,
+        "/api/imagehd/upscalev2": 3,
+        "/api/fun/reach-ch2": 3,
+        "/api/anime/donghive": 7,
+        "/api/search/8daudio": 7,
+        "/api/bypass/safelink": 1,
+        "/api/bypass/bypasslink": 1,
+        "/api/bypass/bypasslinkv2": 1,
+        "/api/bypass/wellbypass": 1
       }
     }
   },
@@ -2557,19 +2689,19 @@
       }
     },
     "2026-W40": {
-      "total": 2974,
+      "total": 3596,
       "byEndpoint": {
-        "/api/am/bulkv2": 24,
+        "/api/am/bulkv2": 25,
         "/api/hdvidio/tohd": 5,
         "/api/config": 9,
         "/api/channel": 9,
         "/api/keys": 11,
         "/api/token": 8,
-        "/api/status": 37,
-        "/api/downloader/youtubev1": 38,
-        "/api/solve/turnstile": 129,
-        "/api/stalker/ml-id": 3,
-        "/api/tempmail/1timetech": 36,
+        "/api/status": 39,
+        "/api/downloader/youtubev1": 44,
+        "/api/solve/turnstile": 181,
+        "/api/stalker/ml-id": 4,
+        "/api/tempmail/1timetech": 37,
         "/api/checknumber/checkban": 13,
         "/api/canvas/brat": 2,
         "/api/canvas/brat-anime": 3,
@@ -2620,12 +2752,12 @@
         "/api/user/self/groups": 1,
         "/api/user/available_models": 1,
         "/api/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php": 4,
-        "/api/bypass/bypasslinkv3": 19,
-        "/api/am/verify": 33,
-        "/api/am/bulk": 65,
-        "/api/bypass/bypasslink": 23,
+        "/api/bypass/bypasslinkv3": 27,
+        "/api/am/verify": 41,
+        "/api/am/bulk": 73,
+        "/api/bypass/bypasslink": 29,
         "/api/bypass/move2link": 4,
-        "/api/bypass/bypasslinkv2": 33,
+        "/api/bypass/bypasslinkv2": 37,
         "/api/.env.": 1,
         "/api/.env%20": 1,
         "/api/.env%09": 1,
@@ -2759,12 +2891,12 @@
         "/api/": 1,
         "/api/openapi.json": 2,
         "/api-docs": 1,
-        "/api/ai/chatai": 4,
+        "/api/ai/chatai": 5,
         "/api/ai/chatgpt-org": 1,
         "/api/ai/chatgpt": 8,
-        "/api/ai/aichatting": 8,
-        "/api/ai/aiseek": 1,
-        "/api/ai/askme": 2,
+        "/api/ai/aichatting": 25,
+        "/api/ai/aiseek": 2,
+        "/api/ai/askme": 3,
         "/api/ai/apodex": 5,
         "/api/ai/chatilm": 4,
         "/api/ai/chatgptis": 2,
@@ -2817,59 +2949,59 @@
         "/api/ai/zerogpt": 1,
         "/api/ai/voidchat": 1,
         "/api/ai/wormgpt": 3,
-        "/api/am/send": 44,
-        "/api/am/sendv2": 55,
-        "/api/am/verifv2": 43,
-        "/api/anime/anichi": 7,
+        "/api/am/send": 83,
+        "/api/am/sendv2": 61,
+        "/api/am/verifv2": 86,
+        "/api/anime/anichi": 8,
         "/api/anime/anichin-help": 1,
         "/api/anime/animexin": 1,
         "/api/anime/anichin": 3,
         "/api/anime/livechart": 3,
         "/api/anime/winbu": 17,
         "/api/bypass/modjall": 2,
-        "/api/bypass/safelink": 14,
+        "/api/bypass/safelink": 17,
         "/api/bypass/shrinkme": 2,
-        "/api/bypass/wellbypass": 9,
+        "/api/bypass/wellbypass": 12,
         "/api/anime/animeav1": 18,
-        "/api/canvas/boarding-nasa": 1,
-        "/api/canvas/applemusic": 3,
+        "/api/canvas/boarding-nasa": 2,
+        "/api/canvas/applemusic": 4,
         "/api/canvas/brat-gojo": 1,
         "/api/canvas/bratvid-gojo": 1,
         "/api/canvas/brat-vermeil": 1,
         "/api/canvas/bratvid-vermeil": 1,
-        "/api/canvas/carbon": 3,
-        "/api/canvas/createlogo": 1,
+        "/api/canvas/carbon": 5,
+        "/api/canvas/createlogo": 3,
         "/api/canvas/reminder": 1,
-        "/api/canvas/roblox": 4,
-        "/api/canvas/sertifikat-tolol": 2,
+        "/api/canvas/roblox": 5,
+        "/api/canvas/sertifikat-tolol": 3,
         "/api/canvas/struk-generator": 1,
         "/api/canvas/welcomev1": 1,
         "/api/canvas/welcomev2": 1,
-        "/api/canvas/welcomev3": 2,
-        "/api/canvas/welcomev4": 1,
-        "/api/canvas/wmp": 8,
+        "/api/canvas/welcomev3": 4,
+        "/api/canvas/welcomev4": 2,
+        "/api/canvas/wmp": 13,
         "/api/checknumber/simdopul": 3,
         "/api/checknumber/tricheck": 3,
-        "/api/checknumber/xlcheck": 12,
+        "/api/checknumber/xlcheck": 15,
         "/api/download/flac": 1,
-        "/api/downloader/allinonev2": 13,
-        "/api/downloader/allinone": 24,
+        "/api/downloader/allinonev2": 14,
+        "/api/downloader/allinone": 38,
         "/api/downloader/apkmody": 1,
-        "/api/downloader/allinonev3": 4,
+        "/api/downloader/allinonev3": 6,
         "/api/downloader/capcut": 1,
         "/api/downloader/capcutv2": 1,
-        "/api/canvas/drake": 1,
+        "/api/canvas/drake": 2,
         "/api/downloader/facebook": 1,
         "/api/downloader/gdrive": 1,
         "/api/downloader/getdl": 2,
         "/api/downloader/gtw": 1,
         "/api/downloader/insvid": 4,
-        "/api/downloader/igexport": 1,
+        "/api/downloader/igexport": 4,
         "/api/downloader/lk21v2": 2,
         "/api/downloader/mcpelife": 1,
         "/api/downloader/mediafire": 1,
         "/api/downloader/mediafirev2": 1,
-        "/api/downloader/meganz": 2,
+        "/api/downloader/meganz": 3,
         "/api/downloader/omnify": 14,
         "/api/downloader/pinterest-dl": 2,
         "/api/downloader/pinterest": 9,
@@ -2889,19 +3021,19 @@
         "/api/downloader/webtoon": 1,
         "/api/downloader/weibo": 1,
         "/api/downloader/youtube-analytic": 1,
-        "/api/downloader/youtubev2": 10,
-        "/api/downloader/youtubev3": 7,
-        "/api/downloader/youtubev4": 12,
+        "/api/downloader/youtubev2": 13,
+        "/api/downloader/youtubev3": 10,
+        "/api/downloader/youtubev4": 15,
         "/api/downloader/zippyshare": 1,
-        "/api/ephoto/ephoto": 1,
+        "/api/ephoto/ephoto": 2,
         "/api/ephoto/photooxy": 1,
         "/api/ephoto/textpro": 1,
-        "/api/fun/capcut": 16,
-        "/api/fun/reach-ch": 1,
+        "/api/fun/capcut": 25,
+        "/api/fun/reach-ch": 18,
         "/api/fun/tikboost": 3,
         "/api/fun/tiktokview": 3,
-        "/api/fun/tiktokviewstatus": 4,
-        "/api/fun/philosopher-quotes": 2,
+        "/api/fun/tiktokviewstatus": 13,
+        "/api/fun/philosopher-quotes": 4,
         "/api/games/asahotak": 2,
         "/api/games/cc-sd": 1,
         "/api/games/caklontong": 2,
@@ -2938,7 +3070,7 @@
         "/api/image/nanobanana-lite": 1,
         "/api/image/nanobananav2": 1,
         "/api/image/nanobananav3": 1,
-        "/api/image/nsfw-check": 4,
+        "/api/image/nsfw-check": 6,
         "/api/image/removebg": 2,
         "/api/image/removebgbgv2": 3,
         "/api/games/tebaksurah": 1,
@@ -2950,7 +3082,7 @@
         "/api/image/unwatermark": 1,
         "/api/imageai/bingimg": 1,
         "/api/imageai/dezgo": 1,
-        "/api/imageai/freeforai": 1,
+        "/api/imageai/freeforai": 2,
         "/api/imageai/nanobanana": 1,
         "/api/imageai/pollinations": 1,
         "/api/imageai/quil-image": 1,
@@ -2958,7 +3090,7 @@
         "/api/imageai/text2image": 1,
         "/api/imageai/text2imgv2": 1,
         "/api/imageai/text2imgv3": 1,
-        "/api/imagehd/ai-enhance": 16,
+        "/api/imagehd/ai-enhance": 20,
         "/api/imagehd/ai-enhancev2": 9,
         "/api/imagehd/ai-enhancev3": 1,
         "/api/imagehd/ai-enhancev4": 3,
@@ -2974,18 +3106,18 @@
         "/api/imagehd/sparkpix": 1,
         "/api/imagehd/super-resolution": 1,
         "/api/imagehd/upscale": 1,
-        "/api/imagehd/upscalev2": 1,
+        "/api/imagehd/upscalev2": 14,
         "/api/imagehd/upscalev3": 1,
         "/api/imagehd/webability": 1,
-        "/api/imagehd/wink-hd": 7,
+        "/api/imagehd/wink-hd": 8,
         "/api/image/nanobanana": 1,
-        "/api/maker/bounty": 8,
+        "/api/maker/bounty": 10,
         "/api/maker/ektp": 10,
-        "/api/maker/fake-afinitas-ml": 3,
-        "/api/maker/fake-ff": 12,
-        "/api/maker/fake-ml": 3,
+        "/api/maker/fake-afinitas-ml": 5,
+        "/api/maker/fake-ff": 15,
+        "/api/maker/fake-ml": 4,
         "/api/maker/fake-nokia": 4,
-        "/api/maker/fake-profile-ff": 9,
+        "/api/maker/fake-profile-ff": 11,
         "/api/maker/fake-tele": 2,
         "/api/maker/fake-tweet": 1,
         "/api/kalender/hari-ini": 2,
@@ -2993,10 +3125,10 @@
         "/api/maker/fakebook": 1,
         "/api/kalender/hari-libur": 2,
         "/api/maker/fakebca": 6,
-        "/api/maker/fakech": 2,
+        "/api/maker/fakech": 3,
         "/api/maker/fakedev": 2,
         "/api/maker/fakegc": 1,
-        "/api/maker/fakecall-andro": 7,
+        "/api/maker/fakecall-andro": 8,
         "/api/maker/fakecall-ios": 1,
         "/api/maker/fakeig": 2,
         "/api/maker/fakeigprofilev2": 2,
@@ -3005,7 +3137,7 @@
         "/api/maker/fakenotifwa": 2,
         "/api/maker/fakeigprofile": 1,
         "/api/maker/iqc-pink": 3,
-        "/api/maker/iqc": 2,
+        "/api/maker/iqc": 3,
         "/api/maker/jarvis-meme": 2,
         "/api/maker/motivasi": 2,
         "/api/maker/nulis": 1,
@@ -3019,16 +3151,16 @@
         "/api/maker/saldo-gopay": 1,
         "/api/maker/sertifikat-nasa": 2,
         "/api/maker/ttqc": 2,
-        "/api/maker/wafat": 1,
+        "/api/maker/wafat": 2,
         "/api/nsfw/foot": 1,
         "/api/nsfw/masturbation": 1,
-        "/api/payment/qris-static-v2": 6,
+        "/api/payment/qris-static-v2": 7,
         "/api/payment/qris-static": 4,
         "/api/payment/sociabuzz-create": 6,
         "/api/payment/sociabuzz-status": 4,
         "/api/primbon/artinama": 2,
         "/api/primbon/cocokpasangan": 1,
-        "/api/primbon/nomorhoki": 1,
+        "/api/primbon/nomorhoki": 2,
         "/api/primbon/penyakit": 1,
         "/api/primbon/ramalanjodohbali": 1,
         "/api/primbon/ramaljodoh": 1,
@@ -3037,8 +3169,8 @@
         "/api/primbon/tafsirmimpi": 1,
         "/api/primbon/zodiac": 1,
         "/api/random/quotesanime": 1,
-        "/api/random/blue-archive": 2,
-        "/api/maker/saldo-dana": 6,
+        "/api/random/blue-archive": 6,
+        "/api/maker/saldo-dana": 7,
         "/api/maker/iqc-dark": 5,
         "/api/search/anime": 2,
         "/api/search/bacakomik": 1,
@@ -3075,9 +3207,9 @@
         "/api/search/search-song": 1,
         "/api/search/soundcloud": 1,
         "/api/search/spotify": 3,
-        "/api/search/spotifyv2": 2,
+        "/api/search/spotifyv2": 3,
         "/api/search/terabox": 12,
-        "/api/search/tiktok-search": 2,
+        "/api/search/tiktok-search": 3,
         "/api/search/tokusatsu": 1,
         "/api/search/webtoon": 1,
         "/api/search/wikipedia": 2,
@@ -3087,18 +3219,18 @@
         "/api/search/youtube-search": 1,
         "/api/solve/cloudflare": 3,
         "/api/solve/friendly": 2,
-        "/api/solve/getsitekey": 4,
+        "/api/solve/getsitekey": 5,
         "/api/solve/recaptcha-v3": 2,
         "/api/solve/uam": 2,
         "/api/solve/waf": 2,
-        "/api/stalker/deepsearch": 8,
-        "/api/stalker/freefire": 11,
+        "/api/stalker/deepsearch": 9,
+        "/api/stalker/freefire": 23,
         "/api/stalker/getcontact": 6,
         "/api/stalker/github": 2,
-        "/api/stalker/ml": 13,
+        "/api/stalker/ml": 18,
         "/api/stalker/roblox": 6,
         "/api/stalker/telegram": 12,
-        "/api/stalker/tiktok": 6,
+        "/api/stalker/tiktok": 9,
         "/api/stalker/whatsapp": 7,
         "/api/random/waifu": 3,
         "/api/stalker/x": 1,
@@ -3109,7 +3241,7 @@
         "/api/tempmail/freetempmail": 1,
         "/api/tempmail/guerrilla": 1,
         "/api/tempmail/mailtm": 3,
-        "/api/tempmail/multidomain": 4,
+        "/api/tempmail/multidomain": 5,
         "/api/tempmail/onesec-mail": 1,
         "/api/tempmail/tempamail": 1,
         "/api/tempmail/tempmailchat": 1,
@@ -3120,68 +3252,68 @@
         "/api/tempmail/tmailor": 1,
         "/api/tools/binner2text": 2,
         "/api/tools/ccgenerator": 6,
-        "/api/tools/catbox": 4,
+        "/api/tools/catbox": 6,
         "/api/tools/cekplat": 4,
         "/api/tools/crypto": 3,
         "/api/tools/cuaca-bmkg": 1,
-        "/api/tools/encrypt": 33,
-        "/api/tools/fakedata": 57,
+        "/api/tools/encrypt": 35,
+        "/api/tools/fakedata": 59,
         "/api/tools/font": 6,
         "/api/tools/hash": 5,
         "/api/tools/html2img": 1,
-        "/api/tools/kodepos": 1,
+        "/api/tools/kodepos": 2,
         "/api/search/livescore": 2,
         "/api/tools/magma/status": 1,
-        "/api/tools/ngl-spam": 3,
+        "/api/tools/ngl-spam": 10,
         "/api/tools/magma/catalog": 1,
         "/api/tools/nikparse": 3,
-        "/api/tools/password-generator": 1,
+        "/api/tools/password-generator": 2,
         "/api/tools/ocr": 1,
         "/api/tempmail/imailedu": 1,
         "/api/downloader/allinonev4": 11,
         "/api/ai/islamiai": 2,
-        "/api/am/bulkv3": 97,
+        "/api/am/bulkv3": 125,
         "/api/downloader/pinvid": 3,
-        "/api/fun/netflix": 201,
+        "/api/fun/netflix": 224,
         "/api/mcp": 3,
         "/api/search/goal": 7,
-        "/api/search/apkcombo": 2,
+        "/api/search/apkcombo": 3,
         "/api/%20am/verify": 1,
         "/api/phpinfo.php": 3,
         "/apikey.txt": 1,
         "/api/search/bilibili": 7,
         "/api/ai/gitreverse": 3,
-        "/api/topup/ml": 10,
-        "/api/v1/models": 3,
-        "/api/v1/chat/completions": 6,
-        "/api/v2/models": 4,
+        "/api/topup/ml": 13,
+        "/api/v1/models": 5,
+        "/api/v1/chat/completions": 7,
+        "/api/v2/models": 6,
         "/api/v3/chat/completions": 1,
-        "/api/v3/models": 4,
-        "/api/v2/chat/completions": 5,
-        "/api/stalker/instagram": 15,
-        "/api/fun/reach-ch2": 104,
+        "/api/v3/models": 7,
+        "/api/v2/chat/completions": 10,
+        "/api/stalker/instagram": 16,
+        "/api/fun/reach-ch2": 118,
         "/api/ai/blackbox": 1,
         "/api/bulkv3": 1,
         "/api/tools/timestamp": 6,
-        "/api/tools/spam-otp": 13,
-        "/api/tools/web2apk": 7,
-        "/api/tools/dummylabs": 5,
+        "/api/tools/spam-otp": 17,
+        "/api/tools/web2apk": 9,
+        "/api/tools/dummylabs": 7,
         "/api/tools/scanweb": 3,
-        "/api/tools/upload2": 2,
+        "/api/tools/upload2": 4,
         "/api/oss/config": 1,
-        "/api/am/sendv3": 37,
+        "/api/am/sendv3": 51,
         "/api-list": 1,
         "/api/endpoints": 3,
         "/api/tools/trackip": 3,
         "/api/.git/config": 1,
-        "/api/topup/dana": 3,
+        "/api/topup/dana": 4,
         "/api/anime/dubbindo": 1,
-        "/api/tools/proxy": 1,
-        "/api/tools/proxy2": 2,
+        "/api/tools/proxy": 3,
+        "/api/tools/proxy2": 4,
         "/api/downloader/downlod": 1,
-        "/api/movie/publicdomain": 23,
+        "/api/movie/publicdomain": 24,
         "/api/session/properties": 1,
-        "/api/topup/ff": 4,
+        "/api/topup/ff": 5,
         "/api/hdvidio/upscale": 4,
         "/api/hdvidio/enhance": 3,
         "/api/downloader/instaloadr": 1,
@@ -3194,9 +3326,9 @@
         "/api/tools/crypto-price": 2,
         "/imagehd/ai-enhancev2": 8,
         "/api/health": 4,
-        "/api/checknumber/checknumber": 9,
+        "/api/checknumber/checknumber": 10,
         "/api/donasi/config": 2,
-        "/api/donasi/summary": 32,
+        "/api/donasi/summary": 37,
         "/api/donasi": 13,
         "/api/donasi/status": 63,
         "/api/donasi/qr/DNR-MUN9JMLB-ECE2.png": 2,
@@ -3206,17 +3338,34 @@
         "/api/donasi/qr/DNR-MUNE6WJR-C957.png": 1,
         "/api/tools/translate": 2,
         "/api/donasi/qr/DNR-MUNUVBKH-898A.png": 1,
-        "/api/topup/cek": 1,
-        "/api/tools/uuid": 1,
-        "/api/tools/vccgen": 2,
-        "/api/search/7reels": 1,
+        "/api/topup/cek": 3,
+        "/api/tools/uuid": 3,
+        "/api/tools/vccgen": 5,
+        "/api/search/7reels": 2,
         "/api/imagehd/remini": 4,
         "/api/downloader/7reels": 1,
         "/api/solve/bypasslink": 1,
         "/api/donasi/qr/DNR-MUO8XY0I-6F1A.png": 1,
         "/api/donasi/qr/DNR-MUO9TS6J-DA8D.png": 1,
         "/api/am": 1,
-        "/api/donasi/qr/DNR-MUOP89ZD-E41D.png": 1
+        "/api/donasi/qr/DNR-MUOP89ZD-E41D.png": 1,
+        "/api/image/nanobananav4": 5,
+        "/api/maker/students": 1,
+        "/bypass/bypasslink": 9,
+        "/bypass/bypasslinkv2": 8,
+        "/bypass/bypasslinkv3": 8,
+        "/bypass/safelink": 8,
+        "/bypass/wellbypass": 8,
+        "/api/tools/qr2text": 1,
+        "/api/tools/useragent": 4,
+        "/api/tools/upload": 3,
+        "/api/tools/upload-v3": 1,
+        "/api": 2,
+        "/api/tempmail/instanttempemail": 10,
+        "/api/search/sigstick": 29,
+        "/fun/reach-ch": 1,
+        "/api/anime/donghive": 7,
+        "/api/search/8daudio": 7
       }
     }
   },
@@ -4064,62 +4213,160 @@
       }
     },
     "2026-10": {
-      "total": 103,
+      "total": 725,
       "byEndpoint": {
-        "/api/tools/dummylabs": 2,
-        "/api/tools/vccgen": 1,
-        "/api/tools/web2apk": 2,
-        "/api/maker/fake-profile-ff": 1,
+        "/api/tools/dummylabs": 4,
+        "/api/tools/vccgen": 4,
+        "/api/tools/web2apk": 4,
+        "/api/maker/fake-profile-ff": 3,
         "/api/maker/iqc-pink": 1,
-        "/api/canvas/wmp": 3,
+        "/api/canvas/wmp": 8,
         "/api/maker/iqc-dark": 2,
         "/api/downloader/omnify": 3,
-        "/api/status": 2,
-        "/api/solve/turnstile": 18,
-        "/api/am/sendv2": 3,
-        "/api/am/verifv2": 6,
+        "/api/status": 4,
+        "/api/solve/turnstile": 70,
+        "/api/am/sendv2": 9,
+        "/api/am/verifv2": 49,
         "/api/am": 1,
-        "/api/stalker/freefire": 3,
-        "/api/stalker/ml": 2,
-        "/api/donasi/summary": 4,
+        "/api/stalker/freefire": 15,
+        "/api/stalker/ml": 7,
+        "/api/donasi/summary": 9,
         "/api/donasi": 1,
         "/api/donasi/qr/DNR-MUOP89ZD-E41D.png": 1,
         "/api/donasi/status": 2,
-        "/api/am/bulkv3": 13,
-        "/api/bypass/bypasslink": 1,
-        "/api/am/bulk": 3,
-        "/api/bypass/bypasslinkv3": 1,
-        "/api/fun/netflix": 3,
-        "/api/imagehd/ai-enhance": 6,
-        "/api/bypass/bypasslinkv2": 2,
+        "/api/am/bulkv3": 41,
+        "/api/bypass/bypasslink": 7,
+        "/api/am/bulk": 11,
+        "/api/bypass/bypasslinkv3": 9,
+        "/api/fun/netflix": 26,
+        "/api/imagehd/ai-enhance": 10,
+        "/api/bypass/bypasslinkv2": 6,
         "/api/tools/ccgenerator": 1,
         "/api/tools/font": 2,
-        "/api/tools/ngl-spam": 1,
+        "/api/tools/ngl-spam": 8,
         "/api/hdvidio/tohd": 1,
         "/api/downloader/9xbuddy": 1,
-        "/api/downloader/allinone": 7,
+        "/api/downloader/allinone": 21,
         "/api/phpinfo.php": 1,
-        "/api/maker/fake-afinitas-ml": 1,
-        "/api/maker/fake-ml": 1
+        "/api/maker/fake-afinitas-ml": 3,
+        "/api/maker/fake-ml": 2,
+        "/api/image/nanobananav4": 5,
+        "/api/bypass/wellbypass": 3,
+        "/api/maker/students": 1,
+        "/api/stalker/tiktok": 3,
+        "/api/tools/fakedata": 2,
+        "/api/tools/proxy2": 2,
+        "/api/topup/cek": 2,
+        "/api/topup/dana": 1,
+        "/api/random/blue-archive": 4,
+        "/api/am/verify": 8,
+        "/api/stalker/instagram": 1,
+        "/api/canvas/applemusic": 1,
+        "/api/canvas/createlogo": 2,
+        "/api/canvas/roblox": 1,
+        "/api/canvas/sertifikat-tolol": 1,
+        "/api/canvas/welcomev4": 1,
+        "/api/canvas/welcomev3": 2,
+        "/api/ephoto/ephoto": 1,
+        "/api/fun/capcut": 9,
+        "/api/fun/reach-ch2": 14,
+        "/api/fun/philosopher-quotes": 2,
+        "/api/ai/aichatting": 17,
+        "/api/ai/askme": 1,
+        "/api/ai/aiseek": 1,
+        "/api/ai/chatai": 1,
+        "/api/v1/models": 2,
+        "/api/v2/models": 2,
+        "/api/v3/models": 3,
+        "/api/v2/chat/completions": 5,
+        "/api/v1/chat/completions": 1,
+        "/api/fun/tiktokviewstatus": 9,
+        "/bypass/bypasslink": 9,
+        "/bypass/bypasslinkv2": 8,
+        "/bypass/bypasslinkv3": 8,
+        "/bypass/safelink": 8,
+        "/api/bypass/safelink": 3,
+        "/bypass/wellbypass": 8,
+        "/api/am/send": 39,
+        "/api/tools/encrypt": 2,
+        "/api/am/sendv3": 14,
+        "/api/downloader/youtubev4": 3,
+        "/api/downloader/youtubev2": 3,
+        "/api/downloader/youtubev1": 6,
+        "/api/downloader/youtubev3": 3,
+        "/api/tools/spam-otp": 4,
+        "/api/stalker/deepsearch": 1,
+        "/api/maker/wafat": 1,
+        "/api/tools/kodepos": 1,
+        "/api/tools/password-generator": 1,
+        "/api/tools/qr2text": 1,
+        "/api/tools/useragent": 4,
+        "/api/tools/uuid": 2,
+        "/api/solve/getsitekey": 1,
+        "/api/search/apkcombo": 1,
+        "/api/maker/bounty": 2,
+        "/api/imagehd/upscalev2": 13,
+        "/api/tools/upload2": 2,
+        "/api/maker/fakecall-andro": 1,
+        "/api/maker/fake-ff": 3,
+        "/api/movie/publicdomain": 1,
+        "/api/tempmail/1timetech": 1,
+        "/api/stalker/ml-id": 1,
+        "/api/anime/anichi": 1,
+        "/api/image/nsfw-check": 2,
+        "/api/downloader/meganz": 1,
+        "/api/tools/upload": 3,
+        "/api/maker/iqc": 1,
+        "/api/maker/fakech": 1,
+        "/api/maker/saldo-dana": 1,
+        "/api/imageai/freeforai": 1,
+        "/api/primbon/nomorhoki": 1,
+        "/api/search/7reels": 1,
+        "/api/search/spotifyv2": 1,
+        "/api/search/tiktok-search": 1,
+        "/api/checknumber/xlcheck": 3,
+        "/api/tools/proxy": 2,
+        "/api/checknumber/checknumber": 1,
+        "/api/imagehd/wink-hd": 1,
+        "/api/canvas/boarding-nasa": 1,
+        "/api/canvas/drake": 1,
+        "/api/canvas/carbon": 2,
+        "/api/tempmail/multidomain": 1,
+        "/api/payment/qris-static-v2": 1,
+        "/api/topup/ff": 1,
+        "/api/downloader/igexport": 3,
+        "/api/downloader/allinonev3": 2,
+        "/api/downloader/allinonev2": 1,
+        "/api/tools/catbox": 2,
+        "/api/tools/upload-v3": 1,
+        "/api": 2,
+        "/api/tempmail/instanttempemail": 10,
+        "/api/am/bulkv2": 1,
+        "/api/search/sigstick": 29,
+        "/api/fun/reach-ch": 17,
+        "/fun/reach-ch": 1,
+        "/api/topup/ml": 3,
+        "/api/anime/donghive": 7,
+        "/api/search/8daudio": 7
       }
     }
   },
   "allTime": {
-    "total": 119185,
+    "total": 119807,
     "byEndpoint": {
       "/api/am/verify": {
-        "total": 138,
+        "total": 146,
         "byStatus": {
-          "2": 41,
-          "4": 97
+          "2": 46,
+          "4": 100
         }
       },
       "/api/bypass/bypasslinkv3": {
-        "total": 50,
+        "total": 58,
         "byStatus": {
-          "2": 47,
+          "2": 50,
           "4": 1,
-          "5": 2
+          "5": 7
         }
       },
       "/api/canvas/brat": {
@@ -4130,9 +4377,9 @@
         }
       },
       "/api": {
-        "total": 6,
+        "total": 8,
         "byStatus": {
-          "4": 6
+          "4": 8
         }
       },
       "/api/checknumber/checkban": {
@@ -4143,15 +4390,15 @@
         }
       },
       "/api/canvas/applemusic": {
-        "total": 6,
+        "total": 7,
         "byStatus": {
-          "2": 6
+          "2": 7
         }
       },
       "/api/maker/fake-ff": {
-        "total": 60,
+        "total": 63,
         "byStatus": {
-          "2": 58,
+          "2": 61,
           "4": 2
         }
       },
@@ -4169,17 +4416,17 @@
         }
       },
       "/api/stalker/freefire": {
-        "total": 37,
+        "total": 49,
         "byStatus": {
-          "2": 17,
-          "4": 17,
+          "2": 26,
+          "4": 20,
           "5": 3
         }
       },
       "/api/tools/ngl-spam": {
-        "total": 4,
+        "total": 11,
         "byStatus": {
-          "2": 3,
+          "2": 10,
           "4": 1
         }
       },
@@ -4191,9 +4438,9 @@
         }
       },
       "/api/tools/spam-otp": {
-        "total": 129,
+        "total": 133,
         "byStatus": {
-          "2": 108,
+          "2": 112,
           "4": 21
         }
       },
@@ -4220,9 +4467,9 @@
         }
       },
       "/api/imagehd/ai-enhance": {
-        "total": 52,
+        "total": 56,
         "byStatus": {
-          "2": 24,
+          "2": 28,
           "3": 1,
           "4": 27
         }
@@ -4234,10 +4481,10 @@
         }
       },
       "/api/downloader/allinone": {
-        "total": 33,
+        "total": 47,
         "byStatus": {
-          "2": 28,
-          "4": 5
+          "2": 40,
+          "4": 7
         }
       },
       "/api/health": {
@@ -4247,31 +4494,31 @@
         }
       },
       "/api/stalker/tiktok": {
-        "total": 13,
+        "total": 16,
         "byStatus": {
           "2": 10,
-          "4": 3
+          "4": 6
         }
       },
       "/api/am/send": {
-        "total": 235,
+        "total": 274,
         "byStatus": {
-          "2": 124,
-          "4": 103,
-          "5": 8
+          "2": 150,
+          "4": 115,
+          "5": 9
         }
       },
       "/api/ai/aichatting": {
-        "total": 111179,
+        "total": 111196,
         "byStatus": {
-          "2": 98,
+          "2": 115,
           "4": 111081
         }
       },
       "/api/anime/anichi": {
-        "total": 10,
+        "total": 11,
         "byStatus": {
-          "2": 7,
+          "2": 8,
           "4": 3
         }
       },
@@ -4288,9 +4535,9 @@
         }
       },
       "/api/status": {
-        "total": 80,
+        "total": 82,
         "byStatus": {
-          "4": 80
+          "4": 82
         }
       },
       "/api/channel": {
@@ -4312,10 +4559,10 @@
         }
       },
       "/api/topup/cek": {
-        "total": 17,
+        "total": 19,
         "byStatus": {
           "2": 2,
-          "4": 15
+          "4": 17
         }
       },
       "/api/ai/chatgpt": {
@@ -4326,9 +4573,11 @@
         }
       },
       "/api/fun/reach-ch": {
-        "total": 3,
+        "total": 20,
         "byStatus": {
-          "5": 3
+          "2": 13,
+          "4": 3,
+          "5": 4
         }
       },
       "/api/checkCleanIp": {
@@ -4374,9 +4623,9 @@
         }
       },
       "/api/maker/saldo-dana": {
-        "total": 20,
+        "total": 21,
         "byStatus": {
-          "2": 18,
+          "2": 19,
           "3": 1,
           "4": 1
         }
@@ -4426,11 +4675,11 @@
         }
       },
       "/api/bypass/bypasslink": {
-        "total": 46,
+        "total": 52,
         "byStatus": {
-          "2": 25,
+          "2": 28,
           "4": 10,
-          "5": 11
+          "5": 14
         }
       },
       "/api/tempmail/tempmailplus": {
@@ -4453,9 +4702,9 @@
         }
       },
       "/api/tools/encrypt": {
-        "total": 46,
+        "total": 48,
         "byStatus": {
-          "2": 19,
+          "2": 21,
           "4": 27
         }
       },
@@ -4467,10 +4716,10 @@
         }
       },
       "/api/tools/web2apk": {
-        "total": 16,
+        "total": 18,
         "byStatus": {
-          "2": 4,
-          "5": 12
+          "2": 5,
+          "5": 13
         }
       },
       "/api/tools/cuaca-bmkg": {
@@ -4488,9 +4737,9 @@
         }
       },
       "/api/v1/models": {
-        "total": 17,
+        "total": 19,
         "byStatus": {
-          "2": 17
+          "2": 19
         }
       },
       "/api/checknumber/simdopul": {
@@ -4508,17 +4757,17 @@
         }
       },
       "/api/checknumber/xlcheck": {
-        "total": 19,
+        "total": 22,
         "byStatus": {
-          "2": 8,
+          "2": 11,
           "4": 5,
           "5": 6
         }
       },
       "/api/canvas/boarding-nasa": {
-        "total": 2,
+        "total": 3,
         "byStatus": {
-          "2": 1,
+          "2": 2,
           "4": 1
         }
       },
@@ -4537,17 +4786,17 @@
         }
       },
       "/api/canvas/createlogo": {
-        "total": 3,
+        "total": 5,
         "byStatus": {
-          "2": 2,
+          "2": 4,
           "4": 1
         }
       },
       "/api/topup/ml": {
-        "total": 14,
+        "total": 17,
         "byStatus": {
           "2": 7,
-          "5": 7
+          "5": 10
         }
       },
       "/api/maker/sertifikat-nasa": {
@@ -4558,9 +4807,9 @@
         }
       },
       "/api/tools/uuid": {
-        "total": 18,
+        "total": 20,
         "byStatus": {
-          "2": 14,
+          "2": 16,
           "4": 4
         }
       },
@@ -4605,11 +4854,11 @@
         }
       },
       "/api/bypass/wellbypass": {
-        "total": 23,
+        "total": 26,
         "byStatus": {
           "2": 2,
-          "4": 8,
-          "5": 13
+          "4": 9,
+          "5": 15
         }
       },
       "/api/downloader/9xbuddy": {
@@ -4621,16 +4870,16 @@
         }
       },
       "/api/ai/aiseek": {
-        "total": 16,
+        "total": 17,
         "byStatus": {
-          "2": 12,
+          "2": 13,
           "4": 4
         }
       },
       "/api/ai/chatai": {
-        "total": 10,
+        "total": 11,
         "byStatus": {
-          "2": 9,
+          "2": 10,
           "4": 1
         }
       },
@@ -4670,11 +4919,11 @@
         }
       },
       "/api/bypass/bypasslinkv2": {
-        "total": 63,
+        "total": 67,
         "byStatus": {
           "2": 15,
           "4": 13,
-          "5": 35
+          "5": 39
         }
       },
       "/api/host.describe": {
@@ -4684,16 +4933,16 @@
         }
       },
       "/api/topup/dana": {
-        "total": 24,
+        "total": 25,
         "byStatus": {
-          "2": 21,
+          "2": 22,
           "5": 3
         }
       },
       "/api/tempmail/1timetech": {
-        "total": 48,
+        "total": 49,
         "byStatus": {
-          "2": 47,
+          "2": 48,
           "4": 1
         }
       },
@@ -4711,17 +4960,17 @@
         }
       },
       "/api/am/sendv2": {
-        "total": 220,
+        "total": 226,
         "byStatus": {
-          "2": 98,
+          "2": 104,
           "4": 90,
           "5": 32
         }
       },
       "/api/stalker/ml-id": {
-        "total": 8,
+        "total": 9,
         "byStatus": {
-          "2": 6,
+          "2": 7,
           "4": 2
         }
       },
@@ -4740,10 +4989,10 @@
         }
       },
       "/api/bypass/safelink": {
-        "total": 20,
+        "total": 23,
         "byStatus": {
           "4": 1,
-          "5": 19
+          "5": 22
         }
       },
       "/api/bypass/shrinkme": {
@@ -4760,9 +5009,9 @@
         }
       },
       "/api/random/blue-archive": {
-        "total": 3,
+        "total": 7,
         "byStatus": {
-          "2": 3
+          "2": 7
         }
       },
       "/api/search/douyin-search": {
@@ -4902,9 +5151,9 @@
         }
       },
       "/api/downloader/meganz": {
-        "total": 6,
+        "total": 7,
         "byStatus": {
-          "2": 5,
+          "2": 6,
           "4": 1
         }
       },
@@ -4960,16 +5209,16 @@
         }
       },
       "/api/search/tiktok-search": {
-        "total": 26,
+        "total": 27,
         "byStatus": {
-          "2": 13,
+          "2": 14,
           "4": 13
         }
       },
       "/api/stalker/deepsearch": {
-        "total": 15,
+        "total": 16,
         "byStatus": {
-          "2": 14,
+          "2": 15,
           "4": 1
         }
       },
@@ -5004,10 +5253,10 @@
         }
       },
       "/api/topup/ff": {
-        "total": 11,
+        "total": 12,
         "byStatus": {
           "2": 6,
-          "5": 5
+          "5": 6
         }
       },
       "/api/maker/fakegc": {
@@ -5018,23 +5267,24 @@
         }
       },
       "/api/payment/qris-static-v2": {
-        "total": 11,
+        "total": 12,
         "byStatus": {
           "4": 1,
-          "5": 10
+          "5": 11
         }
       },
       "/api/maker/wafat": {
-        "total": 4,
+        "total": 5,
         "byStatus": {
           "2": 3,
-          "4": 1
+          "4": 1,
+          "5": 1
         }
       },
       "/api/maker/fake-ml": {
-        "total": 32,
+        "total": 33,
         "byStatus": {
-          "2": 23,
+          "2": 24,
           "4": 1,
           "5": 8
         }
@@ -5072,12 +5322,12 @@
         }
       },
       "/api/maker/bounty": {
-        "total": 50,
+        "total": 52,
         "byStatus": {
           "2": 13,
           "3": 2,
           "4": 4,
-          "5": 31
+          "5": 33
         }
       },
       "/api/anime/animeav1": {
@@ -5089,10 +5339,10 @@
         }
       },
       "/api/stalker/ml": {
-        "total": 16,
+        "total": 21,
         "byStatus": {
           "2": 5,
-          "4": 11
+          "4": 16
         }
       },
       "/api/downloader/youtube2": {
@@ -5129,9 +5379,9 @@
         }
       },
       "/api/downloader/youtubev1": {
-        "total": 51,
+        "total": 57,
         "byStatus": {
-          "2": 47,
+          "2": 53,
           "4": 1,
           "5": 3
         }
@@ -5145,10 +5395,10 @@
         }
       },
       "/api/downloader/youtubev4": {
-        "total": 18,
+        "total": 21,
         "byStatus": {
           "4": 2,
-          "5": 16
+          "5": 19
         }
       },
       "/api-docs": {
@@ -5170,10 +5420,10 @@
         }
       },
       "/api/am/bulk": {
-        "total": 190,
+        "total": 198,
         "byStatus": {
           "2": 76,
-          "5": 114
+          "5": 122
         }
       },
       "/api/kalender/hari-ini": {
@@ -5189,9 +5439,9 @@
         }
       },
       "/api/v3/models": {
-        "total": 7,
+        "total": 10,
         "byStatus": {
-          "2": 7
+          "2": 10
         }
       },
       "/api/ai/deep-ai": {
@@ -5202,9 +5452,9 @@
         }
       },
       "/api/fun/capcut": {
-        "total": 53,
+        "total": 62,
         "byStatus": {
-          "2": 32,
+          "2": 41,
           "4": 21
         }
       },
@@ -5244,19 +5494,19 @@
         }
       },
       "/api/downloader/allinonev2": {
-        "total": 20,
+        "total": 21,
         "byStatus": {
           "2": 1,
           "4": 1,
-          "5": 18
+          "5": 19
         }
       },
       "/api/downloader/allinonev3": {
-        "total": 8,
+        "total": 10,
         "byStatus": {
           "2": 3,
           "4": 1,
-          "5": 4
+          "5": 6
         }
       },
       "/api/downloader/capcut": {
@@ -5289,9 +5539,9 @@
         }
       },
       "/api/solve/turnstile": {
-        "total": 297,
+        "total": 349,
         "byStatus": {
-          "2": 293,
+          "2": 345,
           "4": 4
         }
       },
@@ -5396,10 +5646,10 @@
         }
       },
       "/api/imagehd/wink-hd": {
-        "total": 12,
+        "total": 13,
         "byStatus": {
           "4": 4,
-          "5": 8
+          "5": 9
         }
       },
       "/api/tools/ccgenerator": {
@@ -5410,15 +5660,16 @@
         }
       },
       "/api/tools/proxy": {
-        "total": 5,
+        "total": 7,
         "byStatus": {
-          "2": 5
+          "2": 6,
+          "4": 1
         }
       },
       "/api/maker/fake-afinitas-ml": {
-        "total": 26,
+        "total": 28,
         "byStatus": {
-          "2": 9,
+          "2": 11,
           "4": 1,
           "5": 16
         }
@@ -5514,16 +5765,16 @@
         }
       },
       "/api/canvas/roblox": {
-        "total": 5,
+        "total": 6,
         "byStatus": {
-          "2": 4,
+          "2": 5,
           "4": 1
         }
       },
       "/api/canvas/wmp": {
-        "total": 9,
+        "total": 14,
         "byStatus": {
-          "2": 8,
+          "2": 13,
           "4": 1
         }
       },
@@ -5541,17 +5792,17 @@
         }
       },
       "/api/downloader/igexport": {
-        "total": 6,
+        "total": 9,
         "byStatus": {
-          "2": 1,
+          "2": 4,
           "4": 1,
           "5": 4
         }
       },
       "/api/solve/getsitekey": {
-        "total": 12,
+        "total": 13,
         "byStatus": {
-          "2": 10,
+          "2": 11,
           "4": 1,
           "5": 1
         }
@@ -5582,11 +5833,11 @@
         }
       },
       "/api/am/verifv2": {
-        "total": 262,
+        "total": 305,
         "byStatus": {
-          "2": 36,
-          "4": 186,
-          "5": 40
+          "2": 47,
+          "4": 201,
+          "5": 57
         }
       },
       "/api/am": {
@@ -5861,9 +6112,9 @@
         }
       },
       "/api/image/nsfw-check": {
-        "total": 30,
+        "total": 32,
         "byStatus": {
-          "2": 28,
+          "2": 30,
           "4": 1,
           "5": 1
         }
@@ -5960,9 +6211,9 @@
         }
       },
       "/api/tools/vccgen": {
-        "total": 8,
+        "total": 11,
         "byStatus": {
-          "2": 8
+          "2": 11
         }
       },
       "/api/session/properties": {
@@ -6051,9 +6302,9 @@
         }
       },
       "/api/fun/philosopher-quotes": {
-        "total": 22,
+        "total": 24,
         "byStatus": {
-          "2": 22
+          "2": 24
         }
       },
       "/api/fun/anime-quotes": {
@@ -6063,9 +6314,9 @@
         }
       },
       "/api/maker/fakecall-andro": {
-        "total": 11,
+        "total": 12,
         "byStatus": {
-          "2": 11
+          "2": 12
         }
       },
       "/api/maker/fakecall-ios": {
@@ -6075,9 +6326,9 @@
         }
       },
       "/api/v1/chat/completions": {
-        "total": 11,
+        "total": 12,
         "byStatus": {
-          "4": 11
+          "4": 12
         }
       },
       "/api/maker/ektp": {
@@ -6107,9 +6358,9 @@
         }
       },
       "/api/tools/fakedata": {
-        "total": 60,
+        "total": 62,
         "byStatus": {
-          "2": 49,
+          "2": 51,
           "4": 5,
           "5": 6
         }
@@ -6123,25 +6374,25 @@
         }
       },
       "/api/am/bulkv2": {
-        "total": 106,
+        "total": 107,
         "byStatus": {
           "2": 7,
           "4": 93,
-          "5": 6
+          "5": 7
         }
       },
       "/api/v2/models": {
-        "total": 16,
+        "total": 18,
         "byStatus": {
           "2": 12,
-          "5": 4
+          "5": 6
         }
       },
       "/api/v2/chat/completions": {
-        "total": 8,
+        "total": 13,
         "byStatus": {
           "2": 2,
-          "4": 6
+          "4": 11
         }
       },
       "/api/v2/v1/messages": {
@@ -6213,11 +6464,11 @@
         }
       },
       "/api/downloader/youtubev2": {
-        "total": 41,
+        "total": 44,
         "byStatus": {
           "2": 18,
           "4": 9,
-          "5": 14
+          "5": 17
         }
       },
       "/api/downloader/tiktokio": {
@@ -6254,16 +6505,16 @@
         }
       },
       "/api/tools/catbox": {
-        "total": 8,
+        "total": 10,
         "byStatus": {
-          "2": 7,
+          "2": 9,
           "4": 1
         }
       },
       "/api/tools/upload-v3": {
-        "total": 10,
+        "total": 11,
         "byStatus": {
-          "2": 2,
+          "2": 3,
           "4": 8
         }
       },
@@ -6668,9 +6919,9 @@
         }
       },
       "/api/maker/iqc": {
-        "total": 10,
+        "total": 11,
         "byStatus": {
-          "2": 8,
+          "2": 9,
           "4": 2
         }
       },
@@ -6721,9 +6972,9 @@
         }
       },
       "/api/canvas/welcomev4": {
-        "total": 4,
+        "total": 5,
         "byStatus": {
-          "4": 4
+          "4": 5
         }
       },
       "/api/v1/auth/login": {
@@ -6787,9 +7038,9 @@
         }
       },
       "/api/tools/useragent": {
-        "total": 2,
+        "total": 6,
         "byStatus": {
-          "2": 2
+          "2": 6
         }
       },
       "/api/downloader/omnify": {
@@ -6800,9 +7051,9 @@
         }
       },
       "/api/tools/proxy2": {
-        "total": 3,
+        "total": 5,
         "byStatus": {
-          "2": 3
+          "2": 5
         }
       },
       "/api/imageai/gstory": {
@@ -7599,9 +7850,9 @@
         }
       },
       "/api/ai/askme": {
-        "total": 2,
+        "total": 3,
         "byStatus": {
-          "2": 1,
+          "2": 2,
           "4": 1
         }
       },
@@ -7799,16 +8050,16 @@
         }
       },
       "/api/canvas/carbon": {
-        "total": 4,
+        "total": 6,
         "byStatus": {
-          "2": 3,
+          "2": 5,
           "4": 1
         }
       },
       "/api/canvas/sertifikat-tolol": {
-        "total": 2,
+        "total": 3,
         "byStatus": {
-          "2": 1,
+          "2": 2,
           "4": 1
         }
       },
@@ -7831,9 +8082,9 @@
         }
       },
       "/api/canvas/welcomev3": {
-        "total": 3,
+        "total": 5,
         "byStatus": {
-          "2": 2,
+          "2": 4,
           "4": 1
         }
       },
@@ -7844,9 +8095,9 @@
         }
       },
       "/api/canvas/drake": {
-        "total": 1,
+        "total": 2,
         "byStatus": {
-          "2": 1
+          "2": 2
         }
       },
       "/api/downloader/gdrive": {
@@ -7937,9 +8188,9 @@
         }
       },
       "/api/downloader/youtubev3": {
-        "total": 13,
+        "total": 16,
         "byStatus": {
-          "2": 12,
+          "2": 15,
           "4": 1
         }
       },
@@ -7950,8 +8201,9 @@
         }
       },
       "/api/ephoto/ephoto": {
-        "total": 1,
+        "total": 2,
         "byStatus": {
+          "2": 1,
           "4": 1
         }
       },
@@ -7968,9 +8220,9 @@
         }
       },
       "/api/fun/tiktokviewstatus": {
-        "total": 5,
+        "total": 14,
         "byStatus": {
-          "2": 2,
+          "2": 11,
           "4": 1,
           "5": 2
         }
@@ -8181,8 +8433,9 @@
         }
       },
       "/api/imageai/freeforai": {
-        "total": 1,
+        "total": 2,
         "byStatus": {
+          "2": 1,
           "4": 1
         }
       },
@@ -8246,9 +8499,10 @@
         }
       },
       "/api/imagehd/upscalev2": {
-        "total": 1,
+        "total": 14,
         "byStatus": {
-          "4": 1
+          "2": 10,
+          "4": 4
         }
       },
       "/api/imagehd/webability": {
@@ -8264,10 +8518,10 @@
         }
       },
       "/api/maker/fake-profile-ff": {
-        "total": 11,
+        "total": 13,
         "byStatus": {
-          "2": 10,
-          "4": 1
+          "2": 11,
+          "4": 2
         }
       },
       "/api/maker/fake-tele": {
@@ -8290,9 +8544,9 @@
         }
       },
       "/api/maker/fakech": {
-        "total": 5,
+        "total": 6,
         "byStatus": {
-          "2": 4,
+          "2": 5,
           "4": 1
         }
       },
@@ -8350,8 +8604,9 @@
         }
       },
       "/api/primbon/nomorhoki": {
-        "total": 1,
+        "total": 2,
         "byStatus": {
+          "2": 1,
           "4": 1
         }
       },
@@ -8573,9 +8828,9 @@
         }
       },
       "/api/search/spotifyv2": {
-        "total": 10,
+        "total": 11,
         "byStatus": {
-          "2": 9,
+          "2": 10,
           "4": 1
         }
       },
@@ -8672,9 +8927,9 @@
         }
       },
       "/api/tempmail/multidomain": {
-        "total": 4,
+        "total": 5,
         "byStatus": {
-          "2": 1,
+          "2": 2,
           "4": 1,
           "5": 2
         }
@@ -8752,8 +9007,9 @@
         }
       },
       "/api/tools/kodepos": {
-        "total": 1,
+        "total": 2,
         "byStatus": {
+          "2": 1,
           "4": 1
         }
       },
@@ -8776,9 +9032,9 @@
         }
       },
       "/api/tools/password-generator": {
-        "total": 2,
+        "total": 3,
         "byStatus": {
-          "2": 1,
+          "2": 2,
           "4": 1
         }
       },
@@ -8809,9 +9065,10 @@
         }
       },
       "/api/am/bulkv3": {
-        "total": 120,
+        "total": 148,
         "byStatus": {
-          "2": 120
+          "2": 147,
+          "4": 1
         }
       },
       "/api/downloader/pinvid": {
@@ -8822,10 +9079,10 @@
         }
       },
       "/api/fun/netflix": {
-        "total": 264,
+        "total": 287,
         "byStatus": {
-          "2": 189,
-          "4": 75
+          "2": 206,
+          "4": 81
         }
       },
       "/api/search/goal": {
@@ -8837,9 +9094,9 @@
         }
       },
       "/api/search/apkcombo": {
-        "total": 4,
+        "total": 5,
         "byStatus": {
-          "2": 3,
+          "2": 4,
           "4": 1
         }
       },
@@ -8869,11 +9126,11 @@
         }
       },
       "/api/stalker/instagram": {
-        "total": 59,
+        "total": 60,
         "byStatus": {
           "2": 41,
           "4": 8,
-          "5": 10
+          "5": 11
         }
       },
       "/api/v1/check-version": {
@@ -8895,21 +9152,21 @@
         }
       },
       "/api/tools/dummylabs": {
-        "total": 13,
+        "total": 15,
         "byStatus": {
-          "2": 13
+          "2": 15
         }
       },
       "/api/maker/students": {
-        "total": 13,
+        "total": 14,
         "byStatus": {
-          "2": 13
+          "2": 14
         }
       },
       "/api/checknumber/checknumber": {
-        "total": 19,
+        "total": 20,
         "byStatus": {
-          "2": 9,
+          "2": 10,
           "4": 10
         }
       },
@@ -9274,11 +9531,11 @@
         }
       },
       "/api/fun/reach-ch2": {
-        "total": 104,
+        "total": 118,
         "byStatus": {
           "2": 3,
           "4": 37,
-          "5": 64
+          "5": 78
         }
       },
       "/api/ai/blackbox": {
@@ -9300,9 +9557,9 @@
         }
       },
       "/api/tools/upload2": {
-        "total": 2,
+        "total": 4,
         "byStatus": {
-          "2": 2
+          "2": 4
         }
       },
       "/api/oss/config": {
@@ -9312,10 +9569,10 @@
         }
       },
       "/api/am/sendv3": {
-        "total": 37,
+        "total": 51,
         "byStatus": {
-          "2": 9,
-          "4": 28
+          "2": 18,
+          "4": 33
         }
       },
       "/api-list": {
@@ -9337,9 +9594,9 @@
         }
       },
       "/api/movie/publicdomain": {
-        "total": 23,
+        "total": 24,
         "byStatus": {
-          "2": 21,
+          "2": 22,
           "4": 1,
           "5": 1
         }
@@ -9381,9 +9638,9 @@
         }
       },
       "/api/donasi/summary": {
-        "total": 32,
+        "total": 37,
         "byStatus": {
-          "2": 32
+          "2": 37
         }
       },
       "/api/donasi": {
@@ -9443,9 +9700,9 @@
         }
       },
       "/api/search/7reels": {
-        "total": 1,
+        "total": 2,
         "byStatus": {
-          "2": 1
+          "2": 2
         }
       },
       "/api/downloader/7reels": {
@@ -9477,11 +9734,94 @@
         "byStatus": {
           "2": 1
         }
+      },
+      "/api/image/nanobananav4": {
+        "total": 5,
+        "byStatus": {
+          "4": 5
+        }
+      },
+      "/bypass/bypasslink": {
+        "total": 9,
+        "byStatus": {
+          "4": 9
+        }
+      },
+      "/bypass/bypasslinkv2": {
+        "total": 8,
+        "byStatus": {
+          "4": 8
+        }
+      },
+      "/bypass/bypasslinkv3": {
+        "total": 8,
+        "byStatus": {
+          "4": 8
+        }
+      },
+      "/bypass/safelink": {
+        "total": 8,
+        "byStatus": {
+          "4": 8
+        }
+      },
+      "/bypass/wellbypass": {
+        "total": 8,
+        "byStatus": {
+          "4": 8
+        }
+      },
+      "/api/tools/qr2text": {
+        "total": 1,
+        "byStatus": {
+          "4": 1
+        }
+      },
+      "/api/tools/upload": {
+        "total": 3,
+        "byStatus": {
+          "2": 2,
+          "4": 1
+        }
+      },
+      "/api/tempmail/instanttempemail": {
+        "total": 10,
+        "byStatus": {
+          "2": 6,
+          "4": 4
+        }
+      },
+      "/api/search/sigstick": {
+        "total": 29,
+        "byStatus": {
+          "2": 22,
+          "4": 7
+        }
+      },
+      "/fun/reach-ch": {
+        "total": 1,
+        "byStatus": {
+          "4": 1
+        }
+      },
+      "/api/anime/donghive": {
+        "total": 7,
+        "byStatus": {
+          "2": 5,
+          "5": 2
+        }
+      },
+      "/api/search/8daudio": {
+        "total": 7,
+        "byStatus": {
+          "2": 5,
+          "4": 2
+        }
       }
     }
   },
   "_metadata": {
-    "lastUpdated": "2026-10-01T02:58:33.539Z",
+    "lastUpdated": "2026-10-02T04:45:18.983Z",
     "version": "json"
   }
 }

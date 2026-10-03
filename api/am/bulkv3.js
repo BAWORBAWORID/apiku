@@ -314,7 +314,7 @@ async function processFullAccount(customOrderId) {
 
 export default {
   name: "AlightMotion Bulk V3",
-  description: "Generate Bulk AligMotion Premium",
+  description: "Generate Am Bulk v3",
   category: "AlightMotion",
   methods: ["GET", "POST"],
   params: ["count"],

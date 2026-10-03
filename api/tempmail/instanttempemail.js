@@ -111,7 +111,7 @@ function summarize(mails) {
 export default {
   name: "InstantTempEmail",
   description: "Temp mail instan instanttempemail.com — buat mailbox, cek inbox, hapus mailbox",
-  category: "TEMP MAIL",
+  category: "Email",
   methods: ["GET", "POST"],
   params: ["action", "token", "messageId", "wait"],
   paramsSchema: {

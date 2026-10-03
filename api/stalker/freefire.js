@@ -103,6 +103,97 @@ const PRIME_CONFIG = {
   },
 }
 
+const CHARACTER_MAP = {
+  102000001: 'Primis',
+  102000002: 'Nulla',
+  102000003: 'Ford',
+  102000004: 'Andrew',
+  102000005: 'Kelly',
+  102000006: 'Olivia',
+  102000007: 'Maxim',
+  102000008: 'Misha',
+  102000009: 'Nikita',
+  102000010: 'Kla',
+  102000011: 'Paloma',
+  102000012: 'Miguel',
+  102000013: 'Caroline',
+  102000014: 'Antonio',
+  102000015: 'Wukong',
+  102000016: 'Hayato',
+  102000017: 'Moco',
+  102000018: 'Laura',
+  102000019: 'Rafael',
+  102000020: 'A124',
+  102000021: 'Shani',
+  102000022: 'Joseph',
+  102000023: 'Notora',
+  102000024: 'Alvaro',
+  102000025: 'Steffie',
+  102000026: 'Jota',
+  102000027: 'Kapella',
+  102000028: 'Wolfrahh',
+  102000029: 'Luqueta',
+  102000030: 'Jai',
+  102000031: 'K',
+  102000032: 'Dasha',
+  102000033: 'Chrono',
+  102000034: 'Shirou',
+  102000035: 'Skyler',
+  102000036: 'Xayne',
+  102000037: 'D-Bee',
+  102000038: 'Dimitri',
+  102000039: 'Thiva',
+  102000040: 'Leon',
+  102000041: 'Otho',
+  102000042: 'Nairi',
+  102000043: 'Kenta',
+  102000044: 'Homer',
+  102000045: 'Iris',
+  102000046: 'J.Biebs',
+  102000047: 'Tatsuya',
+  102000048: 'Luna',
+  102000049: 'Santino',
+  102000050: 'Orion',
+  102000051: 'Alok (Awakened)',
+  102000052: 'Sonia',
+  102000053: 'Suzy',
+  102000054: 'Ignis',
+  102000055: 'Ryden',
+  102000056: 'Kairos',
+  102000057: 'Kassie',
+  102000058: 'Lila',
+  102000000: 'Alok',
+}
+
+const PET_MAP = {
+  1300000001: 'Poring',
+  1300000002: 'Kitty',
+  1300000003: 'Mechanical Puppy',
+  1300000004: 'Shiba',
+  1300000005: 'Night Panther',
+  1300000006: 'Spirit Fox',
+  1300000007: 'Robo',
+  1300000008: 'Ottero',
+  1300000009: 'Detective Panda',
+  1300000091: 'Falco',
+  1300000092: 'Mr. Waggor',
+  1300000093: 'Rockie',
+  1300000094: 'Beaston',
+  1300000095: 'Dreki',
+  1300000096: 'Moony',
+  1300000097: 'Sensei Tig',
+  1300000098: 'Agent Hop',
+  1300000099: 'Yeti',
+  1300000100: 'Flash',
+  1300000101: 'Zasil',
+  1300000102: 'Finn',
+  1300000103: 'Hoot',
+  1300000104: 'Fang',
+  1300000105: 'Arvon',
+  1300000106: 'Kactus',
+  1300000107: 'Pug',
+}
+
 function sha256(str) {
   return crypto.createHash('sha256').update(str).digest('hex')
 }
@@ -145,6 +236,11 @@ async function getAuthHeaders(apiPath, referer = FF_BASE_URL) {
     'User-Agent': DEFAULT_UA,
     Referer: referer,
   }
+}
+
+function getPermanentIcon(id) {
+  if (!id) return null
+  return `https://cdn.jsdelivr.net/gh/ShahGCreator/icon@main/PNG/${id}.png`
 }
 
 function getBrRank(points) {
@@ -212,6 +308,37 @@ function formatLastLogin(ts) {
     hour: '2-digit',
     minute: '2-digit',
   })
+}
+
+function formatBattleTag(tag) {
+  if (!tag) return tag
+  return String(tag)
+    .replace(/^PlayerBattleTagID_/i, '')
+    .replace(/_/g, ' ')
+    .toLowerCase()
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+function formatBattleTags(tags, counts) {
+  if (!Array.isArray(tags) || tags.length === 0) return []
+  return tags.map((t, idx) => ({
+    tag: formatBattleTag(t),
+    rawTag: t,
+    count: Array.isArray(counts) && counts[idx] !== undefined ? counts[idx] : 1,
+  }))
+}
+
+function formatLanguage(lang) {
+  if (!lang) return null
+  return String(lang)
+    .replace(/^Language_/i, '')
+    .toLowerCase()
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+function formatRankShow(show) {
+  if (!show) return null
+  return String(show).replace(/^RankShow_/i, '')
 }
 
 function rupiah(n) {
@@ -300,7 +427,7 @@ async function fetchPrimaryFF(uid) {
 }
 
 /**
- * Fallback to secondary source (adenpedia) if primary engine is unavailable
+ * Fallback to secondary source (adenpedia)
  */
 async function fetchFallbackFF(uid) {
   const url = `${ADEN_BASE_URL}/info.php?uid=${encodeURIComponent(uid)}`
@@ -330,7 +457,7 @@ async function fetchFallbackFF(uid) {
 export default {
   name: 'Free Fire Stalker',
   description:
-    'Cek info lengkap akun Free Fire via UID (Level, Rank, Banned status, Pet, Outfit, Character, & Prime Price Calculator)',
+    'Cek info lengkap akun Free Fire via UID (Level, Rank, Banned status, Pet, Outfit, Character, Diamond Cost, & Prime Price Calculator)',
   category: 'Stalker',
   methods: ['GET', 'POST'],
   params: ['uid'],
@@ -360,205 +487,210 @@ export default {
     const cleanUid = String(uid).trim()
 
     try {
-      let rawResult = null
-      let source = 'freefirestalk'
+      const [primaryResult, fallbackResult] = await Promise.allSettled([
+        fetchPrimaryFF(cleanUid),
+        fetchFallbackFF(cleanUid),
+      ])
 
-      try {
-        const primary = await fetchPrimaryFF(cleanUid)
-        if (primary.notFound) {
-          return res.status(404).json({ status: false, error: primary.error })
-        }
-        rawResult = primary.data
-      } catch (primaryErr) {
-        logger.warn(
-          `[FF Stalker] Primary engine error (${primaryErr.message}), trying fallback...`
-        )
-        const fallback = await fetchFallbackFF(cleanUid)
-        if (fallback.notFound) {
-          return res.status(404).json({ status: false, error: fallback.error })
-        }
-        rawResult = fallback.data
-        source = 'adenpedia'
+      const primary = primaryResult.status === 'fulfilled' ? primaryResult.value : null
+      const fallback = fallbackResult.status === 'fulfilled' ? fallbackResult.value : null
+
+      if (primary?.notFound && fallback?.notFound) {
+        return res.status(404).json({
+          status: false,
+          error: primary.error || fallback.error || 'Player tidak ditemukan.',
+        })
       }
 
-      let result = null
+      if ((primary?.notFound && !fallback?.data) || (fallback?.notFound && !primary?.data)) {
+        return res.status(404).json({
+          status: false,
+          error: primary?.error || fallback?.error || 'Player tidak ditemukan.',
+        })
+      }
 
-      if (source === 'freefirestalk') {
-        const player = rawResult.player || {}
-        const guildData = rawResult.guild || {}
-        const petData = rawResult.pet || {}
-        const socialData = rawResult.social || {}
-        const banData = rawResult.ban || {}
-        const creditData = rawResult.credit || {}
+      if (!primary?.data && !fallback?.data) {
+        const errMsg =
+          primaryResult.reason?.message ||
+          fallbackResult.reason?.message ||
+          'Gagal mengambil data dari server Free Fire'
+        throw new Error(errMsg)
+      }
 
-        const region = player.region || 'ID'
-        const serverName = SERVER_NAMES[region] || region
-        const rankingPoints = player.rankingPoints ?? 0
-        const brRank = getBrRank(rankingPoints)
-        const csRank = getCsRank(player.csRank || 0, 0)
-        const primeLevel = player.primeInfo?.primeLevel || 0
-        const primePrice = calcPrimePrice(primeLevel, 0)
+      const primaryData = primary?.data || null
+      const adenData = fallback?.data || null
 
-        const hasGuild = Boolean(guildData.guildName || guildData.guildId)
-        const hasPet = Boolean(petData.name || petData.id || petData.speciesName)
-        const signature = socialData.signature || null
+      const player = primaryData?.player || {}
+      const guildData = primaryData?.guild || {}
+      const petData = primaryData?.pet || {}
+      const socialData = primaryData?.social || {}
+      const banData = primaryData?.ban || {}
+      const creditData = primaryData?.credit || {}
 
-        result = {
-          uid: cleanUid,
-          nickname: player.nickname || null,
-          region: region,
-          server: serverName,
-          level: player.level || 0,
-          exp: player.exp || 0,
-          likes: player.liked || 0,
-          rank: player.rank || 0,
-          rankName: brRank.name,
-          rankId: brRank.id,
-          rankingPoints: rankingPoints,
-          csRank: player.csRank || 0,
-          csRankName: csRank.name,
-          csRankId: csRank.id,
-          hasElitePass: Boolean(player.hasElitePass),
-          createdAt: formatFullDate(player.createAt),
-          createdAtFormatted: formatIsoDate(player.createAt),
-          lastLoginAt: formatLastLogin(player.lastLoginAt),
-          lastLoginAtFormatted: formatIsoDate(player.lastLoginAt),
-          avatar: player.avatarUrl || player.equippedAvatar?.icon || null,
-          banner: player.equippedBanner?.icon || null,
-          equippedAvatar: player.equippedAvatar || null,
-          equippedBanner: player.equippedBanner || null,
-          equippedCharacter: player.equippedCharacter || null,
-          equippedTitle: player.equippedTitle || null,
-          equippedPin: player.equippedPin || null,
-          equippedOutfitItems: player.equippedOutfitItems || [],
-          equippedWeaponOutfitItems: player.equippedWeaponOutfitItems || [],
-          equippedLookChangerItems: player.equippedLookChangerItems || [],
-          equippedArrivalAnimationItems: player.equippedArrivalAnimationItems || [],
-          guild: hasGuild
-            ? {
-                name: guildData.guildName || null,
-                id: guildData.guildId || null,
-                level: guildData.guildLevel || 0,
-                memberNum: guildData.memberNum || 0,
-                capacity: guildData.capacity || 0,
-              }
-            : null,
-          pet: hasPet
-            ? {
-                id: petData.id || null,
-                name: petData.name || null,
-                speciesName: petData.speciesName || null,
-                level: petData.level || 0,
-                exp: petData.exp || 0,
-                isSelected: Boolean(petData.isSelected),
-                skinId: petData.skinId || null,
-                skinName: petData.skinName || null,
-                skinIconUrl: petData.skinIconUrl || null,
-                selectedSkillId: petData.selectedSkillId || null,
-                skillName: petData.skillName || null,
-              }
-            : null,
-          social: signature ? { signature } : null,
-          creditScore: creditData.creditScore ?? 100,
-          ban: {
-            isBanned: Boolean(banData.isBanned),
-            status: banData.status || (banData.isBanned ? 'BANNED' : 'NOT BANNED'),
-            banPeriod: banData.banPeriod ?? 0,
-            lastLoginAt: banData.lastLoginAt ?? null,
-          },
-          primePrice: {
-            primeLevel: primePrice.primeLevel,
-            primePoints: primePrice.primePoints,
-            booyahPass: primePrice.booyahPass,
-          },
-        }
-      } else {
-        // Fallback mapping with fixes
-        const basic = rawResult.basicInfo || {}
-        const clan = rawResult.clanBasicInfo || {}
-        const pet = rawResult.petInfo || {}
-        const social = rawResult.socialInfo || {}
-        const prime = basic.primeInfo || {}
-        const credit = rawResult.creditScoreInfo || {}
+      const basic = adenData?.basicInfo || {}
+      const clan = adenData?.clanBasicInfo || {}
+      const social = adenData?.socialInfo || {}
+      const adenPet = adenData?.petInfo || {}
 
-        const region = basic.region || 'ID'
-        const serverName = SERVER_NAMES[region] || region
-        const brRank = getBrRank(basic.rankingPoints || 0)
-        const csRank = getCsRank(basic.csRank || 0, basic.csRankingPoints || 0)
-        const primePrice = calcPrimePrice(prime.primeLevel || 0, prime.primePoints || 0)
+      const region = player.region || basic.region || 'ID'
+      const serverName = SERVER_NAMES[region] || region
+      const rankingPoints = player.rankingPoints ?? basic.rankingPoints ?? 0
+      const brRank = getBrRank(rankingPoints)
+      const csRank = getCsRank(player.csRank || basic.csRank || 0, basic.csRankingPoints || 0)
 
-        const hasPet = Boolean(pet.name || pet.id)
-        const signature = social.signature || null
+      const primeLevel = player.primeInfo?.primeLevel || basic.primeInfo?.primeLevel || 0
+      const primePoints = basic.primeInfo?.primePoints || 0
+      const primePrice = calcPrimePrice(primeLevel, primePoints)
 
-        result = {
-          uid: cleanUid,
-          nickname: basic.nickname,
-          region: region,
-          server: serverName,
-          level: basic.level || 0,
-          exp: basic.exp || 0,
-          likes: basic.liked || 0,
-          rank: basic.rank || 0,
-          rankName: brRank.name,
-          rankId: brRank.id,
-          rankingPoints: basic.rankingPoints || 0,
-          csRank: basic.csRank || 0,
-          csRankName: csRank.name,
-          csRankId: csRank.id,
-          hasElitePass: Boolean(basic.hasElitePass),
-          createdAt: formatFullDate(basic.createAt),
-          createdAtFormatted: formatIsoDate(basic.createAt),
-          lastLoginAt: formatLastLogin(basic.lastLoginAt),
-          lastLoginAtFormatted: formatIsoDate(basic.lastLoginAt),
-          avatar: null,
-          banner: null,
-          equippedAvatar: basic.headPic ? { id: basic.headPic } : null,
-          equippedBanner: basic.bannerId ? { id: basic.bannerId } : null,
-          equippedCharacter: null,
-          equippedTitle: null,
-          equippedPin: null,
-          equippedOutfitItems: [],
-          equippedWeaponOutfitItems: [],
-          equippedLookChangerItems: [],
-          equippedArrivalAnimationItems: [],
-          guild: clan.clanName
-            ? {
-                name: clan.clanName,
-                id: clan.clanId || null,
-                level: clan.clanLevel || 0,
-                memberNum: clan.memberNum || 0,
-                leader: clan.leaderName || null,
-              }
-            : null,
-          pet: hasPet
-            ? {
-                id: pet.id || null,
-                name: pet.name || null,
-                speciesName: null,
-                level: pet.level || 0,
-                exp: pet.exp || 0,
-                isSelected: Boolean(pet.isSelected),
-                skinId: pet.skinId || null,
-                skinName: null,
-                skinIconUrl: null,
-                selectedSkillId: pet.selectedSkillId || null,
-                skillName: null,
-              }
-            : null,
-          social: signature ? { signature } : null,
-          creditScore: credit.creditScore || basic.creditScore || 100,
-          ban: {
-            isBanned: false,
-            status: 'UNKNOWN',
-            banPeriod: 0,
-            lastLoginAt: null,
-          },
-          primePrice: {
-            primeLevel: primePrice.primeLevel,
-            primePoints: primePrice.primePoints,
-            booyahPass: primePrice.booyahPass,
-          },
-        }
+      const maxRank = basic.maxRank ?? player.rank ?? null
+      const maxRankName = maxRank ? getBrRank(maxRank).name : null
+      const csMaxRank = basic.csMaxRank ?? player.csRank ?? null
+      const csMaxRankName = csMaxRank ? getCsRank(csMaxRank, 0).name : null
+
+      const headPic = player.headPic || basic.headPic
+      const bannerId = player.equippedBanner?.id || basic.bannerId
+      const charId = player.equippedCharacter?.id || adenData?.profileInfo?.avatarId
+      const petId = petData.id || adenPet.id || null
+      const petSkinId = petData.skinId || adenPet.skinId || null
+
+      const avatar = player.avatarUrl || getPermanentIcon(headPic)
+      const banner = player.equippedBanner?.icon || getPermanentIcon(bannerId)
+
+      const equippedAvatar = player.equippedAvatar || (headPic ? {
+        id: headPic,
+        name: null,
+        icon: getPermanentIcon(headPic),
+        type: 'Avatars',
+        description: null,
+      } : null)
+
+      const equippedBanner = player.equippedBanner || (bannerId ? {
+        id: bannerId,
+        name: null,
+        icon: getPermanentIcon(bannerId),
+        type: 'Banners',
+        description: null,
+      } : null)
+
+      const equippedCharacter = player.equippedCharacter || (charId ? {
+        id: charId,
+        name: CHARACTER_MAP[charId] || null,
+        icon: getPermanentIcon(charId),
+        type: 'Characters',
+        description: null,
+      } : null)
+
+      const hasGuild = Boolean(
+        guildData.guildName || guildData.guildId || clan.clanName || clan.clanId
+      )
+      const guild = hasGuild
+        ? {
+            name: guildData.guildName || clan.clanName || null,
+            id: guildData.guildId || clan.clanId || null,
+            level: guildData.guildLevel || clan.clanLevel || 0,
+            memberNum: guildData.memberNum || clan.memberNum || 0,
+            capacity: guildData.capacity || clan.capacity || 0,
+            leader: clan.leaderName || null,
+          }
+        : null
+
+      const hasPet = Boolean(
+        petData.name || petData.id || petData.speciesName || adenPet.name || adenPet.id
+      )
+      const pet = hasPet
+        ? {
+            id: petId,
+            name: petData.name || adenPet.name || null,
+            speciesName: petData.speciesName || PET_MAP[petId] || null,
+            level: petData.level || adenPet.level || 0,
+            exp: petData.exp || adenPet.exp || 0,
+            isSelected: Boolean(petData.isSelected ?? adenPet.isSelected),
+            skinId: petSkinId,
+            skinName: petData.skinName || null,
+            skinIconUrl: petData.skinIconUrl || getPermanentIcon(petSkinId),
+            selectedSkillId: petData.selectedSkillId || adenPet.selectedSkillId || null,
+            skillName: petData.skillName || null,
+          }
+        : null
+
+      const signature = socialData.signature || social.signature || null
+      const language = formatLanguage(social.language)
+      const rankShow = formatRankShow(social.rankShow)
+      const battleTags = formatBattleTags(social.battleTag, social.battleTagCount)
+
+      const socialResult = (signature || language || rankShow || battleTags.length > 0)
+        ? {
+            signature,
+            language,
+            rankShow,
+            battleTags,
+          }
+        : null
+
+      const createAtTs = player.createAt || basic.createAt
+      const lastLoginTs = player.lastLoginAt || basic.lastLoginAt
+
+      const creditScore =
+        creditData.creditScore ?? adenData?.creditScoreInfo?.creditScore ?? basic.creditScore ?? 100
+
+      const ban = {
+        isBanned: Boolean(banData.isBanned),
+        status: banData.status || (banData.isBanned ? 'BANNED' : 'NOT BANNED'),
+        banPeriod: banData.banPeriod ?? 0,
+        lastLoginAt: banData.lastLoginAt ?? null,
+      }
+
+      const diamondCost = adenData?.diamondCostRes?.diamondCost ?? null
+
+      const result = {
+        uid: cleanUid,
+        nickname: player.nickname || basic.nickname || null,
+        region,
+        server: serverName,
+        level: player.level || basic.level || 0,
+        exp: player.exp || basic.exp || 0,
+        likes: player.liked || basic.liked || 0,
+        diamondCost,
+        accountType: basic.accountType ?? null,
+        seasonId: basic.seasonId ?? null,
+        badgeId: basic.badgeId ?? null,
+        rank: player.rank || basic.rank || 0,
+        rankName: brRank.name,
+        rankId: brRank.id,
+        rankingPoints,
+        maxRank,
+        maxRankName,
+        csRank: player.csRank || basic.csRank || 0,
+        csRankName: csRank.name,
+        csRankId: csRank.id,
+        csMaxRank,
+        csMaxRankName,
+        hasElitePass: Boolean(player.hasElitePass ?? basic.hasElitePass),
+        createdAt: formatFullDate(createAtTs),
+        createdAtFormatted: formatIsoDate(createAtTs),
+        lastLoginAt: formatLastLogin(lastLoginTs),
+        lastLoginAtFormatted: formatIsoDate(lastLoginTs),
+        avatar,
+        banner,
+        equippedAvatar,
+        equippedBanner,
+        equippedCharacter,
+        equippedTitle: player.equippedTitle || null,
+        equippedPin: player.equippedPin || null,
+        equippedOutfitItems: player.equippedOutfitItems || [],
+        equippedWeaponOutfitItems: player.equippedWeaponOutfitItems || [],
+        equippedLookChangerItems: player.equippedLookChangerItems || [],
+        equippedArrivalAnimationItems: player.equippedArrivalAnimationItems || [],
+        guild,
+        pet,
+        social: socialResult,
+        creditScore,
+        ban,
+        primePrice: {
+          primeLevel: primePrice.primeLevel,
+          primePoints: primePrice.primePoints,
+          booyahPass: primePrice.booyahPass,
+        },
       }
 
       return res.json({
@@ -570,7 +702,7 @@ export default {
       logger.error(`[FF Stalker] Error for UID ${cleanUid}: ${e.message}`)
       return res.status(500).json({
         status: false,
-        error: 'Gagal mengambil data dari sumber',
+        error: 'Gagal mengambil data dari sumber Free Fire',
         detail: e.message,
       })
     }

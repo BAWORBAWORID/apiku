@@ -1392,7 +1392,9 @@
         "/api/anime/animotv": "online",
         "/api/am/preset": "online",
         "/api/movie/moviezone": "online",
-        "/api/am/presetv2": "online"
+        "/api/am/presetv2": "online",
+        "/api/tempmail/maildropy": "online",
+        "/api/am/bulkv5": "online"
     },
     "version": "2.1.2"
 }

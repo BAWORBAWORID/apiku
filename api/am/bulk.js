@@ -17,8 +17,7 @@ const ACTIVE_DOMAINS = [
 
 export default {
   name: "AlightMotion Bulk",
-  description:
-    "Bulk AlightMotion premium — fast background processing (generate, send, inbox schedule & verify), safe for 5+ accounts without timeout",
+  description: "Generate Am Bulk",
   category: "AlightMotion",
   methods: ["GET", "POST"],
   params: ["count"],

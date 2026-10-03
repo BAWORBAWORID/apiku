@@ -2134,7 +2134,7 @@
       }
     },
     "2026-10-03": {
-      "total": 274,
+      "total": 298,
       "byEndpoint": {
         "/api/search/pinterest": 1,
         "/api/solve/turnstile": 7,
@@ -2184,9 +2184,9 @@
         "/api/maker/qcwa": 1,
         "/api/maker/textvideo": 1,
         "/api/maker/ttqc": 1,
-        "/api/am/send": 9,
+        "/api/am/send": 10,
         "/api/donasi/summary": 7,
-        "/api/fun/philosopher-quotes": 1,
+        "/api/fun/philosopher-quotes": 6,
         "/api/am/bulkv3": 2,
         "/api/am/bulk": 5,
         "/api/movie/moviebox": 1,
@@ -2211,13 +2211,13 @@
         "/api/tools/cuaca-bmkg": 1,
         "/api/games/tebakan": 1,
         "/api/games/susunkata": 1,
-        "/api/ai/aichatting": 5,
+        "/api/ai/aichatting": 8,
         "/api/image/nanobanana": 1,
         "/api/image/removewm": 1,
         "/api/search/flac": 1,
         "/api/search/search-song": 1,
         "/api/tools/proxy2": 1,
-        "/api/maker/fake-ff": 3,
+        "/api/maker/fake-ff": 4,
         "/api/random/waifu": 5,
         "/api/tools/ssweb": 2,
         "/api/search/4kwallpapers": 2,
@@ -2227,7 +2227,7 @@
         "/api/maker/fakecall-andro": 2,
         "/api/maker/saldo-gopay": 5,
         "/api/maker/fake-tweet": 4,
-        "/api/am/verifv2": 2,
+        "/api/am/verifv2": 3,
         "/api/ai/deepseek-v3": 1,
         "/api/stalker/deepsearch": 1,
         "/api/image/blur": 1,
@@ -2258,10 +2258,14 @@
         "/api/downloader/allinonev4": 4,
         "/api/downloader/tiktok": 1,
         "/api/downloader/tiktokv5": 2,
-        "/api/stalker/freefire": 1,
+        "/api/stalker/freefire": 4,
         "/api/am/bulkv2": 1,
         "/api/am/presetv2": 4,
-        "/api/maker/saldo-dana": 1
+        "/api/maker/saldo-dana": 1,
+        "/api/fun/anime-quotes": 1,
+        "/api/tempmail/maildropy": 6,
+        "/api/am/bulkv5": 2,
+        "/api": 1
       }
     }
   },
@@ -3644,15 +3648,15 @@
       }
     },
     "2026-W41": {
-      "total": 478,
+      "total": 502,
       "byEndpoint": {
         "/api/movie/moviebox": 2,
-        "/api/am/send": 33,
+        "/api/am/send": 34,
         "/api/primbon/ramaljodoh": 5,
         "/api/maker/ektp": 1,
         "/api/maker/bounty": 3,
         "/api/maker/fake-afinitas-ml": 6,
-        "/api/maker/fake-ff": 5,
+        "/api/maker/fake-ff": 6,
         "/api/maker/": 1,
         "/api/maker/fake-ml": 1,
         "/api/maker/fake-tele": 1,
@@ -3689,12 +3693,12 @@
         "/api/tools/web2apk": 3,
         "/api/maker/fakech": 1,
         "/api/solve/turnstile": 51,
-        "/api/am/verifv2": 11,
+        "/api/am/verifv2": 12,
         "/api/canvas/boarding-nasa": 1,
         "/api/canvas/brat-anime": 1,
         "/api/canvas/applemusic": 2,
         "/api/stalker/ml-id": 1,
-        "/api/ai/aichatting": 6,
+        "/api/ai/aichatting": 9,
         "/api/image/nsfw-check": 1,
         "/api/am/bulk": 15,
         "/api/downloader/allinone": 4,
@@ -3738,7 +3742,7 @@
         "/api/maker/post-ig": 1,
         "/api/maker/qcwa": 1,
         "/api/donasi/summary": 7,
-        "/api/fun/philosopher-quotes": 1,
+        "/api/fun/philosopher-quotes": 6,
         "/api/tempmail/instanttempemail": 8,
         "/api/canvas/struk-generator": 3,
         "/api/solve/cloudflare": 2,
@@ -3794,9 +3798,13 @@
         "/api/downloader/allinonev4": 4,
         "/api/downloader/tiktok": 1,
         "/api/downloader/tiktokv5": 2,
-        "/api/stalker/freefire": 1,
+        "/api/stalker/freefire": 4,
         "/api/am/bulkv2": 1,
-        "/api/am/presetv2": 4
+        "/api/am/presetv2": 4,
+        "/api/fun/anime-quotes": 1,
+        "/api/tempmail/maildropy": 6,
+        "/api/am/bulkv5": 2,
+        "/api": 1
       }
     }
   },
@@ -4644,7 +4652,7 @@
       }
     },
     "2026-10": {
-      "total": 1920,
+      "total": 1944,
       "byEndpoint": {
         "/api/tools/dummylabs": 7,
         "/api/tools/vccgen": 5,
@@ -4657,9 +4665,9 @@
         "/api/status": 6,
         "/api/solve/turnstile": 145,
         "/api/am/sendv2": 17,
-        "/api/am/verifv2": 78,
+        "/api/am/verifv2": 79,
         "/api/am": 1,
-        "/api/stalker/freefire": 19,
+        "/api/stalker/freefire": 22,
         "/api/stalker/ml": 10,
         "/api/donasi/summary": 35,
         "/api/donasi": 3,
@@ -4701,8 +4709,8 @@
         "/api/ephoto/ephoto": 1,
         "/api/fun/capcut": 11,
         "/api/fun/reach-ch2": 20,
-        "/api/fun/philosopher-quotes": 3,
-        "/api/ai/aichatting": 71,
+        "/api/fun/philosopher-quotes": 8,
+        "/api/ai/aichatting": 74,
         "/api/ai/askme": 1,
         "/api/ai/aiseek": 2,
         "/api/ai/chatai": 3,
@@ -4718,7 +4726,7 @@
         "/bypass/safelink": 8,
         "/api/bypass/safelink": 3,
         "/bypass/wellbypass": 8,
-        "/api/am/send": 106,
+        "/api/am/send": 107,
         "/api/tools/encrypt": 6,
         "/api/am/sendv3": 17,
         "/api/downloader/youtubev4": 5,
@@ -4739,7 +4747,7 @@
         "/api/imagehd/upscalev2": 13,
         "/api/tools/upload2": 4,
         "/api/maker/fakecall-andro": 10,
-        "/api/maker/fake-ff": 8,
+        "/api/maker/fake-ff": 9,
         "/api/movie/publicdomain": 3,
         "/api/tempmail/1timetech": 6,
         "/api/stalker/ml-id": 3,
@@ -4770,7 +4778,7 @@
         "/api/downloader/allinonev2": 4,
         "/api/tools/catbox": 12,
         "/api/tools/upload-v3": 1,
-        "/api": 2,
+        "/api": 3,
         "/api/tempmail/instanttempemail": 31,
         "/api/am/bulkv2": 3,
         "/api/search/sigstick": 29,
@@ -4812,7 +4820,7 @@
         "/tools/proxy": 1,
         "/api/maker/fakebca": 1,
         "/api/maker/fakenotif": 2,
-        "/api/fun/anime-quotes": 4,
+        "/api/fun/anime-quotes": 5,
         "/api/ai/deepai": 1,
         "/api/ai/chatgpt": 2,
         "/api/ai/deep-ai": 2,
@@ -4900,12 +4908,14 @@
         "/api/downloader/allinonev4": 4,
         "/api/downloader/tiktok": 1,
         "/api/downloader/tiktokv5": 2,
-        "/api/am/presetv2": 4
+        "/api/am/presetv2": 4,
+        "/api/tempmail/maildropy": 6,
+        "/api/am/bulkv5": 2
       }
     }
   },
   "allTime": {
-    "total": 121002,
+    "total": 121026,
     "byEndpoint": {
       "/api/am/verify": {
         "total": 158,
@@ -4930,9 +4940,9 @@
         }
       },
       "/api": {
-        "total": 8,
+        "total": 9,
         "byStatus": {
-          "4": 8
+          "4": 9
         }
       },
       "/api/checknumber/checkban": {
@@ -4949,9 +4959,9 @@
         }
       },
       "/api/maker/fake-ff": {
-        "total": 68,
+        "total": 69,
         "byStatus": {
-          "2": 66,
+          "2": 67,
           "4": 2
         }
       },
@@ -4969,9 +4979,9 @@
         }
       },
       "/api/stalker/freefire": {
-        "total": 53,
+        "total": 56,
         "byStatus": {
-          "2": 28,
+          "2": 31,
           "4": 22,
           "5": 3
         }
@@ -5055,17 +5065,17 @@
         }
       },
       "/api/am/send": {
-        "total": 341,
+        "total": 342,
         "byStatus": {
-          "2": 203,
+          "2": 204,
           "4": 116,
           "5": 22
         }
       },
       "/api/ai/aichatting": {
-        "total": 111250,
+        "total": 111253,
         "byStatus": {
-          "2": 168,
+          "2": 171,
           "4": 111082
         }
       },
@@ -6389,9 +6399,9 @@
         }
       },
       "/api/am/verifv2": {
-        "total": 334,
+        "total": 335,
         "byStatus": {
-          "2": 64,
+          "2": 65,
           "4": 205,
           "5": 65
         }
@@ -6858,15 +6868,15 @@
         }
       },
       "/api/fun/philosopher-quotes": {
-        "total": 25,
+        "total": 30,
         "byStatus": {
-          "2": 25
+          "2": 30
         }
       },
       "/api/fun/anime-quotes": {
-        "total": 49,
+        "total": 50,
         "byStatus": {
-          "2": 49
+          "2": 50
         }
       },
       "/api/maker/fakecall-andro": {
@@ -10551,11 +10561,23 @@
           "2": 3,
           "4": 1
         }
+      },
+      "/api/tempmail/maildropy": {
+        "total": 6,
+        "byStatus": {
+          "2": 6
+        }
+      },
+      "/api/am/bulkv5": {
+        "total": 2,
+        "byStatus": {
+          "2": 2
+        }
       }
     }
   },
   "_metadata": {
-    "lastUpdated": "2026-10-03T10:32:59.534Z",
+    "lastUpdated": "2026-10-03T10:54:46.654Z",
     "version": "json"
   }
 }

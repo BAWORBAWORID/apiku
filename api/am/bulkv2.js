@@ -153,8 +153,7 @@ async function processVerificationBackground(email) {
 
 export default {
   name: "AlightMotion Bulk V2",
-  description:
-    "Bulk AlightMotion premium using CleanTempMail (random domains) — auto generate email, background verification",
+  description: "Generate Am Bulk v2",
   category: "AlightMotion",
   methods: ["GET", "POST"],
   params: ["count", "domain"],

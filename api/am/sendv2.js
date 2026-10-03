@@ -30,7 +30,7 @@ async function sendMagicLink(email) {
 
 export default {
   name: "AlightMotion Send v2",
-  description: "Kirim email sign-in link Alight Motion via Firebase Auth (v1 API, working)",
+  description: "Kirim email sign-in link Alight Motion",
   category: "AlightMotion",
   methods: ["GET", "POST"],
   params: ["email"],

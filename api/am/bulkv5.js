@@ -1,15 +1,18 @@
 /**
- * AlightMotion Bulk V4 — Auto create CyberMail + send magic link + verify + apply premium
- * Powered by CyberMail (cybermail.us) + Google Identity Toolkit + Alight Creative Cloud Functions
+ * AlightMotion Bulk V5 — Auto create Maildropy + send magic link + verify + apply premium
+ * Powered by Maildropy (maildropy.com) + Google Identity Toolkit + Alight Creative Cloud Functions
  *
- * GET  /api/am/bulkv4?count=1
- * POST /api/am/bulkv4 -d {"count": 1, "async": true}
+ * GET  /api/am/bulkv5?count=1
+ * POST /api/am/bulkv5 -d {"count": 1}
  */
 
+import axios from "axios";
+import { wrapper } from "axios-cookiejar-support";
+import { CookieJar } from "tough-cookie";
 import logger from "../../src/utils/logger.js";
 
-const CYBERMAIL_API = "https://api.cybermail.us";
-const CYBERMAIL_WEB = "https://cybermail.us";
+const MAILDROPY_BASE = "http://maildropy.com";
+const MAILDROPY_WEB = "https://maildropy.com";
 
 const FIREBASE_WEB_API_KEY =
   process.env.ALIGHT_API_KEY || "AIzaSyDrZ9jr_Y16ltSBqsQR5IH6I04FRga6Ki0";
@@ -18,9 +21,11 @@ const ALIGHT_CONTINUE_URL = "https://alightcreative.com/am/auth/finish";
 const CLOUD_FUNCTIONS_BASE = "https://us-central1-alight-creative.cloudfunctions.net";
 const VERIFY_PURCHASE_URL = "https://us-central1-alight-creative.cloudfunctions.net/verifyPurchase";
 const PRODUCT_ID = "am.full.sub.annual.19q4";
-const TOKEN = "mmgaobamlahbbeccfplmbkbb.AO-J1OzqG0or_GJJIx-ms8GrTm-jaglCRfhQSRPUZKpl2YspYS-oN7_94uv8RC5vQbvd_Ios2pPDStZ2n7F0hLE3FiOU7HS3R6Fquulv5xLXFECSv4ctElw";
+const TOKEN =
+  "mmgaobamlahbbeccfplmbkbb.AO-J1OzqG0or_GJJIx-ms8GrTm-jaglCRfhQSRPUZKpl2YspYS-oN7_94uv8RC5vQbvd_Ios2pPDStZ2n7F0hLE3FiOU7HS3R6Fquulv5xLXFECSv4ctElw";
 const SKU_TYPE = "subs";
-const FIREBASE_INSTANCE_ID_TOKEN = "cSDnCyp3T-uwp07z3tL86T:APA91bFkmvvsHw5nnqa1SBFci-99DRsKClLiETdRrVcJjS5yBx1v_FbCb1d8WhBuea_zmwnYBktyTIzcRhN4b6uNOUur9wPc0gKXmJDoZic0LhNq5V2s0xI";
+const FIREBASE_INSTANCE_ID_TOKEN =
+  "cSDnCyp3T-uwp07z3tL86T:APA91bFkmvvsHw5nnqa1SBFci-99DRsKClLiETdRrVcJjS5yBx1v_FbCb1d8WhBuea_zmwnYBktyTIzcRhN4b6uNOUur9wPc0gKXmJDoZic0LhNq5V2s0xI";
 
 const NATIVE_HEADERS = {
   "Content-Type": "application/json",
@@ -36,20 +41,21 @@ const PURCHASE_HEADERS = {
   "User-Agent": "okhttp/3.12.1",
 };
 
-const WORDLIST = [
-  "cyber", "retro", "neon", "pixel", "hack", "code", "tech", "digital",
-  "matrix", "quantum", "synth", "wave", "glow", "volt", "echo", "nova",
-  "flux", "byte", "data", "core", "alpha", "beta", "gamma", "delta",
-  "omega", "prime", "nexus", "vertex", "axis", "grid"
-];
-
-const FALLBACK_DOMAINS = [
-  "cybermail.us",
-  "cybermail.biz.id",
-  "cybermail.my.id",
-  "cyber-mail.site",
-  "cybermail.web.id"
-];
+const jar = new CookieJar();
+const maildropyClient = wrapper(
+  axios.create({
+    jar,
+    baseURL: MAILDROPY_BASE,
+    timeout: 20000,
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36",
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    validateStatus: () => true,
+  })
+);
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -62,64 +68,52 @@ function generateCodeOrder() {
   return `GPA.${r(4)}.${r(4)}.${r(4)}.${r(5)}`;
 }
 
-// 1. Fetch domain aktif dari CyberMail
-async function getDomains() {
-  try {
-    const res = await fetch(`${CYBERMAIL_API}/api/domains`, {
-      headers: { Accept: "application/json" },
-      signal: AbortSignal.timeout(15000),
-    });
-    if (res.ok) {
-      const json = await res.json();
-      if (json.success && Array.isArray(json.data)) {
-        const verified = json.data.filter((d) => d.verified).map((d) => d.name);
-        if (verified.length > 0) return verified;
-      }
-    }
-  } catch {}
-  return FALLBACK_DOMAINS;
+export function getDirectUrl(email) {
+  if (!email) return null;
+  return `${MAILDROPY_WEB}/${email}`;
 }
 
-// 2. Generate email temporary CyberMail
-export async function createEmail() {
-  const domains = await getDomains();
-  const domain = domains[Math.floor(Math.random() * domains.length)];
-  const word = WORDLIST[Math.floor(Math.random() * WORDLIST.length)];
-  const num = Math.floor(Math.random() * 999) + 1;
-  const username = `${word}${num}`;
-  const email = `${username}@${domain}`;
-  return { email, username, domain };
-}
-
-// 3. Fetch inbox CyberMail
-export async function checkInbox(email) {
-  const addr = String(email || "").trim();
-  if (!addr.includes("@")) throw new Error("Email tidak valid");
-
-  const res = await fetch(`${CYBERMAIL_API}/api/inbox/${encodeURIComponent(addr)}`, {
-    headers: { Accept: "application/json" },
-    signal: AbortSignal.timeout(20000),
-  });
-
-  if (!res.ok) {
-    throw new Error(`CyberMail inbox HTTP ${res.status}`);
+// 1. Generate email temporary via Maildropy
+export async function createEmail(domain = "maildropy.com") {
+  const res = await maildropyClient.post("/wxapi/generate", { domain });
+  const data = res.data || {};
+  if (!data.email) {
+    throw new Error(`Gagal membuat email Maildropy (${res.status})`);
   }
-
-  const json = await res.json();
-  return json.data?.emails || [];
+  return {
+    email: data.email,
+    domain: data.domain || domain,
+    directUrl: getDirectUrl(data.email),
+  };
 }
 
-// 4. Cari magic link dari pesan masuk
+// 2. Fetch inbox Maildropy
+export async function checkInbox(email) {
+  const enc = encodeURIComponent(email);
+  const res = await maildropyClient.get(`/wxapi/messages/${enc}`);
+  const data = res.data || {};
+  return Array.isArray(data.messages) ? data.messages : [];
+}
+
+// 3. Detail message Maildropy
+export async function getMessage(email, messageId) {
+  const encEmail = encodeURIComponent(email);
+  const encId = encodeURIComponent(messageId);
+  const res = await maildropyClient.get(`/wxapi/message/${encEmail}/${encId}`);
+  return res.data || {};
+}
+
+// 4. Cari link verifikasi dari isi pesan
 export function findVerifyLink(emails) {
   const patterns = [
     /https:\/\/alightcreative\.com\/auth_action\/?\?[^\s"'>]*oobCode=[^\s"'>&]+/,
     /https:\/\/[^"'\s]*alight[^"'\s]*firebaseapp\.com\/__\/auth\/links\?link=[^\s"'>]+/,
     /https:\/\/[^"'\s]*firebaseapp\.com\/__\/auth\/links\?link=[^\s"'>]+/,
-    /https:\/\/alight-creative\.firebaseapp\.com\/__\/auth\/links\?link=[^\s"'>]+/
+    /https:\/\/alight-creative\.firebaseapp\.com\/__\/auth\/links\?link=[^\s"'>]+/,
   ];
 
   for (const msg of emails) {
-    const text = `${msg.html || ""}\n${msg.body || ""}`;
+    const text = `${msg.html || ""}\n${msg.text || ""}\n${msg.body || ""}\n${msg.preview || ""}`;
     for (const p of patterns) {
       const m = text.match(p);
       if (m) return m[0].replace(/&amp;/g, "&");
@@ -129,13 +123,22 @@ export function findVerifyLink(emails) {
 }
 
 // 5. Polling inbox mencari verify link
-export async function waitForVerifyLink(email, { maxAttempts = 25, intervalMs = 2500 } = {}) {
+export async function waitForVerifyLink(email, { maxAttempts = 20, intervalMs = 2000 } = {}) {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
-      const emails = await checkInbox(email);
-      if (emails.length) {
-        const link = findVerifyLink(emails);
-        if (link) return { link, attempts: attempt };
+      const messages = await checkInbox(email);
+      if (messages.length > 0) {
+        for (const msg of messages) {
+          let link = findVerifyLink([msg]);
+          if (link) return { link, attempts: attempt };
+
+          const msgId = msg.id || msg._id;
+          if (msgId) {
+            const detail = await getMessage(email, msgId);
+            link = findVerifyLink([detail, msg]);
+            if (link) return { link, attempts: attempt };
+          }
+        }
       }
     } catch {}
     await sleep(intervalMs);
@@ -143,7 +146,7 @@ export async function waitForVerifyLink(email, { maxAttempts = 25, intervalMs = 
   return null;
 }
 
-// 6. Kirim magic link Firebase Auth
+// 6. Kirim magic sign-in link via Firebase Auth
 export async function sendMagicLink(email) {
   const payload = {
     requestType: "EMAIL_SIGNIN",
@@ -152,15 +155,12 @@ export async function sendMagicLink(email) {
     canHandleCodeInApp: true,
   };
 
-  const res = await fetch(
-    `${FIREBASE_AUTH_BASE}:sendOobCode?key=${FIREBASE_WEB_API_KEY}`,
-    {
-      method: "POST",
-      headers: NATIVE_HEADERS,
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(20000),
-    }
-  );
+  const res = await fetch(`${FIREBASE_AUTH_BASE}:sendOobCode?key=${FIREBASE_WEB_API_KEY}`, {
+    method: "POST",
+    headers: NATIVE_HEADERS,
+    body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(20000),
+  });
 
   const body = await res.json().catch(() => null);
   if (!res.ok) {
@@ -205,15 +205,12 @@ export function extractOobCode(magicLink) {
 // 8. Verifikasi magic link ke Firebase Auth
 export async function verifyMagicLink(email, magicLinkOrOobCode) {
   const oobCode = extractOobCode(magicLinkOrOobCode);
-  const res = await fetch(
-    `${FIREBASE_AUTH_BASE}:signInWithEmailLink?key=${FIREBASE_WEB_API_KEY}`,
-    {
-      method: "POST",
-      headers: NATIVE_HEADERS,
-      body: JSON.stringify({ email: String(email).trim(), oobCode }),
-      signal: AbortSignal.timeout(20000),
-    }
-  );
+  const res = await fetch(`${FIREBASE_AUTH_BASE}:signInWithEmailLink?key=${FIREBASE_WEB_API_KEY}`, {
+    method: "POST",
+    headers: NATIVE_HEADERS,
+    body: JSON.stringify({ email: String(email).trim(), oobCode }),
+    signal: AbortSignal.timeout(20000),
+  });
 
   const body = await res.json().catch(() => null);
   if (!res.ok) {
@@ -294,8 +291,8 @@ export async function getLicenseStatus(idToken) {
 }
 
 export default {
-  name: "AlightMotion Bulk V4",
-  description: "Generate Am Bulk v4",
+  name: "AlightMotion Bulk V5",
+  description: "Generate Am Bulk v5",
   category: "AlightMotion",
   methods: ["GET", "POST"],
   params: ["count"],
@@ -311,23 +308,23 @@ export default {
 
   async run(req, res) {
     const params = { ...req.query, ...req.body };
-    const total = Math.min(Math.max(parseInt(params.count) || 1, 1), 20);
+    const total = Math.min(Math.max(parseInt(params.count, 10) || 1, 1), 20);
 
     try {
-      // 1. Buat email CyberMail & orderId untuk semua akun
+      // 1. Buat email Maildropy & orderId untuk semua akun
       const results = [];
       for (let index = 0; index < total; index++) {
-        const { email } = await createEmail();
+        const { email, directUrl } = await createEmail();
         const orderId = generateCodeOrder();
         results.push({
           email,
-          inboxUrl: `${CYBERMAIL_WEB}/?e=${email}`,
+          inboxUrl: directUrl,
           orderId,
         });
         if (index < total - 1) await sleep(300);
       }
 
-      // 2. Jalankan proses verifikasi dan apply premium di latar belakang (background)
+      // 2. Jalankan proses verifikasi dan aktivasi premium di background
       (async () => {
         for (let i = 0; i < results.length; i++) {
           const item = results[i];
@@ -335,53 +332,56 @@ export default {
           const orderId = item.orderId;
 
           try {
-            logger.info(`[AM BulkV4 BG] [${i + 1}/${total}] ${email}: Mengirim magic link...`);
+            logger.info(`[AM BulkV5 BG] [${i + 1}/${total}] ${email}: Mengirim magic link...`);
             await sendMagicLink(email);
 
-            logger.info(`[AM BulkV4 BG] [${i + 1}/${total}] ${email}: Menunggu link verifikasi di CyberMail...`);
-            const found = await waitForVerifyLink(email, { maxAttempts: 25, intervalMs: 2500 });
+            logger.info(`[AM BulkV5 BG] [${i + 1}/${total}] ${email}: Menunggu link verifikasi di Maildropy...`);
+            const found = await waitForVerifyLink(email, { maxAttempts: 20, intervalMs: 2000 });
             if (!found) {
-              logger.error(`[AM BulkV4 BG] [${i + 1}/${total}] ${email}: Link verifikasi tidak ditemukan di inbox`);
+              logger.error(`[AM BulkV5 BG] [${i + 1}/${total}] ${email}: Link verifikasi tidak ditemukan di inbox`);
               continue;
             }
 
-            logger.info(`[AM BulkV4 BG] [${i + 1}/${total}] ${email}: Melakukan verifikasi login...`);
+            logger.info(`[AM BulkV5 BG] [${i + 1}/${total}] ${email}: Melakukan verifikasi login...`);
             const authData = await verifyMagicLink(email, found.link);
             if (!authData.idToken) {
-              logger.error(`[AM BulkV4 BG] [${i + 1}/${total}] ${email}: Gagal memperoleh idToken`);
+              logger.error(`[AM BulkV5 BG] [${i + 1}/${total}] ${email}: Gagal memperoleh idToken`);
               continue;
             }
 
-            logger.info(`[AM BulkV4 BG] [${i + 1}/${total}] ${email}: Menerapkan lisensi Premium Alight Motion (${orderId})...`);
+            logger.info(
+              `[AM BulkV5 BG] [${i + 1}/${total}] ${email}: Menerapkan lisensi Premium Alight Motion (${orderId})...`
+            );
             await applyPremium(authData.idToken, orderId);
 
             let license = { isPro: false, expiresAt: null };
             try {
               license = await getLicenseStatus(authData.idToken);
             } catch (e) {
-              logger.warn(`[AM BulkV4 BG] ${email} getLicenseStatus warn: ${e.message}`);
+              logger.warn(`[AM BulkV5 BG] ${email} getLicenseStatus warn: ${e.message}`);
             }
 
             logger.info(
-              `[AM BulkV4 BG] [${i + 1}/${total}] ${email}: SUKSES PREMIUM! | isPro: ${license.isPro} | Order: ${orderId} | Expires: ${license.expiresAt || "-"}`
+              `[AM BulkV5 BG] [${i + 1}/${total}] ${email}: SUKSES PREMIUM! | isPro: ${license.isPro} | Order: ${orderId} | Expires: ${license.expiresAt || "-"}`
             );
           } catch (err) {
-            logger.error(`[AM BulkV4 BG] [${i + 1}/${total}] ${email} error: ${err.message}`);
+            logger.error(`[AM BulkV5 BG] [${i + 1}/${total}] ${email} error: ${err.message}`);
           }
 
           if (i < total - 1) await sleep(1500);
         }
       })();
 
-      // 3. Langsung kirim respon ke client (struktur respon mirip bulkv3)
+      // 3. Respon instan ke client
       return res.json({
         status: true,
-        message: "Permintaan bulk berhasil diterima. Proses verifikasi dan aktivasi premium berjalan di latar belakang (background).",
+        message:
+          "Permintaan bulk berhasil diterima. Proses verifikasi dan aktivasi premium berjalan di latar belakang (background).",
         total,
         results,
       });
     } catch (err) {
-      logger.error(`[AM BulkV4] Error: ${err.message}`);
+      logger.error(`[AM BulkV5] Error: ${err.message}`);
       return res.status(500).json({
         status: false,
         message: err.message || "Gagal memproses bulk request Alight Motion",

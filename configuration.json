@@ -1391,7 +1391,8 @@
         "/api/downloader/applemusic": "online",
         "/api/anime/animotv": "online",
         "/api/am/preset": "online",
-        "/api/movie/moviezone": "online"
+        "/api/movie/moviezone": "online",
+        "/api/am/presetv2": "online"
     },
     "version": "2.1.2"
 }

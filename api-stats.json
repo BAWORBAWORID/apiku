@@ -2134,7 +2134,7 @@
       }
     },
     "2026-10-03": {
-      "total": 264,
+      "total": 274,
       "byEndpoint": {
         "/api/search/pinterest": 1,
         "/api/solve/turnstile": 7,
@@ -2184,8 +2184,8 @@
         "/api/maker/qcwa": 1,
         "/api/maker/textvideo": 1,
         "/api/maker/ttqc": 1,
-        "/api/am/send": 8,
-        "/api/donasi/summary": 6,
+        "/api/am/send": 9,
+        "/api/donasi/summary": 7,
         "/api/fun/philosopher-quotes": 1,
         "/api/am/bulkv3": 2,
         "/api/am/bulk": 5,
@@ -2237,7 +2237,7 @@
         "/api/movie/freemovie": 2,
         "/api/am/sendv3": 1,
         "/api/tempmail/cybermail": 3,
-        "/api/am/bulkv4": 2,
+        "/api/am/bulkv4": 3,
         "/api/downloader/youtubev4": 1,
         "/api/downloader/youtubev2": 1,
         "/api/downloader/youtubev1": 1,
@@ -2257,7 +2257,11 @@
         "/api/downloader/9xbuddy": 2,
         "/api/downloader/allinonev4": 4,
         "/api/downloader/tiktok": 1,
-        "/api/downloader/tiktokv5": 2
+        "/api/downloader/tiktokv5": 2,
+        "/api/stalker/freefire": 1,
+        "/api/am/bulkv2": 1,
+        "/api/am/presetv2": 4,
+        "/api/maker/saldo-dana": 1
       }
     }
   },
@@ -3640,10 +3644,10 @@
       }
     },
     "2026-W41": {
-      "total": 468,
+      "total": 478,
       "byEndpoint": {
         "/api/movie/moviebox": 2,
-        "/api/am/send": 32,
+        "/api/am/send": 33,
         "/api/primbon/ramaljodoh": 5,
         "/api/maker/ektp": 1,
         "/api/maker/bounty": 3,
@@ -3656,7 +3660,7 @@
         "/api/maker/twobuttons": 1,
         "/api/maker/ttqc": 5,
         "/api/maker/saldo-gopay": 12,
-        "/api/maker/saldo-dana": 5,
+        "/api/maker/saldo-dana": 6,
         "/api/maker/fakegc": 1,
         "/api/maker/fakeig": 1,
         "/api/maker/fakeigprofile": 5,
@@ -3733,7 +3737,7 @@
         "/api/maker/iqc-dark": 1,
         "/api/maker/post-ig": 1,
         "/api/maker/qcwa": 1,
-        "/api/donasi/summary": 6,
+        "/api/donasi/summary": 7,
         "/api/fun/philosopher-quotes": 1,
         "/api/tempmail/instanttempemail": 8,
         "/api/canvas/struk-generator": 3,
@@ -3772,7 +3776,7 @@
         "/api/movie/freemovie": 2,
         "/api/am/sendv3": 1,
         "/api/tempmail/cybermail": 3,
-        "/api/am/bulkv4": 2,
+        "/api/am/bulkv4": 3,
         "/api/downloader/youtubev4": 1,
         "/api/downloader/youtubev2": 1,
         "/api/downloader/youtubev1": 1,
@@ -3789,7 +3793,10 @@
         "/api/downloader/9xbuddy": 2,
         "/api/downloader/allinonev4": 4,
         "/api/downloader/tiktok": 1,
-        "/api/downloader/tiktokv5": 2
+        "/api/downloader/tiktokv5": 2,
+        "/api/stalker/freefire": 1,
+        "/api/am/bulkv2": 1,
+        "/api/am/presetv2": 4
       }
     }
   },
@@ -4637,7 +4644,7 @@
       }
     },
     "2026-10": {
-      "total": 1910,
+      "total": 1920,
       "byEndpoint": {
         "/api/tools/dummylabs": 7,
         "/api/tools/vccgen": 5,
@@ -4652,9 +4659,9 @@
         "/api/am/sendv2": 17,
         "/api/am/verifv2": 78,
         "/api/am": 1,
-        "/api/stalker/freefire": 18,
+        "/api/stalker/freefire": 19,
         "/api/stalker/ml": 10,
-        "/api/donasi/summary": 34,
+        "/api/donasi/summary": 35,
         "/api/donasi": 3,
         "/api/donasi/qr/DNR-MUOP89ZD-E41D.png": 1,
         "/api/donasi/status": 19,
@@ -4711,7 +4718,7 @@
         "/bypass/safelink": 8,
         "/api/bypass/safelink": 3,
         "/bypass/wellbypass": 8,
-        "/api/am/send": 105,
+        "/api/am/send": 106,
         "/api/tools/encrypt": 6,
         "/api/am/sendv3": 17,
         "/api/downloader/youtubev4": 5,
@@ -4742,7 +4749,7 @@
         "/api/tools/upload": 4,
         "/api/maker/iqc": 2,
         "/api/maker/fakech": 3,
-        "/api/maker/saldo-dana": 7,
+        "/api/maker/saldo-dana": 8,
         "/api/imageai/freeforai": 1,
         "/api/primbon/nomorhoki": 1,
         "/api/search/7reels": 1,
@@ -4765,7 +4772,7 @@
         "/api/tools/upload-v3": 1,
         "/api": 2,
         "/api/tempmail/instanttempemail": 31,
-        "/api/am/bulkv2": 2,
+        "/api/am/bulkv2": 3,
         "/api/search/sigstick": 29,
         "/api/fun/reach-ch": 189,
         "/fun/reach-ch": 1,
@@ -4882,7 +4889,7 @@
         "/api/movie/melolo": 3,
         "/api/movie/freemovie": 2,
         "/api/tempmail/cybermail": 3,
-        "/api/am/bulkv4": 2,
+        "/api/am/bulkv4": 3,
         "/api/search/sinopsis": 2,
         "/api/downloader/applemusic": 2,
         "/api/anime/animotv": 6,
@@ -4892,12 +4899,13 @@
         "/api/downloader/tiktokv6": 2,
         "/api/downloader/allinonev4": 4,
         "/api/downloader/tiktok": 1,
-        "/api/downloader/tiktokv5": 2
+        "/api/downloader/tiktokv5": 2,
+        "/api/am/presetv2": 4
       }
     }
   },
   "allTime": {
-    "total": 120992,
+    "total": 121002,
     "byEndpoint": {
       "/api/am/verify": {
         "total": 158,
@@ -4961,10 +4969,10 @@
         }
       },
       "/api/stalker/freefire": {
-        "total": 52,
+        "total": 53,
         "byStatus": {
           "2": 28,
-          "4": 21,
+          "4": 22,
           "5": 3
         }
       },
@@ -5047,9 +5055,9 @@
         }
       },
       "/api/am/send": {
-        "total": 340,
+        "total": 341,
         "byStatus": {
-          "2": 202,
+          "2": 203,
           "4": 116,
           "5": 22
         }
@@ -5169,9 +5177,9 @@
         }
       },
       "/api/maker/saldo-dana": {
-        "total": 27,
+        "total": 28,
         "byStatus": {
-          "2": 25,
+          "2": 26,
           "3": 1,
           "4": 1
         }
@@ -6922,10 +6930,10 @@
         }
       },
       "/api/am/bulkv2": {
-        "total": 108,
+        "total": 109,
         "byStatus": {
           "2": 7,
-          "4": 94,
+          "4": 95,
           "5": 7
         }
       },
@@ -10198,9 +10206,9 @@
         }
       },
       "/api/donasi/summary": {
-        "total": 62,
+        "total": 63,
         "byStatus": {
-          "2": 62
+          "2": 63
         }
       },
       "/api/donasi": {
@@ -10508,9 +10516,9 @@
         }
       },
       "/api/am/bulkv4": {
-        "total": 2,
+        "total": 3,
         "byStatus": {
-          "2": 2
+          "2": 3
         }
       },
       "/api/downloader/applemusic": {
@@ -10536,11 +10544,18 @@
         "byStatus": {
           "2": 6
         }
+      },
+      "/api/am/presetv2": {
+        "total": 4,
+        "byStatus": {
+          "2": 3,
+          "4": 1
+        }
       }
     }
   },
   "_metadata": {
-    "lastUpdated": "2026-10-03T10:21:20.160Z",
+    "lastUpdated": "2026-10-03T10:32:59.534Z",
     "version": "json"
   }
 }

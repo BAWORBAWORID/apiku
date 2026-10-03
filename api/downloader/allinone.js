@@ -2,7 +2,7 @@
  * All-In-One Downloader — via downr.org
  * Scrape TikTok, Instagram, YouTube, Facebook, Twitter dll
  *
- * GET  /api/downloader/allinone?url=https://vt.tiktok.com/ZSxxpjmUV/
+ * GET  /api/downloader/allinone?url=https://vt.tiktok.com/ZSbm6fY8P/
  * POST /api/downloader/allinone
  */
 
@@ -209,7 +209,8 @@ export default {
     url: {
       type: "string", required: true,
       description: "URL video yang ingin diunduh (TikTok, Instagram, YouTube, Facebook, Twitter, dll)",
-      example: "https://vt.tiktok.com/ZSxxpjmUV/"
+      default: "https://vt.tiktok.com/ZSbm6fY8P/",
+      example: "https://vt.tiktok.com/ZSbm6fY8P/"
     }
   },
 

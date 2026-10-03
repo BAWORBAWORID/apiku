@@ -59,7 +59,8 @@ export default {
             type: "string",
             required: true,
             description: "URL video TikTok yang ingin diunduh",
-            example: "https://vt.tiktok.com/ZSxPtqPN8/"
+            default: "https://vt.tiktok.com/ZSbm6fY8P/",
+            example: "https://vt.tiktok.com/ZSbm6fY8P/"
         }
     },
 

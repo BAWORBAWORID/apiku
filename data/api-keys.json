@@ -4,10 +4,10 @@
       "key": "adm",
       "name": "admin",
       "createdAt": "2026-09-29T12:24:00.494Z",
-      "lastUsed": "2026-10-02T02:09:31.652Z",
-      "usageCount": 7,
+      "lastUsed": "2026-10-02T05:22:33.779Z",
+      "usageCount": 8,
       "enabled": true,
-      "role": "premium",
+      "role": "vip",
       "allowedEndpoints": null,
       "allowedStatuses": [
         "premium",
@@ -19,15 +19,46 @@
       },
       "dailyUsage": {
         "date": "2026-10-02",
-        "count": 1
+        "count": 2
       },
       "minuteUsage": {
-        "timestamp": 29848449,
+        "timestamp": 29848642,
         "count": 1
       },
       "expiresAt": null,
       "package": {
-        "type": "premium",
+        "type": "vip",
+        "expired": null
+      }
+    },
+    {
+      "key": "khoirularifin",
+      "name": "User 2",
+      "createdAt": "2026-10-02T05:25:50.663Z",
+      "lastUsed": "2026-10-03T00:07:56.623Z",
+      "usageCount": 1,
+      "enabled": true,
+      "role": "vip",
+      "allowedEndpoints": null,
+      "allowedStatuses": [
+        "premium",
+        "vip"
+      ],
+      "rateLimit": {
+        "maxPerDay": 1000,
+        "maxPerMinute": 60
+      },
+      "dailyUsage": {
+        "date": "2026-10-03",
+        "count": 1
+      },
+      "minuteUsage": {
+        "timestamp": 29849767,
+        "count": 1
+      },
+      "expiresAt": null,
+      "package": {
+        "type": "vip",
         "expired": null
       }
     }

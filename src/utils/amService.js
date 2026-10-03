@@ -100,9 +100,9 @@ class AlightMotionService {
     }
   }
 
-  async applyPremium(idToken) {
+  async applyPremium(idToken, customCodeOrder = null) {
     try {
-      const codeorder = this.generateCodeOrder();
+      const codeorder = customCodeOrder || this.generateCodeOrder();
       const url = "https://us-central1-alight-creative.cloudfunctions.net/verifyPurchase";
       const headers = {
         "authorization": "Bearer " + idToken,

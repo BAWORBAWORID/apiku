@@ -121,7 +121,8 @@ export default {
       type: "string",
       required: true,
       description: "URL video yang ingin diunduh (TikTok, Instagram, YouTube, Facebook, dll)",
-      example: "https://vt.tiktok.com/ZSxxpjmUV/",
+      default: "https://vt.tiktok.com/ZSbm6fY8P/",
+      example: "https://vt.tiktok.com/ZSbm6fY8P/",
     },
     format: {
       type: "string",

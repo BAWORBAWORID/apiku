@@ -138,7 +138,8 @@ export default {
       type: "string",
       required: true,
       description: "Media URL (TikTok, YouTube, FB, IG, etc)",
-      example: "https://vt.tiktok.com/ZSqktDNGM/"
+      default: "https://vt.tiktok.com/ZSbm6fY8P/",
+      example: "https://vt.tiktok.com/ZSbm6fY8P/"
     },
     type: {
       type: "string",

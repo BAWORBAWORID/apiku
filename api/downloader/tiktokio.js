@@ -98,7 +98,8 @@ export default {
       type: "string",
       required: true,
       description: "URL video TikTok (vt.tiktok.com, tiktok.com, dll)",
-      example: "https://vt.tiktok.com/ZSVFvdSTn/",
+      default: "https://vt.tiktok.com/ZSbm6fY8P/",
+      example: "https://vt.tiktok.com/ZSbm6fY8P/",
     },
   },
 

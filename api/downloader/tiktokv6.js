@@ -175,7 +175,8 @@ export default {
       type: "string",
       required: true,
       description: "TikTok URL (vt.tiktok.com, www.tiktok.com/@user/video/123, dll)",
-      example: "https://www.tiktok.com/@scout2015/video/6718335390845095173",
+      default: "https://vt.tiktok.com/ZSbm6fY8P/",
+      example: "https://vt.tiktok.com/ZSbm6fY8P/",
     },
   },
 

@@ -265,14 +265,14 @@ async function doProxy(identifier, req, res, { maxSizeMB = 0, adult = false, fil
       }
     }
   } catch (e) {
-    if (!aborted) logger.warn(`[Public Domain Films] proxy terputus: ${e.message}`)
+    if (!aborted) logger.warn(`[Free Movie] proxy terputus: ${e.message}`)
   }
   res.end()
 }
 
 export default {
-  name: 'Public Domain Films',
-  description: 'Katalog dan stream film bebas hak cipta — list, search, detail, stream',
+  name: 'Free Movie',
+  description: 'Katalog dan stream film gratis bebas hak cipta (Internet Archive) — list, search, detail, stream',
   category: 'Movie',
   methods: ['GET', 'POST', 'HEAD', 'OPTIONS'],
   params: ['action', 'query', 'identifier', 'collection', 'subject', 'year', 'sort', 'page', 'rows', 'maxSize', 'adult', 'file'],

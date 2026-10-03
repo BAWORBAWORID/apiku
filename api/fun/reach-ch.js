@@ -23,9 +23,10 @@ function randomIp() {
  * Parse input emoji (bisa string tunggal, dipisah koma, atau multiple grapheme)
  */
 function parseEmojis(raw) {
-  if (!raw) return ['👍'];
+  if (!raw) return [];
   if (Array.isArray(raw)) return raw.map(String).filter(Boolean);
   const str = String(raw).trim();
+  if (!str) return [];
   if (str.includes(',')) {
     return str.split(',').map(s => s.trim()).filter(Boolean);
   }
@@ -70,15 +71,16 @@ export default {
     url: {
       type: "string",
       required: true,
+      default: "",
       description: "Link postingan WhatsApp Channel (contoh: https://whatsapp.com/channel/xxx/123)",
-      example: "https://whatsapp.com/channel/0029Vb9GRyt6buMOcTKWse08/107"
+      example: ""
     },
     emoji: {
       type: "string",
-      required: false,
-      default: "👍",
+      required: true,
+      default: "",
       description: "Emoji reaksi (contoh: ⚡, 🥵, 👍, atau dipisah koma jika multi emoji)",
-      example: "⚡"
+      example: ""
     }
   },
 
@@ -86,7 +88,7 @@ export default {
     try {
       const params = { ...req.query, ...req.body };
       const channelUrl = String(params.url || params.link || params.channelLink || '').trim();
-      const rawEmoji = params.emoji || params.emojis || '👍';
+      const rawEmoji = String(params.emoji || params.emojis || '').trim();
       const emojis = parseEmojis(rawEmoji);
       const shouldWait = params.wait === 'true' || params.wait === true || params.sync === 'true';
 
@@ -94,6 +96,13 @@ export default {
         return res.status(400).json({
           status: false,
           message: "Parameter 'url' wajib diisi dengan tautan postingan channel WhatsApp."
+        });
+      }
+
+      if (!rawEmoji || !emojis.length) {
+        return res.status(400).json({
+          status: false,
+          message: "Parameter 'emoji' wajib diisi."
         });
       }
 

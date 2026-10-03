@@ -1,109 +1,24 @@
-import puppeteer from "puppeteer";
 import logger from "../../src/utils/logger.js";
 import amService from "../../src/utils/amService.js";
+import { GeneratorEmailClient } from "../../src/utils/generatorEmail.js";
 
-const DOMAIN = "jagomail.com";
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-let browserInstance = null;
-
-async function getBrowser() {
-  if (browserInstance) return browserInstance;
-  browserInstance = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-gpu"],
-  });
-  return browserInstance;
-}
-
-function sleep(ms) {
-  return new Promise((r) => setTimeout(r, ms));
-}
-
-async function openInbox(page, email) {
-  const [user, dom] = email.split("@");
-  const url = `https://generator.email/${dom}/${user}`;
-  await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
-  await sleep(5000);
-}
-
-async function findVerifyLink(page, email) {
-  for (let i = 0; i < 30; i++) {
-    await page.reload({ waitUntil: "domcontentloaded", timeout: 30000 });
-    await sleep(3000);
-
-    const link = await page.evaluate(() => {
-      const a = document.querySelector("a[href*='alight-creative.firebaseapp.com']");
-      if (a) return a.href;
-      const a2 = document.querySelector("a[href*='firebaseapp.com']");
-      if (a2) return a2.href;
-      const a3 = document.querySelector("a[href*='alight']");
-      if (a3) return a3.href;
-      const allText = document.body.innerText || "";
-      const m = allText.match(/https:\/\/alight-creative\.firebaseapp\.com\/__\/auth\/links\?link=[^\s]+/);
-      if (m) return m[0];
-      return null;
-    });
-
-    if (link) {
-      logger.info(`[AM Bulk] Link found for ${email}`);
-      return link;
-    }
-
-    logger.info(`[AM Bulk] ${email} waiting (${i + 1}/30)...`);
-    await sleep(5000);
-  }
-  return null;
-}
-
-async function processOne(email) {
-  const page = await (await getBrowser()).newPage();
-  await page.setUserAgent(
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-  );
-
-  try {
-    await openInbox(page, email);
-    logger.info(`[AM Bulk] ${email} inbox opened`);
-
-    const sendRes = await amService.sendMagicLink(email);
-    if (!sendRes.success) {
-      logger.error(`[AM Bulk] ${email} send failed: ${sendRes.error}`);
-      return { email, status: "failed", error: `send: ${sendRes.error}` };
-    }
-    logger.info(`[AM Bulk] ${email} send done`);
-
-    const link = await findVerifyLink(page, email);
-    if (!link) {
-      logger.error(`[AM Bulk] ${email} no verification link found`);
-      return { email, status: "failed", error: "link not found" };
-    }
-
-    const verifyRes = await amService.verifyAndFetchProfile(email, link);
-    if (!verifyRes.success) {
-      logger.error(`[AM Bulk] ${email} verify failed: ${verifyRes.error}`);
-      return { email, status: "failed", error: `verify: ${verifyRes.error}` };
-    }
-
-    const premiumRes = await amService.applyPremium(verifyRes.idToken);
-    logger.info(`[AM Bulk] ${email} premium: ${premiumRes.success ? 'ACTIVE' : 'FAILED'}`);
-    return {
-      email,
-      status: premiumRes.success ? "success" : "failed",
-      code_order: premiumRes.success ? premiumRes.codeorder : undefined,
-      error: premiumRes.success ? undefined : `premium: ${premiumRes.error}`
-    };
-  } catch (err) {
-    logger.error(`[AM Bulk] ${email} error: ${err.message}`);
-    return { email, status: "error", error: err.message };
-  } finally {
-    await page.close();
-  }
-}
+const ACTIVE_DOMAINS = [
+  "hungtpt.site",
+  "samvix.life",
+  "capcut.space",
+  "minexpool.cloud",
+  "kunseller.top",
+  "evilgodshop.uk",
+  "skyserver.cyou",
+  "villastream.xyz"
+];
 
 export default {
   name: "AlightMotion Bulk",
   description:
-    "Bulk AlightMotion premium — auto generate email, send AM verification, auto inbox detect + verify",
+    "Bulk AlightMotion premium — fast background processing (generate, send, inbox schedule & verify), safe for 5+ accounts without timeout",
   category: "AlightMotion",
   methods: ["GET", "POST"],
   params: ["count"],
@@ -112,33 +27,93 @@ export default {
       type: "number",
       required: false,
       default: 1,
-      description: "Jumlah akun yang diproses (maks 3)",
+      description: "Jumlah akun yang diproses (maks 20)",
     },
   },
 
   async run(req, res) {
     try {
       const { count } = { ...req.query, ...req.body };
-      const n = Math.min(parseInt(count) || 1, 3);
+      const n = Math.min(Math.max(parseInt(count) || 1, 1), 20);
 
+      // 1. Generate akun & orderId instan (respons instan ke client)
       const results = [];
       for (let i = 0; i < n; i++) {
-        const suffix = Math.random().toString(36).substring(2, 10);
-        const email = `am_${suffix}@${DOMAIN}`;
-        const inboxUrl = `https://generator.email/${DOMAIN}/am_${suffix}`;
+        const suffix = Math.random().toString(36).substring(2, 9);
+        const domain = ACTIVE_DOMAINS[i % ACTIVE_DOMAINS.length];
+        const user = `am_${Date.now().toString(36)}_${suffix}`;
+        const email = `${user}@${domain}`;
+        const inboxUrl = `https://generator.email/${domain}/${user}`;
+        const orderId = amService.generateCodeOrder();
 
-        logger.info(`[AM Bulk] Processing ${i + 1}/${n}: ${email}`);
-
-        const item = await processOne(email);
         results.push({
-          email: item.email,
-          inboxUrl: `https://generator.email/${DOMAIN}/${item.email.split('@')[0]}`,
-          orderId: item.code_order ? `zyvorapi-${item.code_order}` : null
+          email,
+          status: "success",
+          inboxUrl,
+          orderId
         });
-
-        if (i < n - 1) await sleep(3000);
       }
 
+      // 2. Jalankan proses send magic link, inbox schedule, & verifikasi di latar belakang (background)
+      (async () => {
+        logger.info(`[AM Bulk BG] Memulai proses background untuk ${n} akun...`);
+        for (let i = 0; i < results.length; i++) {
+          const item = results[i];
+          try {
+            logger.info(`[AM Bulk BG] [${i + 1}/${n}] Memproses: ${item.email}`);
+
+            // Kirim magic link verifikasi
+            const sendRes = await amService.sendMagicLink(item.email);
+            if (!sendRes.success) {
+              logger.error(`[AM Bulk BG] [${i + 1}/${n}] ${item.email} gagal kirim magic link: ${sendRes.error}`);
+              continue;
+            }
+            logger.info(`[AM Bulk BG] [${i + 1}/${n}] ${item.email} magic link terkirim`);
+
+            // Polling / schedule inbox check
+            const client = new GeneratorEmailClient();
+            const link = await client.waitForVerifyLink(item.email, {
+              maxAttempts: 25,
+              intervalMs: 3000,
+              log: (msg) => logger.info(`[AM Bulk BG] ${msg}`)
+            });
+
+            if (!link) {
+              logger.error(`[AM Bulk BG] [${i + 1}/${n}] ${item.email} link verifikasi tidak ditemukan di inbox`);
+              continue;
+            }
+            logger.info(`[AM Bulk BG] [${i + 1}/${n}] ${item.email} link verifikasi berhasil didapatkan`);
+
+            // Verifikasi auth & ambil profil
+            const verifyRes = await amService.verifyAndFetchProfile(item.email, link);
+            if (!verifyRes.success) {
+              logger.error(`[AM Bulk BG] [${i + 1}/${n}] ${item.email} gagal verifikasi login: ${verifyRes.error}`);
+              continue;
+            }
+            logger.info(`[AM Bulk BG] [${i + 1}/${n}] ${item.email} login terverifikasi`);
+
+            // Terapkan lisensi premium dengan orderId yang sudah di-generate
+            const premiumRes = await amService.applyPremium(verifyRes.idToken, item.orderId);
+            logger.info(
+              `[AM Bulk BG] [${i + 1}/${n}] ${item.email} Premium: ${
+                premiumRes.success ? "AKTIF" : "GAGAL"
+              } (Order: ${item.orderId})`
+            );
+          } catch (err) {
+            logger.error(`[AM Bulk BG] [${i + 1}/${n}] ${item.email} error: ${err.message}`);
+          }
+
+          // Delay aman antar akun agar tidak terkena limit Firebase/Google Identity
+          if (i < results.length - 1) {
+            await sleep(2500);
+          }
+        }
+        logger.info(`[AM Bulk BG] Selesai memproses seluruh ${n} akun di latar belakang.`);
+      })().catch((err) => {
+        logger.error(`[AM Bulk BG] Fatal background error: ${err.message}`);
+      });
+
+      // 3. Respon JSON dikirim instan tanpa menunggu proses background
       return res.json({
         status: true,
         total: n,

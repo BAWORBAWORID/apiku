@@ -52,6 +52,41 @@ async function bypassUrl(url) {
   return parseResult(data.result);
 }
 
+async function resolveRedirects(url, maxHops = 10) {
+  let current = url;
+  for (let i = 0; i < maxHops; i++) {
+    const res = await fetch(current, {
+      method: 'GET',
+      redirect: 'manual',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+      },
+      signal: AbortSignal.timeout(10000)
+    });
+    if (res.status >= 300 && res.status < 400) {
+      const loc = res.headers.get('location');
+      if (loc) {
+        current = new URL(loc, current).href;
+        continue;
+      }
+    }
+    const text = await res.text();
+    const metaRefresh = text.match(/<meta[^>]+http-equiv=["']refresh["'][^>]+content=["'][^"']*url=([^"']+)["']/i);
+    if (metaRefresh) {
+      current = new URL(metaRefresh[1].trim(), current).href;
+      continue;
+    }
+    const jsLoc = text.match(/window\.location(?:\.href)?\s*=\s*["']([^"']+)["']/i);
+    if (jsLoc) {
+      current = new URL(jsLoc[1].trim(), current).href;
+      continue;
+    }
+    break;
+  }
+  return current;
+}
+
 export default {
   name: "Bypass Link v2",
   description: "Bypass shortlink — support Linkvertise, Lootlinks, Sub2unlock, Pastebin, Bit.ly, Tinyurl, dan 40+ layanan lainnya.",
@@ -93,6 +128,20 @@ export default {
         }
       });
     } catch (err) {
+      try {
+        const fallback = await resolveRedirects(url.trim());
+        if (fallback && fallback !== url.trim()) {
+          return res.json({
+            status: true,
+            result: {
+              originalUrl: url.trim(),
+              bypassedUrl: fallback,
+              responseTime: `${Date.now() - start}ms`
+            }
+          });
+        }
+      } catch (_) {}
+
       return res.status(500).json({
         status: false,
         message: err.message || "Gagal bypass URL",

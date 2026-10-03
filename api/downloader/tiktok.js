@@ -181,7 +181,8 @@ export default {
   paramsSchema: {
     url: {
       type: "string",
-      default: "https://vt.tiktok.com/ZSXV9mB48/",
+      default: "https://vt.tiktok.com/ZSbm6fY8P/",
+      example: "https://vt.tiktok.com/ZSbm6fY8P/",
       required: true,
     },
   },

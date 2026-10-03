@@ -200,7 +200,8 @@ export default {
       type: "string", 
       required: true,
       pattern: "(tiktok\\.com|vt\\.tiktok\\.com|vm\\.tiktok\\.com)",
-      default: "https://vt.tiktok.com/ZSXV9mB48/"
+      default: "https://vt.tiktok.com/ZSbm6fY8P/",
+      example: "https://vt.tiktok.com/ZSbm6fY8P/"
     },
     hd: {
       type: "boolean",
@@ -226,7 +227,7 @@ export default {
           status: false,
           code: 400,
           message: "Parameter 'url' wajib diisi",
-          example: "https://vt.tiktok.com/ZSXV9mB48/",
+          example: "https://vt.tiktok.com/ZSbm6fY8P/",
         })
       }
 

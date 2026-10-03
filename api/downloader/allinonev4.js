@@ -469,9 +469,9 @@ export default {
     url: {
       type: "string",
       required: false,
-      default: "https://vt.tiktok.com/ZSbYdgEgL/",
+      default: "https://vt.tiktok.com/ZSbm6fY8P/",
       description: "URL video yang ingin diunduh (TikTok, Instagram, YouTube, dll)",
-      example: "https://vt.tiktok.com/ZSbYdgEgL/",
+      example: "https://vt.tiktok.com/ZSbm6fY8P/",
     },
   },
 
@@ -480,7 +480,7 @@ export default {
       const rawUrl = req.query.url || req.body?.url;
       const input = (rawUrl && typeof rawUrl === "string" && rawUrl.trim())
         ? rawUrl.trim()
-        : "https://vt.tiktok.com/ZSbYdgEgL/";
+        : "https://vt.tiktok.com/ZSbm6fY8P/";
       if (!/^https?:\/\//i.test(input)) {
         return res.status(400).json({
           status: false,

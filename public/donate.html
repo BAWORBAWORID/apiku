@@ -80,7 +80,7 @@
                 },
                 "sameAs": [
                     "https://t.me/ZyyvorAPI",
-                    "https://github.com/BAWORBAWORID/apiku"
+                    ""
                 ]
             },
             {
@@ -265,6 +265,15 @@
             padding: 14px 18px;
         }
 
+        .menu-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#121212;border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#a1a1aa;cursor:pointer;transition:all 0.15s;position:relative}
+        .menu-btn:hover{background:rgba(255,255,255,0.06);color:white}
+        .dropdown{position:absolute;top:100%;left:0;margin-top:8px;width:200px;background:#121212;border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;display:none;z-index:100;box-shadow:0 10px 25px -5px rgba(0,0,0,0.5)}
+        .dropdown.show{display:block}
+        .dropdown a{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;color:#a1a1aa;text-decoration:none;transition:all 0.15s}
+        .dropdown a:hover{background:rgba(255,255,255,0.05);color:white}
+        .dropdown a i{width:16px;text-align:center;font-size:12px}
+        .dropdown .sep{height:1px;background:rgba(255,255,255,0.08);margin:4px 0}
+
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
@@ -277,20 +286,19 @@
     <nav class="fixed top-0 w-full z-50 glass-nav h-16" aria-label="Main navigation">
         <div class="max-w-4xl mx-auto px-6 h-full flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <div class="relative z-50">
-                    <button onclick="toggleNavMenu()" class="w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" aria-label="Menu">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <div id="navMenu" class="hidden absolute left-0 top-11 w-52 bg-[#0a0a0a] border border-white/10 rounded-xl p-2 shadow-2xl">
-                        <a href="/" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"><i class="fas fa-home w-4"></i>Home</a>
-                        <a href="/docs" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"><i class="fas fa-book w-4"></i>Documentation</a>
-                        <a href="/donasi" class="flex items-center gap-3 px-4 py-3 text-sm text-white bg-white/5 transition-colors"><i class="fas fa-heart w-4"></i>Donasi</a>
-                        <a href="/support" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"><i class="fas fa-headset w-4"></i>Support</a>
-                        <a href="/stats" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"><i class="fas fa-chart-line w-4"></i>Status</a>
-                        <a href="/changelog" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"><i class="fas fa-clock-rotate-left w-4"></i>Changelog</a>
-                        <div class="h-px bg-white/5 my-2"></div>
-                        <a href="/request-report" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"><i class="fas fa-bug w-4"></i>Request</a>
-                        <a href="/admin/login" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"><i class="fas fa-shield-alt w-4"></i>Admin</a>
+                <div style="position:relative;z-index:50">
+                    <button class="menu-btn" onclick="toggleMenu()" aria-label="Menu"><i class="fas fa-ellipsis-v"></i></button>
+                    <div id="navMenu" class="dropdown">
+                        <a href="/"><i class="fas fa-home"></i>Home</a>
+                        <div class="sep"></div>
+                        <a href="/docs"><i class="fas fa-book"></i>Documentation</a>
+                        <a href="/donasi"><i class="fas fa-heart"></i>Donasi</a>
+                        <a href="/support"><i class="fas fa-headset"></i>Support</a>
+                        <a href="/stats"><i class="fas fa-chart-line"></i>Status</a>
+                        <a href="/changelog"><i class="fas fa-clock-rotate-left"></i>Changelog</a>
+                        <div class="sep"></div>
+                        <a href="/request-report"><i class="fas fa-bug"></i>Request</a>
+                        <a href="/admin/login"><i class="fas fa-shield-alt"></i>Admin</a>
                     </div>
                 </div>
                 <a href="/" class="flex items-center gap-3 group">
@@ -494,14 +502,14 @@
         const rp = (n) => 'Rp' + Number(n || 0).toLocaleString('id-ID');
         const $ = (id) => document.getElementById(id);
 
-        function toggleNavMenu() {
-            $('navMenu').classList.toggle('hidden');
+        function toggleMenu() {
+            $('navMenu').classList.toggle('show');
         }
         window.addEventListener('click', (e) => {
-            const menu = $('navMenu');
-            const btn = document.querySelector('button[onclick="toggleNavMenu()"]');
-            if (menu && !menu.contains(e.target) && btn && !btn.contains(e.target)) {
-                menu.addEventListener('click', () => menu.classList.add('hidden'), { once: true });
+            const m = $('navMenu');
+            const b = e.target.closest('.menu-btn');
+            if (m && !m.contains(e.target) && (!b || b.getAttribute('aria-label') !== 'Menu')) {
+                m.classList.remove('show');
             }
         });
 
@@ -591,9 +599,41 @@
             }
         });
 
-        function showPayment(rec) {
+        const STORAGE_KEY = 'zyvor_active_qris';
+
+        function saveActiveQris(rec) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(rec));
+            } catch (e) {}
+        }
+
+        function clearActiveQris() {
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+            } catch (e) {}
+        }
+
+        function getActiveQris() {
+            try {
+                const val = localStorage.getItem(STORAGE_KEY);
+                return val ? JSON.parse(val) : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function showPayment(rec, shouldSave = true) {
             currentId = rec.id;
-            expiredAt = rec.expiredAt ? new Date(rec.expiredAt).getTime() : Date.now() + 3 * 60e3;
+            const expTime = rec.expiredAt ? new Date(rec.expiredAt).getTime() : (Date.now() + 3 * 60e3);
+            expiredAt = expTime;
+
+            if (!rec.expiredAt) {
+                rec.expiredAt = new Date(expTime).toISOString();
+            }
+
+            if (shouldSave) {
+                saveActiveQris(rec);
+            }
 
             $('formState').classList.add('hidden');
             $('payState').classList.remove('hidden');
@@ -601,7 +641,7 @@
             $('invoiceId').textContent = rec.id;
             $('paidAmount').textContent = rp(rec.amount);
             $('totalAmount').textContent = rp(rec.totalAmount);
-            $('amountSummary').textContent = 'Total ' + rp(rec.totalAmount) + ' untuk ' + rec.name;
+            $('amountSummary').textContent = 'Total ' + rp(rec.totalAmount) + ' untuk ' + (rec.name || 'Anonim');
             $('payLink').href = rec.paymentUrl || '#';
 
             $('qrImage').src = '/api/donasi/qr/' + encodeURIComponent(rec.id) + '.png';
@@ -624,6 +664,7 @@
                 if (left <= 0) {
                     clearInterval(countdownTimer);
                     stopPolling();
+                    clearActiveQris();
                     $('statusLabel').textContent = 'QRIS KEDALUWARSA';
                 }
             };
@@ -640,19 +681,31 @@
             if (!currentId) return;
             try {
                 const res = await fetch('/api/donasi/status?id=' + encodeURIComponent(currentId));
+                if (res.status === 404) {
+                    clearActiveQris();
+                    stopPolling();
+                    clearInterval(countdownTimer);
+                    $('statusLabel').textContent = 'QRIS KEDALUWARSA';
+                    $('countdown').textContent = 'QRIS kedaluwarsa — silakan buat ulang';
+                    return;
+                }
                 const json = await res.json();
                 const rec = json?.data || json?.result || json;
                 if (!rec || !rec.status) return;
 
                 if (rec.status === 'paid') {
+                    clearActiveQris();
                     stopPolling();
                     clearInterval(countdownTimer);
                     $('thanksAmount').textContent = rp(rec.totalAmount || rec.amount);
                     $('payState').classList.add('hidden');
                     $('successState').classList.remove('hidden');
                 } else if (rec.status === 'expired') {
+                    clearActiveQris();
                     stopPolling();
+                    clearInterval(countdownTimer);
                     $('statusLabel').textContent = 'QRIS KEDALUWARSA';
+                    $('countdown').textContent = 'QRIS kedaluwarsa — silakan buat ulang';
                 }
             } catch (e) { /* diamkan, coba lagi di tick berikutnya */ }
         }
@@ -660,12 +713,29 @@
         $('resetBtn').addEventListener('click', () => {
             stopPolling();
             clearInterval(countdownTimer);
+            clearActiveQris();
             currentId = null;
             $('qrImage').src = '';
             $('payState').classList.add('hidden');
             $('formState').classList.remove('hidden');
             $('statusLabel').textContent = 'MENUNGGU PEMBAYARAN';
         });
+
+        // Pulihkan QRIS aktif jika ada di localStorage dan belum kedaluwarsa
+        function restoreActiveQris() {
+            const saved = getActiveQris();
+            if (!saved || !saved.id) return;
+
+            const exp = saved.expiredAt ? new Date(saved.expiredAt).getTime() : 0;
+            if (!exp || Date.now() >= exp) {
+                clearActiveQris();
+                return;
+            }
+
+            showPayment(saved, false);
+        }
+
+        restoreActiveQris();
     </script>
 </body>
 </html>

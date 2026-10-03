@@ -7,7 +7,7 @@
  *  3. Solve challenge -> token = id:<result>:<_e>:<_h>  (dikirim sbg header X-Verify)
  *  4. GET /api/extract?url=<tiktok> -> { data: { downloadUrl, hdDownloadUrl, ... } } (retry sekali saat 403)
  *
- * GET  /api/downloader/tiktokv3?url=https://vt.tiktok.com/ZSxPtqPN8/
+ * GET  /api/downloader/tiktokv3?url=https://vt.tiktok.com/ZSbm6fY8P/
  * POST /api/downloader/tiktokv3
  */
 
@@ -126,7 +126,8 @@ export default {
     url: {
       type: "string", required: true,
       description: "URL video TikTok",
-      example: "https://vt.tiktok.com/ZSxPtqPN8/"
+      default: "https://vt.tiktok.com/ZSbm6fY8P/",
+      example: "https://vt.tiktok.com/ZSbm6fY8P/"
     }
   },
 

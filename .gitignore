@@ -33,3 +33,4 @@ qqtube_orders.log
 __pycache__/
 *.py[cod]
 data/donasi.json
+*.zip

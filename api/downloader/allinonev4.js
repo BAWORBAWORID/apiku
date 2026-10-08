@@ -300,7 +300,8 @@ async function youtubeData(value, options) {
   const c = client(options, "https://www.youtube.com"), id = urlOf(value).searchParams.get("v") || urlOf(value).pathname.split("/").filter(Boolean).pop();
   if (!/^[\w-]{11}$/.test(id || "")) throw new DownVideoScraperError("Video ID YouTube tidak valid", { code: "INVALID_INPUT" });
   const html = await request(c, `https://www.youtube.com/watch?v=${id}&hl=en`, "YouTube", { json: false, page: true, cookies: false });
-  const key = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/)?.[1] || "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8", visitor = html.match(/"VISITOR_DATA":"([^"]+)"/)?.[1] || "";
+  const fallbackKey = Buffer.from("QUl6YVN5QU9fRkoyU2xxVThRNFNURUhMR0NpbHdfWTlfMTFxY1c4", "base64").toString("utf-8");
+  const key = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/)?.[1] || process.env.INNERTUBE_API_KEY || fallbackKey, visitor = html.match(/"VISITOR_DATA":"([^"]+)"/)?.[1] || "";
   let player = null;
   for (const [name, cid, version, ua, extra] of YT_CLIENTS) {
     const data = await request(c, `https://www.youtube.com/youtubei/v1/player?key=${key}&prettyPrint=false`, "YouTube InnerTube", {

@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { connect } from 'puppeteer-real-browser';
 import { PuppeteerScreenRecorder } from 'puppeteer-screen-recorder';
 import fs from 'fs';
@@ -63,12 +64,16 @@ async function initShared() {
     await qwenPage.setViewport({ width: 1280, height: 720 });
     sharedQwen.page = qwenPage;
 
-    try {
-      await sharedQwen.browserLogin();
-      console.log('[Shared] Qwen login berhasil saat module load');
-    } catch (err) {
-      console.warn('[Shared] Qwen login gagal:', err.message);
-      console.warn('[Shared] Fallback: login akan dicoba per-request jika perlu');
+    if (!QWEN_EMAIL || !QWEN_PASSWORD) {
+      console.warn('[Shared] Qwen login dilewati: QWEN_EMAIL / QWEN_PASSWORD belum dikonfigurasi di .env');
+    } else {
+      try {
+        await sharedQwen.browserLogin();
+        console.log('[Shared] Qwen login berhasil saat module load');
+      } catch (err) {
+        console.warn('[Shared] Qwen login gagal:', err.message);
+        console.warn('[Shared] Fallback: login akan dicoba per-request jika perlu');
+      }
     }
 
     sharedInitDone = true;
@@ -184,6 +189,23 @@ class QwenClient {
       return;
     }
 
+    if (!this.email || !this.password) {
+      throw new Error('Email atau password Qwen belum dikonfigurasi (isi QWEN_EMAIL dan QWEN_PASSWORD di .env)');
+    }
+
+    // Switch ke login password jika saat ini berada di tampilan login OTP/verification code
+    const switchBtn = await page.evaluateHandle(() => {
+      const btns = Array.from(document.querySelectorAll('button, div, a'));
+      return btns.find(b => /Log in with a password/i.test(b.innerText || ''));
+    });
+    if (switchBtn.asElement()) {
+      await switchBtn.asElement().click().catch(() => {});
+    }
+    await new Promise(r => setTimeout(r, 1500));
+
+    // Tunggu input password ter-render di DOM
+    await page.waitForSelector('input[name="password"]', { timeout: 15000 });
+
     await page.$eval('input[name="email"]', (el, v) => {
       const s = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
       s.call(el, v); el.dispatchEvent(new Event('input', { bubbles: true }));
@@ -196,7 +218,12 @@ class QwenClient {
     }, this.password);
     await new Promise(r => setTimeout(r, 1000));
 
-    await page.$eval('button[type="submit"]', el => el.click());
+    // Klik tombol Sign in
+    await page.evaluate(() => {
+      const btns = Array.from(document.querySelectorAll('button'));
+      const submitBtn = btns.find(b => b.innerText && /Sign in|Continue|Submit/i.test(b.innerText.trim()));
+      if (submitBtn) submitBtn.click();
+    });
     await new Promise(r => setTimeout(r, 15000));
 
     this.token = await page.evaluate(() => {

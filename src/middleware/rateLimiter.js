@@ -636,7 +636,8 @@ async function sendTelegramNotification(options) {
         `🔒 Status Lock: \`${options.lockStatus}\``;
       break;
 
-    case 'premium': {
+    case 'premium':
+    case 'vip': {
       let respText = '';
       if (response) {
         respText = typeof response === 'string' ? response : JSON.stringify(response, null, 2);
@@ -646,7 +647,7 @@ async function sendTelegramNotification(options) {
         respText = `Status ${statusCode || '-'}`;
       }
       message =
-        `${emoji} *PREMIUM API REQUEST*\n\n` +
+        `${emoji} *${type === 'vip' ? 'VIP' : 'PREMIUM'} API REQUEST*\n\n` +
         `🕒 Waktu: \`${timeStr}\`\n` +
         `🌐 IP: \`${ip || 'Unknown'}\`\n` +
         `🔗 Method: \`${method || '-'}\`\n` +
@@ -1344,11 +1345,11 @@ export default {
   }
 };
 
-export async function notifyPremiumRequest({ path, ip, apiKey, method, statusCode, response } = {}) {
+export async function notifyPremiumRequest({ path, ip, apiKey, method, statusCode, response, status } = {}) {
   try {
     // logger.info(`[PREM-DBG] method=${method} status=${statusCode} ip=${ip} path=${path} key=${apiKey?.slice(0,13)}... resp=${typeof response}`);
     await sendTelegramNotification({
-      type: 'premium',
+      type: status === 'vip' ? 'vip' : 'premium',
       path,
       ip,
       apiKey,

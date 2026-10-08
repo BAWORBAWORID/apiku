@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="dark">
+    <meta name="color-scheme" content="light">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="format-detection" content="telephone=no">
     <meta name="generator" content="Zyyvor Api'S Platform">
-    <title>Zyyvor Api'S - Support & Contributors</title>
+    <title>Zyyvor Api - Support & Contributors</title>
     <meta name="description" content="Meet the team and contributors behind Zyyvor Api'S — Support, acknowledgments, and how to get help with the API platform.">
     <meta name="keywords" content="Support, Contributors, Zyyvor, API, Team">
     <meta name="author" content="Zyyvor">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#050505">
+    <meta name="theme-color" content="#f7f1e5">
     <link rel="icon" type="image/x-icon" href="/src/images/logo.ico">
     <link rel="apple-touch-icon" href="/src/images/logo.jpg">
     <link rel="canonical" href="https://api.zyvor.my.id/support">
@@ -143,95 +143,147 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        :root{--bg:#050505;--surface:#0a0a0a;--border:rgba(255,255,255,0.06);--text:#fff;--text-2:#888;--text-3:#555;--mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;--display:'Syne',sans-serif}
-        body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-        .grid-bg{position:fixed;top:0;left:0;width:100%;height:100vh;background-image:radial-gradient(rgba(255,255,255,0.06) 1px,transparent 1px);background-size:32px 32px;z-index:-1;pointer-events:none}
-        .grid-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 0%,var(--bg) 80%)}
-        ::-webkit-scrollbar{width:4px}
-        ::-webkit-scrollbar-track{background:var(--bg)}
-        ::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+        :root{
+            --bg-paper:#f7f1e5;
+            --line-color:#e5d8c5;
+            --text-main:#2b2b2b;
+            --text-sub:#665f55;
+            --text-muted:#8c8275;
+            --accent-red:#8b2626;
+            --card-white:#faf8f5;
+            --card-yellow:#fceea7;
+            --card-blue:#dcebf0;
+            --card-pink:#f9dbdb;
+            --tape-color:#d1b48c;
+            --border-color:#e0d5c1;
+            --mono:'JetBrains Mono',monospace;
+            --sans:'Plus Jakarta Sans',sans-serif;
+            --hand:'Caveat',cursive;
+        }
+        body{
+            font-family:var(--sans);
+            background-color:var(--bg-paper);
+            background-image:linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size:100% 28px;
+            color:var(--text-main);
+            line-height:1.6;
+            overflow-x:hidden;
+            -webkit-font-smoothing:antialiased
+        }
+        .grid-bg{position:fixed;top:0;left:0;width:100%;height:100vh;background-image:radial-gradient(rgba(0,0,0,0.03) 1px,transparent 1px);background-size:32px 32px;z-index:-1;pointer-events:none}
+        ::-webkit-scrollbar{width:6px}
+        ::-webkit-scrollbar-track{background:var(--bg-paper)}
+        ::-webkit-scrollbar-thumb{background:var(--tape-color);border-radius:3px}
 
-        /* Nav */
-        .nav{position:fixed;top:0;left:0;right:0;background:rgba(5,5,5,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:1000;height:56px}
+        /* Nav Header */
+        .nav{
+            position:fixed;top:0;left:0;right:0;
+            background:rgba(247,241,229,0.92);
+            backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+            border-bottom:1px dashed var(--border-color);
+            z-index:1000;height:56px
+        }
         .nav-inner{max-width:1200px;margin:0 auto;padding:0 2rem;height:100%;display:flex;justify-content:space-between;align-items:center}
-        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:white}
-        .logo img{width:32px;height:32px;border-radius:6px;object-fit:cover}
-        .logo-text{font-family:var(--display);font-weight:700;font-size:1rem}
-        .logo-sub{font-family:var(--mono);font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.15em}
-        .menu-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--text-2);cursor:pointer;transition:all 0.2s}
-        .menu-btn:hover{border-color:rgba(255,255,255,0.15);color:white}
-        .dropdown{position:absolute;top:100%;left:0;margin-top:8px;width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:none;z-index:100}
+        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-main)}
+        .logo img{width:32px;height:32px;border-radius:50%;border:1px solid var(--text-main);object-fit:cover}
+        .logo-text{font-family:var(--hand);font-weight:700;font-size:1.25rem;line-height:1;color:var(--text-main)}
+        .logo-sub{font-family:var(--mono);font-size:9px;color:var(--text-sub);text-transform:uppercase;letter-spacing:0.15em;margin-top:2px}
+        .menu-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--card-white);border:1px solid var(--border-color);color:var(--text-sub);cursor:pointer;transition:all 0.2s}
+        .menu-btn:hover{background:var(--card-yellow);border-color:var(--text-main);color:var(--text-main)}
+        .dropdown{
+            position:absolute;top:100%;left:0;margin-top:8px;width:200px;
+            background:var(--card-white);border:1px solid var(--border-color);border-radius:8px;
+            overflow:hidden;display:none;z-index:100;box-shadow:2px 8px 24px rgba(0,0,0,0.06);
+        }
         .dropdown.show{display:block}
-        .dropdown a{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;color:var(--text-2);text-decoration:none;transition:all 0.15s}
-        .dropdown a:hover{background:rgba(255,255,255,0.05);color:white}
+        .dropdown a{display:flex;align-items:center;gap:10px;padding:8px 12px;font-size:13px;color:var(--text-sub);text-decoration:none;transition:all 0.15s;font-weight:500}
+        .dropdown a:hover{background:var(--card-yellow);color:var(--accent-red)}
         .dropdown a i{width:16px;text-align:center;font-size:12px}
-        .dropdown .sep{height:1px;background:var(--border);margin:4px 0}
+        .dropdown .sep{height:1px;border-bottom:1px dashed var(--border-color);margin:4px 0}
 
         /* Page */
         .page{padding:7rem 2rem 3rem;max-width:1200px;margin:0 auto}
-        .section-num{font-family:var(--mono);font-size:12px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px}
-        .page-title{font-family:var(--display);font-size:clamp(1.75rem,4vw,3rem);font-weight:800;letter-spacing:-0.02em;text-transform:uppercase;margin-bottom:0.5rem}
-        .page-desc{color:var(--text-2);font-size:15px;margin-bottom:3.5rem;max-width:600px}
+        .section-num{font-family:var(--mono);font-size:12px;color:var(--text-sub);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700}
+        .page-title{font-family:var(--hand);font-size:clamp(2.5rem,6vw,3.8rem);font-weight:700;color:var(--text-main);margin-bottom:0.25rem;line-height:1}
+        .page-desc{color:var(--text-sub);font-size:15px;margin-bottom:3.5rem;max-width:600px;font-weight:500}
 
-        /* Profile Card */
-        .profile-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:2rem;transition:all 0.3s}
-        .profile-card:hover{border-color:rgba(255,255,255,0.12);transform:translateY(-2px)}
+        /* Profile Card Paper Theme */
+        .profile-card{
+            background:var(--card-white);border:1px solid var(--border-color);
+            border-radius:8px;padding:2rem;transition:all 0.3s;
+            box-shadow:2px 6px 16px rgba(0,0,0,0.03);position:relative;
+        }
+        .profile-card::before {
+            content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 90px; height: 22px; background: rgba(209, 180, 140, 0.4);
+            border: 1px dashed rgba(0,0,0,0.1); pointer-events: none; z-index: 2;
+        }
+        .profile-card:hover{border-color:var(--text-main);transform:translateY(-2px);box-shadow:2px 8px 20px rgba(0,0,0,0.06)}
         .profile-card.main{padding:2.5rem}
-        .avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;border:2px solid var(--border)}
+        .avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;border:2px solid var(--text-main)}
         .avatar.large{width:140px;height:140px}
-        .profile-name{font-family:var(--display);font-size:1.5rem;font-weight:800;color:white;margin-top:1rem}
-        .profile-role{font-family:var(--mono);font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;padding:4px 10px;border:1px solid var(--border);border-radius:4px;display:inline-block}
-        .profile-desc{font-size:14px;color:var(--text-2);margin-top:0.75rem;line-height:1.6}
+        .profile-name{font-family:var(--hand);font-size:2rem;font-weight:700;color:var(--text-main);margin-top:0.5rem;line-height:1}
+        .profile-role{font-family:var(--mono);font-size:11px;color:var(--accent-red);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;padding:4px 10px;background:var(--card-pink);border:1px solid var(--border-color);border-radius:4px;display:inline-block;font-weight:700}
+        .profile-desc{font-size:14px;color:var(--text-sub);margin-top:0.75rem;line-height:1.6;font-weight:500}
         .profile-meta{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.25rem}
         .meta-item{display:flex;align-items:center;gap:8px}
-        .meta-item i{color:var(--text-3);font-size:13px;width:16px;text-align:center}
-        .meta-item .meta-label{font-family:var(--mono);font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em}
-        .meta-item .meta-val{font-size:13px;color:white}
+        .meta-item i{color:var(--accent-red);font-size:13px;width:16px;text-align:center}
+        .meta-item .meta-label{font-family:var(--mono);font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;font-weight:700}
+        .meta-item .meta-val{font-size:13px;color:var(--text-main);font-weight:600}
 
         /* Tags */
         .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem}
-        .tag{font-family:var(--mono);font-size:11px;padding:4px 10px;border:1px solid var(--border);border-radius:4px;color:var(--text-2)}
+        .tag{font-family:var(--mono);font-size:11px;padding:4px 10px;background:var(--card-yellow);border:1px solid var(--border-color);border-radius:4px;color:var(--text-main);font-weight:600}
 
         /* Social */
-        .socials{display:flex;gap:8px;margin-top:1rem}
-        .social-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:500;text-decoration:none;transition:all 0.2s;color:white}
-        .social-btn:hover{opacity:0.8;transform:translateY(-1px)}
-        .social-btn.gh{background:#24292e}
+        .socials{display:flex;gap:8px;margin-top:1.25rem}
+        .social-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;transition:all 0.2s;color:#ffffff}
+        .social-btn:hover{opacity:0.9;transform:translateY(-1px)}
+        .social-btn.gh{background:#2b2b2b}
         .social-btn.tg{background:#0088cc}
         .social-btn.wa{background:#25D366}
-        .social-btn.email{background:#333}
+        .social-btn.email{background:#8b2626}
 
         /* Contributor Grid */
         .contrib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
 
         /* Supporter Grid */
         .supporter-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
-        .supporter-card{display:flex;align-items:center;gap:10px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;transition:all 0.2s}
-        .supporter-card:hover{border-color:rgba(255,255,255,0.1)}
-        .supporter-card img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--border)}
-        .supporter-card .s-name{font-size:13px;font-weight:600;color:white}
-        .supporter-card .s-role{font-family:var(--mono);font-size:10px;color:var(--text-3)}
+        .supporter-card{display:flex;align-items:center;gap:10px;padding:12px;background:var(--card-white);border:1px solid var(--border-color);border-radius:6px;transition:all 0.2s}
+        .supporter-card:hover{border-color:var(--text-main);background:var(--card-yellow)}
+        .supporter-card img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--border-color)}
+        .supporter-card .s-name{font-size:13px;font-weight:700;color:var(--text-main)}
+        .supporter-card .s-role{font-family:var(--mono);font-size:10px;color:var(--text-sub)}
 
-        /* CTA Card */
-        .cta-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:3rem;text-align:center;max-width:600px;margin:3rem auto 0}
-        .cta-card h2{font-family:var(--display);font-size:1.5rem;font-weight:800;color:white;margin-bottom:0.75rem}
-        .cta-card p{font-size:14px;color:var(--text-2);margin-bottom:1.5rem;line-height:1.6}
+        /* CTA Card Paper */
+        .cta-card{
+            background:var(--card-yellow);border:1px solid var(--border-color);
+            border-radius:8px;padding:3rem;text-align:center;max-width:600px;
+            margin:3rem auto 0;box-shadow:2px 6px 16px rgba(0,0,0,0.03);position:relative;
+        }
+        .cta-card::before {
+            content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 22px; background: rgba(209, 180, 140, 0.4);
+            border: 1px dashed rgba(0,0,0,0.1); pointer-events: none;
+        }
+        .cta-card h2{font-family:var(--hand);font-size:2.2rem;font-weight:700;color:var(--text-main);margin-bottom:0.25rem;line-height:1}
+        .cta-card p{font-size:14px;color:var(--text-sub);margin-bottom:1.5rem;line-height:1.6;font-weight:500}
         .cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-        .btn{padding:10px 22px;border-radius:8px;font-family:var(--sans);font-weight:600;font-size:13px;text-decoration:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px}
-        .btn-white{background:white;color:#050505}
-        .btn-white:hover{opacity:0.9}
-        .btn-outline{background:transparent;color:white;border:1px solid rgba(255,255,255,0.2)}
-        .btn-outline:hover{border-color:rgba(255,255,255,0.5)}
+        .btn{padding:10px 22px;border-radius:6px;font-family:var(--sans);font-weight:700;font-size:13px;text-decoration:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px}
+        .btn-white{background:var(--text-main);color:#ffffff}
+        .btn-white:hover{background:#000000}
+        .btn-outline{background:var(--card-white);color:var(--text-main);border:1px solid var(--border-color)}
+        .btn-outline:hover{background:var(--card-pink);border-color:var(--accent-red);color:var(--accent-red)}
 
         /* Footer */
-        .footer{border-top:1px solid var(--border);padding:2rem;margin-top:3rem;text-align:center;font-size:12px;color:var(--text-3)}
-        .footer a{color:var(--text-3);text-decoration:none;margin:0 0.5rem}
-        .footer a:hover{color:white}
+        .footer{border-top:1px dashed var(--border-color);padding:2rem;margin-top:3rem;text-align:center;font-size:12px;color:var(--accent-red);font-style:italic}
+        .footer a{color:var(--text-sub);text-decoration:none;margin:0 0.5rem;font-style:normal;transition:color 0.15s}
+        .footer a:hover{color:var(--accent-red)}
 
         /* Fade */
         .fade-up{opacity:0;transform:translateY(20px);transition:all 0.6s ease}
@@ -276,13 +328,13 @@
                 <a href="/" class="logo">
                     <img src="/src/images/logo.jpg" alt="Zyyvor" onerror="this.style.display='none'">
                     <div>
-                        <div class="logo-text">Zyyvor</div>
+                        <div class="logo-text">Zyyvor Api'S</div>
                         <div class="logo-sub">Support & Contributors</div>
                     </div>
                 </a>
             </div>
-            <a href="/stats" style="font-family:var(--mono);font-size:10px;color:var(--text-3);text-decoration:none;text-transform:uppercase;letter-spacing:0.1em;display:flex;align-items:center;gap:6px">
-                <i class="fas fa-chart-line" style="font-size:11px"></i>
+            <a href="/stats" style="font-family:var(--mono);font-size:10px;color:var(--text-sub);text-decoration:none;text-transform:uppercase;letter-spacing:0.1em;display:flex;align-items:center;gap:6px;font-weight:700">
+                <i class="fas fa-chart-line" style="font-size:11px;color:var(--accent-red)"></i>
                 <span class="hidden sm:inline">View Stats</span>
             </a>
         </div>
@@ -292,7 +344,7 @@
     <main class="page" aria-label="Support page content">
         <div style="text-align:center">
             <div class="section-num">01 &mdash; Our Team</div>
-            <h1 class="page-title">The minds behind the platform.</h1>
+            <h1 class="page-title">The minds behind the platform ✏️</h1>
             <p class="page-desc" style="margin-left:auto;margin-right:auto">The brilliant people who contributed to building and maintaining Zyyvor Api'S.</p>
         </div>
 
@@ -301,11 +353,11 @@
             <div style="display:flex;gap:2rem;align-items:center;flex-wrap:wrap;justify-content:center">
                 <div style="flex-shrink:0;text-align:center">
                     <img src="/src/images/zyyvor.jpg" alt="Zyyvor" class="avatar large" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300&h=300&fit=crop&crop=face'">
-                    <div class="profile-name" style="margin-top:1rem">Zyyvor</div>
+                    <div class="profile-name">Zyyvor</div>
                     <div class="profile-role">Project Owner</div>
                 </div>
                 <div class="flex-1" style="min-width:280px;text-align:left">
-                    <div class="profile-desc" style="margin-top:0">"Building the future of APIs, one endpoint at a time"</div>
+                    <div class="profile-desc" style="margin-top:0;font-style:italic">"Building the future of APIs, one endpoint at a time"</div>
                     <div class="profile-desc">Passionate developer with expertise in backend systems, API architecture, and scalable solutions. Loves creating tools that empower other developers.</div>
                     <div class="profile-meta">
                         <div class="meta-item">
@@ -340,7 +392,7 @@
 
 <!-- Thank You CTA -->
         <div class="cta-card fade-up">
-            <h2>Thank You!</h2>
+            <h2>Thank You! ✦</h2>
             <p>Terima kasih kepada semua yang telah berkontribusi, memberikan masukan, dan mendukung pengembangan Zyyvor Api'S.</p>
             <div class="cta-btns">
                 <a href="/" class="btn btn-white"><i class="fas fa-home"></i>Back to Home</a>

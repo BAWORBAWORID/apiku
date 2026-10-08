@@ -8,18 +8,11 @@
       "updatedAt": "2026-07-07T00:00:00.000Z"
     },
     {
-      "username": "lann",
-      "password": "$2b$10$M/EKXE.IDmZ2KinEFOxCievvbpPtgyW7UJIPj4QdDOSG7CXr6EIcK",
+      "username": "apin",
+      "password": "$2b$10$X61FsaiRQse7JcsJ/7a3cOm8ivT8dQtSJa3cSQPSnWpFGU.37XlGi",
       "role": "admin",
-      "createdAt": "2026-07-24T13:41:31.883Z",
-      "updatedAt": "2026-07-24T13:41:31.883Z"
-    },
-    {
-      "username": "rehan",
-      "password": "$2b$10$yX3Q1oXKf3164QypGYTTQ.Es99eWFahrgVGfTJCAGvU5wXWZZd..G",
-      "role": "admin",
-      "createdAt": "2026-07-26T01:37:18.649Z",
-      "updatedAt": "2026-07-26T01:37:18.649Z"
+      "createdAt": "2026-10-03T17:40:00.461Z",
+      "updatedAt": "2026-10-03T17:40:00.461Z"
     }
   ]
 }

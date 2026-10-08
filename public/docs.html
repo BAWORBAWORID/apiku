@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="dark">
+    <meta name="color-scheme" content="light">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="format-detection" content="telephone=no">
     <meta name="generator" content="Zyyvor Api'S Platform">
-    <title>Zyyvor Api'S | API Documentation</title>
+    <title>Zyyvor Api | API Documentation</title>
     <meta name="description" content="Complete API documentation for Zyyvor Api'S — Browse 300+ REST API endpoints with interactive playground, auto-fill parameters, and real-time testing. AI chat, downloaders, image processing, tools, and more." id="meta-description">
     <meta name="keywords" content="api documentation, rest api, api playground, api endpoints, api testing, developer docs, api reference, zyvor">
-    <meta name="author" content="Zyyvor Api'S Team">
+    <meta name="author" content="Zyyvor Api Team">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
     <meta name="googlebot" content="index, follow">
-    <meta name="theme-color" content="#050505">
+    <meta name="theme-color" content="#f7f1e5">
     <link rel="icon" type="image/x-icon" href="/src/images/logo.ico">
     <link rel="apple-touch-icon" href="/src/images/logo.jpg">
     <link rel="canonical" href="https://api.zyvor.my.id/docs">
@@ -36,7 +36,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@ZyyvorAPI">
     <meta name="twitter:creator" content="@ZyyvorAPI">
-    <meta name="twitter:title" content="Zyyvor Api'S — API Documentation">
+    <meta name="twitter:title" content="Zyyvor Api — API Documentation">
     <meta name="twitter:description" content="Browse 300+ REST API endpoints with interactive playground.">
     <meta name="twitter:image" content="https://api.zyvor.my.id/src/images/logo.jpg">
     <meta name="twitter:image:alt" content="Zyyvor API Documentation">
@@ -160,66 +160,120 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         html{width:100%;overflow-x:hidden}
         :root{
-            --bg:#050505;--surface:#0a0a0a;--border:rgba(255,255,255,0.06);
-            --text:#fff;--text-2:#888;--text-3:#555;
-            --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;--display:'Syne',sans-serif;
+            --bg-paper:#f7f1e5;
+            --line-color:#e5d8c5;
+            --text-main:#2b2b2b;
+            --text-sub:#665f55;
+            --text-muted:#8c8275;
+            --accent-red:#8b2626;
+            --card-white:#faf8f5;
+            --card-yellow:#fceea7;
+            --card-blue:#dcebf0;
+            --card-pink:#f9dbdb;
+            --tape-color:#d1b48c;
+            --border-color:#e0d5c1;
+            --success:#2e7d32;
+            --error:#c62828;
+            --warning:#f57c00;
+            --info:#0288d1;
+            --mono:'JetBrains Mono',monospace;
+            --sans:'Plus Jakarta Sans',sans-serif;
+            --hand:'Caveat',cursive;
         }
-        body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;width:100%;max-width:100%;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
-        .grid-bg{position:fixed;top:0;left:0;width:100%;height:100vh;background-image:radial-gradient(rgba(255,255,255,0.06) 1px,transparent 1px);background-size:32px 32px;z-index:-1;pointer-events:none}
-        .grid-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 0%,var(--bg) 80%)}
-        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+        body{
+            font-family:var(--sans);
+            background-color:var(--bg-paper);
+            background-image:linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size:100% 28px;
+            color:var(--text-main);
+            line-height:1.6;
+            overflow-x:hidden;
+            width:100%;
+            max-width:100%;
+            -webkit-font-smoothing:antialiased;
+            -webkit-tap-highlight-color:transparent
+        }
+        .handwritten{
+            font-family:var(--hand);
+            font-weight:700;
+        }
+        .grid-bg{position:fixed;top:0;left:0;width:100%;height:100vh;background-image:radial-gradient(rgba(0,0,0,0.03) 1px,transparent 1px);background-size:32px 32px;z-index:-1;pointer-events:none}
+        ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg-paper)}::-webkit-scrollbar-thumb{background:var(--tape-color);border-radius:3px}
         input,textarea,select{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
 
-        /* Nav */
-        .nav{position:fixed;top:0;left:0;right:0;background:rgba(5,5,5,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:1000;height:56px}
+        /* Nav Header */
+        .nav{
+            position:fixed;top:0;left:0;right:0;
+            background:rgba(247,241,229,0.92);
+            backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+            border-bottom:1px dashed var(--border-color);
+            z-index:1000;height:56px
+        }
         .nav-inner{max-width:1200px;margin:0 auto;padding:0 2rem;height:100%;display:flex;justify-content:space-between;align-items:center}
-        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:white}
-        .logo img{width:32px;height:32px;border-radius:6px;object-fit:cover}
-        .logo-text{font-family:var(--display);font-weight:700;font-size:1rem;letter-spacing:-0.02em}
-        .logo-sub{font-family:var(--mono);font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.15em}
-        .menu-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--text-2);cursor:pointer;transition:all 0.2s}
-        .menu-btn:hover{border-color:rgba(255,255,255,0.15);color:white}
-        .dropdown{position:absolute;top:100%;left:0;margin-top:8px;width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:none;z-index:100}
+        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-main)}
+        .logo img{width:32px;height:32px;border-radius:50%;border:1px solid var(--text-main);object-fit:cover}
+        .logo-text{font-family:var(--hand);font-weight:700;font-size:1.25rem;line-height:1;color:var(--text-main)}
+        .logo-sub{font-family:var(--mono);font-size:9px;color:var(--text-sub);text-transform:uppercase;letter-spacing:0.15em;margin-top:2px}
+        .menu-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--card-white);border:1px solid var(--border-color);color:var(--text-sub);cursor:pointer;transition:all 0.2s}
+        .menu-btn:hover{background:var(--card-yellow);border-color:var(--text-main);color:var(--text-main)}
+        .dropdown{
+            position:absolute;top:100%;left:0;margin-top:8px;width:200px;
+            background:var(--card-white);border:1px solid var(--border-color);border-radius:8px;
+            overflow:hidden;display:none;z-index:100;box-shadow:2px 8px 24px rgba(0,0,0,0.06);
+        }
         .dropdown.show{display:block}
-        .dropdown a{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;color:var(--text-2);text-decoration:none;transition:all 0.15s}
-        .dropdown a:hover{background:rgba(255,255,255,0.05);color:white}
+        .dropdown a{display:flex;align-items:center;gap:10px;padding:8px 12px;font-size:13px;color:var(--text-sub);text-decoration:none;transition:all 0.15s;font-weight:500}
+        .dropdown a:hover{background:var(--card-yellow);color:var(--accent-red)}
         .dropdown a i{width:16px;text-align:center;font-size:12px}
-        .dropdown .sep{height:1px;background:var(--border);margin:4px 0}
+        .dropdown .sep{height:1px;border-bottom:1px dashed var(--border-color);margin:4px 0}
 
         /* Toast */
-        .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 20px;font-size:13px;color:white;z-index:9999;opacity:0;transition:all 0.3s;pointer-events:none}
+        .toast{
+            position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);
+            background:var(--card-white);border:1px solid var(--border-color);border-radius:6px;
+            padding:10px 20px;font-size:13px;color:var(--text-main);font-weight:600;z-index:9999;
+            opacity:0;transition:all 0.3s;pointer-events:none;box-shadow:2px 6px 15px rgba(0,0,0,0.08);
+        }
         .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
         /* Hero */
-        .hero{padding:8rem 2rem 3rem;max-width:1200px;margin:0 auto;text-align:center}
-        .hero h1{font-family:var(--display);font-size:clamp(2rem,5vw,3.5rem);font-weight:800;letter-spacing:-0.03em;color:white;margin-bottom:12px}
-        .hero p{font-size:1rem;color:var(--text-2);max-width:600px;margin:0 auto 2rem}
+        .hero{padding:7.5rem 2rem 2.5rem;max-width:1200px;margin:0 auto;text-align:center}
+        .hero h1{font-family:var(--hand);font-size:clamp(2.5rem,6vw,4rem);font-weight:700;color:var(--text-main);margin-bottom:8px;line-height:1}
+        .hero p{font-size:0.95rem;color:var(--text-sub);max-width:600px;margin:0 auto 2rem;font-weight:500}
 
         /* Stats Row */
         .stats-row{display:flex;gap:2rem;margin-bottom:2rem;flex-wrap:wrap}
         .stat-item{text-align:left}
-        .stat-val{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:white}
-        .stat-label{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em}
+        .stat-val{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--text-main)}
+        .stat-label{font-family:var(--mono);font-size:10px;color:var(--text-sub);text-transform:uppercase;letter-spacing:0.1em}
 
         /* Search */
-        .search-wrap{position:relative;margin-bottom:2rem}
-        .search-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:14px}
-        .search-input{width:100%;padding:12px 14px 12px 40px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;color:white;outline:none;transition:border-color 0.2s}
-        .search-input:focus{border-color:rgba(255,255,255,0.15)}
-        .search-input::placeholder{color:var(--text-3)}
+        .search-wrap{position:relative;margin-bottom:1.5rem}
+        .search-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px}
+        .search-input{
+            width:100%;padding:12px 14px 12px 40px;background:var(--bg-paper);
+            border:1px solid var(--border-color);border-radius:6px;font-family:var(--mono);
+            font-size:13px;color:var(--text-main);outline:none;transition:all 0.2s;
+        }
+        .search-input:focus{border-color:var(--accent-red);background:#ffffff;box-shadow:0 0 0 3px rgba(139,38,38,0.08)}
+        .search-input::placeholder{color:var(--text-muted)}
 
         /* Filters */
         .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2rem;max-width:1200px}
-        .filter-btn{padding:6px 14px;background:transparent;border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:11px;color:var(--text-2);cursor:pointer;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.05em}
-        .filter-btn:hover{border-color:rgba(255,255,255,0.15);color:white}
-        .filter-btn.active{background:white;color:#050505;border-color:white}
+        .filter-btn{
+            padding:6px 14px;background:var(--card-white);border:1px solid var(--border-color);
+            border-radius:6px;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text-sub);
+            cursor:pointer;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.05em;
+        }
+        .filter-btn:hover{background:var(--card-yellow);color:var(--text-main);border-color:var(--text-main)}
+        .filter-btn.active{background:var(--accent-red);color:#ffffff;border-color:var(--accent-red)}
 
         /* Main Content */
         .content{max-width:1200px;margin:0 auto;padding:0 2rem 4rem;overflow-x:hidden}
@@ -228,185 +282,178 @@
         .category{margin-bottom:3rem}
 
         /* Announcement dropdown */
-        .announce-item{padding:12px 14px;border-bottom:1px solid var(--border);transition:background 0.15s}
+        .announce-item{padding:12px 14px;border-bottom:1px dashed var(--border-color);transition:background 0.15s}
         .announce-item:last-child{border-bottom:none}
-        .announce-item:hover{background:rgba(255,255,255,0.03)}
-        .announce-item .a-title{font-family:var(--display);font-size:12px;font-weight:700;color:white}
-        .announce-item .a-desc{font-size:11px;color:var(--text-2);margin-top:3px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .announce-item:hover{background:var(--card-yellow)}
+        .announce-item .a-title{font-family:var(--hand);font-size:15px;font-weight:700;color:var(--text-main)}
+        .announce-item .a-desc{font-size:11px;color:var(--text-sub);margin-top:3px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
         .announce-item .a-meta{display:flex;gap:8px;align-items:center;margin-top:5px}
-        .announce-item .a-ver{font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.06);color:var(--text-3)}
-        .announce-item .a-date{font-family:var(--mono);font-size:9px;color:var(--text-3)}
+        .announce-item .a-ver{font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;background:var(--card-blue);color:var(--info);border:1px solid var(--border-color)}
+        .announce-item .a-date{font-family:var(--mono);font-size:9px;color:var(--text-muted)}
 
         /* Response viewer */
-        .pg-result{background:#020202 !important;border:1px solid var(--border);border-radius:8px;min-height:60px;max-height:80vh;overflow:hidden;position:relative;overscroll-behavior:contain;display:none;user-select:text !important;-webkit-user-select:text !important}
+        .pg-result{background:var(--card-white) !important;border:1px solid var(--border-color);border-radius:6px;min-height:60px;max-height:80vh;overflow:hidden;position:relative;overscroll-behavior:contain;display:none;user-select:text !important;-webkit-user-select:text !important}
         .pg-result[style*="display: block"],.pg-result[style*="display:block"],.pg-result[style*="display: flex"],.pg-result[style*="display:flex"]{display:flex !important;flex-direction:column}
         .pg-result *{user-select:text !important;-webkit-user-select:text !important}
         .pg-result .drag-handle{display:none}
-        .pg-result .result-toolbar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#0a0a0a;position:relative;z-index:5;flex-shrink:0;user-select:none !important;-webkit-user-select:none !important}
+        .pg-result .result-toolbar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:var(--card-yellow);border-bottom:1px dashed var(--border-color);position:relative;z-index:5;flex-shrink:0;user-select:none !important;-webkit-user-select:none !important}
         .pg-result .result-toolbar *{user-select:none !important;-webkit-user-select:none !important}
-        .pg-result .result-toolbar::after{content:"";position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(to right, #6366f1, transparent);opacity:0.35}
         .pg-result .result-toolbar .toolbar-left{display:flex;align-items:center;gap:8px}
         .pg-result .result-toolbar .toolbar-right{display:flex;gap:6px}
-        .pg-result .result-toolbar .toolbar-btn{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:4px;background:transparent;border:1px solid var(--border);color:var(--text-3);cursor:pointer;font-size:10px;transition:all 0.15s}
-        .pg-result .result-toolbar .toolbar-btn:hover{color:white;border-color:rgba(255,255,255,0.2)}
-        .pg-result pre{font-family:var(--mono);font-size:12px;color:var(--text-2);white-space:pre-wrap;word-break:break-all;overflow:auto;padding:16px;margin:0;user-select:text !important;-webkit-user-select:text !important;touch-action:auto !important;flex:1;min-height:0;background:#020202}
-        .pg-result .media-container{padding:24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;overflow-y:auto;flex:1;min-height:0;background:#020202}
-        .pg-result .media-container .img-wrapper{position:relative;max-width:100%;border-radius:20px;overflow:hidden;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);box-shadow:0 8px 24px rgba(0,0,0,.25);transition:all 0.2s ease}
+        .pg-result .result-toolbar .toolbar-btn{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:4px;background:var(--card-white);border:1px solid var(--border-color);color:var(--text-sub);cursor:pointer;font-size:11px;transition:all 0.15s}
+        .pg-result .result-toolbar .toolbar-btn:hover{color:var(--accent-red);border-color:var(--accent-red)}
+        .pg-result pre{font-family:var(--mono);font-size:12px;color:var(--text-main);white-space:pre-wrap;word-break:break-all;overflow:auto;padding:16px;margin:0;user-select:text !important;-webkit-user-select:text !important;touch-action:auto !important;flex:1;min-height:0;background:var(--bg-paper)}
+        .pg-result .media-container{padding:24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;overflow-y:auto;flex:1;min-height:0;background:var(--bg-paper)}
+        .pg-result .media-container .img-wrapper{position:relative;max-width:100%;border-radius:8px;overflow:hidden;background:var(--card-white);border:1px solid var(--border-color);box-shadow:2px 4px 12px rgba(0,0,0,.05);transition:all 0.2s ease}
         .pg-result .media-container .img-wrapper:hover{transform:translateY(-2px)}
         .pg-result .media-container img{max-width:100%;max-height:600px;width:100%;height:auto;display:block;object-fit:contain}
-        .pg-result .media-container video{max-width:100%;max-height:500px;border-radius:12px;border:1px solid var(--border)}
+        .pg-result .media-container video{max-width:100%;max-height:500px;border-radius:6px;border:1px solid var(--border-color)}
         .pg-result .media-container audio{width:100%}
-        .pg-result .media-container .media-info{font-family:var(--mono);font-size:10px;color:var(--text-3)}
-        .pg-result .media-container .download-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:14px;background:white;color:#050505;font-family:var(--sans);font-size:13px;font-weight:600;text-decoration:none;transition:all 0.2s ease}
-        .pg-result .media-container .download-btn:hover{opacity:0.9;transform:translateY(-1px)}
-        .pg-result .media-container .binary-preview{display:flex;flex-direction:column;align-items:center;padding:2rem;color:var(--text-2);font-size:13px}
-        .pg-result .csv-container{width:100%;overflow-y:auto;flex:1;min-height:0;background:#020202;padding:16px}
+        .pg-result .media-container .media-info{font-family:var(--mono);font-size:10px;color:var(--text-sub)}
+        .pg-result .media-container .download-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:6px;background:var(--text-main);color:#ffffff;font-family:var(--sans);font-size:12px;font-weight:700;text-decoration:none;transition:all 0.2s ease}
+        .pg-result .media-container .download-btn:hover{background:#000000;transform:translateY(-1px)}
+        .pg-result .media-container .binary-preview{display:flex;flex-direction:column;align-items:center;padding:2rem;color:var(--text-sub);font-size:13px}
+        .pg-result .csv-container{width:100%;overflow-y:auto;flex:1;min-height:0;background:var(--bg-paper);padding:16px}
         .pg-result .csv-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px}
-        .pg-result .csv-table th,.pg-result .csv-table td{padding:6px 10px;border:1px solid var(--border);text-align:left;white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis}
-        .pg-result .csv-table th{background:rgba(255,255,255,0.05);font-weight:600;position:sticky;top:0}
-        .pg-result .csv-table tr:hover td{background:rgba(255,255,255,0.03)}
-        .pg-result .example-tabs{display:flex;gap:2px;padding:8px 12px;border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch}
-        .pg-result .example-tab{padding:5px 12px;border-radius:5px;background:transparent;color:var(--text-3);font-family:var(--mono);font-size:11px;border:none;cursor:pointer;white-space:nowrap;transition:all 0.15s}
-        .pg-result .example-tab:hover{color:var(--text-1);background:rgba(255,255,255,0.05)}
-        .pg-result .example-tab.active{background:rgba(255,255,255,0.08);color:white;font-weight:600}
-        .pg-result .response-type{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase}
-        .pg-result .response-type .type-badge{padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.06);color:var(--text-2)}
-        .cat-head{font-family:var(--display);font-size:1.25rem;font-weight:700;text-transform:uppercase;letter-spacing:-0.01em;color:white;margin-bottom:1rem;display:flex;align-items:center;gap:10px}
-        .cat-count{font-family:var(--mono);font-size:11px;color:var(--text-3);border:1px solid var(--border);padding:2px 8px;border-radius:4px}
+        .pg-result .csv-table th,.pg-result .csv-table td{padding:6px 10px;border:1px solid var(--border-color);text-align:left;white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis}
+        .pg-result .csv-table th{background:var(--card-yellow);font-weight:700;position:sticky;top:0}
+        .pg-result .csv-table tr:hover td{background:rgba(252,238,167,0.3)}
+        .pg-result .example-tabs{display:flex;gap:4px;padding:8px 12px;border-bottom:1px dashed var(--border-color);overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--card-white)}
+        .pg-result .example-tab{padding:4px 10px;border-radius:4px;background:var(--bg-paper);color:var(--text-sub);font-family:var(--mono);font-size:11px;border:1px solid var(--border-color);cursor:pointer;white-space:nowrap;transition:all 0.15s;font-weight:600}
+        .pg-result .example-tab:hover{color:var(--text-main);background:var(--card-yellow)}
+        .pg-result .example-tab.active{background:var(--accent-red);color:#ffffff;border-color:var(--accent-red)}
+        .pg-result .response-type{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px dashed var(--border-color);font-family:var(--mono);font-size:10px;color:var(--text-sub);text-transform:uppercase}
+        .pg-result .response-type .type-badge{padding:2px 6px;border-radius:3px;background:var(--card-yellow);color:var(--text-main);font-weight:700}
+        .cat-head{font-family:var(--hand);font-size:1.6rem;font-weight:700;color:var(--text-main);margin-bottom:0.75rem;display:flex;align-items:center;gap:10px}
+        .cat-count{font-family:var(--mono);font-size:11px;color:var(--text-sub);background:var(--card-yellow);border:1px solid var(--border-color);padding:2px 8px;border-radius:4px;font-weight:700}
 
         /* Endpoint Grid */
-        .ep-grid{display:flex;flex-direction:column;gap:8px}
+        .ep-grid{display:flex;flex-direction:column;gap:10px}
 
         /* Endpoint Card */
-        .ep-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;cursor:pointer;transition:border-color 0.2s;-webkit-tap-highlight-color:transparent;user-select:none;overflow:hidden;max-width:100%}
-        .ep-card:hover{border-color:rgba(255,255,255,0.12)}
-        .ep-card.expanded{border-color:rgba(255,255,255,0.15)}
+        .ep-card{
+            background:var(--card-white);border:1px solid var(--border-color);
+            border-radius:8px;padding:16px 20px;cursor:pointer;transition:all 0.2s;
+            -webkit-tap-highlight-color:transparent;user-select:none;overflow:hidden;
+            max-width:100%;box-shadow:2px 4px 10px rgba(0,0,0,0.03);
+            position:relative;
+        }
+        .ep-card:hover{border-color:var(--text-main);box-shadow:2px 6px 16px rgba(0,0,0,0.06)}
+        .ep-card.expanded{border-color:var(--accent-red)}
         .ep-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;overflow:hidden;width:100%;max-width:100%}
-        .ep-method{font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0}
-        .method-get{background:rgba(255,255,255,0.08);color:white}
-        .method-post{background:rgba(255,255,255,0.04);color:var(--text-2);border:1px solid var(--border)}
-        .ep-path{font-family:var(--mono);font-size:13px;color:white;flex:1;min-width:0;word-break:break-all;overflow-wrap:break-word}
-        .ep-status{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0}
-        .ep-status .dot{width:5px;height:5px;border-radius:50%}
-        .s-online{color:#22c55e}.s-online .dot{background:#22c55e}
-        .s-offline{color:#ef4444}.s-offline .dot{background:#ef4444}
-        .s-maintenance{color:#f59e0b}.s-maintenance .dot{background:#f59e0b}
-        .s-premium{color:#8b5cf6}.s-premium .dot{background:#8b5cf6}
-        .s-vip{color:#FACC15}.s-vip .dot{background:#FACC15}
-        .ep-desc{font-size:13px;color:var(--text-2);margin-top:8px;line-height:1.5;word-break:break-word;overflow-wrap:break-word}
+        .ep-method{font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0}
+        .method-get{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7}
+        .method-post{background:#e3f2fd;color:#1565c0;border:1px solid #90caf9}
+        .ep-path{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text-main);flex:1;min-width:0;word-break:break-all;overflow-wrap:break-word}
+        .ep-status{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0;font-weight:700}
+        .ep-status .dot{width:6px;height:6px;border-radius:50%}
+        .s-online{color:#2e7d32}.s-online .dot{background:#2e7d32}
+        .s-offline{color:#c62828}.s-offline .dot{background:#c62828}
+        .s-maintenance{color:#f57c00}.s-maintenance .dot{background:#f57c00}
+        .s-premium{color:#6a1b9a}.s-premium .dot{background:#6a1b9a}
+        .s-vip{color:#f57f17}.s-vip .dot{background:#f57f17}
+        .ep-desc{font-size:13px;color:var(--text-sub);margin-top:6px;line-height:1.5;word-break:break-word;overflow-wrap:break-word;font-weight:500}
 
         /* Expanded Body */
-        .ep-body{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);overflow:visible;max-width:100%}
+        .ep-body{display:none;margin-top:16px;padding-top:16px;border-top:1px dashed var(--border-color);overflow:visible;max-width:100%}
         .ep-card.expanded .ep-body{display:block}
 
         /* Params */
         .ep-params{margin-bottom:16px;max-width:100%;overflow-x:hidden}
-        .ep-params h4{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px}
-        .param-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);width:100%}
+        .ep-params h4{font-family:var(--mono);font-size:10px;color:var(--text-sub);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;font-weight:700}
+        .param-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--border-color);width:100%}
         .param-row:last-child{border-bottom:none}
-        .param-name{font-family:var(--mono);font-size:12px;color:white}
+        .param-name{font-family:var(--mono);font-size:12px;color:var(--text-main);font-weight:600}
 
         /* Playground */
-        .playground{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:8px;padding:16px;-webkit-tap-highlight-color:transparent;overflow-x:hidden;overflow-y:visible;max-width:100%;word-break:break-word}
-        .pg-header{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
-        .pg-url{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;margin-bottom:12px;overflow:hidden;width:100%;max-width:100%}
+        .playground{background:var(--bg-paper);border:1px solid var(--border-color);border-radius:6px;padding:16px;-webkit-tap-highlight-color:transparent;overflow-x:hidden;overflow-y:visible;max-width:100%;word-break:break-word}
+        .pg-header{font-family:var(--hand);font-size:1.2rem;color:var(--text-main);font-weight:700;margin-bottom:8px}
+        .pg-url{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;background:var(--card-white);border:1px solid var(--border-color);border-radius:6px;margin-bottom:12px;overflow:hidden;width:100%;max-width:100%}
         .pg-method-badge{font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;flex-shrink:0;white-space:nowrap}
-        .pg-url-text{font-family:var(--mono);font-size:11px;color:var(--text-2);word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;flex:1;min-width:0;max-width:100%}
+        .pg-url-text{font-family:var(--mono);font-size:11px;color:var(--text-main);word-break:break-all;overflow-wrap:break-word;white-space:pre-wrap;flex:1;min-width:0;max-width:100%}
         .pg-inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:12px;width:100%;max-width:100%}
         .pg-input-group{min-width:0;max-width:100%}
-        .pg-input-group label{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:4px}
-        .pg-input{width:100%;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:4px;font-family:var(--mono);font-size:12px;color:white;outline:none;max-width:100%;min-width:0;box-sizing:border-box}
-        .pg-input:focus{border-color:rgba(255,255,255,0.15)}
-        .pg-input[data-required="true"]{border-left:2px solid #ef4444}
-        .upload-zone{border:2px dashed var(--border);border-radius:8px;padding:12px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
-        .upload-zone:hover,.upload-zone.dragover{border-color:var(--accent);background:rgba(255,255,255,0.04)}
-        .upload-zone .upload-icon{font-size:20px;color:var(--text-3);margin-bottom:4px}
-        .upload-zone .upload-text{font-size:11px;color:var(--text-2)}
-        .upload-zone .upload-hint{font-size:9px;color:var(--text-3);margin-top:2px}
-        .upload-zone .upload-preview{display:none;margin-top:8px;padding:6px 8px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:6px;text-align:left}
+        .pg-input-group label{font-family:var(--mono);font-size:10px;color:var(--text-sub);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:4px;font-weight:700}
+        .pg-input{width:100%;padding:8px 10px;background:var(--card-white);border:1px solid var(--border-color);border-radius:6px;font-family:var(--mono);font-size:12px;color:var(--text-main);outline:none;max-width:100%;min-width:0;box-sizing:border-box}
+        .pg-input:focus{border-color:var(--accent-red);background:#ffffff}
+        .pg-input[data-required="true"]{border-left:3px solid var(--accent-red)}
+        .upload-zone{border:2px dashed var(--border-color);border-radius:6px;padding:12px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--card-white)}
+        .upload-zone:hover,.upload-zone.dragover{border-color:var(--accent-red);background:var(--card-yellow)}
+        .upload-zone .upload-icon{font-size:20px;color:var(--tape-color);margin-bottom:4px}
+        .upload-zone .upload-text{font-size:11px;color:var(--text-sub);font-weight:600}
+        .upload-zone .upload-hint{font-size:9px;color:var(--text-muted);margin-top:2px}
+        .upload-zone .upload-preview{display:none;margin-top:8px;padding:6px 8px;background:var(--bg-paper);border:1px solid var(--border-color);border-radius:6px;text-align:left}
         .upload-zone .upload-preview.show{display:flex;align-items:center;gap:8px}
-        .upload-zone .upload-preview img{width:32px;height:32px;border-radius:4px;object-fit:cover;border:1px solid var(--border)}
+        .upload-zone .upload-preview img{width:32px;height:32px;border-radius:4px;object-fit:cover;border:1px solid var(--border-color)}
         .upload-zone .upload-preview .file-info{flex:1;min-width:0}
-        .upload-zone .upload-preview .file-name{font-size:11px;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .upload-zone .upload-preview .file-size{font-size:9px;color:var(--text-3);margin-top:1px}
-        .upload-zone .upload-preview .file-remove{font-size:12px;color:var(--text-3);cursor:pointer;padding:2px}
-        .upload-zone .upload-preview .file-remove:hover{color:#ef4444}
-        .pg-select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;cursor:pointer;max-width:100%}
-        .pg-input::placeholder{color:var(--text-3)}
+        .upload-zone .upload-preview .file-name{font-size:11px;font-weight:700;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .upload-zone .upload-preview .file-size{font-size:9px;color:var(--text-sub);margin-top:1px}
+        .upload-zone .upload-preview .file-remove{font-size:12px;color:var(--accent-red);cursor:pointer;padding:2px}
+        .upload-zone .upload-preview .file-remove:hover{color:var(--error)}
+        .pg-select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b2626' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;cursor:pointer;max-width:100%}
+        .pg-input::placeholder{color:var(--text-muted)}
         .pg-actions{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;width:100%;max-width:100%}
-        .btn{padding:8px 16px;border-radius:6px;font-family:var(--sans);font-weight:600;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:opacity 0.15s;text-decoration:none;border:none;-webkit-tap-highlight-color:transparent;user-select:none;white-space:nowrap}
-        .btn-white{background:white;color:#050505}
-        .btn-white:hover{opacity:0.9}
-        .btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
-        .btn-ghost:hover{border-color:rgba(255,255,255,0.15);color:white}
+        .btn{padding:8px 16px;border-radius:6px;font-family:var(--sans);font-weight:700;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;text-decoration:none;border:none;-webkit-tap-highlight-color:transparent;user-select:none;white-space:nowrap}
+        .btn-white{background:var(--text-main);color:#ffffff}
+        .btn-white:hover{background:#000000}
+        .btn-ghost{background:var(--card-white);color:var(--text-main);border:1px solid var(--border-color)}
+        .btn-ghost:hover{background:var(--card-yellow);border-color:var(--text-main)}
 
         /* Loading */
-        .loading{text-align:center;padding:4rem 2rem;color:var(--text-3);font-size:14px}
-        .loading a{color:white}
+        .loading{text-align:center;padding:4rem 2rem;color:var(--text-sub);font-size:14px;font-weight:600}
+        .loading a{color:var(--accent-red)}
 
         /* Footer */
-        .footer{border-top:1px solid var(--border);padding:3rem 2rem 2rem;max-width:1200px;margin:0 auto}
-        .footer-links-row{display:flex;justify-content:center;gap:2rem;margin-bottom:1.5rem;flex-wrap:wrap}
-        .footer-links-row a{color:var(--text-3);text-decoration:none;font-size:13px;transition:color 0.15s}
-        .footer-links-row a:hover{color:white}
-        .footer-bottom{text-align:center;font-size:12px;color:var(--text-3)}
+        .footer{border-top:1px dashed var(--border-color);padding:3rem 2rem 2rem;max-width:1200px;margin:0 auto;text-align:center;font-style:italic;color:var(--accent-red)}
+        .footer-links-row{display:flex;justify-content:center;gap:2rem;margin-bottom:1rem;flex-wrap:wrap;font-style:normal}
+        .footer-links-row a{color:var(--text-sub);text-decoration:none;font-size:13px;font-weight:600;transition:color 0.15s}
+        .footer-links-row a:hover{color:var(--accent-red)}
+        .footer-bottom{font-size:12px;color:var(--accent-red)}
 
-        /* ============= HEALTH BAR ============= */
+        /* Health Bar Paper Theme */
         .stats-grid { display: flex; flex-wrap: nowrap; justify-content: center; gap: 12px; margin: 0 auto 12px; max-width: 100%; overflow-x: auto; padding: 4px 0; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
         .stats-grid::-webkit-scrollbar { display: none; }
         .endpoint-card { display: flex; width: max-content; margin: 0 auto 2rem; }
-        .health-stat{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all 0.25s;min-width:0}
-        .health-stat:hover{border-color:rgba(255,255,255,0.12);background:rgba(255,255,255,0.05)}
+        .health-stat{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--card-white);border:1px solid var(--border-color);border-radius:8px;box-shadow:2px 4px 10px rgba(0,0,0,0.02);transition:all 0.25s;min-width:0}
+        .health-stat:hover{border-color:var(--text-main);background:var(--card-yellow)}
         .health-stat .h-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;flex-shrink:0;}
         .health-stat .h-icon i{font-size:12px}
         .health-stat .h-info{display:flex;flex-direction:column;gap:1px;min-width:0;}
-        .health-stat .h-label{font-size:9px;font-family:var(--mono);color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap}
-        .health-stat .h-value{font-size:13px;font-weight:700;font-family:var(--display);color:white;letter-spacing:-0.01em;white-space:nowrap}
-        .health-stat .h-value .h-sub{font-size:10px;font-weight:400;color:var(--text-2);margin-left:2px}
+        .health-stat .h-label{font-size:9px;font-family:var(--mono);color:var(--text-sub);text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;font-weight:700}
+        .health-stat .h-value{font-size:13px;font-weight:700;font-family:var(--mono);color:var(--text-main);letter-spacing:-0.01em;white-space:nowrap}
+        .health-stat .h-value .h-sub{font-size:10px;font-weight:500;color:var(--text-sub);margin-left:2px}
         .health-stat .h-value .h-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle;animation:pulse-dot 2s ease-in-out infinite}
-        .h-latency{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.15)}
-        .h-latency .h-icon{background:rgba(34,197,94,0.12);color:#22c55e}
-        .h-status{background:rgba(34,197,94,0.06);border-color:rgba(34,197,94,0.12)}
-        .h-status .h-icon{background:rgba(34,197,94,0.1);color:#22c55e}
-        .h-uptime{background:rgba(59,130,246,0.06);border-color:rgba(59,130,246,0.12)}
-        .h-uptime .h-icon{background:rgba(59,130,246,0.1);color:#3b82f6}
-        .h-version{background:rgba(168,85,247,0.06);border-color:rgba(168,85,247,0.12)}
-        .h-version .h-icon{background:rgba(168,85,247,0.1);color:#a855f7}
-        .h-endpoints{background:rgba(234,179,8,0.06);border-color:rgba(234,179,8,0.12)}
-        .h-endpoints .h-icon{background:rgba(234,179,8,0.1);color:#eab308}
+        .h-latency{background:var(--card-white);border-color:var(--border-color)}
+        .h-latency .h-icon{background:#e8f5e9;color:#2e7d32}
+        .h-status{background:var(--card-white);border-color:var(--border-color)}
+        .h-status .h-icon{background:#e8f5e9;color:#2e7d32}
+        .h-uptime{background:var(--card-white);border-color:var(--border-color)}
+        .h-uptime .h-icon{background:#e3f2fd;color:#1565c0}
+        .h-version{background:var(--card-white);border-color:var(--border-color)}
+        .h-version .h-icon{background:#f3e5f5;color:#6a1b9a}
+        .h-endpoints{background:var(--card-white);border-color:var(--border-color)}
+        .h-endpoints .h-icon{background:#fff8e1;color:#f57f17}
         @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.85)}}
-        @keyframes bell-ring{0%{transform:rotate(0) scale(1)}5%{transform:rotate(15deg) scale(1.1)}10%{transform:rotate(-13deg) scale(1.1)}15%{transform:rotate(12deg) scale(1.08)}20%{transform:rotate(-10deg) scale(1.08)}25%{transform:rotate(8deg)}30%{transform:rotate(-6deg)}35%{transform:rotate(4deg)}40%{transform:rotate(-2deg)}45%{transform:rotate(1deg)}50%,100%{transform:rotate(0) scale(1)}}
-        @keyframes bell-glow{0%,50%{box-shadow:0 0 0 0 rgba(34,197,94,0.4)}25%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
-        #bellBtn.has-notif{animation:bell-glow 2s ease-in-out infinite}
-        #bellBtn.has-notif i.fa-bell{animation:bell-ring 2s ease-in-out infinite}
-        @keyframes fade-in{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
-        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-        .stats-grid .health-stat{animation:fade-in 0.4s ease-out both}
-        .stats-grid .health-stat:nth-child(1){animation-delay:0.05s}
-        .stats-grid .health-stat:nth-child(2){animation-delay:0.1s}
-        .stats-grid .health-stat:nth-child(3){animation-delay:0.15s}
-        .stats-grid .health-stat:nth-child(4){animation-delay:0.2s}
-        .endpoint-card{animation:fade-in 0.4s ease-out 0.25s both}
 
-        /* ============= LATENCY BADGE ============= */
-        .latency-badge{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:4px;flex-shrink:0;transition:all 0.3s;font-weight:600}
-        .latency-badge.lb-fast{background:rgba(34,197,94,0.12);color:#22c55e;border:1px solid rgba(34,197,94,0.2)}
-        .latency-badge.lb-mid{background:rgba(234,179,8,0.12);color:#eab308;border:1px solid rgba(234,179,8,0.2)}
-        .latency-badge.lb-slow{background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.2)}
-        .latency-badge.lb-none{background:rgba(255,255,255,0.04);color:var(--text-3);border:1px solid var(--border)}
+        /* Latency Badge Paper */
+        .latency-badge{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:4px;flex-shrink:0;transition:all 0.3s;font-weight:700}
+        .latency-badge.lb-fast{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7}
+        .latency-badge.lb-mid{background:#fff8e1;color:#f57f17;border:1px solid #ffe082}
+        .latency-badge.lb-slow{background:#ffebee;color:#c62828;border:1px solid #ef9a9a}
+        .latency-badge.lb-none{background:var(--bg-paper);color:var(--text-muted);border:1px solid var(--border-color)}
         .latency-badge i{font-size:8px}
 
-        /* ============= METRICS PANEL ============= */
-        .metrics-panel{display:none;border-top:1px solid var(--border);padding:8px 12px 6px;background:rgba(255,255,255,0.015)}
+        /* Metrics Panel */
+        .metrics-panel{display:none;border-top:1px dashed var(--border-color);padding:8px 12px 6px;background:var(--card-yellow)}
         .metrics-panel.show{display:block;animation:fade-in 0.25s ease-out}
         .metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:4px 16px}
         .metric-item{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:11px;font-family:var(--mono)}
-        .metric-item .m-label{color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;font-size:9px}
-        .metric-item .m-value{color:var(--text-2);font-weight:500}
+        .metric-item .m-label{color:var(--text-sub);text-transform:uppercase;letter-spacing:0.05em;font-size:9px;font-weight:700}
+        .metric-item .m-value{color:var(--text-main);font-weight:700}
         .metric-item .m-value.m-status{font-weight:700}
-        .m-status-2xx{color:#22c55e}
-        .m-status-4xx{color:#eab308}
-        .m-status-5xx{color:#ef4444}
+        .m-status-2xx{color:#2e7d32}
+        .m-status-4xx{color:#f57f17}
+        .m-status-5xx{color:#c62828}
 
         @media(max-width:768px){
             .hero{padding:6rem 1.5rem 2rem}
@@ -416,7 +463,7 @@
             .pg-result .media-container img{max-height:400px}
             .pg-result .media-container video{max-height:350px}
             .pg-result pre{font-size:11px}
-            .ep-grid{gap:6px}
+            .ep-grid{gap:8px}
             .ep-card{padding:12px 14px}
             .pg-inputs{grid-template-columns:1fr}
             .filters{gap:4px}
@@ -443,21 +490,21 @@
         }
 
         /* Global Notif Modal */
-        .notif-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 1.5rem; }
+        .notif-modal-overlay { position: fixed; inset: 0; background: rgba(43,43,43,0.5); backdrop-filter: blur(4px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 1.5rem; }
         .notif-modal-overlay.show { opacity: 1; pointer-events: auto; }
-        .notif-modal-box { background: #111; border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 2rem; max-width: 420px; width: 100%; text-align: center; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.6); transform: translateY(20px); transition: transform 0.3s ease; }
+        .notif-modal-box { background: var(--card-white); border: 1px solid var(--border-color); border-radius: 8px; padding: 2rem; max-width: 420px; width: 100%; text-align: center; position: relative; box-shadow: 4px 8px 24px rgba(0,0,0,0.1); transform: translateY(20px); transition: transform 0.3s ease; }
         .notif-modal-overlay.show .notif-modal-box { transform: translateY(0); }
-        .notif-close-btn { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: #888; font-size: 1.5rem; cursor: pointer; transition: color 0.2s; }
-        .notif-close-btn:hover { color: #fff; }
-        .notif-icon { width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.06); color: #fff; font-size: 1.25rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem auto; border: 1px solid rgba(255,255,255,0.1); }
-        .notif-title { font-family: var(--display); font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem; }
-        .notif-message { color: var(--text-2); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; }
-        .notif-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 0.8rem 1.2rem; background: #fff; color: #000; font-weight: 600; font-size: 0.9rem; border-radius: 10px; text-decoration: none; transition: background 0.2s, transform 0.1s; }
-        .notif-action-btn:hover { background: #e5e5e5; transform: translateY(-1px); }
+        .notif-close-btn { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: var(--text-sub); font-size: 1.5rem; cursor: pointer; transition: color 0.2s; }
+        .notif-close-btn:hover { color: var(--accent-red); }
+        .notif-icon { width: 48px; height: 48px; border-radius: 50%; background: var(--card-yellow); color: var(--accent-red); font-size: 1.25rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem auto; border: 1px solid var(--border-color); }
+        .notif-title { font-family: var(--hand); font-size: 1.6rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem; }
+        .notif-message { color: var(--text-sub); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; }
+        .notif-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 0.8rem 1.2rem; background: var(--text-main); color: #ffffff; font-weight: 700; font-size: 0.9rem; border-radius: 6px; text-decoration: none; transition: background 0.2s, transform 0.1s; }
+        .notif-action-btn:hover { background: #000000; transform: translateY(-1px); }
 
         /* Floating Feedback Button */
-        .feedback-float-btn { position: fixed; bottom: 24px; right: 24px; background: #161616; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 10px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 8px; text-decoration: none; z-index: 1000; box-shadow: 0 8px 20px rgba(0,0,0,0.5); transition: all 0.2s ease; }
-        .feedback-float-btn:hover { background: #222; border-color: rgba(255,255,255,0.3); transform: translateY(-2px); }
+        .feedback-float-btn { position: fixed; bottom: 24px; right: 24px; background: var(--card-white); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 8px; text-decoration: none; z-index: 1000; box-shadow: 2px 6px 16px rgba(0,0,0,0.08); transition: all 0.2s ease; }
+        .feedback-float-btn:hover { background: var(--card-yellow); border-color: var(--text-main); transform: translateY(-2px); }
     </style>
 </head>
 <body>
@@ -485,7 +532,7 @@
                 <a href="/" class="logo">
                     <img src="/src/images/logo.jpg" alt="Zyyvor" onerror="this.style.display='none'">
                     <div>
-                        <div class="logo-text">Zyyvor</div>
+                        <div class="logo-text">Zyyvor Api'S</div>
                         <div class="logo-sub">API Documentation</div>
                     </div>
                 </a>
@@ -494,11 +541,11 @@
                 <div style="position:relative">
                     <button class="menu-btn" onclick="toggleAnnounce()" aria-label="Announcements" id="bellBtn">
                         <i class="fas fa-bell"></i>
-                        <span id="bellBadge" style="display:none;position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:#22c55e"></span>
+                        <span id="bellBadge" style="display:none;position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:#2e7d32"></span>
                     </button>
                     <div id="announcePanel" class="dropdown" style="width:340px;max-height:400px;overflow-y:auto;right:0;left:auto">
-                        <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
-                            <span style="font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.15em">Announcements</span>
+                        <div style="padding:10px 14px;border-bottom:1px dashed var(--border-color);background:var(--card-yellow)">
+                            <span style="font-family:var(--hand);font-size:1.1rem;color:var(--text-main);font-weight:700">Announcements ✦</span>
                         </div>
                         <div id="announceList"></div>
                     </div>
@@ -510,14 +557,14 @@
 
     <!-- Hero -->
     <div class="hero" role="main" aria-label="Documentation hero">
-        <h1>API Documentation</h1>
-        <p>Explore all available endpoints. Click any endpoint to expand details and try it directly from your browser.</p>
+        <h1 class="handwritten">API Documentation ✏️</h1>
+        <p>Explore all available endpoints in our digital paper archive. Click any endpoint to expand details and try it directly.</p>
         <div class="stats-grid">
             <div class="health-stat h-status">
                 <div class="h-icon"><i class="fas fa-circle"></i></div>
                 <div class="h-info">
                     <span class="h-label">API Status</span>
-                    <span class="h-value" id="healthStatus"><span class="h-dot" style="background:#22c55e"></span>Online</span>
+                    <span class="h-value" id="healthStatus"><span class="h-dot" style="background:#2e7d32"></span>Online</span>
                 </div>
             </div>
             <div class="health-stat h-latency">
@@ -551,8 +598,8 @@
         </div>
         <div class="search-wrap" style="display: flex; gap: 12px; flex-wrap: wrap;">
             <div style="position: relative; flex: 1; min-width: 250px;">
-                <i class="fas fa-search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-3); font-size: 14px;"></i>
-                <input type="text" id="searchInput" class="search-input" placeholder="Search endpoints..." oninput="filterEndpoints()" style="padding-left: 40px; width: 100%;">
+                <i class="fas fa-search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px;"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search endpoints by path, name, description..." oninput="filterEndpoints()" style="padding-left: 40px; width: 100%;">
             </div>
         </div>
         <div class="filters" id="categoryFilters">
@@ -562,36 +609,36 @@
 
     <!-- API Key & Authentication Info -->
     <div style="max-width:1200px;margin:0 auto 24px;padding:0 20px">
-        <div style="background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.15);border-radius:12px;padding:20px 24px;position:relative;overflow:hidden">
+        <div style="background:var(--card-white);border:1px solid var(--border-color);border-radius:8px;padding:20px 24px;position:relative;overflow:hidden;box-shadow:2px 4px 12px rgba(0,0,0,0.03)">
             <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="this.parentElement.classList.toggle('expanded');const c=this.parentElement.querySelector('.auth-detail');c.style.display=c.style.display==='none'?'block':'none'">
                 <div style="display:flex;align-items:center;gap:10px">
-                    <i class="fas fa-key" style="color:#8b5cf6;font-size:16px"></i>
-                    <span style="font-weight:700;color:#e2e8f0;font-size:14px">API Key & Authentication</span>
-                    <span style="font-size:11px;color:#8b5cf6;background:rgba(139,92,246,0.1);padding:2px 8px;border-radius:6px;font-family:var(--mono)">NEW</span>
+                    <i class="fas fa-key" style="color:var(--accent-red);font-size:16px"></i>
+                    <span style="font-weight:700;color:var(--text-main);font-size:14px">API Key & Authentication</span>
+                    <span style="font-size:11px;color:var(--accent-red);background:var(--card-pink);padding:2px 8px;border-radius:4px;font-family:var(--mono);font-weight:700">GUIDE</span>
                 </div>
-                <i class="fas fa-chevron-down" style="color:#64748b;font-size:12px;transition:transform 0.2s"></i>
+                <i class="fas fa-chevron-down" style="color:var(--text-sub);font-size:12px;transition:transform 0.2s"></i>
             </div>
-            <div class="auth-detail" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid rgba(139,92,246,0.1)">
+            <div class="auth-detail" style="display:none;margin-top:16px;padding-top:16px;border-top:1px dashed var(--border-color)">
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
-                    <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:16px">
-                        <h4 style="color:#c084fc;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px"><i class="fas fa-shield-halved" style="margin-right:6px"></i>Status-Based Access</h4>
-                        <p style="color:#94a3b8;font-size:12px;line-height:1.6">Endpoint yang berstatus <code style="color:#c084fc;background:rgba(139,92,246,0.1);padding:1px 6px;border-radius:4px;font-size:11px">premium</code> atau <code style="color:#eab308;background:rgba(234,179,8,0.1);padding:1px 6px;border-radius:4px;font-size:11px">vip</code> memerlukan API key. Key premium bisa akses endpoint premium, key VIP bisa akses semua.</p>
+                    <div style="background:var(--bg-paper);border:1px solid var(--border-color);border-radius:6px;padding:16px">
+                        <h4 style="color:var(--accent-red);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px"><i class="fas fa-shield-halved" style="margin-right:6px"></i>Status-Based Access</h4>
+                        <p style="color:var(--text-sub);font-size:12px;line-height:1.6">Endpoint yang berstatus <code style="color:var(--accent-red);background:var(--card-pink);padding:1px 6px;border-radius:4px;font-size:11px">premium</code> atau <code style="color:#f57f17;background:var(--card-yellow);padding:1px 6px;border-radius:4px;font-size:11px">vip</code> memerlukan API key. Key premium bisa akses endpoint premium, key VIP bisa akses semua.</p>
                     </div>
-                    <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:16px">
-                        <h4 style="color:#c084fc;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px"><i class="fas fa-route" style="margin-right:6px"></i>Endpoint Restrictions</h4>
-                        <p style="color:#94a3b8;font-size:12px;line-height:1.6">API key bisa di-restrict ke endpoint tertentu saja menggunakan <code style="color:#c084fc;background:rgba(139,92,246,0.1);padding:1px 6px;border-radius:4px;font-size:11px">allowedEndpoints</code>. Contoh: <code style="color:#22c55e;background:rgba(34,197,94,0.1);padding:1px 6px;border-radius:4px;font-size:11px">/api/am/*</code> hanya bisa akses endpoint AM.</p>
+                    <div style="background:var(--bg-paper);border:1px solid var(--border-color);border-radius:6px;padding:16px">
+                        <h4 style="color:var(--accent-red);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px"><i class="fas fa-route" style="margin-right:6px"></i>Endpoint Restrictions</h4>
+                        <p style="color:var(--text-sub);font-size:12px;line-height:1.6">API key bisa di-restrict ke endpoint tertentu saja menggunakan <code style="color:var(--accent-red);background:var(--card-pink);padding:1px 6px;border-radius:4px;font-size:11px">allowedEndpoints</code>. Contoh: <code style="color:#2e7d32;background:#e8f5e9;padding:1px 6px;border-radius:4px;font-size:11px">/api/am/*</code> hanya bisa akses endpoint AM.</p>
                     </div>
-                    <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:16px">
-                        <h4 style="color:#c084fc;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px"><i class="fas fa-gauge-high" style="margin-right:6px"></i>Rate Limits</h4>
-                        <p style="color:#94a3b8;font-size:12px;line-height:1.6">Setiap key memiliki rate limit: <code style="color:#3b82f6;background:rgba(59,130,246,0.1);padding:1px 6px;border-radius:4px;font-size:11px">maxPerDay</code> (per hari) dan <code style="color:#3b82f6;background:rgba(59,130,246,0.1);padding:1px 6px;border-radius:4px;font-size:11px">maxPerMinute</code> (per menit). Set 0 = unlimited.</p>
+                    <div style="background:var(--bg-paper);border:1px solid var(--border-color);border-radius:6px;padding:16px">
+                        <h4 style="color:var(--accent-red);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px"><i class="fas fa-gauge-high" style="margin-right:6px"></i>Rate Limits</h4>
+                        <p style="color:var(--text-sub);font-size:12px;line-height:1.6">Setiap key memiliki rate limit: <code style="color:#1565c0;background:#e3f2fd;padding:1px 6px;border-radius:4px;font-size:11px">maxPerDay</code> (per hari) dan <code style="color:#1565c0;background:#e3f2fd;padding:1px 6px;border-radius:4px;font-size:11px">maxPerMinute</code> (per menit). Set 0 = unlimited.</p>
                     </div>
                 </div>
-                <div style="margin-top:16px;background:rgba(255,255,255,0.02);border-radius:8px;padding:14px 16px">
-                    <h4 style="color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Cara Menggunakan API Key</h4>
+                <div style="margin-top:16px;background:var(--card-yellow);border:1px solid var(--border-color);border-radius:6px;padding:14px 16px">
+                    <h4 style="color:var(--text-main);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Cara Menggunakan API Key</h4>
                     <div style="display:flex;flex-wrap:wrap;gap:8px">
-                        <code style="color:#22c55e;background:rgba(34,197,94,0.08);padding:4px 10px;border-radius:6px;font-size:11px;border:1px solid rgba(34,197,94,0.15)">?apikey=YOUR_KEY</code>
-                        <code style="color:#22c55e;background:rgba(34,197,94,0.08);padding:4px 10px;border-radius:6px;font-size:11px;border:1px solid rgba(34,197,94,0.15)">X-API-Key: YOUR_KEY</code>
-                        <code style="color:#22c55e;background:rgba(34,197,94,0.08);padding:4px 10px;border-radius:6px;font-size:11px;border:1px solid rgba(34,197,94,0.15)">Authorization: Bearer YOUR_KEY</code>
+                        <code style="color:#2e7d32;background:var(--card-white);padding:4px 10px;border-radius:4px;font-size:11px;border:1px solid var(--border-color);font-weight:700">?apikey=YOUR_KEY</code>
+                        <code style="color:#2e7d32;background:var(--card-white);padding:4px 10px;border-radius:4px;font-size:11px;border:1px solid var(--border-color);font-weight:700">X-API-Key: YOUR_KEY</code>
+                        <code style="color:#2e7d32;background:var(--card-white);padding:4px 10px;border-radius:4px;font-size:11px;border:1px solid var(--border-color);font-weight:700">Authorization: Bearer YOUR_KEY</code>
                     </div>
                 </div>
             </div>
@@ -619,7 +666,7 @@
             <a href="/changelog">Changelog</a>
         </div>
         <div class="footer-bottom">
-            <span>&copy; 2026 Zyyvor Api'S. All rights reserved.</span>
+            <span>&copy; 2026-2027 Zyyvor Api'S. All rights reserved.</span>
         </div>
     </footer>
 
@@ -655,7 +702,7 @@
                     renderEndpoints(d.endpoints);
                 }
             }catch(e){
-                document.getElementById('endpointsContainer').innerHTML='<div class="loading">Failed to load endpoints. <a href="/" style="color:white">Go back</a></div>';
+                document.getElementById('endpointsContainer').innerHTML='<div class="loading">Failed to load endpoints. <a href="/" style="color:var(--accent-red)">Go back</a></div>';
             }
         }
 
@@ -746,7 +793,7 @@
                                 <h4>Parameters</h4>
                                 ${params.map(p=>{
                                     const s=paramSchema[p]||{};
-                                    const req=s.required===true?'<span class="param-req" style="color:#ef4444;font-size:10px;font-weight:700">REQUIRED</span>':'';
+                                    const req=s.required===true?'<span class="param-req" style="color:var(--accent-red);font-size:10px;font-weight:700">REQUIRED</span>':'';
                                     return `<div class="param-row">
                                         <span class="param-name">${esc(p)}</span>
                                         ${req}
@@ -754,14 +801,14 @@
                                 }).join('')}
                             </div>`:''}
                             <div class="playground">
-                                ${status==='offline'||status==='maintenance'||status==='error'?`<div class="status-warning-banner" style="margin-bottom:14px;padding:12px 16px;border-radius:8px;background:${status==='maintenance'?'rgba(245,158,11,0.12)':'rgba(239,68,68,0.12)'};border:1px solid ${status==='maintenance'?'rgba(245,158,11,0.35)':'rgba(239,68,68,0.35)'};color:${status==='maintenance'?'#f59e0b':'#ef4444'};display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px">
+                                ${status==='offline'||status==='maintenance'||status==='error'?`<div class="status-warning-banner" style="margin-bottom:14px;padding:12px 16px;border-radius:6px;background:${status==='maintenance'?'var(--card-yellow)':'var(--card-pink)'};border:1px solid ${status==='maintenance'?'var(--warning)':'var(--accent-red)'};color:${status==='maintenance'?'#f57f17':'var(--accent-red)'};display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px">
                                     <i class="fas ${status==='maintenance'?'fa-tools':'fa-exclamation-triangle'}" style="font-size:16px"></i>
                                     <div>
                                         <b style="text-transform:uppercase;letter-spacing:0.05em">Endpoint ${status.toUpperCase()}</b><br>
-                                        <span style="font-size:11px;opacity:0.9;font-family:var(--font)">Mohon maaf, endpoint ini sedang berstatus <b>${status.toUpperCase()}</b> sehingga fitur pengujian (Try) dinonaktifkan sementara.</span>
+                                        <span style="font-size:11px;opacity:0.9;font-family:var(--sans)">Mohon maaf, endpoint ini sedang berstatus <b>${status.toUpperCase()}</b> sehingga fitur pengujian (Try) dinonaktifkan sementara.</span>
                                     </div>
                                 </div>`:''}
-                                <div class="pg-header"><span>Playground</span></div>
+                                <div class="pg-header"><span>Playground ✏️</span></div>
                                 <div class="pg-url">
                                     ${methods.map(m=>`<span class="pg-method-badge ${m==='GET'?'method-get':'method-post'}">${m}</span>`).join('')}
                                     <span class="pg-url-text">${domain}${path}</span>
@@ -771,7 +818,7 @@
                                         const s=paramSchema[p]||{};
                                         const ph=s.default||s.enum?.[0]||p;
                                         const req=s.required===true;
-                                        const reqStar=req?'<span style="color:#ef4444;margin-left:2px">*</span>':'';
+                                        const reqStar=req?'<span style="color:var(--accent-red);margin-left:2px">*</span>':'';
                                         const inputId='pg-'+path.replace(/\//g,'-')+'-'+p;
                                         const reqAttr=req?' data-required="true"':'';
                                         if(s.enum&&s.enum.length){
@@ -804,7 +851,7 @@
                                     }).join('')}
                                 </div>`:''}
                                 <div class="pg-actions">
-                                    <button class="btn btn-white btn-try${status==='offline'||status==='maintenance'||status==='error'?' btn-disabled-status':''}"${status==='offline'||status==='maintenance'||status==='error'?' disabled':''} data-path="${esc(path)}" data-status="${esc(status)}" data-methods='${JSON.stringify(methods)}' data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"${status==='offline'||status==='maintenance'||status==='error'?' style="opacity:0.4;cursor:not-allowed;pointer-events:none;border:1px solid '+(status==='maintenance'?'rgba(245,158,11,0.4);color:#f59e0b;background:rgba(245,158,11,0.08)':'rgba(239,68,68,0.4);color:#ef4444;background:rgba(239,68,68,0.08)')+'" title="Endpoint sedang '+status.toUpperCase()+', tidak dapat dicoba saat ini"':''}><i class="fas ${status==='offline'||status==='maintenance'||status==='error'?'fa-ban':'fa-play'}"></i> ${status==='offline'||status==='maintenance'||status==='error'?'Try ('+status.toUpperCase()+')':'Try'}</button>
+                                    <button class="btn btn-white btn-try${status==='offline'||status==='maintenance'||status==='error'?' btn-disabled-status':''}"${status==='offline'||status==='maintenance'||status==='error'?' disabled':''} data-path="${esc(path)}" data-status="${esc(status)}" data-methods='${JSON.stringify(methods)}' data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"${status==='offline'||status==='maintenance'||status==='error'?' style="opacity:0.5;cursor:not-allowed;pointer-events:none;border:1px solid '+(status==='maintenance'?'var(--warning);color:#f57f17;background:var(--card-yellow)':'var(--accent-red);color:var(--accent-red);background:var(--card-pink)')+'" title="Endpoint sedang '+status.toUpperCase()+', tidak dapat dicoba saat ini"':''}><i class="fas ${status==='offline'||status==='maintenance'||status==='error'?'fa-ban':'fa-play'}"></i> ${status==='offline'||status==='maintenance'||status==='error'?'Try ('+status.toUpperCase()+')':'Try'}</button>
                                     <button class="btn btn-ghost btn-copy" data-url="${domain}${esc(path)}" data-path="${esc(path)}" data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"><i class="fas fa-copy"></i> Copy URL</button>
                                     <button class="btn btn-ghost btn-example" data-path="${esc(path)}" data-methods='${JSON.stringify(methods)}' data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"><i class="fas fa-code"></i> Example</button>
                                 </div>
@@ -841,7 +888,7 @@
                 reader.onload=function(e){preview.querySelector('.file-thumb').src=e.target.result}
                 reader.readAsDataURL(file);
                 thumb=`<img class="file-thumb" src="" alt="">`;
-            }else{thumb=`<div class="file-thumb" style="width:32px;height:32px;border-radius:4px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px"><i class="fas fa-file"></i></div>`}
+            }else{thumb=`<div class="file-thumb" style="width:32px;height:32px;border-radius:4px;background:var(--card-white);border:1px solid var(--border-color);display:flex;align-items:center;justify-content:center;font-size:14px"><i class="fas fa-file"></i></div>`}
             preview.innerHTML=thumb+`
                 <div class="file-info">
                     <div class="file-name">${esc(file.name)}</div>
@@ -912,16 +959,16 @@
                     const resDiv = document.getElementById(resId);
                     if (resDiv) {
                         resDiv.style.display = 'block';
-                        resDiv.innerHTML = `<div class="result-toolbar" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3)">
-                            <div class="toolbar-left" style="color:#ef4444;font-family:var(--mono);font-size:11px;font-weight:700">
+                        resDiv.innerHTML = `<div class="result-toolbar" style="background:var(--card-pink);border-color:var(--accent-red)">
+                            <div class="toolbar-left" style="color:var(--accent-red);font-family:var(--mono);font-size:11px;font-weight:700">
                                 <i class="fas fa-exclamation-circle" style="margin-right:6px"></i> ENDPOINT ${epStatus.toUpperCase()}
                             </div>
                             <div class="toolbar-right">
                                 <button class="toolbar-btn" onclick="this.closest('.pg-result').style.display='none'" title="Close"><i class="fas fa-xmark"></i></button>
                             </div>
                         </div>
-                        <div style="padding:16px;font-family:var(--mono);font-size:12px;color:#fca5a5;background:rgba(0,0,0,0.35);line-height:1.6">
-                            ❌ <b>Pengujian dinonaktifkan:</b> Endpoint <code>${esc(tryBtn.dataset.path)}</code> saat ini berstatus <span style="padding:2px 6px;border-radius:4px;background:rgba(239,68,68,0.2);color:#ff8080;font-weight:700">${esc(epStatus.toUpperCase())}</span>.<br>
+                        <div style="padding:16px;font-family:var(--mono);font-size:12px;color:var(--accent-red);background:var(--bg-paper);line-height:1.6">
+                            ❌ <b>Pengujian dinonaktifkan:</b> Endpoint <code>${esc(tryBtn.dataset.path)}</code> saat ini berstatus <span style="padding:2px 6px;border-radius:4px;background:var(--card-pink);color:var(--accent-red);font-weight:700">${esc(epStatus.toUpperCase())}</span>.<br>
                             Silakan coba kembali setelah layanan kembali online / maintenance selesai.
                         </div>`;
                     }
@@ -971,10 +1018,10 @@
             const showCopy = !['loading', 'image', 'video', 'audio', 'pdf', 'binary'].includes(lowerType);
             return `<div class="result-toolbar">
                 <div class="toolbar-left" style="display:flex;align-items:center;gap:8px">
-                    <span style="padding:3px 10px;border-radius:999px;background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.06);font-family:var(--mono);font-size:10px;color:var(--text-2);text-transform:uppercase;font-weight:600">${type}</span>
-                    <span style="font-family:var(--mono);font-size:10px;color:var(--text-3)">&bull;</span>
-                    <span style="font-family:var(--mono);font-size:10px;color:var(--text-3);font-weight:500">${statusText}</span>
-                    ${size?`<span style="font-family:var(--mono);font-size:10px;color:var(--text-3)">&bull;</span><span style="font-family:var(--mono);font-size:10px;color:var(--text-3);font-weight:500">${size}</span>`:''}
+                    <span style="padding:2px 8px;border-radius:4px;background:var(--card-white);border:1px solid var(--border-color);font-family:var(--mono);font-size:10px;color:var(--text-main);text-transform:uppercase;font-weight:700">${type}</span>
+                    <span style="font-family:var(--mono);font-size:10px;color:var(--text-sub)">&bull;</span>
+                    <span style="font-family:var(--mono);font-size:10px;color:var(--text-sub);font-weight:600">${statusText}</span>
+                    ${size?`<span style="font-family:var(--mono);font-size:10px;color:var(--text-sub)">&bull;</span><span style="font-family:var(--mono);font-size:10px;color:var(--text-sub);font-weight:600">${size}</span>`:''}
                 </div>
                 <div class="toolbar-right">
                     ${showCopy ? `<button class="toolbar-btn" onclick="copyResultText(this)" title="Copy"><i class="fas fa-copy"></i></button>` : ''}
@@ -1024,7 +1071,7 @@
                     if(!input.value.trim())missing.push(p);
                 }
                 if(missing.includes(p)){
-                    input.style.borderColor='#ef4444';
+                    input.style.borderColor='var(--accent-red)';
                     input.addEventListener('input',()=>{input.style.borderColor=''}, {once:true});
                     input.addEventListener('change',()=>{input.style.borderColor=''}, {once:true});
                 }
@@ -1034,8 +1081,8 @@
                 return;
             }
 
-            resultEl.style.cssText='display:flex;color:#888';
-            resultEl.innerHTML=makeToolbar('Loading','...','')+'<div style="padding:12px"><span style="font-family:var(--mono);font-size:12px;color:var(--text-3)">Fetching...</span></div>';
+            resultEl.style.cssText='display:flex;color:var(--text-sub)';
+            resultEl.innerHTML=makeToolbar('Loading','...','')+'<div style="padding:12px"><span style="font-family:var(--mono);font-size:12px;color:var(--text-sub)">Fetching...</span></div>';
 
             const queryParams=[];
             params.forEach(p=>{
@@ -1126,7 +1173,7 @@
                     const size=(blob.size/1024).toFixed(1)+'KB';
                     resultEl.innerHTML=makeToolbar('PDF',statusText,size)+`
                         <div class="media-container">
-                            <iframe src="${pdfUrl}" style="width:100%;height:500px;border:1px solid var(--border);border-radius:6px;background:#fff"></iframe>
+                            <iframe src="${pdfUrl}" style="width:100%;height:500px;border:1px solid var(--border-color);border-radius:6px;background:#fff"></iframe>
                             <a href="${pdfUrl}" download="response.pdf" class="download-btn"><i class="fas fa-download"></i> Download PDF</a>
                         </div>`;
                     return;
@@ -1154,7 +1201,7 @@
                         return '<tr>'+row.split(',').map(c=>`<${tag}>${esc(c.trim())}</${tag}>`).join('')+'</tr>';
                     }).join('')+'</table>';
                     resultEl.innerHTML=makeToolbar('CSV',statusText,(text.length/1024).toFixed(1)+'KB')+`
-                        <div class="csv-container" style="max-height:400px;overflow:auto;border:1px solid var(--border);border-radius:6px">${html}</div>`;
+                        <div class="csv-container" style="max-height:400px;overflow:auto;border:1px solid var(--border-color);border-radius:6px">${html}</div>`;
                     return;
                 }
 
@@ -1296,8 +1343,8 @@
             function render(){
                 resultEl.innerHTML=`<div class="result-toolbar">
                     <div class="toolbar-left">
-                        <span style="padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.06);font-family:var(--mono);font-size:10px;color:var(--text-2);text-transform:uppercase">Example</span>
-                        <span style="font-family:var(--mono);font-size:10px;color:var(--text-3)">${method} ${esc(path)}</span>
+                        <span style="padding:2px 6px;border-radius:3px;background:var(--card-white);border:1px solid var(--border-color);font-family:var(--mono);font-size:10px;color:var(--text-main);text-transform:uppercase;font-weight:700">Example</span>
+                        <span style="font-family:var(--mono);font-size:10px;color:var(--text-sub);font-weight:600">${method} ${esc(path)}</span>
                     </div>
                     <div class="toolbar-right">
                         <button class="toolbar-btn" onclick="copyResultText(this)" title="Copy"><i class="fas fa-copy"></i></button>
@@ -1337,11 +1384,11 @@
                 notif.style.cssText = 'position:fixed;bottom:1.5rem;right:1.5rem;z-index:99999;';
                 document.body.appendChild(notif);
             }
-            const bgColor = type === 'success' ? '#10b981' : '#ef4444';
+            const bgColor = type === 'success' ? '#2e7d32' : 'var(--accent-red)';
             const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
 
             notif.innerHTML = `
-                <div style="background:${bgColor};color:#fff;padding:0.75rem 1.25rem;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,0.6);display:flex;align-items:center;gap:10px;font-size:0.875rem;font-weight:500;animation:slideInRight 0.3s ease-out;">
+                <div style="background:${bgColor};color:#ffffff;padding:0.75rem 1.25rem;border-radius:6px;box-shadow:2px 6px 20px rgba(0,0,0,0.1);display:flex;align-items:center;gap:10px;font-size:0.875rem;font-weight:700;animation:slideInRight 0.3s ease-out;">
                     <i class="fas ${icon}"></i>
                     <span>${message}</span>
                 </div>
@@ -1410,9 +1457,9 @@
                 const statusEl = document.getElementById('healthStatus');
                 if (statusEl) {
                     if (d.status === 'online') {
-                        statusEl.innerHTML = '<span class="h-dot" style="background:#22c55e"></span>Online';
+                        statusEl.innerHTML = '<span class="h-dot" style="background:#2e7d32"></span>Online';
                     } else {
-                        statusEl.innerHTML = '<span class="h-dot" style="background:#ef4444"></span>Offline';
+                        statusEl.innerHTML = '<span class="h-dot" style="background:var(--accent-red)"></span>Offline';
                     }
                 }
                 document.getElementById('healthLatency').innerHTML = d.latency+' <span class="h-sub">ms</span>';
@@ -1437,7 +1484,7 @@
                 // Silent fail for health polling
                 const statusEl = document.getElementById('healthStatus');
                 if (statusEl && Date.now() - lastHealthFetch > 15000) {
-                    statusEl.innerHTML = '<span class="h-dot" style="background:#888"></span>Unknown';
+                    statusEl.innerHTML = '<span class="h-dot" style="background:var(--text-sub)"></span>Unknown';
                 }
             }
         }
@@ -1522,7 +1569,7 @@
                                 <h4>Parameters</h4>
                                 ${params.map(p => {
                                     const s = paramSchema[p] || {};
-                                    const req = s.required === true ? '<span class="param-req" style="color:#ef4444;font-size:10px;font-weight:700">REQUIRED</span>' : '';
+                                    const req = s.required === true ? '<span class="param-req" style="color:var(--accent-red);font-size:10px;font-weight:700">REQUIRED</span>' : '';
                                     return `<div class="param-row">
                                         <span class="param-name">${esc(p)}</span>
                                         ${req}
@@ -1530,14 +1577,14 @@
                                 }).join('')}
                             </div>` : ''}
                             <div class="playground">
-                                ${status==='offline'||status==='maintenance'||status==='error'?`<div class="status-warning-banner" style="margin-bottom:14px;padding:12px 16px;border-radius:8px;background:${status==='maintenance'?'rgba(245,158,11,0.12)':'rgba(239,68,68,0.12)'};border:1px solid ${status==='maintenance'?'rgba(245,158,11,0.35)':'rgba(239,68,68,0.35)'};color:${status==='maintenance'?'#f59e0b':'#ef4444'};display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px">
+                                ${status==='offline'||status==='maintenance'||status==='error'?`<div class="status-warning-banner" style="margin-bottom:14px;padding:12px 16px;border-radius:6px;background:${status==='maintenance'?'var(--card-yellow)':'var(--card-pink)'};border:1px solid ${status==='maintenance'?'var(--warning)':'var(--accent-red)'};color:${status==='maintenance'?'#f57f17':'var(--accent-red)'};display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px">
                                     <i class="fas ${status==='maintenance'?'fa-tools':'fa-exclamation-triangle'}" style="font-size:16px"></i>
                                     <div>
                                         <b style="text-transform:uppercase;letter-spacing:0.05em">Endpoint ${status.toUpperCase()}</b><br>
-                                        <span style="font-size:11px;opacity:0.9;font-family:var(--font)">Mohon maaf, endpoint ini sedang berstatus <b>${status.toUpperCase()}</b> sehingga fitur pengujian (Try) dinonaktifkan sementara.</span>
+                                        <span style="font-size:11px;opacity:0.9;font-family:var(--sans)">Mohon maaf, endpoint ini sedang berstatus <b>${status.toUpperCase()}</b> sehingga fitur pengujian (Try) dinonaktifkan sementara.</span>
                                     </div>
                                 </div>`:''}
-                                <div class="pg-header"><span>Playground</span></div>
+                                <div class="pg-header"><span>Playground ✏️</span></div>
                                 <div class="pg-url">
                                     ${methods.map(m => `<span class="pg-method-badge ${m === 'GET' ? 'method-get' : 'method-post'}">${m}</span>`).join('')}
                                     <span class="pg-url-text">${domain}${path}</span>
@@ -1547,7 +1594,7 @@
                                         const s = paramSchema[p] || {};
                                         const ph = s.default || s.enum?.[0] || p;
                                         const req = s.required === true;
-                                        const reqStar = req ? '<span style="color:#ef4444;margin-left:2px">*</span>' : '';
+                                        const reqStar = req ? '<span style="color:var(--accent-red);margin-left:2px">*</span>' : '';
                                         const inputId = 'pg-' + path.replace(/\//g, '-') + '-' + p;
                                         const reqAttr = req ? ' data-required="true"' : '';
                                         if (s.enum && s.enum.length) {
@@ -1574,7 +1621,7 @@
                                     }).join('')}
                                 </div>` : ''}
                                 <div class="pg-actions">
-                                    <button class="btn btn-white btn-try${status==='offline'||status==='maintenance'||status==='error'?' btn-disabled-status':''}"${status==='offline'||status==='maintenance'||status==='error'?' disabled':''} data-path="${esc(path)}" data-status="${esc(status)}" data-methods='${JSON.stringify(methods)}' data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"${status==='offline'||status==='maintenance'||status==='error'?' style="opacity:0.4;cursor:not-allowed;pointer-events:none;border:1px solid '+(status==='maintenance'?'rgba(245,158,11,0.4);color:#f59e0b;background:rgba(245,158,11,0.08)':'rgba(239,68,68,0.4);color:#ef4444;background:rgba(239,68,68,0.08)')+'" title="Endpoint sedang '+status.toUpperCase()+', tidak dapat dicoba saat ini"':''}><i class="fas ${status==='offline'||status==='maintenance'||status==='error'?'fa-ban':'fa-play'}"></i> ${status==='offline'||status==='maintenance'||status==='error'?'Try ('+status.toUpperCase()+')':'Try'}</button>
+                                    <button class="btn btn-white btn-try${status==='offline'||status==='maintenance'||status==='error'?' btn-disabled-status':''}"${status==='offline'||status==='maintenance'||status==='error'?' disabled':''} data-path="${esc(path)}" data-status="${esc(status)}" data-methods='${JSON.stringify(methods)}' data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"${status==='offline'||status==='maintenance'||status==='error'?' style="opacity:0.5;cursor:not-allowed;pointer-events:none;border:1px solid '+(status==='maintenance'?'var(--warning);color:#f57f17;background:var(--card-yellow)':'var(--accent-red);color:var(--accent-red);background:var(--card-pink)')+'" title="Endpoint sedang '+status.toUpperCase()+', tidak dapat dicoba saat ini"':''}><i class="fas ${status==='offline'||status==='maintenance'||status==='error'?'fa-ban':'fa-play'}"></i> ${status==='offline'||status==='maintenance'||status==='error'?'Try ('+status.toUpperCase()+')':'Try'}</button>
                                     <button class="btn btn-ghost btn-copy" data-url="${domain}${esc(path)}" data-path="${esc(path)}" data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"><i class="fas fa-copy"></i> Copy URL</button>
                                     <button class="btn btn-ghost btn-example" data-path="${esc(path)}" data-methods='${JSON.stringify(methods)}' data-params='${JSON.stringify(params)}' data-schema="${safeAttr(JSON.stringify(paramSchema))}"><i class="fas fa-code"></i> Example</button>
                                 </div>
@@ -1600,16 +1647,16 @@
             if (epStatus === 'offline' || epStatus === 'maintenance' || epStatus === 'error') {
                 showToast(`⚠️ Endpoint berstatus ${epStatus.toUpperCase()}: Tidak dapat diuji coba saat ini.`);
                 resultEl.style.display = 'block';
-                resultEl.innerHTML = `<div class="result-toolbar" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3)">
-                    <div class="toolbar-left" style="color:#ef4444;font-family:var(--mono);font-size:11px;font-weight:700">
+                resultEl.innerHTML = `<div class="result-toolbar" style="background:var(--card-pink);border-color:var(--accent-red)">
+                    <div class="toolbar-left" style="color:var(--accent-red);font-family:var(--mono);font-size:11px;font-weight:700">
                         <i class="fas fa-exclamation-circle" style="margin-right:6px"></i> ENDPOINT ${epStatus.toUpperCase()}
                     </div>
                     <div class="toolbar-right">
                         <button class="toolbar-btn" onclick="this.closest('.pg-result').style.display='none'" title="Close"><i class="fas fa-xmark"></i></button>
                     </div>
                 </div>
-                <div style="padding:16px;font-family:var(--mono);font-size:12px;color:#fca5a5;background:rgba(0,0,0,0.35);line-height:1.6">
-                    ❌ <b>Pengujian dinonaktifkan:</b> Endpoint <code>${esc(path)}</code> saat ini berstatus <span style="padding:2px 6px;border-radius:4px;background:rgba(239,68,68,0.2);color:#ff8080;font-weight:700">${esc(epStatus.toUpperCase())}</span>.<br>
+                <div style="padding:16px;font-family:var(--mono);font-size:12px;color:var(--accent-red);background:var(--bg-paper);line-height:1.6">
+                    ❌ <b>Pengujian dinonaktifkan:</b> Endpoint <code>${esc(path)}</code> saat ini berstatus <span style="padding:2px 6px;border-radius:4px;background:var(--card-pink);color:var(--accent-red);font-weight:700">${esc(epStatus.toUpperCase())}</span>.<br>
                     Silakan coba kembali setelah layanan kembali online / maintenance selesai.
                 </div>`;
                 return;
@@ -1628,7 +1675,7 @@
                     if (!input.value.trim()) missing.push(p);
                 }
                 if (missing.includes(p)) {
-                    input.style.borderColor = '#ef4444';
+                    input.style.borderColor = 'var(--accent-red)';
                     input.addEventListener('input', () => { input.style.borderColor = ''; }, { once: true });
                     input.addEventListener('change', () => { input.style.borderColor = ''; }, { once: true });
                 }
@@ -1642,8 +1689,8 @@
                 return;
             }
 
-            resultEl.style.cssText = 'display:flex;color:#888';
-            resultEl.innerHTML = makeToolbar('Loading', '...', '') + '<div style="padding:12px"><span style="font-family:var(--mono);font-size:12px;color:var(--text-3)">Fetching...</span></div>';
+            resultEl.style.cssText = 'display:flex;color:var(--text-sub)';
+            resultEl.innerHTML = makeToolbar('Loading', '...', '') + '<div style="padding:12px"><span style="font-family:var(--mono);font-size:12px;color:var(--text-sub)">Fetching...</span></div>';
 
             const queryParams = [];
             params.forEach(p => {
@@ -1788,7 +1835,7 @@
                     const size = (blob.size / 1024).toFixed(1) + 'KB';
                     resultEl.innerHTML = makeToolbar('PDF', statusText, size) +
                         `<div class="media-container">
-                            <iframe src="${pdfUrl}" style="width:100%;height:500px;border:1px solid var(--border);border-radius:6px;background:#fff"></iframe>
+                            <iframe src="${pdfUrl}" style="width:100%;height:500px;border:1px solid var(--border-color);border-radius:6px;background:#fff"></iframe>
                             <a href="${pdfUrl}" download="response.pdf" class="download-btn"><i class="fas fa-download"></i> Download PDF</a>
                         </div>` + metricsHTML;
                     return;
@@ -1816,7 +1863,7 @@
                         return '<tr>' + row.split(',').map(c => `<${tag}>${esc(c.trim())}</${tag}>`).join('') + '</tr>';
                     }).join('') + '</table>';
                     resultEl.innerHTML = makeToolbar('CSV', statusText, (text.length / 1024).toFixed(1) + 'KB') +
-                        `<div class="csv-container" style="max-height:400px;overflow:auto;border:1px solid var(--border);border-radius:6px">${chtml}</div>` + metricsHTML;
+                        `<div class="csv-container" style="max-height:400px;overflow:auto;border:1px solid var(--border-color);border-radius:6px">${chtml}</div>` + metricsHTML;
                     return;
                 }
 

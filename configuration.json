@@ -6,7 +6,7 @@
         "message": "Masuk Ke Channel Baru",
         "buttonText": "Masuk",
         "sourceCodeText": "KUNJUNGI WEB",
-        "sourceCodeUrl": "https://whatsapp.com/channel/0029Vb8EfuN35fM5AX25AT1W"
+        "sourceCodeUrl": "https://whatsapp.com/channel/0029Vb8vO7o2f3EEsjefzm0w"
     },
     "feedbackButton": {
         "enabled": false,
@@ -1162,7 +1162,6 @@
         "/api/maker/fake-ff": "online",
         "/api/maker/fake-ml": "online",
         "/api/am/bulk": "online",
-        "/api/am/bulkv2": "premium",
         "/api/tools/web2apk": "online",
         "/api/payment/qris-static-v2": "online",
         "/api/maker/qcwa": "online",
@@ -1313,6 +1312,7 @@
         "/api/anime/animeav1": "online",
         "/api/anime/donghive": "online",
         "/api/fun/reach-ch": "offline",
+        "/api/fun/reach-chv2": "online",
         "/api/ai/tutorgpt": "online",
         "/api/tempmail/tempmailplus": "online",
         "/api/downloader/igexport": "online",
@@ -1353,7 +1353,6 @@
         "/api/bypass/move2link": "online",
         "/api/fun/capcut": "online",
         "/api/tempmail/onesec-mail": "online",
-        "/api/download/flac": "online",
         "/api/search/voratoon": "online",
         "/api/bypass/modjall": "online",
         "/api/v2/chat/completions": "online",
@@ -1394,7 +1393,25 @@
         "/api/movie/moviezone": "online",
         "/api/am/presetv2": "online",
         "/api/tempmail/maildropy": "online",
-        "/api/am/bulkv5": "online"
+        "/api/am/bulkv5": "online",
+        "/api/movie/moviebox": "online",
+        "/api/tools/qris-info": "online",
+        "/api/downloader/flac": "online",
+        "/api/payment/gopay-history": "online",
+        "/api/payment/gopay-history-auto": "online",
+        "/api/payment/gopay-journal": "online",
+        "/api/payment/gopay-login": "online",
+        "/api/payment/gopay-me": "online",
+        "/api/payment/gopay-merchant": "online",
+        "/api/payment/gopay-payouts": "online",
+        "/api/payment/gopay-qris": "online",
+        "/api/payment/gopay-qris-official-create": "premium",
+        "/api/payment/gopay-qris-official-status": "premium",
+        "/api/payment/gopay-qris-status": "online",
+        "/api/payment/gopay-refresh": "online",
+        "/api/payment/gopay-token-save": "premium",
+        "/api/payment/gopay-token-status": "online",
+        "/api/payment/gopay-verif": "online"
     },
     "version": "2.1.2"
 }

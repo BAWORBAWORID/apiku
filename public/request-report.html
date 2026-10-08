@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="dark">
+    <meta name="color-scheme" content="light">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="format-detection" content="telephone=no">
-    <meta name="generator" content="Zyyvor Api'S Platform">
-    <title>Laporkan | Zyyvor Api'S</title>
+    <meta name="generator" content="Zyyvor Api Platform">
+    <title>Laporkan | Zyyvor Api</title>
     <meta name="description" content="Send a report, feature request, or bug report to the Zyyvor development team.">
     <meta name="keywords" content="report, bug report, feature request, feedback, zyvor">
     <meta name="author" content="Zyyvor">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#050505">
+    <meta name="theme-color" content="#f7f1e5">
     <link rel="icon" type="image/x-icon" href="/src/images/logo.ico">
     <link rel="apple-touch-icon" href="/src/images/logo.jpg">
     <link rel="canonical" href="https://api.zyvor.my.id/request-report">
@@ -127,15 +127,9 @@
     }
     </script>
 
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
         tailwind.config = {
@@ -143,29 +137,16 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        display: ['"Syne"', 'sans-serif'],
-                        sans: ['"Inter"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace'],
+                        display: ['Caveat', 'cursive'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        background: '#050505',
-                        surface: '#0a0a0a',
-                        border: 'rgba(255,255,255,0.06)',
-                        input: '#0a0a0a',
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.6s ease-out forwards',
-                        'slide-up': 'slideUp 0.6s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { opacity: '0', transform: 'translateY(30px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
+                        bg: '#f7f1e5',
+                        surface: '#faf8f5',
+                        border: '#e0d5c1',
+                        muted: '#665f55',
+                        dim: '#8c8275',
                     },
                 },
             },
@@ -174,151 +155,269 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background-color: #050505;
-            color: #999;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+        :root {
+            --bg-paper: #f7f1e5;
+            --line-color: #e5d8c5;
+            --text-main: #2b2b2b;
+            --text-sub: #665f55;
+            --text-muted: #8c8275;
+            --accent-red: #8b2626;
+            --card-white: #faf8f5;
+            --card-yellow: #fceea7;
+            --card-blue: #dcebf0;
+            --card-pink: #f9dbdb;
+            --tape-color: #d1b48c;
+            --border-color: #e0d5c1;
         }
 
-        /* Dot grid background */
+        /* Essential Utility Fallbacks */
+        .hidden { display: none !important; }
+        .flex { display: flex !important; }
+        .inline-flex { display: inline-flex !important; }
+        .grid { display: grid !important; }
+        .relative { position: relative !important; }
+        .absolute { position: absolute !important; }
+        .fixed { position: fixed !important; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-paper);
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 28px;
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* Dot Grid Background */
         .dot-grid {
             position: fixed;
             inset: 0;
+            background-image: radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
             z-index: -1;
-            background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
-            background-size: 24px 24px;
             pointer-events: none;
         }
-        .dot-grid::after {
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-paper); }
+        ::-webkit-scrollbar-thumb { background: var(--tape-color); border-radius: 3px; }
+
+        /* Fixed Structural Navbar CSS */
+        .glass-header {
+            background: rgba(247, 241, 229, 0.96);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px dashed var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            z-index: 1000;
+        }
+
+        .nav-inner {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--card-white);
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .menu-btn:hover {
+            background: var(--card-yellow);
+            color: var(--text-main);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 48px;
+            left: 0;
+            width: 200px;
+            background: var(--card-white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 2px 8px 24px rgba(0,0,0,0.08);
+            padding: 6px;
+            z-index: 100;
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-sub);
+            border-radius: 6px;
+            transition: all 0.15s;
+        }
+        .dropdown-menu a:hover {
+            background: var(--card-yellow);
+            color: var(--accent-red);
+        }
+
+        /* Form Card */
+        .paper-card {
+            background: var(--card-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 2px 8px 24px rgba(0,0,0,0.04);
+            position: relative;
+        }
+        .paper-card::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at center, transparent 0%, #050505 80%);
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 22px;
+            background: rgba(209, 180, 140, 0.45);
+            border: 1px dashed rgba(0,0,0,0.1);
+            pointer-events: none;
+            z-index: 2;
         }
 
-        /* Glass nav */
-        .glass-nav {
-            background: rgba(5,5,5,0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
-
-        /* Form inputs */
+        /* Inputs */
         .form-field {
             width: 100%;
-            background: #0a0a0a;
-            border: 1px solid rgba(255,255,255,0.06);
-            color: #fff;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
             border-radius: 8px;
-            padding: 14px 18px;
+            padding: 12px 16px;
             font-size: 0.875rem;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             transition: all 0.2s;
             outline: none;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
         }
         .form-field:focus {
-            border-color: rgba(255,255,255,0.15);
-            background: #0d0d0d;
+            border-color: var(--accent-red);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px var(--card-pink);
         }
-        .form-field::placeholder { color: #444; }
+        .form-field::placeholder { color: var(--text-muted); }
 
         .form-textarea {
-            min-height: 160px;
+            min-height: 150px;
             resize: vertical;
         }
 
-        /* Category option */
+        /* Categories */
         .cat-option {
             display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 16px 20px;
-            background: #0a0a0a;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 10px;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
         }
         .cat-option:hover {
-            border-color: rgba(255,255,255,0.12);
-            background: #0d0d0d;
+            border-color: var(--text-main);
+            background: var(--card-yellow);
         }
         .cat-option.selected {
-            border-color: rgba(255,255,255,0.2);
-            background: #0d0d0d;
+            border-color: var(--accent-red);
+            background: var(--card-pink);
         }
         .cat-option .radio-dot {
             width: 18px;
             height: 18px;
-            border: 2px solid #333;
+            border: 2px solid var(--border-color);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
             flex-shrink: 0;
+            margin-top: 2px;
+            background: #fff;
         }
         .cat-option.selected .radio-dot {
-            border-color: #fff;
+            border-color: var(--accent-red);
         }
         .cat-option.selected .radio-dot::after {
             content: '';
             width: 8px;
             height: 8px;
-            background: #fff;
+            background: var(--accent-red);
             border-radius: 50%;
         }
 
-        /* Submit button */
+        /* Buttons */
         .btn-submit {
-            background: #fff;
-            color: #000;
+            background: var(--text-main);
+            color: #ffffff;
             font-weight: 700;
-            font-family: 'Syne', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            padding: 16px 32px;
+            padding: 14px 28px;
             border-radius: 8px;
             border: none;
             cursor: pointer;
             font-size: 0.85rem;
             transition: all 0.2s;
             width: 100%;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.06);
         }
         .btn-submit:hover:not(:disabled) {
-            background: #e5e5e5;
+            background: #000000;
             transform: translateY(-1px);
         }
         .btn-submit:disabled {
-            opacity: 0.4;
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* Success box */
+        /* Success State */
         .success-box {
-            background: #0a0a0a;
-            border: 1px solid rgba(255,255,255,0.08);
+            background: var(--card-white);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 32px;
+            padding: 32px 24px;
             text-align: center;
         }
 
-        /* Error box */
         .error-box {
-            background: rgba(239,68,68,0.06);
-            border: 1px solid rgba(239,68,68,0.15);
+            background: var(--card-pink);
+            border: 1px solid var(--accent-red);
             border-radius: 8px;
             padding: 14px 18px;
         }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
     </style>
 </head>
 <body>
@@ -326,96 +425,72 @@
     <div class="dot-grid"></div>
 
     <!-- Navbar -->
-    <nav class="fixed top-0 w-full z-50 glass-nav h-16" aria-label="Main navigation">
-        <div class="max-w-4xl mx-auto px-6 h-full flex items-center justify-between">
-            <!-- Left Side -->
-            <div class="flex items-center gap-4">
-                <!-- Menu Dropdown -->
-                <div class="relative z-50">
-                    <button onclick="toggleNavMenu()" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/5 text-gray-500 hover:text-white transition-colors focus:outline-none">
-                        <i class="fas fa-ellipsis-v text-lg"></i>
+    <nav class="glass-header">
+        <div class="nav-inner">
+            <div class="nav-left">
+                <div class="relative">
+                    <button onclick="toggleNavMenu()" class="menu-btn" aria-label="Menu">
+                        <i class="fas fa-ellipsis-v text-sm"></i>
                     </button>
-                    <div id="navMenu" class="hidden absolute top-full left-0 mt-3 w-52 bg-[#0a0a0a] border border-white/[0.06] rounded-xl shadow-2xl overflow-hidden origin-top-left">
-                        <div class="py-1">
-                            <a href="/" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors">
-                                <i class="fas fa-home w-5 text-center text-gray-600"></i>
-                                <span>Home</span>
-                            </a>
-                            <div class="h-px bg-white/[0.04] mx-3 my-1"></div>
-                            <a href="/docs" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors">
-                                <i class="fas fa-book w-5 text-center text-gray-600"></i>
-                                <span>Documentation</span>
-                            </a>
-                            <a href="/donasi" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors">
-                                <i class="fas fa-heart w-5 text-center text-gray-600"></i>
-                                <span>Donasi</span>
-                            </a>
-                            <div class="h-px bg-white/[0.04] mx-3 my-1"></div>
-                            <a href="/support" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors">
-                                <i class="fas fa-headset w-5 text-center text-gray-600"></i>
-                                <span>Support</span>
-                            </a>
-                            <a href="/stats" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors">
-                                <i class="fas fa-chart-line w-5 text-center text-gray-600"></i>
-                                <span>Status</span>
-                            </a>
-                            <a href="/changelog" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors">
-                                <i class="fas fa-clock-rotate-left w-5 text-center text-gray-600"></i>
-                                <span>Changelog</span>
-                            </a>
-                            <div class="h-px bg-white/[0.04] mx-3 my-1"></div>
-                            <a href="/request-report" class="flex items-center gap-3 px-4 py-3 text-sm text-white bg-white/5">
-                                <i class="fas fa-bug w-5 text-center text-gray-400"></i>
-                                <span>Request</span>
-                            </a>
-                            <a href="/admin/login" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors">
-                                <i class="fas fa-shield-alt w-5 text-center text-gray-600"></i>
-                                <span>Admin</span>
-                            </a>
-                        </div>
+                    <div id="navMenu" class="dropdown-menu hidden">
+                        <a href="/"><i class="fas fa-home w-4 text-center"></i><span>Home</span></a>
+                        <div style="height:1px;border-bottom:1px dashed var(--border-color);margin:4px 0"></div>
+                        <a href="/docs"><i class="fas fa-book w-4 text-center"></i><span>Documentation</span></a>
+                        <a href="/donasi"><i class="fas fa-heart w-4 text-center"></i><span>Donasi</span></a>
+                        <div style="height:1px;border-bottom:1px dashed var(--border-color);margin:4px 0"></div>
+                        <a href="/support"><i class="fas fa-headset w-4 text-center"></i><span>Support</span></a>
+                        <a href="/stats"><i class="fas fa-chart-line w-4 text-center"></i><span>Status</span></a>
+                        <a href="/changelog"><i class="fas fa-clock-rotate-left w-4 text-center"></i><span>Changelog</span></a>
+                        <div style="height:1px;border-bottom:1px dashed var(--border-color);margin:4px 0"></div>
+                        <a href="/request-report" style="background:var(--card-pink);color:var(--accent-red);font-weight:700"><i class="fas fa-bug w-4 text-center"></i><span>Request</span></a>
+                        <a href="/admin/login"><i class="fas fa-shield-alt w-4 text-center"></i><span>Admin</span></a>
                     </div>
                 </div>
-
-                <!-- Logo -->
-                <a href="/" class="flex items-center gap-3 group">
-                    <img src="/src/images/logo.jpg" alt="Zyyvor" style="width:32px;height:32px;border-radius:6px;object-fit:cover" onerror="this.style.display='none'">
-                    <div class="flex flex-col">
-                        <span class="font-display font-bold text-white leading-none tracking-tight">Zyyvor</span>
-                        <span class="text-[10px] text-gray-500 font-mono tracking-widest uppercase">REPORT</span>
+                <a href="/" style="display:flex;align-items:center;gap:10px">
+                    <img src="/src/images/logo.jpg" alt="Logo" style="width:32px;height:32px;border-radius:50%;border:1px solid #2b2b2b;object-fit:cover" onerror="this.style.display='none'">
+                    <div style="display:flex;flex-direction:column">
+                        <span style="font-family:'Caveat',cursive;font-size:1.25rem;font-weight:700;line-height:1;color:#2b2b2b">Zyyvor Api'S</span>
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#665f55;text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Report Box</span>
                     </div>
                 </a>
             </div>
         </div>
     </nav>
 
-    <!-- Main -->
-    <main class="pt-28 pb-20 px-6 max-w-2xl mx-auto" aria-label="Report submission form">
+    <!-- Main Container -->
+    <main class="pb-20 px-4 sm:px-6 max-w-2xl mx-auto" style="margin-top: 100px !important;">
         <!-- Header -->
-        <div class="mb-12 animate-fade-in">
-            <h1 class="font-display text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-4">
-                Send a Report
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#faf8f5] border border-[#e0d5c1] text-[#8b2626] text-xs font-mono font-bold mb-4 shadow-sm">
+                <i class="fas fa-pen-to-square text-[10px]"></i>
+                <span>Direct Telegram Feedback</span>
+            </div>
+            <h1 class="font-display text-4xl sm:text-6xl font-bold text-[#2b2b2b] tracking-tight mb-2">
+                Send a Report ✏️
             </h1>
-            <p class="text-gray-500 max-w-md leading-relaxed">
-                Found a bug, have a feature suggestion, or want to share feedback? Send your report directly to the Zyyvor development team.
+            <p class="text-[#665f55] text-base max-w-md mx-auto leading-relaxed font-medium">
+                Found a bug, have a feature suggestion, or want to share feedback? Send your note directly to the development team.
             </p>
         </div>
 
         <!-- Form Card -->
-        <div class="bg-surface border border-border rounded-2xl p-8 sm:p-10 animate-slide-up">
+        <div class="paper-card">
             <!-- Success State -->
             <div id="successState" class="hidden">
                 <div class="success-box">
-                    <div class="w-14 h-14 mx-auto mb-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                        <i class="fas fa-check text-2xl text-white"></i>
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-[#fceea7] border border-[#e0d5c1] flex items-center justify-center text-[#8b2626]">
+                        <i class="fas fa-check text-xl"></i>
                     </div>
-                    <h3 class="font-display text-xl font-bold text-white mb-2">Report Submitted Successfully</h3>
-                    <p class="text-gray-500 text-sm mb-6" id="successMessage">Thank you for your feedback. Your report has been delivered to the development team and will be reviewed as soon as possible.</p>
-                    <div class="bg-black/30 border border-white/5 rounded-lg p-3 mb-8 text-left text-xs font-mono text-gray-400 inline-block">
-                        <div class="mb-1">Report ID: <span id="reportIdOutput" class="text-white"></span></div>
-                        <div>Sent: <span id="reportTimeOutput" class="text-white"></span></div>
+                    <h3 class="font-display text-2xl font-bold text-[#2b2b2b] mb-2">Report Submitted Successfully</h3>
+                    <p class="text-[#665f55] text-xs sm:text-sm mb-6 font-medium leading-relaxed" id="successMessage">Thank you for your feedback. Your report has been delivered to the development team and will be reviewed as soon as possible.</p>
+                    
+                    <div class="bg-[#faf8f5] border border-[#e0d5c1] rounded-lg p-3.5 mb-6 text-left text-xs font-mono text-[#665f55] block">
+                        <div class="mb-1">Report ID: <span id="reportIdOutput" class="text-[#8b2626] font-bold"></span></div>
+                        <div>Sent: <span id="reportTimeOutput" class="text-[#2b2b2b] font-bold"></span></div>
                     </div>
-                    <button onclick="resetForm()" class="text-sm text-gray-400 hover:text-white font-mono transition-colors flex items-center justify-center gap-2 mx-auto">
-                        <i class="fas fa-plus text-xs"></i>
+                    
+                    <button onclick="resetForm()" class="text-xs text-[#8b2626] hover:underline font-mono font-bold transition-colors flex items-center justify-center gap-2 mx-auto">
+                        <i class="fas fa-plus text-[10px]"></i>
                         <span>Submit another report</span>
                     </button>
                 </div>
@@ -424,47 +499,50 @@
             <!-- Form -->
             <form id="reportForm" onsubmit="submitReport(event)">
                 <!-- Category -->
-                <div class="mb-10">
-                    <label class="block text-[11px] font-mono text-gray-500 uppercase tracking-[0.15em] mb-4">Category</label>
-                    <div class="space-y-3" id="categoryContainer">
+                <div class="mb-8">
+                    <label class="block text-[11px] font-mono text-[#8c8275] uppercase font-bold tracking-wider mb-3">Category</label>
+                    <div class="space-y-2.5" id="categoryContainer">
                         <div class="cat-option selected" data-value="Request Fitur" onclick="selectCategory(this)">
                             <div class="radio-dot"></div>
-                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 flex-shrink-0">
-                                <i class="fas fa-rocket text-sm"></i>
+                            <div class="w-7 h-7 rounded-md bg-[#fceea7] border border-[#e0d5c1] flex items-center justify-center text-[#8b2626] flex-shrink-0">
+                                <i class="fas fa-rocket text-xs"></i>
                             </div>
                             <div>
-                                <div class="font-semibold text-white text-sm">Feature Request</div>
-                                <div class="text-xs text-gray-600">Suggest new features, improvements, or ideas that could enhance the platform.</div>
+                                <div class="font-bold text-[#2b2b2b] text-xs sm:text-sm">Feature Request</div>
+                                <div class="text-[11px] text-[#665f55] font-medium leading-tight mt-0.5">Suggest new features, improvements, or ideas that could enhance the platform.</div>
                             </div>
                         </div>
+
                         <div class="cat-option" data-value="Laporan Bug" onclick="selectCategory(this)">
                             <div class="radio-dot"></div>
-                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 flex-shrink-0">
-                                <i class="fas fa-bug text-sm"></i>
+                            <div class="w-7 h-7 rounded-md bg-[#f9dbdb] border border-[#e0d5c1] flex items-center justify-center text-[#8b2626] flex-shrink-0">
+                                <i class="fas fa-bug text-xs"></i>
                             </div>
                             <div>
-                                <div class="font-semibold text-white text-sm">Bug Report</div>
-                                <div class="text-xs text-gray-600">Report bugs, errors, or unexpected behavior you've encountered.</div>
+                                <div class="font-bold text-[#2b2b2b] text-xs sm:text-sm">Bug Report</div>
+                                <div class="text-[11px] text-[#665f55] font-medium leading-tight mt-0.5">Report bugs, errors, or unexpected behavior you've encountered.</div>
                             </div>
                         </div>
+
                         <div class="cat-option" data-value="Feedback" onclick="selectCategory(this)">
                             <div class="radio-dot"></div>
-                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 flex-shrink-0">
-                                <i class="fas fa-comment-dots text-sm"></i>
+                            <div class="w-7 h-7 rounded-md bg-[#dcebf0] border border-[#e0d5c1] flex items-center justify-center text-[#2b2b2b] flex-shrink-0">
+                                <i class="fas fa-comment-dots text-xs"></i>
                             </div>
                             <div>
-                                <div class="font-semibold text-white text-sm">Feedback</div>
-                                <div class="text-xs text-gray-600">Share your thoughts, experience, and suggestions to help us improve.</div>
+                                <div class="font-bold text-[#2b2b2b] text-xs sm:text-sm">Feedback</div>
+                                <div class="text-[11px] text-[#665f55] font-medium leading-tight mt-0.5">Share your thoughts, experience, and suggestions to help us improve.</div>
                             </div>
                         </div>
+
                         <div class="cat-option" data-value="Lainnya" onclick="selectCategory(this)">
                             <div class="radio-dot"></div>
-                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 flex-shrink-0">
-                                <i class="fas fa-ellipsis text-sm"></i>
+                            <div class="w-7 h-7 rounded-md bg-[#faf8f5] border border-[#e0d5c1] flex items-center justify-center text-[#8c8275] flex-shrink-0">
+                                <i class="fas fa-ellipsis text-xs"></i>
                             </div>
                             <div>
-                                <div class="font-semibold text-white text-sm">Other</div>
-                                <div class="text-xs text-gray-600">Questions, requests, or topics that don't fit the categories above.</div>
+                                <div class="font-bold text-[#2b2b2b] text-xs sm:text-sm">Other</div>
+                                <div class="text-[11px] text-[#665f55] font-medium leading-tight mt-0.5">Questions, requests, or topics that don't fit the categories above.</div>
                             </div>
                         </div>
                     </div>
@@ -472,59 +550,58 @@
                 </div>
 
                 <!-- Name -->
-                <div class="mb-6">
-                    <label class="block text-[11px] font-mono text-gray-500 uppercase tracking-[0.15em] mb-2" for="nama">Full Name</label>
+                <div class="mb-5">
+                    <label class="block text-[11px] font-mono text-[#8c8275] uppercase font-bold tracking-wider mb-2" for="nama">Full Name</label>
                     <input type="text" name="nama" id="nama" class="form-field" placeholder="Enter your name" maxlength="100">
                 </div>
 
                 <!-- Contact -->
-                <div class="mb-6">
-                    <label class="block text-[11px] font-mono text-gray-500 uppercase tracking-[0.15em] mb-2" for="kontak">Contact Information</label>
+                <div class="mb-5">
+                    <label class="block text-[11px] font-mono text-[#8c8275] uppercase font-bold tracking-wider mb-2" for="kontak">Contact Information</label>
                     <input type="text" name="kontak" id="kontak" class="form-field" placeholder="WhatsApp, Email, Telegram, or Social Media" maxlength="200">
                 </div>
 
-                <!-- Message -->
+                <!-- Detail -->
                 <div class="mb-6">
-                    <label class="block text-[11px] font-mono text-gray-500 uppercase tracking-[0.15em] mb-2" for="pesan">Report Details</label>
+                    <label class="block text-[11px] font-mono text-[#8c8275] uppercase font-bold tracking-wider mb-2" for="pesan">Report Details</label>
                     <textarea name="pesan" id="pesan" class="form-field form-textarea" placeholder="Provide as much detail as possible to help us understand your request, issue, or feedback."></textarea>
-                    <div class="flex justify-end mt-2">
-                        <span class="text-[11px] font-mono text-gray-600" id="charCount">0 / 5000 characters</span>
+                    <div class="flex justify-end mt-1.5">
+                        <span class="text-[11px] font-mono text-[#8c8275] font-bold" id="charCount">0 / 5000 characters</span>
                     </div>
                 </div>
 
                 <!-- Error -->
                 <div id="errorBox" class="error-box hidden mb-6 flex items-start gap-3">
-                    <i class="fas fa-exclamation-circle text-red-400 mt-0.5"></i>
+                    <i class="fas fa-exclamation-circle text-[#8b2626] mt-0.5"></i>
                     <div>
-                        <div class="text-sm font-bold text-red-400 mb-1">Failed to Submit Report</div>
-                        <p class="text-sm text-red-400/80" id="errorMessage">We couldn't deliver your report at this time. Please try again in a few moments.</p>
+                        <div class="text-xs font-bold text-[#8b2626] mb-0.5">Failed to Submit Report</div>
+                        <p class="text-xs text-[#8b2626] font-medium" id="errorMessage">We couldn't deliver your report at this time. Please try again in a few moments.</p>
                     </div>
                 </div>
 
-                <!-- Submit -->
+                <!-- Submit Button -->
                 <button type="submit" id="submitBtn" class="btn-submit flex items-center justify-center gap-3">
                     <span id="btnText">Send a Report</span>
                     <i class="fas fa-arrow-right text-xs" id="btnIcon"></i>
                     <i class="fas fa-circle-notch fa-spin hidden" id="btnSpinner"></i>
                 </button>
 
-                <p class="text-center text-[11px] text-gray-700 mt-5 font-mono">
-                    Reports are sent directly to the Zyyvor development team via Telegram. <i class="fab fa-telegram-plane text-gray-600 ml-1"></i>
+                <p class="text-center text-[11px] text-[#8c8275] mt-4 font-mono font-bold">
+                    Reports are sent directly to the Zyyvor development team via Telegram. <i class="fab fa-telegram-plane text-[#8b2626] ml-1"></i>
                 </p>
             </form>
         </div>
 
         <!-- Footer -->
-        <div role="contentinfo" aria-label="Site footer" class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-12 text-[11px] text-gray-500 font-mono border-t border-white/5 pt-6 pb-2">
+        <footer class="border-t border-dashed border-[#e0d5c1] mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#8c8275] font-mono font-bold">
             <div>Zyyvor API &copy; <span id="footerYear"></span></div>
             <div class="flex gap-4">
-                <span>Version: <span id="api-version" class="text-white">-</span></span>
-                <span>Status: <span class="text-green-400">Online</span></span>
+                <span>Version: <span id="api-version" class="text-[#8b2626]">-</span></span>
+                <span>Status: <span class="text-emerald-700">Online</span></span>
             </div>
-        </div>
+        </footer>
     </main>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         document.getElementById('footerYear').textContent = new Date().getFullYear();
 
@@ -660,6 +737,5 @@
             document.getElementById('kategoriInput').value = 'Request Fitur';
         }
     </script>
-
 </body>
 </html>

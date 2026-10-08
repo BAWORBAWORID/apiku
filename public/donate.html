@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="dark">
+    <meta name="color-scheme" content="light">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="format-detection" content="telephone=no">
     <meta name="generator" content="Zyyvor Api'S Platform">
-    <title>Donasi | Zyyvor Api'S</title>
-    <meta name="description" content="Dukung pengembangan Zyyvor REST API melalui donasi QRIS. Setiap dukungan membantu menjaga server tetap online dan.expand fitur baru.">
+    <title>Donasi | Zyyvor Api</title>
+    <meta name="description" content="Dukung pengembangan Zyyvor REST API melalui donasi QRIS. Setiap dukungan membantu menjaga server tetap online dan expand fitur baru.">
     <meta name="keywords" content="donasi, donatur, qris, zyyvor, rest api, support server" />
     <meta name="author" content="Zyyvor">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#050505">
+    <meta name="theme-color" content="#f7f1e5">
     <link rel="icon" type="image/x-icon" href="/src/images/logo.ico">
     <link rel="apple-touch-icon" href="/src/images/logo.jpg">
     <link rel="canonical" href="https://api.zyvor.my.id/donasi">
@@ -21,23 +21,23 @@
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://api.zyvor.my.id/donasi">
-    <meta property="og:title" content="Donasi — Zyyvor Api'S">
+    <meta property="og:title" content="Donasi — Zyyvor Api">
     <meta property="og:description" content="Dukung pengembangan Zyyvor REST API melalui donasi QRIS.">
     <meta property="og:image" content="https://api.zyvor.my.id/src/images/logo.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:site_name" content="Zyyvor Api'S">
+    <meta property="og:site_name" content="Zyyvor Api">
     <meta property="og:locale" content="id_ID">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@ZyyvorAPI">
     <meta name="twitter:creator" content="@ZyyvorAPI">
-    <meta name="twitter:title" content="Donasi — Zyyvor Api'S">
+    <meta name="twitter:title" content="Donasi — Zyyvor Api">
     <meta name="twitter:description" content="Dukung pengembangan Zyyvor REST API melalui donasi QRIS.">
     <meta name="twitter:image" content="https://api.zyvor.my.id/src/images/logo.jpg">
-    <meta name="twitter:image:alt" content="Donasi — Zyyvor Api'S">
+    <meta name="twitter:image:alt" content="Donasi — Zyyvor Api">
 
     <!-- JSON-LD -->
     <script type="application/ld+json">
@@ -62,7 +62,7 @@
             {
                 "@type": "WebPage",
                 "@id": "https://api.zyvor.my.id/donasi#webpage",
-                "name": "Donasi — Zyyvor Api'S",
+                "name": "Donasi — Zyyvor Api",
                 "description": "Dukung pengembangan Zyyvor REST API melalui donasi QRIS.",
                 "url": "https://api.zyvor.my.id/donasi",
                 "isPartOf": { "@id": "https://api.zyvor.my.id/#website" }
@@ -70,7 +70,7 @@
             {
                 "@type": "Organization",
                 "@id": "https://api.zyvor.my.id/#organization",
-                "name": "Zyyvor Api'S",
+                "name": "Zyyvor Api",
                 "url": "https://api.zyvor.my.id",
                 "logo": {
                     "@type": "ImageObject",
@@ -103,7 +103,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -111,13 +111,13 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        display: ['"Syne"', 'sans-serif'],
-                        sans: ['"Inter"', 'sans-serif'],
+                        display: ['"Caveat"', 'cursive'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                         mono: ['"JetBrains Mono"', 'monospace'],
                     },
                     colors: {
-                        background: '#050505',
-                        surface: '#0a0a0a',
+                        background: '#f7f1e5',
+                        surface: '#faf8f5',
                     },
                     animation: {
                         'fade-in': 'fadeIn 0.6s ease-out forwards',
@@ -134,10 +134,30 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-paper: #f7f1e5;
+            --line-color: #e5d8c5;
+            --text-main: #2b2b2b;
+            --text-sub: #665f55;
+            --text-muted: #8c8275;
+            --accent-red: #8b2626;
+            --card-white: #faf8f5;
+            --card-yellow: #fceea7;
+            --card-blue: #dcebf0;
+            --card-pink: #f9dbdb;
+            --tape-color: #d1b48c;
+            --border-color: #e0d5c1;
+            --success: #2e7d32;
+            --error: #c62828;
+            --warning: #f57c00;
+        }
+
         body {
-            background-color: #050505;
-            color: #999;
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-paper);
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 28px;
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -147,38 +167,59 @@
             position: fixed;
             inset: 0;
             z-index: -1;
-            background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
-            background-size: 24px 24px;
+            background-image: radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
             pointer-events: none;
-        }
-        .dot-grid::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at center, transparent 0%, #050505 80%);
         }
 
         .glass-nav {
-            background: rgba(5,5,5,0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.04);
+            background: rgba(247, 241, 229, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .paper-card {
+            background: var(--card-white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 2px 4px 12px rgba(0,0,0,0.03);
+            position: relative;
+        }
+
+        .paper-card::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 22px;
+            background: rgba(209, 180, 140, 0.4);
+            border: 1px dashed rgba(0,0,0,0.1);
+            pointer-events: none;
+            z-index: 2;
         }
 
         .form-field {
             width: 100%;
-            background: #0a0a0a;
-            border: 1px solid rgba(255,255,255,0.06);
-            color: #fff;
-            border-radius: 8px;
-            padding: 14px 18px;
+            background: var(--card-white);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 6px;
+            padding: 12px 16px;
             font-size: 0.875rem;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             transition: all 0.2s;
             outline: none;
+            font-weight: 500;
         }
-        .form-field:focus { border-color: rgba(255,255,255,0.15); background: #0d0d0d; }
-        .form-field::placeholder { color: #444; }
+        .form-field:focus {
+            border-color: var(--accent-red);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(139,38,38,0.08);
+        }
+        .form-field::placeholder { color: var(--text-muted); }
         .form-field:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .amount-option {
@@ -186,97 +227,114 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 14px 10px;
-            background: #0a0a0a;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 10px;
+            padding: 12px 10px;
+            background: var(--card-white);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
-            color: #999;
+            font-weight: 700;
+            color: var(--text-sub);
         }
-        .amount-option:hover { border-color: rgba(255,255,255,0.14); background: #0d0d0d; color: #fff; }
+        .amount-option:hover {
+            border-color: var(--text-main);
+            background: var(--card-yellow);
+            color: var(--text-main);
+        }
         .amount-option.selected {
-            border-color: rgba(255,255,255,0.25);
-            background: #0d0d0d;
-            color: #fff;
+            border-color: var(--accent-red);
+            background: var(--card-pink);
+            color: var(--accent-red);
         }
 
         .btn-submit {
-            background: #fff;
-            color: #000;
+            background: var(--text-main);
+            color: #ffffff;
             font-weight: 700;
-            font-family: 'Syne', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            padding: 16px 32px;
-            border-radius: 8px;
+            padding: 14px 28px;
+            border-radius: 6px;
             border: none;
             cursor: pointer;
             font-size: 0.85rem;
             transition: all 0.2s;
             width: 100%;
         }
-        .btn-submit:hover:not(:disabled) { background: #e5e5e5; transform: translateY(-1px); }
+        .btn-submit:hover:not(:disabled) {
+            background: #000000;
+            transform: translateY(-1px);
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
+        }
         .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
 
         .btn-ghost {
-            background: transparent;
-            color: #999;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 12px 20px;
-            font-family: 'Syne', sans-serif;
+            background: var(--card-white);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 18px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             cursor: pointer;
             transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
-        .btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.25); }
+        .btn-ghost:hover {
+            background: var(--card-yellow);
+            border-color: var(--text-main);
+            color: var(--text-main);
+        }
 
         .qr-shell {
-            background: #fff;
-            border-radius: 14px;
-            padding: 14px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
             display: inline-block;
             line-height: 0;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.04);
         }
-        .qr-shell img { display: block; width: 240px; height: 240px; }
+        .qr-shell img { display: block; width: 240px; height: 240px; border-radius: 4px; }
 
         .stat-card {
-            background: #0a0a0a;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 10px;
+            background: var(--card-white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             padding: 18px;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.02);
+            transition: all 0.2s;
+        }
+        .stat-card:hover {
+            border-color: var(--text-main);
+            background: var(--card-yellow);
         }
 
         .error-box {
-            background: rgba(239,68,68,0.06);
-            border: 1px solid rgba(239,68,68,0.15);
-            border-radius: 8px;
+            background: var(--card-pink);
+            border: 1px solid var(--accent-red);
+            border-radius: 6px;
             padding: 14px 18px;
         }
         .ok-box {
-            background: rgba(34,197,94,0.06);
-            border: 1px solid rgba(34,197,94,0.2);
-            border-radius: 8px;
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            border-radius: 6px;
             padding: 14px 18px;
         }
 
-        .menu-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#121212;border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#a1a1aa;cursor:pointer;transition:all 0.15s;position:relative}
-        .menu-btn:hover{background:rgba(255,255,255,0.06);color:white}
-        .dropdown{position:absolute;top:100%;left:0;margin-top:8px;width:200px;background:#121212;border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;display:none;z-index:100;box-shadow:0 10px 25px -5px rgba(0,0,0,0.5)}
-        .dropdown.show{display:block}
-        .dropdown a{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;color:#a1a1aa;text-decoration:none;transition:all 0.15s}
-        .dropdown a:hover{background:rgba(255,255,255,0.05);color:white}
-        .dropdown a i{width:16px;text-align:center;font-size:12px}
-        .dropdown .sep{height:1px;background:rgba(255,255,255,0.08);margin:4px 0}
-
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-paper); }
+        ::-webkit-scrollbar-thumb { background: var(--tape-color); border-radius: 3px; }
     </style>
 </head>
 <body>
@@ -286,26 +344,27 @@
     <nav class="fixed top-0 w-full z-50 glass-nav h-16" aria-label="Main navigation">
         <div class="max-w-4xl mx-auto px-6 h-full flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <div style="position:relative;z-index:50">
-                    <button class="menu-btn" onclick="toggleMenu()" aria-label="Menu"><i class="fas fa-ellipsis-v"></i></button>
-                    <div id="navMenu" class="dropdown">
-                        <a href="/"><i class="fas fa-home"></i>Home</a>
-                        <div class="sep"></div>
-                        <a href="/docs"><i class="fas fa-book"></i>Documentation</a>
-                        <a href="/donasi"><i class="fas fa-heart"></i>Donasi</a>
-                        <a href="/support"><i class="fas fa-headset"></i>Support</a>
-                        <a href="/stats"><i class="fas fa-chart-line"></i>Status</a>
-                        <a href="/changelog"><i class="fas fa-clock-rotate-left"></i>Changelog</a>
-                        <div class="sep"></div>
-                        <a href="/request-report"><i class="fas fa-bug"></i>Request</a>
-                        <a href="/admin/login"><i class="fas fa-shield-alt"></i>Admin</a>
+                <div class="relative z-50">
+                    <button onclick="toggleNavMenu()" class="w-9 h-9 flex items-center justify-center rounded-lg border border-[#e0d5c1] bg-[#faf8f5] text-[#665f55] hover:bg-[#fceea7] hover:text-[#2b2b2b] transition-colors" aria-label="Menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div id="navMenu" class="hidden absolute left-0 top-11 w-52 bg-[#faf8f5] border border-[#e0d5c1] rounded-lg p-2 shadow-xl">
+                        <a href="/" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#665f55] hover:bg-[#fceea7] hover:text-[#8b2626] rounded-md transition-colors"><i class="fas fa-home w-4"></i>Home</a>
+                        <a href="/docs" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#665f55] hover:bg-[#fceea7] hover:text-[#8b2626] rounded-md transition-colors"><i class="fas fa-book w-4"></i>Documentation</a>
+                        <a href="/donasi" class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-[#8b2626] bg-[#f9dbdb] rounded-md transition-colors"><i class="fas fa-heart w-4"></i>Donasi</a>
+                        <a href="/support" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#665f55] hover:bg-[#fceea7] hover:text-[#8b2626] rounded-md transition-colors"><i class="fas fa-headset w-4"></i>Support</a>
+                        <a href="/stats" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#665f55] hover:bg-[#fceea7] hover:text-[#8b2626] rounded-md transition-colors"><i class="fas fa-chart-line w-4"></i>Status</a>
+                        <a href="/changelog" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#665f55] hover:bg-[#fceea7] hover:text-[#8b2626] rounded-md transition-colors"><i class="fas fa-clock-rotate-left w-4"></i>Changelog</a>
+                        <div class="h-px border-b border-dashed border-[#e0d5c1] my-2"></div>
+                        <a href="/request-report" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#665f55] hover:bg-[#fceea7] hover:text-[#8b2626] rounded-md transition-colors"><i class="fas fa-bug w-4"></i>Request</a>
+                        <a href="/admin/login" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#665f55] hover:bg-[#fceea7] hover:text-[#8b2626] rounded-md transition-colors"><i class="fas fa-shield-alt w-4"></i>Admin</a>
                     </div>
                 </div>
                 <a href="/" class="flex items-center gap-3 group">
-                    <img src="/src/images/logo.jpg" alt="Zyyvor" class="w-9 h-9 rounded-lg object-cover" onerror="this.style.display='none'">
+                    <img src="/src/images/logo.jpg" alt="Zyyvor" class="w-9 h-9 rounded-full border border-[#2b2b2b] object-cover" onerror="this.style.display='none'">
                     <div>
-                        <div class="font-display font-extrabold text-white text-base leading-none tracking-tight">Zyyvor</div>
-                        <div class="text-[10px] text-gray-500 font-mono tracking-wider mt-0.5">REST API Platform</div>
+                        <div class="font-display font-bold text-[#2b2b2b] text-xl leading-none">Zyyvor Api'S</div>
+                        <div class="text-[9px] text-[#665f55] font-mono tracking-wider uppercase mt-0.5">Donasi & Support</div>
                     </div>
                 </a>
             </div>
@@ -319,11 +378,11 @@
 
         <!-- Header -->
         <div class="text-center mb-10 animate-fade-in">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[11px] font-mono text-gray-400 mb-5">
-                <i class="fas fa-heart text-[10px] text-white"></i> SUPPORT THE PROJECT
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#e0d5c1] bg-[#faf8f5] text-[11px] font-mono font-bold text-[#8b2626] mb-4 shadow-sm">
+                <i class="fas fa-heart text-[10px] text-[#8b2626]"></i> SUPPORT THE PROJECT ✦
             </div>
-            <h1 class="font-display font-extrabold text-3xl sm:text-5xl text-white tracking-tight mb-4">Dukung <span class="text-white/40">Pengembangan</span></h1>
-            <p class="text-sm text-gray-500 max-w-xl mx-auto leading-relaxed">
+            <h1 class="font-display font-bold text-4xl sm:text-6xl text-[#2b2b2b] tracking-tight mb-2">Dukung <span class="text-[#8b2626]">Pengembangan</span> ✏️</h1>
+            <p class="text-sm text-[#665f55] max-w-xl mx-auto leading-relaxed font-medium">
                 Zyyvor REST API dijalankan tanpa iklan. Donasi Anda membantu menutupi biaya server,
                 bandwidth, dan waktu pengembangan endpoint baru.
             </p>
@@ -332,26 +391,26 @@
         <!-- Stats -->
         <div class="grid grid-cols-3 gap-4 mb-10 animate-slide-up">
             <div class="stat-card text-center">
-                <div class="font-mono text-lg font-bold text-white" id="statTotal">0</div>
-                <div class="text-[10px] text-gray-500 font-mono uppercase tracking-widest mt-1">Donasi Berhasil</div>
+                <div class="font-mono text-xl font-bold text-[#2b2b2b]" id="statTotal">0</div>
+                <div class="text-[10px] text-[#665f55] font-mono uppercase tracking-widest font-bold mt-1">Donasi Berhasil</div>
             </div>
             <div class="stat-card text-center">
-                <div class="font-mono text-lg font-bold text-white" id="statDonor">0</div>
-                <div class="text-[10px] text-gray-500 font-mono uppercase tracking-widest mt-1">Donatur</div>
+                <div class="font-mono text-xl font-bold text-[#2b2b2b]" id="statDonor">0</div>
+                <div class="text-[10px] text-[#665f55] font-mono uppercase tracking-widest font-bold mt-1">Donatur</div>
             </div>
             <div class="stat-card text-center">
-                <div class="font-mono text-lg font-bold text-white" id="statAmount">Rp0</div>
-                <div class="text-[10px] text-gray-500 font-mono uppercase tracking-widest mt-1">Terkumpul</div>
+                <div class="font-mono text-xl font-bold text-[#8b2626]" id="statAmount">Rp0</div>
+                <div class="text-[10px] text-[#665f55] font-mono uppercase tracking-widest font-bold mt-1">Terkumpul</div>
             </div>
         </div>
 
         <!-- FORM STATE -->
         <div id="formState" class="animate-slide-up">
-            <form id="donateForm" class="bg-[#0a0a0a] border border-white/[0.06] rounded-2xl p-6 sm:p-8">
+            <form id="donateForm" class="paper-card p-6 sm:p-8">
 
                 <!-- Amount presets -->
                 <div class="mb-6">
-                    <label class="block text-[11px] font-mono text-gray-500 uppercase tracking-[0.15em] mb-3">Pilih Nominal</label>
+                    <label class="block text-[11px] font-mono font-bold text-[#665f55] uppercase tracking-[0.15em] mb-3">Pilih Nominal</label>
                     <div class="grid grid-cols-3 sm:grid-cols-5 gap-2" id="amountPresets">
                         <div class="amount-option" data-value="10000">10K</div>
                         <div class="amount-option" data-value="20000">20K</div>
@@ -363,38 +422,38 @@
 
                 <!-- Custom amount -->
                 <div class="mb-6">
-                    <label class="block text-[11px] font-mono text-gray-500 uppercase tracking-[0.15em] mb-2" for="amount">Nominal (Rp)</label>
+                    <label class="block text-[11px] font-mono font-bold text-[#665f55] uppercase tracking-[0.15em] mb-2" for="amount">Nominal (Rp)</label>
                     <input type="number" name="amount" id="amount" class="form-field font-mono" placeholder="10000" min="10000" max="10000000" step="1000" value="20000" required>
                     <div class="flex justify-between mt-2">
-                        <span class="text-[11px] font-mono text-gray-600">Min. 10.000</span>
-                        <span class="text-[11px] font-mono text-gray-600">Max. 10.000.000</span>
+                        <span class="text-[11px] font-mono text-[#8c8275]">Min. 10.000</span>
+                        <span class="text-[11px] font-mono text-[#8c8275]">Max. 10.000.000</span>
                     </div>
                 </div>
 
                 <!-- Name -->
                 <div class="mb-6">
-                    <label class="block text-[11px] font-mono text-gray-500 uppercase tracking-[0.15em] mb-2" for="name">Nama Donatur <span class="text-gray-700 normal-case">(opsional)</span></label>
+                    <label class="block text-[11px] font-mono font-bold text-[#665f55] uppercase tracking-[0.15em] mb-2" for="name">Nama Donatur <span class="text-[#8c8275] normal-case font-normal">(opsional)</span></label>
                     <input type="text" name="name" id="name" class="form-field" placeholder="Anonim" maxlength="60">
                     <div class="flex justify-end mt-1">
-                        <span class="text-[11px] font-mono text-gray-600" id="nameCount">0 / 60</span>
+                        <span class="text-[11px] font-mono text-[#8c8275]" id="nameCount">0 / 60</span>
                     </div>
                 </div>
 
                 <!-- Message -->
                 <div class="mb-6">
-                    <label class="block text-[11px] font-mono text-gray-500 uppercase tracking-[0.15em] mb-2" for="message">Pesan / Harapan <span class="text-gray-700 normal-case">(opsional)</span></label>
+                    <label class="block text-[11px] font-mono font-bold text-[#665f55] uppercase tracking-[0.15em] mb-2" for="message">Pesan / Harapan <span class="text-[#8c8275] normal-case font-normal">(opsional)</span></label>
                     <textarea name="message" id="message" class="form-field" rows="3" placeholder="Tulis pesan dukungan Anda..." maxlength="200"></textarea>
                     <div class="flex justify-end mt-1">
-                        <span class="text-[11px] font-mono text-gray-600" id="msgCount">0 / 200</span>
+                        <span class="text-[11px] font-mono text-[#8c8275]" id="msgCount">0 / 200</span>
                     </div>
                 </div>
 
                 <!-- Error -->
                 <div id="errorBox" class="error-box hidden mb-6 flex items-start gap-3">
-                    <i class="fas fa-exclamation-circle text-red-400 mt-0.5"></i>
+                    <i class="fas fa-exclamation-circle text-[#c62828] mt-0.5"></i>
                     <div>
-                        <div class="text-sm font-bold text-red-400 mb-1">Gagal Membuat Donasi</div>
-                        <p class="text-sm text-red-400/80" id="errorMessage">Terjadi kesalahan. Coba lagi.</p>
+                        <div class="text-sm font-bold text-[#c62828] mb-1">Gagal Membuat Donasi</div>
+                        <p class="text-sm text-[#c62828]/90 font-medium" id="errorMessage">Terjadi kesalahan. Coba lagi.</p>
                     </div>
                 </div>
 
@@ -404,7 +463,7 @@
                     <i class="fas fa-circle-notch fa-spin hidden" id="btnSpinner"></i>
                 </button>
 
-                <p class="text-center text-[11px] text-gray-700 mt-5 font-mono leading-relaxed">
+                <p class="text-center text-[11px] text-[#8c8275] mt-5 font-mono leading-relaxed">
                     Pembayaran diproses via QRIS. Donasi bersifat sukarela dan tidak memberi akses endpoint premium.
                 </p>
             </form>
@@ -412,35 +471,35 @@
 
         <!-- PAYMENT STATE -->
         <div id="payState" class="hidden animate-fade-in">
-            <div class="bg-[#0a0a0a] border border-white/[0.06] rounded-2xl p-6 sm:p-8 text-center">
+            <div class="paper-card p-6 sm:p-8 text-center">
                 <div class="flex items-center justify-center gap-2 mb-1">
-                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                    <span class="text-[11px] font-mono text-amber-400 uppercase tracking-[0.2em]" id="statusLabel">MENUNGGU PEMBAYARAN</span>
+                    <span class="w-2 h-2 rounded-full bg-[#f57c00] animate-pulse"></span>
+                    <span class="text-[11px] font-mono text-[#f57c00] font-bold uppercase tracking-[0.2em]" id="statusLabel">MENUNGGU PEMBAYARAN</span>
                 </div>
-                <p class="text-sm text-gray-500 mb-6" id="amountSummary">Rp0</p>
+                <p class="text-sm text-[#665f55] font-semibold mb-6" id="amountSummary">Rp0</p>
 
                 <div class="qr-shell mb-5">
                     <img id="qrImage" alt="QRIS Donasi" src="" width="240" height="240">
                 </div>
 
                 <div class="flex items-center justify-center gap-2 mb-6">
-                    <i class="fas fa-clock text-xs text-gray-600"></i>
-                    <span class="text-[11px] font-mono text-gray-500" id="countdown">QRIS berlaku 3:00</span>
+                    <i class="fas fa-clock text-xs text-[#8c8275]"></i>
+                    <span class="text-[11px] font-mono font-bold text-[#665f55]" id="countdown">QRIS berlaku 3:00</span>
                 </div>
 
                 <div class="ok-box mb-6 text-left">
-                    <div class="text-[11px] font-mono text-green-400 uppercase tracking-widest mb-1">ID Invoice</div>
-                    <div class="text-sm font-mono text-white break-all" id="invoiceId">-</div>
+                    <div class="text-[11px] font-mono text-[#2e7d32] font-bold uppercase tracking-widest mb-1">ID Invoice</div>
+                    <div class="text-sm font-mono font-bold text-[#2b2b2b] break-all" id="invoiceId">-</div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3 mb-6 text-left">
-                    <div class="border border-white/[0.06] rounded-lg p-3">
-                        <div class="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">Nominal</div>
-                        <div class="font-mono text-sm text-white" id="paidAmount">-</div>
+                    <div class="bg-[#faf8f5] border border-[#e0d5c1] rounded-md p-3">
+                        <div class="text-[10px] font-mono text-[#8c8275] font-bold uppercase tracking-widest mb-1">Nominal</div>
+                        <div class="font-mono text-sm font-bold text-[#2b2b2b]" id="paidAmount">-</div>
                     </div>
-                    <div class="border border-white/[0.06] rounded-lg p-3">
-                        <div class="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">Total</div>
-                        <div class="font-mono text-sm text-white" id="totalAmount">-</div>
+                    <div class="bg-[#faf8f5] border border-[#e0d5c1] rounded-md p-3">
+                        <div class="text-[10px] font-mono text-[#8c8275] font-bold uppercase tracking-widest mb-1">Total</div>
+                        <div class="font-mono text-sm font-bold text-[#8b2626]" id="totalAmount">-</div>
                     </div>
                 </div>
 
@@ -453,7 +512,7 @@
                     </button>
                 </div>
 
-                <p class="text-[11px] text-gray-700 mt-5 font-mono">
+                <p class="text-[11px] text-[#8c8275] mt-5 font-mono">
                     Halaman ini memeriksa status otomatis. Jangan tutup QRIS jika belum dibayar.
                 </p>
             </div>
@@ -461,13 +520,13 @@
 
         <!-- SUCCESS STATE -->
         <div id="successState" class="hidden">
-            <div class="success-box">
-                <div class="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/25 flex items-center justify-center mx-auto mb-5">
-                    <i class="fas fa-check text-2xl text-green-400"></i>
+            <div class="paper-card p-8 text-center">
+                <div class="w-16 h-16 rounded-full bg-[#e8f5e9] border border-[#a5d6a7] flex items-center justify-center mx-auto mb-5">
+                    <i class="fas fa-check text-2xl text-[#2e7d32]"></i>
                 </div>
-                <h2 class="font-display font-bold text-2xl text-white mb-2">Terima Kasih!</h2>
-                <p class="text-sm text-gray-500 mb-6 max-w-sm mx-auto leading-relaxed">
-                    Donasi Anda <span class="text-white font-semibold" id="thanksAmount">Rp0</span> telah kami terima.
+                <h2 class="font-display font-bold text-3xl text-[#2b2b2b] mb-2">Terima Kasih! ✦</h2>
+                <p class="text-sm text-[#665f55] font-medium mb-6 max-w-sm mx-auto leading-relaxed">
+                    Donasi Anda <span class="text-[#8b2626] font-bold" id="thanksAmount">Rp0</span> telah kami terima.
                     Dukungan Anda sangat berarti bagi kelangsungan proyek ini.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-3 justify-center">
@@ -477,11 +536,11 @@
             </div>
         </div>
 
-        <div role="contentinfo" aria-label="Site footer" class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-12 text-[11px] text-gray-500 font-mono border-t border-white/5 pt-6 pb-2">
-            <div>Zyyvor API &copy; <span id="footerYear"></span></div>
-            <div class="flex gap-4">
-                <span>Version: <span id="api-version" class="text-white">-</span></span>
-                <span>Status: <span class="text-green-400">Online</span></span>
+        <div role="contentinfo" aria-label="Site footer" class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-12 text-[11px] text-[#8b2626] font-mono italic border-t border-dashed border-[#e0d5c1] pt-6 pb-2">
+            <div>made like a little paper archive ✦ Zyyvor Api'S <span id="footerYear"></span></div>
+            <div class="flex gap-4 not-italic font-semibold text-[#665f55]">
+                <span>Version: <span id="api-version" class="text-[#2b2b2b] font-bold">-</span></span>
+                <span>Status: <span class="text-[#2e7d32] font-bold">Online</span></span>
             </div>
         </div>
     </main>
@@ -502,14 +561,14 @@
         const rp = (n) => 'Rp' + Number(n || 0).toLocaleString('id-ID');
         const $ = (id) => document.getElementById(id);
 
-        function toggleMenu() {
-            $('navMenu').classList.toggle('show');
+        function toggleNavMenu() {
+            $('navMenu').classList.toggle('hidden');
         }
         window.addEventListener('click', (e) => {
-            const m = $('navMenu');
-            const b = e.target.closest('.menu-btn');
-            if (m && !m.contains(e.target) && (!b || b.getAttribute('aria-label') !== 'Menu')) {
-                m.classList.remove('show');
+            const menu = $('navMenu');
+            const btn = document.querySelector('button[onclick="toggleNavMenu()"]');
+            if (menu && !menu.contains(e.target) && btn && !btn.contains(e.target)) {
+                menu.addEventListener('click', () => menu.classList.add('hidden'), { once: true });
             }
         });
 
@@ -599,41 +658,9 @@
             }
         });
 
-        const STORAGE_KEY = 'zyvor_active_qris';
-
-        function saveActiveQris(rec) {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(rec));
-            } catch (e) {}
-        }
-
-        function clearActiveQris() {
-            try {
-                localStorage.removeItem(STORAGE_KEY);
-            } catch (e) {}
-        }
-
-        function getActiveQris() {
-            try {
-                const val = localStorage.getItem(STORAGE_KEY);
-                return val ? JSON.parse(val) : null;
-            } catch (e) {
-                return null;
-            }
-        }
-
-        function showPayment(rec, shouldSave = true) {
+        function showPayment(rec) {
             currentId = rec.id;
-            const expTime = rec.expiredAt ? new Date(rec.expiredAt).getTime() : (Date.now() + 3 * 60e3);
-            expiredAt = expTime;
-
-            if (!rec.expiredAt) {
-                rec.expiredAt = new Date(expTime).toISOString();
-            }
-
-            if (shouldSave) {
-                saveActiveQris(rec);
-            }
+            expiredAt = rec.expiredAt ? new Date(rec.expiredAt).getTime() : Date.now() + 3 * 60e3;
 
             $('formState').classList.add('hidden');
             $('payState').classList.remove('hidden');
@@ -641,7 +668,7 @@
             $('invoiceId').textContent = rec.id;
             $('paidAmount').textContent = rp(rec.amount);
             $('totalAmount').textContent = rp(rec.totalAmount);
-            $('amountSummary').textContent = 'Total ' + rp(rec.totalAmount) + ' untuk ' + (rec.name || 'Anonim');
+            $('amountSummary').textContent = 'Total ' + rp(rec.totalAmount) + ' untuk ' + rec.name;
             $('payLink').href = rec.paymentUrl || '#';
 
             $('qrImage').src = '/api/donasi/qr/' + encodeURIComponent(rec.id) + '.png';
@@ -664,7 +691,6 @@
                 if (left <= 0) {
                     clearInterval(countdownTimer);
                     stopPolling();
-                    clearActiveQris();
                     $('statusLabel').textContent = 'QRIS KEDALUWARSA';
                 }
             };
@@ -681,31 +707,19 @@
             if (!currentId) return;
             try {
                 const res = await fetch('/api/donasi/status?id=' + encodeURIComponent(currentId));
-                if (res.status === 404) {
-                    clearActiveQris();
-                    stopPolling();
-                    clearInterval(countdownTimer);
-                    $('statusLabel').textContent = 'QRIS KEDALUWARSA';
-                    $('countdown').textContent = 'QRIS kedaluwarsa — silakan buat ulang';
-                    return;
-                }
                 const json = await res.json();
                 const rec = json?.data || json?.result || json;
                 if (!rec || !rec.status) return;
 
                 if (rec.status === 'paid') {
-                    clearActiveQris();
                     stopPolling();
                     clearInterval(countdownTimer);
                     $('thanksAmount').textContent = rp(rec.totalAmount || rec.amount);
                     $('payState').classList.add('hidden');
                     $('successState').classList.remove('hidden');
                 } else if (rec.status === 'expired') {
-                    clearActiveQris();
                     stopPolling();
-                    clearInterval(countdownTimer);
                     $('statusLabel').textContent = 'QRIS KEDALUWARSA';
-                    $('countdown').textContent = 'QRIS kedaluwarsa — silakan buat ulang';
                 }
             } catch (e) { /* diamkan, coba lagi di tick berikutnya */ }
         }
@@ -713,29 +727,12 @@
         $('resetBtn').addEventListener('click', () => {
             stopPolling();
             clearInterval(countdownTimer);
-            clearActiveQris();
             currentId = null;
             $('qrImage').src = '';
             $('payState').classList.add('hidden');
             $('formState').classList.remove('hidden');
             $('statusLabel').textContent = 'MENUNGGU PEMBAYARAN';
         });
-
-        // Pulihkan QRIS aktif jika ada di localStorage dan belum kedaluwarsa
-        function restoreActiveQris() {
-            const saved = getActiveQris();
-            if (!saved || !saved.id) return;
-
-            const exp = saved.expiredAt ? new Date(saved.expiredAt).getTime() : 0;
-            if (!exp || Date.now() >= exp) {
-                clearActiveQris();
-                return;
-            }
-
-            showPayment(saved, false);
-        }
-
-        restoreActiveQris();
     </script>
 </body>
 </html>

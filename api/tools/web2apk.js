@@ -1,144 +1,191 @@
-import fs from "fs"
-import path from "path"
-import os from "os"
-import axios from "axios"
+/**
+ * Web2Apk Service — Powered by Code-V Engine (sdkforge)
+ * Endpoint: /api/tools/web2apk
+ */
 
-class Web2ApkService {
-  constructor({ apiUrl = "https://webappcreator.amethystlab.org/api/build-apk", baseUrl = "https://webappcreator.amethystlab.org" } = {}) {
-    this.apiUrl = apiUrl
-    this.baseUrl = baseUrl
+import logger from "../../src/utils/logger.js";
+
+const BASE_URL = "https://code-v-compiler-sr.vercel.app";
+
+/**
+ * Request compile Web to APK
+ */
+async function buildWeb2Apk(config) {
+  const payload = {
+    url: config.url,
+    appName: config.appName,
+    packageName: config.packageName,
+    versionName: String(config.versionName || "1.0.0"),
+    versionCode: Number(config.versionCode) || 1,
+    options: {
+      splash: true,
+      splashType: "default",
+      splashText: config.appName || "Loading...",
+      splashBg: "#0B0D10",
+      splashFg: "#3B82F6",
+      splashMs: 2000,
+      orientation: "auto",
+      js: true,
+      zoom: false,
+      permissions: ["INTERNET", "WAKE_LOCK"],
+    },
+  };
+
+  // 1. Submit Build Request
+  const createRes = await fetch(`${BASE_URL}/api/build`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!createRes.ok) {
+    const errText = await createRes.text();
+    throw new Error(`Gagal mengirim build request: ${createRes.status} ${errText}`);
   }
 
-  isValidUrl(url) {
-    return /^https?:\/\//i.test(url)
+  const createData = await createRes.json();
+  const buildId = createData.build_id;
+  if (!buildId) {
+    throw new Error(`Respon server tidak memiliki build_id: ${JSON.stringify(createData)}`);
   }
 
-  buildPackageName(appName) {
-    const cleaned = appName.toLowerCase().replace(/[^a-z0-9]/g, "")
-    return `com.${cleaned || "app"}.web2apk`
-  }
+  // 2. Poll Build Status
+  const maxAttempts = 60; // Max ~120 detik
+  let attempt = 0;
 
-  async fetchIcon(iconUrl) {
-    const res = await axios.get(iconUrl, {
-      responseType: "arraybuffer",
+  while (attempt < maxAttempts) {
+    await new Promise((r) => setTimeout(r, 2000));
+    attempt++;
+
+    const pollRes = await fetch(`${BASE_URL}/api/build/${buildId}`, {
       headers: {
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
-        Accept: "image/avif,image/webp,image/png,image/jpeg,*/*",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
       },
-    })
-    return Buffer.from(res.data)
-  }
+    });
 
-  saveIconBuffer(buffer) {
-    const tempDir = path.join(os.tmpdir(), "web2apk")
-    if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true })
-    const iconPath = path.join(tempDir, `icon_${Date.now()}.png`)
-    fs.writeFileSync(iconPath, buffer)
-    return iconPath
-  }
+    if (!pollRes.ok) continue;
 
-  async build({ url, appName, iconBuffer, packageName, versionName = "1.0.0", versionCode = 1 }) {
-    if (!this.isValidUrl(url)) throw new Error("URL harus diawali http:// atau https://")
-    if (!appName) throw new Error("Nama aplikasi tidak boleh kosong")
-    if (!iconBuffer) throw new Error("Icon aplikasi wajib disertakan")
+    const pollData = await pollRes.json();
+    const status = pollData.status;
 
-    const pkg = packageName || this.buildPackageName(appName)
-    const iconPath = this.saveIconBuffer(iconBuffer)
-
-    try {
-      const { default: FormData } = await import("form-data")
-      const form = new FormData()
-      form.append("websiteUrl", url)
-      form.append("appName", appName)
-      form.append("icon", fs.createReadStream(iconPath))
-      form.append("packageName", pkg)
-      form.append("versionName", versionName)
-      form.append("versionCode", versionCode)
-
-      const response = await axios.post(this.apiUrl, form, {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
-          Accept: "application/json, text/plain, */*",
-          Origin: this.baseUrl,
-          Referer: `${this.baseUrl}/`,
-          ...form.getHeaders(),
-        },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
-        timeout: 180000,
-      })
-
-      const data = response.data
-      if (!data.success) throw new Error(data.message || "Gagal build APK")
+    if (status === "ready" || status === "completed") {
+      const downloadPath = pollData.download_url || `/cdn/${buildId}.apk`;
+      const downloadUrl = downloadPath.startsWith("http")
+        ? downloadPath
+        : `${BASE_URL}${downloadPath}`;
 
       return {
-        success: true,
-        appName,
-        packageName: pkg,
-        downloadUrl: `${this.baseUrl}${data.downloadUrl}`,
-      }
-    } finally {
-      if (fs.existsSync(iconPath)) fs.unlinkSync(iconPath)
+        buildId,
+        appName: payload.appName,
+        packageName: payload.packageName,
+        versionName: payload.versionName,
+        versionCode: payload.versionCode,
+        targetUrl: payload.url,
+        fileSize: pollData.file_size || null,
+        downloadUrl,
+      };
+    }
+
+    if (status === "failed" || status === "error") {
+      throw new Error(`Build gagal: ${pollData.error || "Unknown error"}`);
     }
   }
+
+  throw new Error("Build timeout: Proses compile memakan waktu lebih dari 2 menit.");
 }
 
 export default {
   name: "Web2Apk",
-  description: "Konversi website menjadi APK Android",
+  description: "Konversi website menjadi APK Android menggunakan engine Code-V / sdkforge",
   category: "Tools",
   methods: ["GET", "POST"],
 
-  params: ["url", "appName", "icon", "packageName"],
+  params: [
+    "url",
+    "appName",
+    "packageName",
+    "versionName",
+    "versionCode"
+  ],
 
   paramsSchema: {
     url: {
       type: "string",
       required: true,
-      example: "https://google.com",
-      description: "URL website yang akan dijadikan APK",
+      example: "https://api.zyvor.my.id/",
+      description: "Alamat URL website/web app yang akan dikonversi menjadi aplikasi Android (APK)",
     },
     appName: {
       type: "string",
       required: true,
-      example: "Google App",
-      description: "Nama aplikasi Android",
-    },
-    icon: {
-      type: "string",
-      required: true,
-      example: "https://example.com/icon.png",
-      description: "URL gambar icon aplikasi (png/jpg)",
-    },
-    versionName: {
-      type: "string",
-      required: false,
-      default: "1.0.0",
-      description: "Versi aplikasi",
+      example: "Zyvor App",
+      description: "Nama label aplikasi Android yang akan tampil di homescreen atau launcher perangkat",
     },
     packageName: {
       type: "string",
-      required: false,
-      example: "com.custom.app",
-      description: "Package name Android (otomatis dari appName jika kosong)",
+      required: true,
+      example: "com.zyvor.app",
+      description: "Identitas paket aplikasi Android unik (Application ID / Bundle ID). Format: com.domain.app",
+    },
+    versionName: {
+      type: "string",
+      required: true,
+      example: "1.0.0",
+      description: "Nomor versi aplikasi Android yang ditampilkan kepada pengguna (contoh: 1.0.0)",
+    },
+    versionCode: {
+      type: "number",
+      required: true,
+      example: 1,
+      description: "Nomor integer kode versi build internal aplikasi Android untuk tracking update (contoh: 1)",
     },
   },
 
   async run(req, res) {
     try {
-      const { url, appName, icon, versionName, packageName } = { ...req.query, ...req.body }
+      const params = { ...req.query, ...req.body };
+      const url = params.url;
+      const appName = params.appName || params.appname;
+      const packageName = params.packageName || params.package;
+      const versionName = params.versionName || params.version;
+      const versionCode = params.versionCode || params.versioncode;
 
-      if (!url) return res.status(400).json({ status: false, message: "Parameter 'url' wajib diisi" })
-      if (!appName) return res.status(400).json({ status: false, message: "Parameter 'appName' wajib diisi" })
-      if (!icon) return res.status(400).json({ status: false, message: "Parameter 'icon' wajib diisi (URL gambar)" })
+      if (!url) {
+        return res.status(400).json({ status: false, message: "Parameter 'url' wajib diisi" });
+      }
+      if (!appName) {
+        return res.status(400).json({ status: false, message: "Parameter 'appName' wajib diisi" });
+      }
+      if (!packageName) {
+        return res.status(400).json({ status: false, message: "Parameter 'packageName' (package) wajib diisi" });
+      }
+      if (!versionName) {
+        return res.status(400).json({ status: false, message: "Parameter 'versionName' (version) wajib diisi" });
+      }
+      if (versionCode === undefined || versionCode === null || versionCode === "") {
+        return res.status(400).json({ status: false, message: "Parameter 'versionCode' wajib diisi" });
+      }
 
-      const service = new Web2ApkService()
-      const iconBuffer = await service.fetchIcon(icon)
-      const result = await service.build({ url, appName, iconBuffer, packageName, versionName: versionName || "1.0.0" })
+      logger.info(`[WEB2APK] Memulai build untuk url=${url} | appName=${appName} | pkg=${packageName}`);
+      const result = await buildWeb2Apk({
+        url,
+        appName,
+        packageName,
+        versionName,
+        versionCode: Number(versionCode) || 1,
+      });
 
-      return res.json({ status: true, result })
+      return res.json({
+        status: true,
+        message: "APK berhasil dibuat",
+        result,
+      });
     } catch (err) {
-      return res.status(500).json({ status: false, message: err.message })
+      logger.error(`[WEB2APK] error: ${err.message}`);
+      return res.status(500).json({ status: false, message: err.message });
     }
   },
-}
+};

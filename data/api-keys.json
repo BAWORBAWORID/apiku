@@ -4,8 +4,8 @@
       "key": "adm",
       "name": "admin",
       "createdAt": "2026-09-29T12:24:00.494Z",
-      "lastUsed": "2026-10-02T05:22:33.779Z",
-      "usageCount": 8,
+      "lastUsed": "2026-10-07T14:10:10.393Z",
+      "usageCount": 53,
       "enabled": true,
       "role": "vip",
       "allowedEndpoints": null,
@@ -18,12 +18,12 @@
         "maxPerMinute": 60
       },
       "dailyUsage": {
-        "date": "2026-10-02",
-        "count": 2
+        "date": "2026-10-07",
+        "count": 38
       },
       "minuteUsage": {
-        "timestamp": 29848642,
-        "count": 1
+        "timestamp": 29856370,
+        "count": 4
       },
       "expiresAt": null,
       "package": {
@@ -35,8 +35,8 @@
       "key": "khoirularifin",
       "name": "User 2",
       "createdAt": "2026-10-02T05:25:50.663Z",
-      "lastUsed": "2026-10-03T00:07:56.623Z",
-      "usageCount": 1,
+      "lastUsed": "2026-10-03T15:41:20.790Z",
+      "usageCount": 2,
       "enabled": true,
       "role": "vip",
       "allowedEndpoints": null,
@@ -50,10 +50,10 @@
       },
       "dailyUsage": {
         "date": "2026-10-03",
-        "count": 1
+        "count": 2
       },
       "minuteUsage": {
-        "timestamp": 29849767,
+        "timestamp": 29850701,
         "count": 1
       },
       "expiresAt": null,

@@ -3,11 +3,12 @@ import {
   GetIdCommand,
   GetCredentialsForIdentityCommand,
 } from "@aws-sdk/client-cognito-identity";
-import {
-  S3Client,
-  PutObjectCommand,
-  GetObjectCommand,
-} from "@aws-sdk/client-s3";
+  import {
+    S3Client,
+    PutObjectCommand,
+    GetObjectCommand,
+    DeleteObjectCommand,
+  } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { SignatureV4 } from "@smithy/signature-v4";
 import { Sha256 } from "@aws-crypto/sha256-js";
@@ -179,7 +180,28 @@ export async function uploadToCloudStorage(buffer, filename) {
   return url;
 }
 
-export async function resetCloudStorage() {
+  export async function deleteFromCloudStorage(key) {
+    const creds = await getCredentials();
+    const s3 = getS3Client(creds);
+
+    await s3.send(new DeleteObjectCommand({
+      Bucket: CONFIG.s3Bucket,
+      Key: key,
+    }));
+  }
+
+  export function extractS3KeyFromUrl(url) {
+    try {
+      const u = new URL(url);
+      if (!u.hostname.endsWith(".amazonaws.com")) return null;
+      const p = u.pathname;
+      return p.startsWith("/") ? p.slice(1) : p;
+    } catch {
+      return null;
+    }
+  }
+
+  export async function resetCloudStorage() {
   cachedCreds = null;
   cachedIdentityId = null;
   cognitoClient = null;

@@ -1703,7 +1703,8 @@ app.use((req, res, next) => {
               apiKey,
               method: req.method,
               statusCode: res.statusCode,
-              response: capturedBody
+              response: capturedBody,
+              status: epStatus
             });
           });
         }

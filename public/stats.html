@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="dark">
+    <meta name="color-scheme" content="light">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="format-detection" content="telephone=no">
-    <meta name="generator" content="Zyyvor Api'S Platform">
-    <title>Zyyvor Api'S | Server Telemetry — Real-Time Monitoring</title>
-    <meta name="description" content="Real-time server monitoring and telemetry for Zyyvor Api'S — CPU, memory, disk usage, API request stats, endpoint health, and latency metrics.">
+    <meta name="generator" content="Zyyvor Api Platform">
+    <title>Zyyvor Api | Server Telemetry — Real-Time Monitoring</title>
+    <meta name="description" content="Real-time server monitoring and telemetry for Zyyvor Api — CPU, memory, disk usage, API request stats, endpoint health, and latency metrics.">
     <meta name="keywords" content="server monitoring, api telemetry, server status, uptime, latency, api stats, zyvor">
-    <meta name="author" content="Zyyvor Api'S Team">
+    <meta name="author" content="Zyyvor Api Team">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#050505">
+    <meta name="theme-color" content="#f7f1e5">
     <link rel="icon" href="/src/images/logo.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="/src/images/logo.jpg">
     <link rel="canonical" href="https://api.zyvor.my.id/stats">
@@ -21,21 +21,21 @@
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://api.zyvor.my.id/stats">
-    <meta property="og:title" content="Zyyvor Api'S — Server Telemetry">
+    <meta property="og:title" content="Zyyvor Api — Server Telemetry">
     <meta property="og:description" content="Real-time server monitoring: CPU, memory, disk, API stats, and latency.">
     <meta property="og:image" content="https://api.zyvor.my.id/src/images/logo.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Zyyvor Server Telemetry">
     <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:site_name" content="Zyyvor Api'S">
+    <meta property="og:site_name" content="Zyyvor Api">
     <meta property="og:locale" content="en_US">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@ZyyvorAPI">
     <meta name="twitter:creator" content="@ZyyvorAPI">
-    <meta name="twitter:title" content="Zyyvor Api'S — Server Telemetry">
+    <meta name="twitter:title" content="Zyyvor Api — Server Telemetry">
     <meta name="twitter:description" content="Real-time server monitoring: CPU, memory, disk, API stats.">
     <meta name="twitter:image" content="https://api.zyvor.my.id/src/images/logo.jpg">
     <meta name="twitter:image:alt" content="Zyyvor Server Telemetry">
@@ -141,173 +141,406 @@
     }
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Caveat', 'cursive'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        bg: '#f7f1e5',
+                        surface: '#faf8f5',
+                        border: '#e0d5c1',
+                        muted: '#665f55',
+                        dim: '#8c8275',
+                    },
+                },
+            },
+        };
+    </script>
 
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        :root{
-            --bg:#050505;--surface:#0a0a0a;--border:rgba(255,255,255,0.06);
-            --text:#fff;--text-2:#888;--text-3:#555;
-            --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;--display:'Syne',sans-serif;
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --bg-paper: #f7f1e5;
+            --line-color: #e5d8c5;
+            --text-main: #2b2b2b;
+            --text-sub: #665f55;
+            --text-muted: #8c8275;
+            --accent-red: #8b2626;
+            --card-white: #faf8f5;
+            --card-yellow: #fceea7;
+            --card-blue: #dcebf0;
+            --card-pink: #f9dbdb;
+            --tape-color: #d1b48c;
+            --border-color: #e0d5c1;
         }
-        body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
-        .grid-bg{position:fixed;top:0;left:0;width:100%;height:100vh;background-image:radial-gradient(rgba(255,255,255,0.06) 1px,transparent 1px);background-size:32px 32px;z-index:-1;pointer-events:none}
-        .grid-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 0%,var(--bg) 80%)}
-        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
 
-        /* Nav */
-        .nav{position:fixed;top:0;left:0;right:0;background:rgba(5,5,5,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:1000;height:56px}
-        .nav-inner{max-width:1200px;margin:0 auto;padding:0 2rem;height:100%;display:flex;justify-content:space-between;align-items:center}
-        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:white}
-        .logo img{width:32px;height:32px;border-radius:6px;object-fit:cover}
-        .logo-text{font-family:var(--display);font-weight:700;font-size:1rem;letter-spacing:-0.02em}
-        .logo-sub{font-family:var(--mono);font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.15em}
-        .menu-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--text-2);cursor:pointer;transition:all 0.2s}
-        .menu-btn:hover{border-color:rgba(255,255,255,0.15);color:white}
-        .dropdown{position:absolute;top:100%;left:0;margin-top:8px;width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:none;z-index:100}
-        .dropdown.show{display:block}
-        .dropdown a{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;color:var(--text-2);text-decoration:none;transition:all 0.15s}
-        .dropdown a:hover{background:rgba(255,255,255,0.05);color:white}
-        .dropdown a i{width:16px;text-align:center;font-size:12px}
-        .dropdown .sep{height:1px;background:var(--border);margin:4px 0}
+        /* Essential Utility Fallbacks */
+        .hidden { display: none !important; }
+        .flex { display: flex !important; }
+        .inline-flex { display: inline-flex !important; }
+        .grid { display: grid !important; }
+        .relative { position: relative !important; }
+        .absolute { position: absolute !important; }
+        .fixed { position: fixed !important; }
 
-        /* Hero */
-        .hero{padding:8rem 2rem 2rem;max-width:1200px;margin:0 auto;text-align:center}
-        .hero h1{font-family:var(--display);font-size:clamp(2rem,5vw,3.5rem);font-weight:800;letter-spacing:-0.03em;color:white;margin-bottom:12px}
-        .hero p{font-size:1rem;color:var(--text-2);max-width:600px;margin:0 auto 2rem}
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-paper);
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 28px;
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
 
-        /* Stats Row */
-        .stats-row{display:flex;gap:2rem;margin-bottom:2rem;flex-wrap:wrap;justify-content:center}
-        .stat-item{text-align:center}
-        .stat-val{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:white}
-        .stat-label{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em}
+        a { color: inherit; text-decoration: none; }
 
-        /* Content */
-        .content{max-width:1200px;margin:0 auto;padding:0 2rem 4rem;overflow-x:hidden}
+        /* Dot Grid Background */
+        .dot-grid {
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-paper); }
+        ::-webkit-scrollbar-thumb { background: var(--tape-color); border-radius: 3px; }
+
+        /* Fixed Structural Navbar CSS */
+        .glass-header {
+            background: rgba(247, 241, 229, 0.96);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px dashed var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            z-index: 1000;
+        }
+
+        .nav-inner {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--card-white);
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .menu-btn:hover {
+            background: var(--card-yellow);
+            color: var(--text-main);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 48px;
+            left: 0;
+            width: 200px;
+            background: var(--card-white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 2px 8px 24px rgba(0,0,0,0.08);
+            padding: 6px;
+            z-index: 100;
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-sub);
+            border-radius: 6px;
+            transition: all 0.15s;
+        }
+        .dropdown-menu a:hover {
+            background: var(--card-yellow);
+            color: var(--accent-red);
+        }
+
+        /* Quick Stats Row */
+        .quick-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.875rem;
+            background: var(--card-white);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.02);
+        }
+        .quick-stat .num {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .quick-stat .label { color: var(--text-sub); font-weight: 600; }
 
         /* Section Head */
-        .section-head{font-family:var(--display);font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:-0.01em;color:white;margin-bottom:1rem;display:flex;align-items:center;gap:10px}
-        .section-head i{font-size:14px;color:var(--text-3)}
+        .section-head {
+            font-family: 'Caveat', cursive;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1;
+        }
+        .section-head i { font-size: 1rem; color: var(--accent-red); }
 
         /* Metric Grid */
-        .metric-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:2.5rem}
-        .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;transition:border-color 0.2s}
-        .metric-card:hover{border-color:rgba(255,255,255,0.12)}
-        .metric-icon{font-size:14px;color:var(--text-3);margin-bottom:8px}
-        .metric-label{font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px}
-        .metric-value{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:white;font-variant-numeric:tabular-nums}
-        .metric-sub{font-family:var(--mono);font-size:11px;color:var(--text-3);margin-top:4px;word-break:break-word}
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 2.5rem;
+        }
+        .metric-card {
+            background: var(--card-white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 16px;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.02);
+            transition: all 0.2s;
+        }
+        .metric-card:hover {
+            border-color: var(--text-main);
+            box-shadow: 2px 6px 14px rgba(0,0,0,0.05);
+        }
+        .metric-icon { font-size: 12px; color: var(--accent-red); margin-bottom: 6px; }
+        .metric-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            font-variant-numeric: tabular-nums;
+        }
+        .metric-sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-sub);
+            margin-top: 4px;
+            word-break: break-word;
+            font-weight: 500;
+        }
 
         /* Progress Bar */
-        .progress-track{background:rgba(255,255,255,0.06);border-radius:4px;height:4px;overflow:hidden;margin-top:8px}
-        .progress-bar{height:100%;border-radius:4px;transition:width 1.2s ease;background:white}
-        .progress-bar.mem{background:#888}
-        .progress-bar.disk{background:#666}
+        .progress-track {
+            background: var(--line-color);
+            border-radius: 4px;
+            height: 5px;
+            overflow: hidden;
+            margin-top: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .progress-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.8s ease;
+            background: var(--accent-red);
+        }
+        .progress-bar.mem { background: #d97706; }
+        .progress-bar.disk { background: #2563eb; }
 
         /* Status indicator */
-        .status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px}
-        .status-online{background:#22c55e;box-shadow:0 0 6px rgba(34,197,94,0.4)}
-        .status-warn{background:#eab308;box-shadow:0 0 6px rgba(234,179,8,0.4)}
-        .status-offline{background:#ef4444}
+        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+        .status-online { background: #16a34a; box-shadow: 0 0 6px rgba(22,163,74,0.4); }
+        .status-warn { background: #d97706; box-shadow: 0 0 6px rgba(217,119,6,0.4); }
+        .status-offline { background: #dc2626; }
 
         /* Table */
-        .data-table{width:100%;border-collapse:collapse}
-        .data-table thead th{position:sticky;top:0;background:var(--bg);z-index:10;font-family:var(--mono);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;padding:10px 16px;text-align:left;border-bottom:1px solid var(--border);font-weight:500}
-        .data-table thead th:last-child{text-align:right}
-        .data-table tbody td{padding:10px 16px;border-bottom:1px solid var(--border);font-size:13px}
-        .data-table tbody tr:hover{background:rgba(255,255,255,0.02)}
-        .data-table .ep-path{font-family:var(--mono);font-size:12px;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
-        .data-table .ep-hits{font-family:var(--mono);font-size:13px;font-weight:600;color:white;text-align:right}
-        .data-table .ep-rate{font-family:var(--mono);font-size:11px;display:inline-flex;align-items:center;gap:5px}
-        .rate-good{color:#22c55e}
-        .rate-warn{color:#f59e0b}
-        .rate-bad{color:#ef4444}
-
-        /* Grid card (6 cols for sys info) */
-        .info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:2.5rem}
-
-        /* Footer */
-        .footer{border-top:1px solid var(--border);padding:2rem;max-width:1200px;margin:0 auto}
-        .footer-inner{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text-3)}
-        .footer-inner a{color:var(--text-3);text-decoration:none;margin-left:1rem}
-        .footer-inner a:hover{color:white}
-
-        /* Responsive */
-        @media(max-width:768px){
-            .hero{padding:6rem 1.5rem 2rem}
-            .content{padding:0 1.5rem 3rem}
-            .stats-row{gap:1.5rem}
-            .metric-grid{grid-template-columns:1fr 1fr}
-            .info-grid{grid-template-columns:1fr 1fr}
-            .footer-inner{flex-direction:column;gap:0.5rem}
+        .table-container {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 2.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--card-white);
+            box-shadow: 2px 4px 12px rgba(0,0,0,0.02);
         }
-        @media(max-width:480px){
-            .metric-grid{grid-template-columns:1fr}
-            .info-grid{grid-template-columns:1fr}
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table thead th {
+            position: sticky;
+            top: 0;
+            background: #f0e6d2;
+            z-index: 10;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 700;
+        }
+        .data-table tbody td {
+            padding: 10px 14px;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 12px;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+        .data-table tbody tr:hover { background: var(--card-yellow); }
+        .data-table .ep-path {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--accent-red);
+            font-weight: 700;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+        }
+        .data-table .ep-hits {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .data-table .ep-rate {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 700;
+        }
+        .rate-good { color: #16a34a; }
+        .rate-warn { color: #d97706; }
+        .rate-bad { color: #dc2626; }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 2.5rem;
+        }
+
+        @media(max-width:640px) {
+            .metric-grid, .info-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media(max-width:420px) {
+            .metric-grid, .info-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="grid-bg"></div>
+    <div class="dot-grid"></div>
 
     <!-- Nav -->
-    <nav class="nav" aria-label="Main navigation">
+    <nav class="glass-header" aria-label="Main navigation">
         <div class="nav-inner">
-            <div style="display:flex;align-items:center;gap:16px">
-                <div style="position:relative">
-                    <button class="menu-btn" onclick="toggleMenu()" aria-label="Menu"><i class="fas fa-ellipsis-v"></i></button>
-                    <div id="navMenu" class="dropdown">
-                        <a href="/"><i class="fas fa-home"></i>Home</a>
-                        <div class="sep"></div>
-                        <a href="/docs"><i class="fas fa-book"></i>Documentation</a>
-                        <a href="/donasi"><i class="fas fa-heart"></i>Donasi</a>
-                        <a href="/support"><i class="fas fa-headset"></i>Support</a>
-                        <a href="/stats"><i class="fas fa-chart-line"></i>Status</a>
-                        <a href="/changelog"><i class="fas fa-clock-rotate-left"></i>Changelog</a>
-                        <div class="sep"></div>
-                        <a href="/request-report"><i class="fas fa-bug"></i>Request</a>
-                        <a href="/admin/login"><i class="fas fa-shield-alt"></i>Admin</a>
+            <div class="nav-left">
+                <div class="relative">
+                    <button class="menu-btn" onclick="toggleNavMenu()" aria-label="Menu"><i class="fas fa-ellipsis-v text-sm"></i></button>
+                    <div id="navMenu" class="dropdown-menu hidden">
+                        <a href="/"><i class="fas fa-home w-4 text-center"></i><span>Home</span></a>
+                        <div style="height:1px;border-bottom:1px dashed var(--border-color);margin:4px 0"></div>
+                        <a href="/docs"><i class="fas fa-book w-4 text-center"></i><span>Documentation</span></a>
+                        <a href="/donasi"><i class="fas fa-heart w-4 text-center"></i><span>Donasi</span></a>
+                        <div style="height:1px;border-bottom:1px dashed var(--border-color);margin:4px 0"></div>
+                        <a href="/support"><i class="fas fa-headset w-4 text-center"></i><span>Support</span></a>
+                        <a href="/stats" style="background:var(--card-pink);color:var(--accent-red);font-weight:700"><i class="fas fa-chart-line w-4 text-center"></i><span>Status</span></a>
+                        <a href="/changelog"><i class="fas fa-clock-rotate-left w-4 text-center"></i><span>Changelog</span></a>
+                        <div style="height:1px;border-bottom:1px dashed var(--border-color);margin:4px 0"></div>
+                        <a href="/request-report"><i class="fas fa-bug w-4 text-center"></i><span>Request</span></a>
+                        <a href="/admin/login"><i class="fas fa-shield-alt w-4 text-center"></i><span>Admin</span></a>
                     </div>
                 </div>
-                <a href="/" class="logo">
-                    <img src="/src/images/logo.jpg" alt="Zyyvor" onerror="this.style.display='none'">
-                    <div>
-                        <div class="logo-text">Zyyvor</div>
-                        <div class="logo-sub">Server Telemetry</div>
+                <a href="/" style="display:flex;align-items:center;gap:10px">
+                    <img src="/src/images/logo.jpg" alt="Logo" style="width:32px;height:32px;border-radius:50%;border:1px solid #2b2b2b;object-fit:cover" onerror="this.style.display='none'">
+                    <div style="display:flex;flex-direction:column">
+                        <span style="font-family:'Caveat',cursive;font-size:1.25rem;font-weight:700;line-height:1;color:#2b2b2b">Zyyvor Api'S</span>
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#665f55;text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Telemetry</span>
                     </div>
                 </a>
             </div>
-
         </div>
     </nav>
 
-    <!-- Hero -->
-    <div class="hero">
-        <h1>Server Telemetry</h1>
-        <p>Real-time performance metrics for Zyyvor Api'S server infrastructure.</p>
-        <div class="stats-row">
-            <div class="stat-item">
-                <div class="stat-val" id="statVersion">—</div>
-                <div class="stat-label">Version</div>
+    <!-- Main Content -->
+    <main class="pb-16 px-4 sm:px-6 max-w-4xl mx-auto" style="margin-top: 100px !important;" role="main" aria-label="Server telemetry content">
+        <!-- Hero -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#faf8f5] border border-[#e0d5c1] text-[#8b2626] text-xs font-mono font-bold mb-4 shadow-sm">
+                <i class="fas fa-pulse text-[10px] text-emerald-600"></i>
+                <span>Live System Health Monitoring</span>
             </div>
-            <div class="stat-item">
-                <div class="stat-val" id="statLatency">—</div>
-                <div class="stat-label">Latency</div>
+            <h1 class="font-display text-4xl sm:text-6xl font-bold text-[#2b2b2b] tracking-tight mb-2">
+                Server Telemetry 📊
+            </h1>
+            <p class="text-[#665f55] text-base max-w-xl mx-auto leading-relaxed font-medium">Real-time performance metrics for Zyyvor Api'S server infrastructure.</p>
+        </div>
+
+        <!-- Quick Stats Row -->
+        <div class="flex justify-center gap-3 flex-wrap mb-10">
+            <div class="quick-stat">
+                <span class="num" id="statVersion">—</span>
+                <span class="label">Version</span>
             </div>
-            <div class="stat-item">
-                <div class="stat-val" id="statEndpoints">—</div>
-                <div class="stat-label">Endpoints</div>
+            <div class="quick-stat">
+                <span class="num" id="statLatency">—</span>
+                <span class="label">Latency</span>
+            </div>
+            <div class="quick-stat">
+                <span class="num" id="statEndpoints">—</span>
+                <span class="label">Endpoints</span>
             </div>
         </div>
-    </div>
 
-    <div class="content" role="main" aria-label="Server telemetry content">
         <!-- Visitors -->
         <div class="section-head"><i class="fas fa-eye"></i> Visitors</div>
         <div class="metric-grid" id="visitorGrid"></div>
@@ -322,13 +555,13 @@
 
         <!-- Popular Endpoints -->
         <div class="section-head"><i class="fas fa-fire"></i> Popular Endpoints</div>
-        <div style="max-height:280px;overflow-y:auto;margin-bottom:2.5rem;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.01);scrollbar-width:thin">
-            <table class="data-table" style="width:100%;table-layout:fixed">
+        <div class="table-container">
+            <table class="data-table">
                 <colgroup>
                     <col style="width:50px">
                     <col>
-                    <col style="width:80px">
-                    <col style="width:80px">
+                    <col style="width:90px">
+                    <col style="width:90px">
                 </colgroup>
                 <thead>
                     <tr>
@@ -345,24 +578,30 @@
         <!-- System Info -->
         <div class="section-head"><i class="fas fa-server"></i> System Info</div>
         <div class="info-grid" id="sysInfoGrid"></div>
-    </div>
 
-    <!-- Footer -->
-    <footer class="footer" aria-label="Site footer">
-        <div class="footer-inner">
+        <!-- Footer -->
+        <footer class="border-t border-dashed border-[#e0d5c1] pt-6 mt-12 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#8c8275] font-mono font-bold" aria-label="Site footer">
             <div style="display:flex;align-items:center;gap:8px">
-                <img src="/src/images/logo.jpg" alt="" style="width:20px;height:20px;border-radius:4px;object-fit:cover" onerror="this.style.display='none'">
-                <span>&copy; 2026 Zyyvor Api'S</span>
+                <img src="/src/images/logo.jpg" alt="" style="width:20px;height:20px;border-radius:50%;object-fit:cover" onerror="this.style.display='none'">
+                <span>&copy; 2026-2027 Zyyvor Api'S. All rights reserved.</span>
             </div>
             <div id="footerVer">—</div>
-        </div>
-    </footer>
+        </footer>
+    </main>
 
 <script>
 /* Nav toggle */
-function toggleMenu(){document.getElementById('navMenu').classList.toggle('show')}
-document.addEventListener('click',e=>{
-    if(!e.target.closest('.menu-btn')&&!e.target.closest('#navMenu'))document.getElementById('navMenu').classList.remove('show');
+function toggleNavMenu(){
+    document.getElementById('navMenu').classList.toggle('hidden');
+}
+window.addEventListener('click', e => {
+    const menu = document.getElementById('navMenu');
+    const btn = document.querySelector('.menu-btn');
+    if (menu && !menu.classList.contains('hidden')) {
+        if (!menu.contains(e.target) && !btn.contains(e.target)) {
+            menu.classList.add('hidden');
+        }
+    }
 });
 
 /* Helpers */
@@ -379,17 +618,14 @@ function fmtNum(n){
 
 /* Render */
 function render(d){
-    if (!d || (d.status === 'error' && !d.cpu)) return; // protect against temporary 500 errors
+    if (!d || (d.status === 'error' && !d.cpu)) return;
     const isOn=d.status==='online';
 
-    /* Hero stats — latency pakai _realLatency dari /api/stats biar sama kayak docs */
+    /* Hero stats */
     document.getElementById('statVersion').textContent='v'+(d.version||'—');
     document.getElementById('statLatency').textContent=d._realLatency||d.latency||'—';
     document.getElementById('statEndpoints').textContent=d.endpoints?.total||'—';
-    const el=document.getElementById('statUptime');if(el)el.textContent=d.uptime_human||'—';
     document.getElementById('footerVer').textContent='v'+(d.version||'—');
-
-
 
     /* System Metrics */
     const cpuPct=d.cpu?.currentLoad?.toFixed(1)||'0';
@@ -407,22 +643,14 @@ function render(d){
     const procDesc = (d.processes?.total || 0) + ' processes (' + (d.processes?.running || 0) + ' running)';
 
     document.getElementById('metricGrid').innerHTML=[
-        metricCard('fas fa-circle-check','Status',isOn?'<span class="status-dot status-online" style="margin-right:4px"></span>Online':'<span class="status-dot status-offline" style="margin-right:4px"></span>Offline',
-            osName),
-        metricCard('fas fa-microchip','CPU Load',cpuPct+'%',
-            cpuDesc,cpuPct),
-        metricCard('fas fa-memory','Memory',memPct+'%',
-            memDesc,memPct,'mem'),
-        metricCard('fas fa-hard-drive','Disk',diskPct+'%',
-            diskDesc,diskPct,'disk'),
-        metricCard('fas fa-bolt','Requests',fmtNum(d.apiStats?.hits?.allTime||0),
-            fmtNum(d.apiStats?.hits?.today||0)+' today'),
-        metricCard('fas fa-clock','Uptime',d.uptime_human||'—',
-            procDesc),
-        metricCard('fas fa-shield-halved','Upstream Health','<span class="status-dot status-online" style="margin-right:4px"></span>Live',
-            'Direct connection · no failover breaker'),
-        metricCard('fas fa-layer-group','RAM Cache Engine',cacheSize+' / '+cacheMax,
-            'Fast < 5ms LRU memory cache',cachePct,'mem')
+        metricCard('fas fa-circle-check','Status',isOn?'<span class="status-dot status-online"></span>Online':'<span class="status-dot status-offline"></span>Offline', osName),
+        metricCard('fas fa-microchip','CPU Load',cpuPct+'%', cpuDesc, cpuPct),
+        metricCard('fas fa-memory','Memory',memPct+'%', memDesc, memPct, 'mem'),
+        metricCard('fas fa-hard-drive','Disk',diskPct+'%', diskDesc, diskPct, 'disk'),
+        metricCard('fas fa-bolt','Requests',fmtNum(d.apiStats?.hits?.allTime||0), fmtNum(d.apiStats?.hits?.today||0)+' today'),
+        metricCard('fas fa-clock','Uptime',d.uptime_human||'—', procDesc),
+        metricCard('fas fa-shield-halved','Upstream Health','<span class="status-dot status-online"></span>Live', 'Direct connection'),
+        metricCard('fas fa-layer-group','RAM Cache Engine',cacheSize+' / '+cacheMax, 'Fast LRU Memory', cachePct, 'mem')
     ].join('');
 
     /* Animate bars */
@@ -447,13 +675,13 @@ function render(d){
             const cls=rate>=75?'rate-good':rate>=40?'rate-warn':'rate-bad';
             const dotCls=rate>=75?'status-online':rate>=40?'status-warn':'status-offline';
             return `<tr>
-                <td style="text-align:center;color:var(--text-3);font-family:var(--mono);font-size:11px">${idx+1}</td>
+                <td style="text-align:center;color:var(--text-muted);font-family:'JetBrains Mono',monospace;font-size:11px">${idx+1}</td>
                 <td><span class="ep-path">${esc(ep.endpoint)}</span></td>
                 <td style="text-align:right"><span class="ep-hits">${fmtNum(ep.hits)}</span></td>
                 <td style="text-align:right"><span class="ep-rate ${cls}"><span class="status-dot ${dotCls}" style="width:5px;height:5px"></span>${rate}%</span></td>
             </tr>`;
         }).join('')
-        :'<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-3);font-size:13px">No data yet</td></tr>';
+        :'<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-muted);font-size:12px">No data recorded yet</td></tr>';
 
     /* System Info */
     document.getElementById('sysInfoGrid').innerHTML=[
@@ -509,13 +737,12 @@ async function loadVisitors(){
     }catch(e){}
 }
 
-/* Fetch — ambil latency dari /api/stats (sama kayak docs), sistem dari /status */
+/* Fetch stats */
 let isFetchingStats = false;
 async function loadStatsData(){
     if (isFetchingStats) return;
     isFetchingStats = true;
     try{
-        // Ambil real latency dari /api/stats (rolling average, sama kayak docs)
         let realLatency = '—';
         try {
             const sr = await fetch('/api/stats');
@@ -528,14 +755,12 @@ async function loadStatsData(){
         const r=await fetch('/status');
         const d=await r.json();
         
-        // Inject real latency dari /api/stats, bukan self-measured dari /status
         d._realLatency = realLatency;
         
         if (d.status === 'online' || d.cpu) {
             render(d);
         }
 
-        // Update version from configuration.json
         try {
             const cfgRes = await fetch('/configuration');
             const cfg = await cfgRes.json();

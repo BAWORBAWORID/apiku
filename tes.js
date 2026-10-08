@@ -1,325 +1,170 @@
 /**
- * Multi-Tool Test Runner (ESM)
- * Modes:
- *   1. Alight Motion Account Creator (Powered by Maildropy Temp Mail):
- *      node tes.js am [count]
- *      Contoh: node tes.js am
- *              node tes.js am 2
- *
- *   2. Maildropy Temp Mail Scraper:
- *      node tes.js
- *      node tes.js maildropy
- *      node tes.js <email>
+ * Code-V Web2APK Compiler Scraper (ESM)
+ * Author: Vamz Spectre (VamxAPI)
+ * 
+ * Target: https://code-v-compiler-sr.vercel.app
+ * Backend: Internal Next.js Vercel API (/api/build, /api/build/:id, /cdn/:file)
+ * Engine: sdkforge WebView APK Packager
  */
 
-import axios from 'axios'
-import { wrapper } from 'axios-cookiejar-support'
-import { CookieJar } from 'tough-cookie'
-import {
-  sendMagicLink,
-  findVerifyLink,
-  verifyMagicLink,
-  applyPremium,
-  getLicenseStatus,
-} from './api/am/bulkv4.js'
+import fs from 'node:fs';
+import path from 'node:path';
 
-// ─────────────────────────────────────────────
-// Maildropy Client & Scraper Base
-// ─────────────────────────────────────────────
-const MAILDROPY_BASE = 'http://maildropy.com'
-const MAILDROPY_WEB = 'https://maildropy.com'
-const TIMEOUT = 20000
-const USER_AGENT =
-  'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36'
+const BASE_URL = 'https://code-v-compiler-sr.vercel.app';
 
-const jar = new CookieJar()
-export const maildropyClient = wrapper(
-  axios.create({
-    jar,
-    baseURL: MAILDROPY_BASE,
-    timeout: TIMEOUT,
+/**
+ * Request compile Web to APK
+ * @param {Object} config
+ * @param {string} config.url - URL website target (e.g. 'https://vamxapi.my.id')
+ * @param {string} [config.appName='MyWebApp'] - Nama aplikasi Android
+ * @param {string} [config.packageName='com.mywebapp.app'] - Package ID Android
+ * @param {string} [config.versionName='1.0.0'] - Version display
+ * @param {number} [config.versionCode=1] - Version code int
+ * @param {Object} [config.options] - Opsi kustomisasi tambahan
+ * @param {Function} [onProgress] - Callback progress listener (status, percent)
+ * @returns {Promise<Object>} Result data build info & download url
+ */
+export async function buildWeb2Apk(config, onProgress = null) {
+  if (!config?.url) {
+    throw new Error('Parameter config.url wajib diisi!');
+  }
+
+  const payload = {
+    url: config.url,
+    appName: config.appName || 'MyWebApp',
+    packageName: config.packageName || 'com.mywebapp.app',
+    versionName: config.versionName || '1.0.0',
+    versionCode: Number(config.versionCode) || 1,
+    options: {
+      splash: config.options?.splash ?? true,
+      splashType: config.options?.splashType || 'default',
+      splashText: config.options?.splashText || config.appName || 'Loading...',
+      splashBg: config.options?.splashBg || '#0B0D10',
+      splashFg: config.options?.splashFg || '#3B82F6',
+      splashMs: Number(config.options?.splashMs) || 2000,
+      orientation: config.options?.orientation || 'auto',
+      js: config.options?.js ?? true,
+      zoom: config.options?.zoom ?? false,
+      permissions: Array.isArray(config.options?.permissions)
+        ? config.options.permissions
+        : ['INTERNET', 'WAKE_LOCK']
+    }
+  };
+
+  // 1. Submit Build Request
+  const createRes = await fetch(`${BASE_URL}/api/build`, {
+    method: 'POST',
     headers: {
-      'User-Agent': USER_AGENT,
       'Content-Type': 'application/json',
-      Accept: 'application/json',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
     },
-    validateStatus: () => true,
-  })
-)
+    body: JSON.stringify(payload)
+  });
 
-export function getDirectUrl(email) {
-  if (!email) return null
-  return `${MAILDROPY_WEB}/${email}`
-}
+  if (!createRes.ok) {
+    const errText = await createRes.text();
+    throw new Error(`Gagal mengirim build request: ${createRes.status} ${errText}`);
+  }
 
-export async function generateMaildropyEmail(domain = 'maildropy.com', customUser = '') {
-  try {
-    const cleanUser = (customUser || '').trim().toLowerCase().replace(/[^a-z0-9._-]/g, '')
-    if (cleanUser) {
-      const customEmail = `${cleanUser}@${domain}`
-      const response = await maildropyClient.post('/wxapi/set-email', { email: customEmail })
-      const data = response.data || {}
-      const email = data.email || customEmail
+  const createData = await createRes.json();
+  const buildId = createData.build_id;
+  if (!buildId) {
+    throw new Error(`Respon server tidak memiliki build_id: ${JSON.stringify(createData)}`);
+  }
+
+  if (onProgress) onProgress({ status: 'queued', progress: 0, buildId });
+
+  // 2. Poll Build Status
+  const maxAttempts = 60; // Max ~120 detik
+  let attempt = 0;
+
+  while (attempt < maxAttempts) {
+    await new Promise(r => setTimeout(r, 2000));
+    attempt++;
+
+    const pollRes = await fetch(`${BASE_URL}/api/build/${buildId}`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+
+    if (!pollRes.ok) continue;
+
+    const pollData = await pollRes.json();
+    const status = pollData.status;
+    const progress = pollData.progress || 0;
+
+    if (onProgress) {
+      onProgress({ status, progress, log: pollData.log || [] });
+    }
+
+    if (status === 'ready' || status === 'completed') {
+      const downloadPath = pollData.download_url || `/cdn/${buildId}.apk`;
+      const downloadUrl = downloadPath.startsWith('http')
+        ? downloadPath
+        : `${BASE_URL}${downloadPath}`;
+
       return {
-        status: response.status >= 200 && response.status < 300,
-        data: {
-          email,
-          domain,
-          approved: Boolean(data.approved),
-          direct_url: getDirectUrl(email),
+        status: true,
+        buildId,
+        appName: payload.appName,
+        packageName: payload.packageName,
+        targetUrl: payload.url,
+        fileSize: pollData.file_size || null,
+        downloadUrl,
+        raw: pollData
+      };
+    }
+
+    if (status === 'failed' || status === 'error') {
+      throw new Error(`Build gagal: ${pollData.error || 'Unknown error'}`);
+    }
+  }
+
+  throw new Error('Build timeout: Proses compile memakan waktu lebih dari 2 menit.');
+}
+
+export { BASE_URL };
+export default buildWeb2Apk;
+
+const isMain = process.argv[1] && (
+  import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/')) ||
+  process.argv[1].endsWith('tes.js')
+);
+
+if (isMain) {
+  (async () => {
+    try {
+      console.log('🚀 Memulai Web2APK Compile...');
+      const targetUrl = process.argv[2] || 'https://vamxapi.my.id';
+      const appName = process.argv[3] || 'Apiku App';
+      const packageName = process.argv[4] || 'com.apiku.app';
+      const outputFile = process.argv[5] || 'api.apk';
+
+      const result = await buildWeb2Apk(
+        {
+          url: targetUrl,
+          appName: appName,
+          packageName: packageName
         },
+        (p) => console.log(`⏳ [${p.status}] Progress: ${p.progress || 0}%`)
+      );
+
+      console.log('\n✅ Build Sukses!');
+      console.log('Download URL:', result.downloadUrl);
+
+      console.log(`📥 Mengunduh APK ke ${outputFile}...`);
+      const apkRes = await fetch(result.downloadUrl);
+      if (!apkRes.ok) {
+        throw new Error(`Gagal mengunduh APK: ${apkRes.status} ${apkRes.statusText}`);
       }
-    }
-
-    const response = await maildropyClient.post('/wxapi/generate', { domain })
-    const data = response.data || {}
-    if (data.email) data.direct_url = getDirectUrl(data.email)
-    return {
-      status: response.status >= 200 && response.status < 300,
-      data,
-    }
-  } catch (error) {
-    return { status: false, message: error.message }
-  }
-}
-
-export async function validateMaildropyEmail(email) {
-  if (!email) return { status: false, message: 'Email wajib diisi!' }
-  try {
-    const encoded = encodeURIComponent(email)
-    const response = await maildropyClient.get(`/wxapi/email-status/${encoded}`)
-    const data = response.data || {}
-    data.direct_url = getDirectUrl(email)
-    return {
-      status: response.status >= 200 && response.status < 300,
-      data,
-    }
-  } catch (error) {
-    return { status: false, message: error.message }
-  }
-}
-
-export async function checkMaildropyInbox(email) {
-  if (!email) return { status: false, message: 'Email wajib diisi!' }
-  try {
-    const encoded = encodeURIComponent(email)
-    const response = await maildropyClient.get(`/wxapi/messages/${encoded}`)
-    const data = response.data || {}
-    data.direct_url = getDirectUrl(email)
-    return {
-      status: response.status >= 200 && response.status < 300,
-      data,
-    }
-  } catch (error) {
-    return { status: false, message: error.message }
-  }
-}
-
-export async function getMaildropyMessage(email, messageId) {
-  if (!email || !messageId) return { status: false, message: 'Email dan messageId wajib diisi!' }
-  try {
-    const encEmail = encodeURIComponent(email)
-    const encId = encodeURIComponent(messageId)
-    const response = await maildropyClient.get(`/wxapi/message/${encEmail}/${encId}`)
-    const data = response.data || {}
-    data.direct_url = getDirectUrl(email)
-    return {
-      status: response.status >= 200 && response.status < 300,
-      data,
-    }
-  } catch (error) {
-    return { status: false, message: error.message }
-  }
-}
-
-// ─────────────────────────────────────────────
-// Polling Inbox Maildropy Mencari Magic Link
-// ─────────────────────────────────────────────
-async function waitForMaildropyVerifyLink(email, { maxAttempts = 20, intervalMs = 2000 } = {}) {
-  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-    try {
-      const inboxRes = await checkMaildropyInbox(email)
-      const messages = inboxRes.data?.messages || []
-
-      if (messages.length > 0) {
-        for (const msg of messages) {
-          // 1. Cek langsung dari preview/teks pesan
-          let link = findVerifyLink([msg])
-          if (link) return { link, attempts: attempt, msgId: msg.id }
-
-          // 2. Jika belum ketemu, ambil body pesan penuh dari /wxapi/message/:email/:id
-          const msgId = msg.id || msg._id
-          if (msgId) {
-            const detailRes = await getMaildropyMessage(email, msgId)
-            const detailData = detailRes.data || {}
-            link = findVerifyLink([detailData, msg])
-            if (link) return { link, attempts: attempt, msgId }
-          }
-        }
-      }
-    } catch {}
-    await new Promise((r) => setTimeout(r, intervalMs))
-  }
-  return null
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-// ─────────────────────────────────────────────
-// Alight Motion Account Creator via Maildropy
-// ─────────────────────────────────────────────
-export async function createSingleAMAccount(index = 1, total = 1) {
-  const prefix = total > 1 ? `[${index}/${total}] ` : ''
-  console.log(`\n==================================================`)
-  console.log(`${prefix}🚀 Memulai Pembuatan Akun Alight Motion Premium (Maildropy)`)
-  console.log(`==================================================`)
-
-  // Step 1: Create Maildropy email
-  console.log(`${prefix}📧 [1/5] Membuat email temporary via Maildropy (maildropy.com)...`)
-  const gen = await generateMaildropyEmail('maildropy.com')
-  const email = gen.data?.email
-  if (!email) {
-    throw new Error(`Gagal membuat email Maildropy: ${gen.message || 'Respons kosong'}`)
-  }
-  const directUrl = getDirectUrl(email)
-  console.log(`${prefix}   ➜ Email: ${email}`)
-  console.log(`${prefix}   ➜ Web Inbox: ${directUrl}`)
-
-  // Step 2: Send Firebase magic link
-  console.log(`${prefix}📨 [2/5] Mengirim magic sign-in link dari Alight Creative...`)
-  await sendMagicLink(email)
-  console.log(`${prefix}   ✓ Magic link berhasil dikirim ke ${email}`)
-
-  // Step 3: Wait for verification link in Maildropy inbox
-  console.log(`${prefix}⏳ [3/5] Menunggu email masuk di Maildropy inbox...`)
-  const found = await waitForMaildropyVerifyLink(email, { maxAttempts: 20, intervalMs: 2000 })
-  if (!found?.link) {
-    throw new Error(`Link verifikasi tidak ditemukan di inbox Maildropy ${email} setelah 40 detik`)
-  }
-  console.log(`${prefix}   ✓ Link verifikasi ditemukan dalam ${found.attempts * 2} detik!`)
-
-  // Step 4: Verify magic link and get idToken
-  console.log(`${prefix}🔑 [4/5] Memverifikasi login Firebase Auth...`)
-  const authData = await verifyMagicLink(email, found.link)
-  if (!authData.idToken) {
-    throw new Error(`Gagal memperoleh idToken dari Firebase`)
-  }
-  console.log(`${prefix}   ✓ Login sukses! LocalID: ${authData.localId}`)
-
-  // Step 5: Apply premium subscription
-  console.log(`${prefix}⭐ [5/5] Mengaktifkan lisensi Alight Motion Premium...`)
-  const purchaseRes = await applyPremium(authData.idToken)
-  const orderId = purchaseRes.applied_order_id
-
-  // Step 6: Check license status
-  let license = { isPro: false, expiresAt: null, benefits: [] }
-  try {
-    license = await getLicenseStatus(authData.idToken)
-  } catch (licErr) {
-    console.warn(`${prefix}   ⚠ Warning saat membaca status lisensi: ${licErr.message}`)
-  }
-
-  const result = {
-    status: true,
-    email,
-    orderId,
-    isPro: license.isPro,
-    expiresAt: license.expiresAt,
-    localId: authData.localId,
-    idToken: authData.idToken,
-    refreshToken: authData.refreshToken,
-    webInbox: directUrl,
-    benefits: license.benefits,
-  }
-
-  console.log(`\n🎉 ${prefix}AKUN ALIGHT MOTION PREMIUM BERHASIL DIBUAT!`)
-  console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
-  console.log(`📧 Email      : ${result.email}`)
-  console.log(`💎 Status Pro : ${result.isPro ? 'AKTIF (PRO)' : 'TIDAK AKTIF'}`)
-  console.log(`📅 Kadaluarsa : ${result.expiresAt || '-'}`)
-  console.log(`🧾 Order ID   : ${result.orderId}`)
-  console.log(`📬 Web Inbox  : ${result.webInbox}`)
-  console.log(`🆔 Local ID   : ${result.localId}`)
-  console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`)
-
-  return result
-}
-
-export async function runAMCreator(count = 1) {
-  const total = Math.min(Math.max(parseInt(count, 10) || 1, 1), 10)
-  console.log(`\n🎬 Alight Motion Premium Creator via Maildropy (Total: ${total} Akun)`)
-
-  const results = []
-  for (let i = 0; i < total; i++) {
-    try {
-      const res = await createSingleAMAccount(i + 1, total)
-      results.push(res)
+      const arrayBuffer = await apkRes.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      fs.writeFileSync(outputFile, buffer);
+      console.log(`🎉 Berhasil disimpan ke ${outputFile} (${(buffer.length / (1024 * 1024)).toFixed(2)} MB)`);
     } catch (err) {
-      console.error(`❌ Gagal membuat akun ke-${i + 1}: ${err.message}`)
+      console.error('\n❌ Terjadi error:', err.message);
+      process.exit(1);
     }
-    if (i < total - 1) {
-      console.log(`⏳ Menunggu 2 detik sebelum akun berikutnya...`)
-      await sleep(2000)
-    }
-  }
-
-  console.log(`\n✨ Ringkasan: Selesai memproses ${results.length}/${total} akun Alight Motion Premium.`)
-  return results
+  })();
 }
-
-// ─────────────────────────────────────────────
-// CLI Runner
-// ─────────────────────────────────────────────
-const command = (process.argv[2] || '').toLowerCase()
-const param = process.argv[3]
-
-;(async () => {
-  try {
-    // Mode AM Creator: node tes.js am [count]
-    if (command === 'am' || command === 'bulkv4') {
-      const count = parseInt(param, 10) || 1
-      await runAMCreator(count)
-      return
-    }
-
-    // Mode Maildropy: node tes.js [email]
-    console.log('=== Maildropy Temp Mail Test ===\n')
-
-    if (command && command.includes('@')) {
-      console.log(`🔗 Akses Langsung Web: ${getDirectUrl(command)}\n`)
-
-      console.log(`[1] Validating status untuk: ${command}`)
-      const statusRes = await validateMaildropyEmail(command)
-      console.log('Status result:', JSON.stringify(statusRes, null, 2))
-
-      console.log(`\n[2] Checking inbox untuk: ${command}`)
-      const inboxRes = await checkMaildropyInbox(command)
-      console.log('Inbox result:', JSON.stringify(inboxRes, null, 2))
-    } else {
-      console.log('[1] Generating new email...')
-      const genRes = await generateMaildropyEmail()
-      console.log('Generate result:', JSON.stringify(genRes, null, 2))
-
-      const generatedEmail = genRes.data?.email
-      if (generatedEmail) {
-        console.log(`\n🔗 Akses Langsung Web: ${getDirectUrl(generatedEmail)}`)
-
-        console.log(`\n[2] Validating email: ${generatedEmail}`)
-        const statusRes = await validateMaildropyEmail(generatedEmail)
-        console.log('Validate result:', JSON.stringify(statusRes, null, 2))
-
-        console.log(`\n[3] Checking inbox: ${generatedEmail}`)
-        const inboxRes = await checkMaildropyInbox(generatedEmail)
-        console.log('Inbox result:', JSON.stringify(inboxRes, null, 2))
-      }
-
-      console.log('\n💡 Tip:')
-      console.log('• Jalankan pembuatan akun Alight Motion via Maildropy: node tes.js am')
-      console.log('• Jalankan bulk beberapa akun:                        node tes.js am 2')
-    }
-  } catch (err) {
-    console.error('Error:', err.message)
-  }
-})()

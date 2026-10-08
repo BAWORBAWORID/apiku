@@ -64,14 +64,12 @@ const inFlightLogins = new Map();
 
 class GtcError extends Error {}
 
-const PROTECTED_PHONE_CORES = new Set([
-  "895340737549",
-  "88297563383",
-]);
+const PROTECTED_PHONE_CORES = new Set();
 
 function isProtectedNumber(raw) {
   const digits = String(raw || "").replace(/\D/g, "");
-  return [...PROTECTED_PHONE_CORES].some((core) => digits.endsWith(core));
+  if (!digits) return false;
+  return [...PROTECTED_PHONE_CORES].some((core) => core && digits.endsWith(core));
 }
 
 function maskPhone(val) {
@@ -396,6 +394,23 @@ async function apiSubscription(cred) {
   return body;
 }
 
+// Akun yang token-nya mati (403001 / Authentication failed) ditempatkan paling
+// akhir dalam rotasi supaya tidak membuang satu request di setiap lookup.
+const deadAccounts = new Set();
+
+function isAuthFailure(msg) {
+  return /403001|Authentication failed|Invalid token|token expired|unauthorized/i.test(msg || "");
+}
+
+function buildRotationOrder(names, activeName) {
+  const alive = names.filter((n) => !deadAccounts.has(n));
+  const dead = names.filter((n) => deadAccounts.has(n));
+  const head = alive.includes(activeName)
+    ? [activeName, ...alive.filter((n) => n !== activeName)]
+    : alive;
+  return [...head, ...dead];
+}
+
 async function apiSearchWithFallback(phone, source) {
   const store = loadStore();
   const creds = store.credentials || {};
@@ -405,7 +420,7 @@ async function apiSearchWithFallback(phone, source) {
   }
 
   const activeName = store.active && creds[store.active] ? store.active : names[0];
-  const order = [activeName, ...names.filter((n) => n !== activeName)];
+  const order = buildRotationOrder(names, activeName);
 
   let lastError = null;
   for (const name of order) {
@@ -416,13 +431,26 @@ async function apiSearchWithFallback(phone, source) {
     try {
       logger.info(`[GETCONTACT] ${source} lookup for ${phone} (account: ${name})`);
       const body = await apiSearch(cred, phone, source);
+
+      // Self-heal: akun yang aktif ternyata mati, jadikan ini akun aktif.
+      if (store.active !== name) {
+        store.active = name;
+        saveStore(store);
+        logger.warn(`[GETCONTACT] Active account rotated -> ${name}`);
+      }
+
       return [name, body];
     } catch (err) {
       lastError = err;
       if (/404.*No result found/i.test(err.message)) {
         throw err;
       }
-      if (/403|401|limit|quota|QUOTA_EXHAUSTED|query limit|unauthorized|session/i.test(err.message)) {
+      if (isAuthFailure(err.message)) {
+        deadAccounts.add(name);
+        logger.warn(`[GETCONTACT] Account ${name} token dead (${err.message}), demoting in rotation.`);
+        continue;
+      }
+      if (/403|401|limit|quota|QUOTA_EXHAUSTED|query limit|session/i.test(err.message)) {
         logger.warn(`[GETCONTACT] Account ${name} error (${err.message}) on ${source}, trying next account...`);
         continue;
       }
@@ -661,6 +689,8 @@ async function checkLoginVerification(pending) {
   };
   store.active = cleanPhoneKey;
   saveStore(store);
+  deadAccounts.delete(cleanPhoneKey);
+  logger.info(`[GETCONTACT] Account ${cleanPhoneKey} re-authenticated, restored in rotation.`);
 
   let quota = null;
   try {

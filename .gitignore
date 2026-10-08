@@ -1,22 +1,20 @@
 node_modules/
 src/function/chrome
 
-# Environment variables
+# Environment variables & local folders
 .env
-core
+gopay/
 
-# Runtime data (user uploads)
+# Runtime data & uploads
 files/
 logs/
+data/upload-expiry.json
 
 # Ephemeral session data (AI chat sessions + Express admin sessions)
 data/session/
 data/sessions/
 
-# Uploaded/generated files
-upload-expiry.json
-
-# OS
+# OS artifacts
 .DS_Store
 Thumbs.db
 
@@ -25,12 +23,8 @@ Thumbs.db
 
 # Tooling kredensial / state lokal (jangan pernah di-commit)
 .gtc/
-tmail.json
-qqtube_orders.log
 *.key
 
-# Python
-__pycache__/
-*.py[cod]
+# Backups & archives
 data/donasi.json
 *.zip

@@ -140,6 +140,97 @@ const CDN_LIST = [
       return `https://cdn.aceimg.com/${f}`;
     }
   },
+  {
+    name: "zippyshare",
+    upload: async (buffer, filename) => {
+      const { default: mime } = await import("mime-types");
+      const mimeType = mime.lookup(filename) || "application/octet-stream";
+      const homeRes = await fetch("https://zippyshare.day/", {
+        headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
+        signal: AbortSignal.timeout(20000)
+      });
+      if (!homeRes.ok) throw new Error(`zippyshare home HTTP ${homeRes.status}`);
+      const html = await homeRes.text();
+      const rawCookies = homeRes.headers.getSetCookie ? homeRes.headers.getSetCookie() : [homeRes.headers.get("set-cookie")].filter(Boolean);
+      const cookies = rawCookies.map(c => c.split(";")[0]).join("; ");
+      const csrf = (html.match(/<meta\s+name=["']csrf-token["']\s+content=["']([^"']+)["']/i) || [])[1];
+      if (!csrf) throw new Error("zippyshare: no csrf token");
+
+      const presignRes = await fetch("https://zippyshare.day/upload/presign", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": csrf,
+          "X-Requested-With": "XMLHttpRequest",
+          "Referer": "https://zippyshare.day/",
+          "Cookie": cookies,
+          "User-Agent": "Mozilla/5.0"
+        },
+        body: JSON.stringify({ filename, size: buffer.length, mime: mimeType, password: "", upload_auto_delete: 0, folder_id: null }),
+        signal: AbortSignal.timeout(30000)
+      });
+      if (!presignRes.ok) throw new Error(`zippyshare presign HTTP ${presignRes.status}`);
+      const presignData = await presignRes.json();
+      if (!presignData?.presigned_url) throw new Error("zippyshare: no presigned_url");
+
+      const r2Res = await fetch(presignData.presigned_url, {
+        method: "PUT",
+        headers: { "Content-Type": mimeType },
+        body: buffer,
+        signal: AbortSignal.timeout(60000)
+      });
+      if (!r2Res.ok && r2Res.status !== 200 && r2Res.status !== 204) throw new Error(`zippyshare R2 HTTP ${r2Res.status}`);
+
+      const compRes = await fetch("https://zippyshare.day/upload/complete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": csrf,
+          "X-Requested-With": "XMLHttpRequest",
+          "Referer": "https://zippyshare.day/",
+          "Cookie": cookies,
+          "User-Agent": "Mozilla/5.0"
+        },
+        body: JSON.stringify({ token: presignData.token, mime: mimeType }),
+        signal: AbortSignal.timeout(30000)
+      });
+      if (!compRes.ok) throw new Error(`zippyshare complete HTTP ${compRes.status}`);
+      const compData = await compRes.json();
+      if (!compData?.download_link) throw new Error("zippyshare: no download_link");
+
+      // Dapatkan direct CDN download URL
+      const downloadId = compData.download_link.split("/")[3];
+      const dlRes = await fetch(`https://zippyshare.day/${downloadId}/download/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": csrf,
+          "X-Requested-With": "XMLHttpRequest",
+          "Referer": compData.download_link,
+          "Cookie": cookies,
+          "User-Agent": "Mozilla/5.0"
+        },
+        signal: AbortSignal.timeout(20000)
+      });
+      if (dlRes.ok) {
+        const dlData = await dlRes.json();
+        if (dlData?.download_link) {
+          const headRes = await fetch(dlData.download_link, {
+            method: "HEAD",
+            redirect: "manual",
+            headers: { "User-Agent": "Mozilla/5.0", "Referer": compData.download_link, "Cookie": cookies },
+            signal: AbortSignal.timeout(15000)
+          });
+          if (headRes.status >= 300 && headRes.status < 400 && headRes.headers.get("location")) {
+            return headRes.headers.get("location");
+          }
+          return dlData.download_link;
+        }
+      }
+
+      return compData.download_link;
+    }
+  },
 ];
 
 function readDb() {
@@ -242,9 +333,9 @@ export default {
     cdn: {
       type: "string",
       required: false,
-      enum: ["all", "poners", "cloudstorage", "nekohime", "phototourl", "zasscdn", "aceimg"],
+      enum: ["all", "poners", "cloudstorage", "nekohime", "phototourl", "zasscdn", "aceimg", "zippyshare"],
       default: "all",
-      description: "Target CDN (pilih 'poners', 'cloudstorage', dll, atau 'all' untuk multi-CDN fallback)"
+      description: "Target CDN (pilih 'zippyshare', 'cloudstorage', 'poners', dll, atau 'all' untuk multi-CDN fallback)"
     },
     exp: {
       type: "number",

@@ -105,6 +105,7 @@
     "systeminformation": "^5.28.2",
     "telegraf": "^4.16.3",
     "tesseract.js": "^7.0.0",
+    "tinyurl": "^1.1.7",
     "tmp": "^0.2.5",
     "tough-cookie": "^6.0.1",
     "undici": "^5.28.4",

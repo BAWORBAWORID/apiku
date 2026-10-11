@@ -181,9 +181,10 @@ async function doStream(identifier, { maxSizeMB = 0, adult = false, file = '' } 
     // URL ini aman dipakai langsung sebagai <video src>. Untuk fetch/XHR dari
     // browser (hls.js, canvas) pakai action=proxy.
     url: best.url,
+    embedUrl: `https://archive.org/embed/${encodeURIComponent(detail.identifier)}`,
     directPlay: true,
     corsEnabled: false,
-    proxy: `/api/movie/publicdomain?action=proxy&identifier=${encodeURIComponent(detail.identifier)}${file ? `&file=${encodeURIComponent(file)}` : ''}`,
+    proxy: `/api/movie/freemovie?action=proxy&identifier=${encodeURIComponent(detail.identifier)}${file ? `&file=${encodeURIComponent(file)}` : ''}`,
     thumbnail: detail.thumbnail,
     page: detail.page,
     alternatives: pool.slice(1, 6).map((v) => ({ file: v.name, sizeMB: v.sizeMB, url: v.url })),

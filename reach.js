@@ -1,428 +1,418 @@
-#!/usr/bin/env node
-/*
-  Port ESM dari NexaReactEngine (Go) -> Node.js >= 18
-  Sumber: https://lunee.lol/raw/eFPfCs
-
-  Usage:
-    node reach.js <link> [emoji|rounds|turnstileToken ...]
-
-  Contoh:
-    node reach.js "https://whatsapp.com/channel/0029.../775" 🔥
-    node reach.js <link> 🔥 ❤️ 5
-    node reach.js <link> 0x000000000000000000000000000000000000
-*/
+/**
+ * Rin API - React Channel WhatsApp (rch) Scraper & Automator
+ * Target: https://apiii-xrina.my.id/rch
+ *
+ * Mendukung multiple solver Turnstile:
+ * 1. Local Playwright Solver (import from ./api/solve/turnstile.js)
+ * 2. CapSolver API (TurnstileTask / TurnstileTaskProxyLess)
+ * 3. 2Captcha API (Turnstile / Cloudflare)
+ * 4. Custom Solver API Endpoint
+ *
+ * ESM Native
+ */
 
 import axios from "axios";
-import https from "node:https";
-import fs from "node:fs";
-import { execFileSync } from "node:child_process";
+import { solveTurnstile as localSolveTurnstile } from "./api/solve/turnstile.js";
 
-const ORIGIN = "https://195.88.211.140";
-const HOSTNAME = "react.nexapanel.my.id";
-const DEFAULT_SITEKEY = "0x4AAAAAAD9k4QStw1JJr-cl";
-const DEFAULT_TARGET = "https://whatsapp.com/channel/0029VayDvvwKAwEf3GrHDT0u/775";
-const UA =
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
+const BASE_URL = "https://apiii-xrina.my.id";
+const RCH_PAGE_URL = `${BASE_URL}/rch`;
+const DEFAULT_SITEKEY = "0x4AAAAAAFSt8uci-DnRwonJ";
 
-const DEFAULT_TURNSTILE_TOKEN =
-  "1.PrK2QVeqeBmLA8LqzBh3SAkmx25h9_0czYVwU1n9kUCZJrulyhSViX5DcHW2VFGpgYb6r9DBwZbAfFERLqL4aOzF_EDC8eqM6X_aL9utCVw87ZltRLzwd9odZIBHMD0CLNwjb7YJMiAuqVuFpo3vZIOqQkEd82o0vLZFd-h3Rz9bZav41UVIsCOxWk9tOYBInBxA2Jap8ckgFDHfk1tW-TJctrGP62Yz4tjwcE1hF5JxA5SwQswS3O9kP-T7T7vORqxKiPDg-kTkcyTaRFdrtb7e83onZViqFjUUZHN1prTASbsGlCKOdLJNySEg9iLXzbPu0X7ffMXENw7EYu4Sf3gXRzsuT__983wktH5FbsMwjelgE1ENGXXdJG6wF7r2Bt4Wg8d5w18jBoHwvmMRUmKf_Z6Eu7lpHoVT37x2X-LZJia4J6WTlC-YTnqunMO-Mi7ve737XZR9NbenqcpddZR4xWycY474VUZekuCCM2LEBxw1XiLiesgMIyamZMKENnJK-bjaCC881OiJ7SIo9vxukTSO2ukgWzoYMD8A2q1rguF_-7nVlgqc9_ylC8bLmr7mSMBr8Wg8PpTiKSfPdmKIlpebWOsozSXeXTc5JoKEVveKUaVKbRqXvE9WSBzKAjR94yqZsy8Wg6Ze3Vq_63QTgUCljzdymZj2LNVdqi-xH44k0uU1Duz4i6ZvbMt6hbhN8Mi0QatxCB9tGmA3Yg.jeiX5km4xl9gXuH58Mu9BQ.0d6d543ed1aa48546b9200794f30e3402394c195647f58e1febf0906a4418044";
+const DEFAULT_HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  Accept: "application/json, text/plain, */*",
+  "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
+  Origin: BASE_URL,
+  Referer: RCH_PAGE_URL,
+};
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function unescapeHtml(s) {
-  if (!s) return s;
-  return s
-    .replace(/&#x([0-9a-fA-F]+);/g, (_, h) => String.fromCodePoint(parseInt(h, 16)))
-    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(parseInt(d, 10)))
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&apos;/g, "'")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&amp;/g, "&");
+/**
+ * 1. Cek status sisa jatah/limit harian
+ */
+export async function getStatus() {
+  const res = await axios.get(`${BASE_URL}/rch/status`, {
+    headers: DEFAULT_HEADERS,
+    timeout: 10000,
+  });
+  return res.data;
 }
 
-function match(re, text, idx = 1) {
-  const m = re.exec(text || "");
-  return m && m.length > idx ? m[idx] : "";
+/**
+ * 2. Inisialisasi sesi verifikasi manusia (mendapatkan cid, ray, siteKey)
+ */
+export async function initVerification() {
+  const res = await axios.get(`${BASE_URL}/rch/v/init`, {
+    headers: DEFAULT_HEADERS,
+    timeout: 10000,
+  });
+  if (!res.data || !res.data.cid) {
+    throw new Error(
+      "Gagal mendapatkan session cid dari /rch/v/init: " + JSON.stringify(res.data)
+    );
+  }
+  return res.data;
 }
 
-function resolveCachedTurnstileToken() {
-  const env = (process.env.TURNSTILE_TOKEN || "").trim();
-  if (env) return env;
+/**
+ * 3. Solver: Local Playwright Turnstile
+ */
+export async function solveWithLocalPlaywright(siteKey = DEFAULT_SITEKEY, options = {}) {
+  const token = await localSolveTurnstile({
+    url: RCH_PAGE_URL,
+    sitekey: siteKey,
+    invisible: options.invisible || false,
+    debug: options.debug || false,
+    timeoutMs: options.timeoutMs || 45000,
+  });
+  if (!token) throw new Error("Local Playwright solver gagal mendapatkan token Turnstile");
+  return token;
+}
 
-  for (const p of [".turnstile_cache", "/root/Scrape/.turnstile_cache"]) {
-    try {
-      const tok = fs.readFileSync(p, "utf8").trim();
-      if (tok.length > 20) return tok;
-    } catch {
-      /* file tidak ada — lewati */
+/**
+ * 4. Solver: CapSolver API
+ * https://docs.capsolver.com/guide/captcha/cloudflare_turnstile.html
+ */
+export async function solveWithCapSolver(apiKey, siteKey = DEFAULT_SITEKEY, options = {}) {
+  if (!apiKey) throw new Error("CapSolver API key diperlukan");
+
+  const createRes = await axios.post(
+    "https://api.capsolver.com/createTask",
+    {
+      clientKey: apiKey,
+      task: {
+        type: "AntiTurnstileTaskProxyLess",
+        websiteURL: RCH_PAGE_URL,
+        websiteKey: siteKey,
+      },
+    },
+    { timeout: 15000 }
+  );
+
+  if (createRes.data.errorId !== 0) {
+    throw new Error(`CapSolver createTask error: ${createRes.data.errorDescription || JSON.stringify(createRes.data)}`);
+  }
+
+  const taskId = createRes.data.taskId;
+  const deadline = Date.now() + (options.timeoutMs || 60000);
+
+  while (Date.now() < deadline) {
+    await sleep(2000);
+    const resultRes = await axios.post(
+      "https://api.capsolver.com/getTaskResult",
+      { clientKey: apiKey, taskId },
+      { timeout: 15000 }
+    );
+
+    if (resultRes.data.status === "ready") {
+      const token = resultRes.data.solution?.token;
+      if (!token) throw new Error("CapSolver tidak mengembalikan token valid");
+      return token;
+    }
+    if (resultRes.data.status === "failed") {
+      throw new Error(`CapSolver task failed: ${resultRes.data.errorDescription}`);
     }
   }
 
-  if (DEFAULT_TURNSTILE_TOKEN) return DEFAULT_TURNSTILE_TOKEN;
-
-  try {
-    const out = execFileSync("xvfb-run", [
-      "-a",
-      "bun",
-      "run",
-      "/root/Scrape/AstraluneApi/get_turnstile.ts",
-    ]);
-    const tok = String(out).trim();
-    if (tok.length > 20) {
-      fs.writeFileSync(".turnstile_cache", tok, "utf8");
-      return tok;
-    }
-  } catch {
-    /* fallback */
-  }
-  return DEFAULT_TURNSTILE_TOKEN;
+  throw new Error("CapSolver timeout menunggu penyelesaian Turnstile");
 }
 
-function normalizeEmojis(rawEmojis) {
-  const out = [];
-  if (!rawEmojis || rawEmojis.length === 0) return ["🔥", "❤️"];
+/**
+ * 5. Solver: 2Captcha API
+ * https://2captcha.com/2captcha-api#turnstile
+ */
+export async function solveWith2Captcha(apiKey, siteKey = DEFAULT_SITEKEY, options = {}) {
+  if (!apiKey) throw new Error("2Captcha API key diperlukan");
 
-  for (const e of rawEmojis) {
-    for (const sp of String(e).split(",")) {
-      const tr = sp.trim().toLowerCase();
-      switch (tr) {
-        case "api":
-        case "fire":
-        case "🔥":
-          out.push("🔥");
-          break;
-        case "love":
-        case "heart":
-        case "❤️":
-        case "❤":
-          out.push("❤️");
-          break;
-        case "like":
-        case "thumbs":
-        case "👍":
-          out.push("👍");
-          break;
-        case "laugh":
-        case "joy":
-        case "😂":
-          out.push("😂");
-          break;
-        default:
-          if (tr !== "") out.push(sp.trim());
-      }
+  const inRes = await axios.post(
+    "https://2captcha.com/in.php",
+    null,
+    {
+      params: {
+        key: apiKey,
+        method: "turnstile",
+        sitekey: siteKey,
+        pageurl: RCH_PAGE_URL,
+        json: 1,
+      },
+      timeout: 15000,
     }
+  );
+
+  if (inRes.data.status !== 1) {
+    throw new Error(`2Captcha in.php error: ${inRes.data.request}`);
   }
-  return out;
-}
 
-class NexaReactEngine {
-  constructor(timeoutMs) {
-    this.originURL = ORIGIN;
-    this.hostName = HOSTNAME;
-    this.timeout = timeoutMs;
-    this.jar = new Map();
+  const id = inRes.data.request;
+  const deadline = Date.now() + (options.timeoutMs || 60000);
 
-    this.agent = new https.Agent({
-      rejectUnauthorized: false,
-      keepAlive: true,
-      maxSockets: 100,
-      ALPNProtocols: ["http/1.1"],
+  while (Date.now() < deadline) {
+    await sleep(4000);
+    const resRes = await axios.get("https://2captcha.com/res.php", {
+      params: {
+        key: apiKey,
+        action: "get",
+        id,
+        json: 1,
+      },
+      timeout: 15000,
     });
-  }
 
-  resetSession() {
-    this.jar = new Map();
-  }
-
-  applyHeaders(referer) {
-    const h = {
-      Host: this.hostName,
-      "User-Agent": UA,
-      Accept:
-        "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-      "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
-      "Sec-Ch-Ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-      "Sec-Ch-Ua-Mobile": "?0",
-      "Sec-Ch-Ua-Platform": '"Windows"',
-      "Sec-Fetch-Dest": "document",
-      "Sec-Fetch-Mode": "navigate",
-      "Sec-Fetch-Site": "same-origin",
-      "Sec-Fetch-User": "?1",
-    };
-    if (referer) {
-      h.Referer = referer;
-      h.Origin = `https://${this.hostName}`;
+    if (resRes.data.status === 1) {
+      return resRes.data.request;
     }
-    if (this.jar.size) {
-      h.Cookie = [...this.jar.entries()].map(([k, v]) => `${k}=${v}`).join("; ");
-    }
-    return h;
-  }
-
-  captureCookies(raw) {
-    const list = Array.isArray(raw) ? raw : raw ? [raw] : [];
-    for (const c of list) {
-      const first = String(c).split(";")[0];
-      const i = first.indexOf("=");
-      if (i > 0) this.jar.set(first.slice(0, i).trim(), first.slice(i + 1).trim());
+    if (resRes.data.request !== "CAPCHA_NOT_READY") {
+      throw new Error(`2Captcha error: ${resRes.data.request}`);
     }
   }
 
-  async request(config) {
-    const res = await axios({
-      ...config,
-      timeout: this.timeout,
-      httpsAgent: this.agent,
-      proxy: false,
-      validateStatus: () => true,
-      maxRedirects: 0,
-      transitional: { clarifyTimeoutError: true },
-    });
-    this.captureCookies(res.headers["set-cookie"]);
-    return res;
+  throw new Error("2Captcha timeout menunggu penyelesaian Turnstile");
+}
+
+/**
+ * 6. Solver: Custom API Endpoint
+ * Contoh: POST https://your-solver.com/api/solve/turnstile?url=...&sitekey=...
+ */
+export async function solveWithCustomApi(apiUrl, siteKey = DEFAULT_SITEKEY, options = {}) {
+  if (!apiUrl) throw new Error("Custom solver API URL diperlukan");
+
+  const res = await axios.post(
+    apiUrl,
+    {
+      url: RCH_PAGE_URL,
+      sitekey: siteKey,
+      ...options,
+    },
+    {
+      headers: { "Content-Type": "application/json" },
+      timeout: options.timeoutMs || 45000,
+    }
+  );
+
+  const token = res.data?.token || res.data?.result?.token || res.data?.data?.token || res.data;
+  if (!token || typeof token !== "string") {
+    throw new Error("Custom solver tidak mengembalikan format token string yang valid: " + JSON.stringify(res.data));
+  }
+  return token;
+}
+
+/**
+ * 7. Unified Solver Resolver
+ */
+export async function resolveTurnstile(siteKey = DEFAULT_SITEKEY, options = {}) {
+  const solverType = options.solver || "local";
+
+  if (solverType === "capsolver") {
+    return await solveWithCapSolver(options.apiKey || process.env.CAPSOLVER_API_KEY, siteKey, options);
+  }
+  if (solverType === "2captcha") {
+    return await solveWith2Captcha(options.apiKey || process.env.TWOCAPTCHA_API_KEY, siteKey, options);
+  }
+  if (solverType === "custom" || options.solverUrl) {
+    return await solveWithCustomApi(options.solverUrl, siteKey, options);
   }
 
-  async fetchPageState() {
-    const res = await this.request({
-      method: "GET",
-      url: `${this.originURL}/`,
-      headers: this.applyHeaders(""),
-    });
-    const htmlContent = String(res.data ?? "");
+  // Default: local playwright solver
+  return await solveWithLocalPlaywright(siteKey, options);
+}
 
-    let csrf = match(/name=["']_csrf_token["']\s+value=["']([^"']+)["']/, htmlContent);
-    if (!csrf) csrf = match(/_csrf_token["'][^>]*value=["']([^"']+)["']/, htmlContent);
+/**
+ * 8. Verifikasi Human Token (/rch/v/check)
+ * Memvalidasi Turnstile token & session cid untuk mendapatkan token otorisasi kirim react.
+ */
+export async function verifyHuman({ cid, tsToken, delayMs = 2500 }) {
+  if (!cid) throw new Error("Parameter 'cid' wajib diisi");
+  if (!tsToken) throw new Error("Parameter 'tsToken' wajib diisi");
 
-    const uid = match(/(NEXA-[A-Za-z0-9]+)/, htmlContent);
-
-    let coins = 3;
-    const coinsRaw = match(/(\d+)\s*<\/span>\s*<span[^>]*>Coins<\/span>/, htmlContent);
-    if (coinsRaw && Number.isFinite(Number(coinsRaw))) coins = Number(coinsRaw);
-
-    const siteKey = match(/data-sitekey=["']([^"']+)["']/, htmlContent) || DEFAULT_SITEKEY;
-
-    return { csrf, uid, coins, siteKey, html: htmlContent };
+  // Server Rin API memberlakukan rate limit minimal (jika <2 detik -> "Terlalu cepat")
+  if (delayMs > 0) {
+    await sleep(delayMs);
   }
 
-  async submitReaction({ csrf, uid, targetURL, emojis, turnstileToken }) {
-    const form = new URLSearchParams();
-    form.set("_csrf_token", csrf);
-    form.set("_uid", uid);
-    form.set("link", targetURL);
-    form.set("emoji", emojis);
-    form.set("cf-turnstile-response", turnstileToken);
-    form.set("execute", "1");
-
-    const res = await this.request({
-      method: "POST",
-      url: `${this.originURL}/`,
+  const res = await axios.post(
+    `${BASE_URL}/rch/v/check`,
+    {
+      cid,
+      hp: "", // Honeypot trap wajib string kosong
+      ts: tsToken,
+    },
+    {
       headers: {
-        ...this.applyHeaders(`https://${this.hostName}/`),
-        "Content-Type": "application/x-www-form-urlencoded",
+        ...DEFAULT_HEADERS,
+        "Content-Type": "application/json",
       },
-      data: form.toString(),
-    });
-    return String(res.data ?? "");
-  }
-
-  async executeWithRotation({
-    targetURL,
-    rawEmojis,
-    rounds,
-    turnstileToken,
-    ctxDeadline,
-  }) {
-    const startTime = Date.now();
-
-    let cleanTarget = String(targetURL || "").trim();
-    if (!cleanTarget) cleanTarget = DEFAULT_TARGET;
-    if (rounds < 1) rounds = 3;
-
-    const formattedEmojis = normalizeEmojis(rawEmojis);
-    const emojiStr = formattedEmojis.join(",");
-
-    if (!turnstileToken) turnstileToken = resolveCachedTurnstileToken();
-
-    const sessions = [];
-    let detectedSiteKey = DEFAULT_SITEKEY;
-    let totalCoins = 0;
-
-    for (let r = 1; r <= rounds; r++) {
-      if (Date.now() > ctxDeadline) {
-        sessions.push({
-          round: r,
-          submit_status: "TIMEOUT",
-          server_message: "Context deadline exceeded",
-        });
-        break;
-      }
-
-      if (r > 1) {
-        this.resetSession();
-        await sleep(1000);
-      }
-
-      let state;
-      try {
-        state = await this.fetchPageState();
-      } catch (err) {
-        sessions.push({
-          round: r,
-          submit_status: "FETCH_FAILED",
-          server_message: err.message,
-        });
-        continue;
-      }
-
-      detectedSiteKey = state.siteKey || detectedSiteKey;
-      totalCoins += state.coins;
-
-      let status = "READY";
-      let serverMsg = "Sesi berhasil dibuat dengan 3 koin gratis.";
-
-      if (turnstileToken) {
-        let respHTML;
-        try {
-          respHTML = await this.submitReaction({
-            csrf: state.csrf,
-            uid: state.uid,
-            targetURL: cleanTarget,
-            emojis: emojiStr,
-            turnstileToken,
-          });
-        } catch (err) {
-          status = "NETWORK_ERROR";
-          serverMsg = err.message;
-        }
-
-        if (respHTML !== undefined) {
-          let toast = unescapeHtml(match(/<p class="text-xs font-bold">(.*?)<\/p>/, respHTML));
-          if (toast) {
-            serverMsg = toast;
-            if (toast.includes("CAPTCHA tidak valid")) {
-              status = "CAPTCHA_EXPIRED";
-              try {
-                fs.unlinkSync(".turnstile_cache");
-              } catch {
-                /* tidak ada file */
-              }
-              const fresh = resolveCachedTurnstileToken();
-              if (fresh && fresh !== turnstileToken) {
-                turnstileToken = fresh;
-                try {
-                  const retry = await this.submitReaction({
-                    csrf: state.csrf,
-                    uid: state.uid,
-                    targetURL: cleanTarget,
-                    emojis: emojiStr,
-                    turnstileToken: fresh,
-                  });
-                  const retryToast = unescapeHtml(
-                    match(/<p class="text-xs font-bold">(.*?)<\/p>/, retry)
-                  );
-                  if (retryToast) {
-                    serverMsg = retryToast;
-                    if (!retryToast.includes("CAPTCHA tidak valid")) status = "SUBMITTED";
-                  } else {
-                    status = "COMPLETED";
-                    serverMsg = "Pesanan reaksi berhasil dikirimkan!";
-                  }
-                } catch (errRetry) {
-                  serverMsg = errRetry.message;
-                }
-              }
-            } else {
-              status = "SUBMITTED";
-            }
-          } else {
-            status = "COMPLETED";
-            serverMsg = "Pesanan reaksi berhasil dikirimkan!";
-          }
-        }
-      } else {
-        status = "AWAITING_TURNSTILE_TOKEN";
-        serverMsg = `UID ${state.uid} siap dengan ${state.coins} koin gratis. Token Turnstile otomatis sedang diproses.`;
-      }
-
-      sessions.push({
-        round: r,
-        verified_uid: state.uid,
-        available_coins: state.coins,
-        csrf_token: state.csrf,
-        submit_status: status,
-        server_message: serverMsg,
-      });
+      timeout: 15000,
     }
+  );
 
-    return {
-      success: true,
-      status_code: 200,
-      data: {
-        platform: "Nexa React 👑 (Server2 Auto-Rotator)",
-        membership: "FREE USER (Auto-Rotated)",
-        target_link: cleanTarget,
-        selected_emojis: emojiStr,
-        turnstile_sitekey: detectedSiteKey,
-        total_coins_allocated: totalCoins,
-        sessions,
-      },
-      timestamp: startTime,
-    };
-  }
+  return res.data;
 }
 
-function parseArgs(argv) {
-  let target = DEFAULT_TARGET;
-  let rounds = 3;
-  let turnstile = resolveCachedTurnstileToken();
-  const emojis = [];
+/**
+ * 9. Kirim Reaction ke WhatsApp Channel (/rch/send)
+ * @param {string} url - Link postingan channel (contoh: https://whatsapp.com/channel/xxx/123)
+ * @param {string|string[]} reaction - Emoji atau deretan emoji dipisah koma (maks. 4 emoji)
+ * @param {string} cid - Session cid terverifikasi
+ * @param {string} token - Human token hasil verifyHuman
+ */
+export async function sendReaction({ url, reaction, cid, token }) {
+  if (!url) throw new Error("URL pesan WhatsApp channel wajib diisi");
+  if (!reaction) throw new Error("Reaction emoji wajib diisi");
+  if (!cid) throw new Error("Parameter 'cid' wajib diisi");
+  if (!token) throw new Error("Parameter 'token' verifikasi manusia wajib diisi");
 
-  if (argv.length > 0) target = argv[0];
+  const cleanUrl = String(url).trim().split("?")[0].split("#")[0].replace(/\/+$/, "");
+  const reactionStr = Array.isArray(reaction) ? reaction.join(",") : String(reaction).trim();
 
-  if (argv.length > 1) {
-    for (const arg of argv.slice(1)) {
-      if (arg.startsWith("0x") || arg.length > 40) {
-        turnstile = arg;
-      } else if (/^\d+$/.test(arg)) {
-        const num = Number(arg);
-        if (num > 0 && num <= 20) rounds = num;
-        else emojis.push(arg);
-      } else {
-        emojis.push(arg);
-      }
+  const res = await axios.post(
+    `${BASE_URL}/rch/send`,
+    {
+      url: cleanUrl,
+      reaction: reactionStr,
+      cid,
+      token,
+    },
+    {
+      headers: {
+        ...DEFAULT_HEADERS,
+        "Content-Type": "application/json",
+      },
+      timeout: 20000,
     }
-  } else {
-    emojis.push("🔥", "❤️");
-  }
+  );
 
-  return { target, rounds, turnstile, emojis };
+  return res.data;
 }
 
-async function main() {
-  const { target, rounds, turnstile, emojis } = parseArgs(process.argv.slice(2));
-
-  let engine;
-  try {
-    engine = new NexaReactEngine(25_000);
-  } catch (err) {
-    console.error(`engine_init_failed: ${err.message}`);
-    process.exit(1);
+/**
+ * 10. Pipeline Lengkap React Channel WhatsApp
+ */
+export async function reactChannel({ url, reaction, solver = "local", solverApiKey = null, solverUrl = null, options = {} }) {
+  // A. Cek Status Limit
+  const status = await getStatus();
+  if (status.limit && status.limit.remaining <= 0) {
+    throw new Error(`Limit reaksi 24 jam sudah habis (sisa: ${status.limit.remaining}/${status.limit.max})`);
   }
 
-  const result = await engine.executeWithRotation({
-    targetURL: target,
-    rawEmojis: emojis,
-    rounds,
-    turnstileToken: turnstile,
-    ctxDeadline: Date.now() + 45_000,
+  // B. Inisialisasi Sesi
+  const init = await initVerification();
+  const siteKey = init.turnstile?.siteKey || DEFAULT_SITEKEY;
+  const cid = init.cid;
+
+  // C. Solve Cloudflare Turnstile
+  const tsToken = await resolveTurnstile(siteKey, {
+    solver,
+    apiKey: solverApiKey,
+    solverUrl,
+    ...options,
   });
 
-  console.log(JSON.stringify(result, null, 2));
+  // D. Verifikasi Human Token (dengan delay natural minimal 2500ms)
+  const verifyResult = await verifyHuman({
+    cid,
+    tsToken,
+    delayMs: options.delayMs || 2500,
+  });
+
+  if (!verifyResult || !verifyResult.done || !verifyResult.token) {
+    throw new Error(verifyResult?.message || "Verifikasi gagal atau token tidak diterbitkan");
+  }
+
+  // E. Kirim Reaksi ke Pesan Channel
+  const sendResult = await sendReaction({
+    url,
+    reaction,
+    cid,
+    token: verifyResult.token,
+  });
+
+  return {
+    status: true,
+    result: sendResult,
+    limit: sendResult.limit || status.limit,
+  };
 }
 
-main().catch((err) => {
-  console.error(`fatal: ${err.message}`);
-  process.exit(1);
-});
+// ─── CLI EXECUTION SUPPORT ──────────────────────────────────────
+if (process.argv[1] && import.meta.url.endsWith(process.argv[1].replace(/^.*\//, ""))) {
+  const args = process.argv.slice(2);
+  const help = args.includes("--help") || args.includes("-h");
+
+  if (help || args.length === 0) {
+    console.log(`
+React Channel WhatsApp (Rin API Scraper)
+Usage:
+  node reach.js --status
+  node reach.js --init
+  node reach.js --url <whatsapp_post_url> --reaction <emojis> [options]
+
+Options:
+  --status                    Cek limit pemakaian rch saat ini
+  --init                      Ambil session cid & sitekey Turnstile
+  --url, -u <link>            Link pesan WhatsApp channel (contoh: https://whatsapp.com/channel/xxx/5)
+  --reaction, -r <emojis>     Emoji reaksi (contoh: 🔥,❤️ atau 🔥)
+  --solver <type>             Pilihan solver: local, capsolver, 2captcha, custom (default: local)
+  --key <apikey>              API Key jika memakai solver capsolver / 2captcha
+  --solver-url <url>          URL endpoint jika memakai custom solver API
+  --debug                     Aktifkan log detail solver
+`);
+    process.exit(0);
+  }
+
+  const getArg = (flag) => {
+    const idx = args.indexOf(flag);
+    return idx !== -1 && args[idx + 1] ? args[idx + 1] : null;
+  };
+
+  (async () => {
+    try {
+      if (args.includes("--status")) {
+        console.log("Mengambil status...");
+        const res = await getStatus();
+        console.log(JSON.stringify(res, null, 2));
+        return;
+      }
+
+      if (args.includes("--init")) {
+        console.log("Mengambil init...");
+        const res = await initVerification();
+        console.log(JSON.stringify(res, null, 2));
+        return;
+      }
+
+      const url = getArg("--url") || getArg("-u");
+      const reaction = getArg("--reaction") || getArg("-r") || "🔥";
+      const solver = getArg("--solver") || "local";
+      const apiKey = getArg("--key");
+      const solverUrl = getArg("--solver-url");
+      const debug = args.includes("--debug");
+
+      if (!url) {
+        console.error("Error: Parameter --url wajib diisi");
+        process.exit(1);
+      }
+
+      console.log(`[RCH] Memulai pengiriman reaksi: ${reaction} -> ${url}`);
+      console.log(`[RCH] Solver yang digunakan: ${solver}`);
+
+      const result = await reactChannel({
+        url,
+        reaction,
+        solver,
+        solverApiKey: apiKey,
+        solverUrl,
+        options: { debug },
+      });
+
+      console.log("Berhasil:", JSON.stringify(result, null, 2));
+    } catch (err) {
+      console.error("Gagal:", err.message);
+      if (err.response?.data) {
+        console.error("Response data:", JSON.stringify(err.response.data, null, 2));
+      }
+      process.exit(1);
+    }
+  })();
+}

@@ -341,6 +341,18 @@ export default function setupHmrLoader(app, apiDir, options = {}) {
         registerRoute(filePath);
         const mainRoute = `/api/${getRelativePath(filePath)}`;
         logger.info(`endpoint added: ${mainRoute}`);
+        if (configFile && reloadConfigFn) {
+          try {
+            const raw = fs.readFileSync(configFile, "utf8");
+            const config = JSON.parse(raw);
+            if (!config.endpointsStatus) config.endpointsStatus = {};
+            if (!config.endpointsStatus[mainRoute]) {
+              config.endpointsStatus[mainRoute] = "online";
+              fs.writeFileSync(configFile, JSON.stringify(config, null, 4));
+              reloadConfigFn();
+            }
+          } catch {}
+        }
       }
     });
 

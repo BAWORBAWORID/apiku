@@ -17,6 +17,8 @@ const ACTIONS = [
   "trending",
   "search",
   "detail",
+  "stream",
+  "play",
   "popular",
   "latest",
   "upcoming",
@@ -210,31 +212,71 @@ function fmtDetail(raw) {
   };
 }
 
+function adjustEpisode(url, s, e) {
+  if (!s && !e) return url;
+  let out = url;
+  if (s) {
+    out = out.replace(/([&?]s=)\d+/i, `$1${s}`)
+             .replace(/\/tv\/([^\/]+)\/\d+(\/\d+)/i, `/tv/$1/${s}$2`)
+             .replace(/\/embedtv\/([^&]+)&s=\d+/i, `/embedtv/$1&s=${s}`);
+  }
+  if (e) {
+    out = out.replace(/([&?]e=)\d+/i, `$1${e}`)
+             .replace(/\/tv\/([^\/]+)\/(\d+)\/\d+/i, `/tv/$1/$2/${e}`)
+             .replace(/(&e=)\d+/i, `$1${e}`);
+  }
+  return out;
+}
+
 export default {
   name: "MovieZone",
-  description: "Scraper film dan serial MovieZone (trending, search, popular, latest, upcoming, toprated, serta detail server streaming embed)",
+  description: "Scraper film dan serial MovieZone (trending, search, popular, latest, upcoming, toprated, serta streaming embed langsung)",
   category: "Movie",
   methods: ["GET", "POST"],
-  params: ["action", "query", "slug", "type"],
+  params: ["action", "query", "slug", "id", "server", "se", "ep", "play", "type"],
   paramsSchema: {
     action: {
       type: "string",
       required: false,
       enum: ACTIONS,
-      description: `Aksi yang ingin dijalankan (${ACTIONS.join(", ")}). Default: 'trending', otomatis 'search' jika query diisi, otomatis 'detail' jika slug diisi`,
+      description: `Aksi yang ingin dijalankan (${ACTIONS.join(", ")}). Default: 'trending', otomatis 'search' jika query diisi, otomatis 'detail' jika slug diisi, 'stream' untuk mendapatkan link streaming embed`,
       example: "trending",
     },
     query: {
       type: "string",
       required: false,
-      description: "Kata kunci judul film/serial untuk pencarian (action=search)",
+      description: "Kata kunci judul film/serial untuk pencarian (action=search) atau stream",
       example: "avengers",
     },
     slug: {
       type: "string",
       required: false,
-      description: "Slug atau ID film/serial untuk mengambil detail dan server streaming embed (action=detail)",
-      example: "movie-1248832",
+      description: "Slug atau ID film/serial untuk detail dan streaming (action=detail, stream)",
+      example: "movie-969681",
+    },
+    server: {
+      type: "string",
+      required: false,
+      description: "Pilihan nama atau nomor server streaming (action=stream). Contoh: 'VidSrcWiki', 'SuperEmbed', '1'",
+      example: "VidSrcWiki",
+    },
+    se: {
+      type: "number",
+      required: false,
+      description: "Nomor season untuk TV Series (action=stream)",
+      example: 1,
+    },
+    ep: {
+      type: "number",
+      required: false,
+      description: "Nomor episode untuk TV Series (action=stream)",
+      example: 1,
+    },
+    play: {
+      type: "boolean",
+      required: false,
+      description: "Jika true pada action=stream, menyajikan responsive embed web player HTML langsung",
+      example: false,
     },
     type: {
       type: "string",
@@ -300,6 +342,126 @@ export default {
           action,
           slug,
           result: data,
+        });
+      }
+
+      if (action === "stream" || action === "play") {
+        let targetSlug = slug;
+        if (!targetSlug && query) {
+          const searchRaw = await get("/search?q=" + encodeURIComponent(query) + "&page=1");
+          const searchItems = toList(searchRaw).map(fmt);
+          if (!searchItems.length) {
+            return res.status(404).json({
+              status: false,
+              message: `Film atau serial '${query}' tidak ditemukan`,
+            });
+          }
+          targetSlug = searchItems[0].slug;
+        }
+
+        if (!targetSlug) {
+          return res.status(400).json({
+            status: false,
+            message: "Parameter 'slug' (atau 'query') wajib diisi untuk action=stream",
+          });
+        }
+
+        const raw = await get("/detail/" + encodeURIComponent(targetSlug));
+        const data = fmtDetail(Array.isArray(raw) ? raw[0] || {} : raw);
+
+        const season = params.se || params.season;
+        const episode = params.ep || params.episode;
+        const isTv = String(data.type || "").toLowerCase().includes("series") || String(targetSlug).startsWith("tv-") || Boolean(data.seasons || data.episodes);
+
+        const servers = data.servers.map((s) => ({
+          name: s.name,
+          url: isTv ? adjustEpisode(s.url, season, episode) : s.url,
+        }));
+
+        let primaryStream = data.primary_stream;
+        if (isTv && primaryStream) {
+          primaryStream = adjustEpisode(primaryStream, season, episode);
+        }
+
+        const reqServer = String(params.server || "").trim();
+        let selected = servers[0] || { name: "Default", url: primaryStream };
+        if (reqServer) {
+          const idx = parseInt(reqServer, 10);
+          if (!isNaN(idx) && idx >= 1 && idx <= servers.length) {
+            selected = servers[idx - 1];
+          } else {
+            const found = servers.find((s) => s.name.toLowerCase() === reqServer.toLowerCase());
+            if (found) selected = found;
+          }
+        }
+
+        const streamUrl = selected.url || primaryStream;
+        const shouldPlay = String(params.play || "").toLowerCase() === "true" || params.play === true || action === "play";
+
+        if (shouldPlay) {
+          const title = data.title || targetSlug;
+          const epInfo = isTv && (season || episode) ? ` (S${season || 1} E${episode || 1})` : "";
+          const optionsHtml = servers.map((s) => `
+            <a href="?action=stream&slug=${encodeURIComponent(targetSlug)}${season ? `&se=${season}` : ""}${episode ? `&ep=${episode}` : ""}&server=${encodeURIComponent(s.name)}&play=true"
+               class="btn ${s.name === selected.name ? "active" : ""}">
+               ${s.name}
+            </a>
+          `).join("");
+
+          const html = `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Streaming: ${title}${epInfo}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0b0f19; color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
+    .header { padding: 12px 20px; background: #111827; border-bottom: 1px solid #1f2937; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .title { font-size: 16px; font-weight: 600; color: #fff; }
+    .servers { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn { padding: 6px 12px; border-radius: 6px; font-size: 13px; text-decoration: none; background: #1f2937; color: #9ca3af; border: 1px solid #374151; transition: all .2s; }
+    .btn:hover { background: #374151; color: #fff; }
+    .btn.active { background: #2563eb; color: #fff; border-color: #3b82f6; font-weight: 600; }
+    .player-wrap { flex: 1; position: relative; width: 100%; min-height: 480px; background: #000; }
+    iframe { width: 100%; height: 100%; position: absolute; top: 0; left: 0; border: none; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">${title}${epInfo} — Server: ${selected.name}</div>
+    <div class="servers">${optionsHtml}</div>
+  </div>
+  <div class="player-wrap">
+    <iframe src="${streamUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  </div>
+</body>
+</html>`;
+          res.setHeader("Content-Type", "text/html; charset=utf-8");
+          return res.send(html);
+        }
+
+        return res.status(200).json({
+          status: true,
+          action: "stream",
+          slug: targetSlug,
+          result: {
+            title: data.title,
+            slug: data.slug || targetSlug,
+            type: data.type,
+            year: data.year,
+            rating: data.rating,
+            poster: data.poster,
+            season: isTv ? (season || 1) : null,
+            episode: isTv ? (episode || 1) : null,
+            server: selected.name,
+            url: streamUrl,
+            stream_url: streamUrl,
+            primary_stream: primaryStream,
+            servers,
+            iframe: `<iframe src="${streamUrl}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`,
+            player_url: `/api/movie/moviezone?action=stream&slug=${encodeURIComponent(targetSlug)}${season ? `&se=${season}` : ""}${episode ? `&ep=${episode}` : ""}&play=true`,
+          },
         });
       }
 

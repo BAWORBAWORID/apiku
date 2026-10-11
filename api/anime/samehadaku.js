@@ -1,418 +1,683 @@
 /**
  * Samehadaku Scraper API
- * Provider: Samehadaku (v2.samehadaku.how)
- * Fitur   : Scrape catalog anime, top 10, episode terbaru, pencarian, detail anime & daftar episode, streaming player embed, download multi-server (Gofile/Acefile/Mediafire)
+ * Provider: Samehadaku (https://samehadaku.li)
+ * Fitur   : Scrape catalog anime, episode terbaru, pencarian, detail anime & daftar episode,
+ *           streaming player embed, download multi-server, list genre & filter genre, list season & filter season
  */
 
-import fs from "node:fs";
-import path from "node:path";
-import puppeteer from "puppeteer-core";
-import * as cheerio from "cheerio";
 import logger from "../../src/utils/logger.js";
-import { getChromePath } from "../../src/utils/chromePath.js";
 
-const BASE = "https://v2.samehadaku.how";
-const AJAX = `${BASE}/wp-admin/admin-ajax.php`;
-const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
+const BASE = "https://samehadaku.li";
+const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36";
 
-function resolveChromeExecutable() {
-  try {
-    const p = getChromePath();
-    if (p && fs.existsSync(p)) return p;
-  } catch {}
+let jar = "";
 
-  const env = process.env.CHROME_PATH || process.env.PUPPETEER_EXECUTABLE_PATH;
-  if (env && fs.existsSync(env)) return env;
-
-  const candidates = [
-    "/root/.cache/puppeteer/chrome/linux-148.0.7778.97/chrome-linux64/chrome",
-    "/usr/bin/google-chrome",
-    "/usr/bin/google-chrome-stable",
-    "/usr/bin/chromium",
-    "/usr/bin/chromium-browser"
-  ];
-  for (const c of candidates) {
-    if (fs.existsSync(c)) return c;
+function mergeCookies(headers) {
+  if (!headers) return;
+  const arr = Array.isArray(headers) ? headers : [headers];
+  for (const c of arr) {
+    const kv = c.split(";")[0].trim();
+    if (!kv || !kv.includes("=")) continue;
+    const name = kv.split("=")[0];
+    const parts = jar ? jar.split("; ").filter(Boolean) : [];
+    const next = parts.filter((p) => !p.startsWith(name + "="));
+    next.push(kv);
+    jar = next.join("; ");
   }
-
-  try {
-    const cacheDir = path.resolve(process.env.HOME || "/root", ".cache", "puppeteer", "chrome");
-    if (fs.existsSync(cacheDir)) {
-      const dirs = fs.readdirSync(cacheDir).filter(d => d.startsWith("linux-")).sort().reverse();
-      for (const d of dirs) {
-        const bin = path.join(cacheDir, d, "chrome-linux64", "chrome");
-        if (fs.existsSync(bin)) return bin;
-      }
-    }
-  } catch {}
-
-  return null;
 }
 
-let browserInstance = null;
-
-async function getBrowser() {
-  if (browserInstance && browserInstance.connected) {
-    return browserInstance;
-  }
-  const executablePath = resolveChromeExecutable();
-  browserInstance = await puppeteer.launch({
-    executablePath: executablePath || undefined,
-    headless: "new",
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-gpu"
-    ]
-  });
-  return browserInstance;
-}
-
-async function waitForCloudflare(page, maxWaitMs = 15000) {
-  const startTime = Date.now();
-  while (Date.now() - startTime < maxWaitMs) {
+async function fetchText(url, opts = {}) {
+  const maxRetries = 2;
+  let last;
+  for (let a = 0; a <= maxRetries; a++) {
     try {
-      const title = await page.title();
-      if (title && !title.includes("Just a moment") && !title.includes("Attention Required") && !title.includes("Cloudflare")) {
-        return true;
+      return await _once(url, opts);
+    } catch (e) {
+      last = e;
+      const m = (e && e.message) || String(e);
+      const t =
+        m.includes("timeout") ||
+        m.includes("Timeout") ||
+        m.includes("fetch failed") ||
+        e.code === "UND_ERR_CONNECT_TIMEOUT";
+      if (t && a < maxRetries) {
+        await new Promise((r) => setTimeout(r, 1200 * (a + 1)));
+        continue;
       }
-    } catch {}
-    await new Promise((r) => setTimeout(r, 500));
+      throw e;
+    }
   }
-  return false;
+  throw last;
 }
 
-async function fetchHTML(url) {
-  const b = await getBrowser();
-  const page = await b.newPage();
-  try {
-    await page.setUserAgent(UA);
-    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 35000 });
-    await waitForCloudflare(page);
-    return await page.content();
-  } finally {
-    await page.close().catch(() => {});
+async function _once(url, opts = {}) {
+  let cur = url;
+  let method = opts.method || "GET";
+  let body = opts.body;
+  let extra = opts.headers || {};
+  for (let hop = 0; hop < 8; hop++) {
+    const headers = {
+      "User-Agent": UA,
+      Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      "Accept-Language": "en-US,en;q=0.9,id;q=0.8",
+      Referer: BASE + "/",
+      ...extra,
+    };
+    if (jar) headers["Cookie"] = jar;
+    const signal = typeof AbortSignal.timeout === "function" ? AbortSignal.timeout(15000) : undefined;
+    const res = await fetch(cur, { method, headers, body, redirect: "manual", signal });
+    let sc;
+    if (typeof res.headers.getSetCookie === "function") sc = res.headers.getSetCookie();
+    else {
+      const v = res.headers.get("set-cookie");
+      sc = v ? [v] : [];
+    }
+    mergeCookies(sc);
+    if (res.status >= 300 && res.status < 400) {
+      const loc = res.headers.get("location");
+      try {
+        await res.text();
+      } catch {}
+      if (!loc) return { text: "", status: res.status, headers: res.headers, res };
+      cur = new URL(loc, cur).href.split("#")[0] || new URL(loc, cur).href;
+      if (res.status === 303 || method !== "GET") {
+        method = "GET";
+        body = undefined;
+      }
+      continue;
+    }
+    const text = await res.text();
+    return { text, status: res.status, headers: res.headers, res };
   }
+  throw new Error("Too many redirects");
+}
+
+function absUrl(href) {
+  if (!href) return "";
+  if (href.startsWith("http")) return href;
+  if (href.startsWith("/")) return BASE + href;
+  if (href.startsWith("//")) return "https:" + href;
+  return BASE + "/" + href;
 }
 
 function decodeEntities(s) {
   return (s || "")
-    .replace(/&#8211;/g, "–")
-    .replace(/&#8217;/g, "'")
-    .replace(/&#039;/g, "'")
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)))
     .replace(/&amp;/g, "&")
-    .replace(/&quot;/g, '"')
-    .replace(/&#038;/g, "&")
-    .replace(/&nbsp;/g, " ")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+    .replace(/&apos;/g, "'")
+    .replace(/&#8203;/g, "")
+    .replace(/&#8211;/g, "-")
+    .replace(/&#8212;/g, "-")
+    .replace(/&#039;/g, "'");
+}
+
+function stripTags(s) {
+  return (s || "")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
-// 1. Home
-async function scrapeHome() {
-  const html = await fetchHTML(BASE + "/");
-  const $ = cheerio.load(html);
+function normalizeSlug(s) {
+  if (!s) return "";
+  s = s.trim();
+  if (s.startsWith("http")) {
+    try {
+      s = new URL(s).pathname;
+    } catch {}
+  }
+  s = s.replace(/^\//, "").replace(/\/$/, "");
+  return s;
+}
 
-  // Top 10
-  const top10 = [];
-  $(".topten-animesu li").each((_, el) => {
-    const $el = $(el);
-    const url = $el.find("a").first().attr("href") || "";
-    const title = $el.find("a").first().attr("title") || $el.find("a").first().text().trim();
-    const rank = parseInt($el.find("b").last().text().trim(), 10) || null;
-    const rating = $el.find(".fa-star").parent().text().replace(/[^\d.]/g, "").trim() || null;
-    const image = $el.find("img").attr("src") || null;
-    if (url && title) {
-      top10.push({ rank, title: decodeEntities(title), url, rating, image });
+function slugToUrl(slug) {
+  slug = normalizeSlug(slug);
+  if (!slug) return BASE + "/";
+  if (slug.startsWith("http")) return slug;
+  return BASE + "/" + slug + "/";
+}
+
+function extractImg(block) {
+  let m = block.match(/data-src="([^"]+)"/);
+  if (m) return m[1];
+  m = block.match(/src="([^"]+)"/);
+  if (m) {
+    const v = m[1];
+    if (v.startsWith("data:image")) {
+      const m2 = block.match(/data-src="([^"]+)"/);
+      if (m2) return m2[1];
     }
-  });
+    return v;
+  }
+  return "";
+}
 
-  // Latest Episode
-  const latest_episode = [];
-  $(".post-show li, ul.post-show li").each((_, el) => {
-    const $el = $(el);
-    const title = $el.find(".entry-title a, h2 a").first().text().trim() || $el.find(".thumb a").attr("title") || "";
-    const epUrl = $el.find(".thumb a").attr("href") || "";
-    const animeUrl = $el.find(".entry-title a, h2 a").attr("href") || "";
-    const image = $el.find("img").attr("src") || null;
-    const epText = $el.find("span").filter((_, s) => $(s).text().includes("Episode")).text();
-    const epMatch = epText.match(/Episode\s*(\d+)/i);
-    const episode = epMatch ? parseInt(epMatch[1], 10) : null;
-    const author = $el.find("[itemprop=\"author\"] [itemprop=\"name\"], .author [itemprop=\"name\"]").text().trim() || null;
-    const releaseText = $el.find("span").filter((_, s) => $(s).text().includes("Released on")).text();
-    const released = releaseText.replace(/Released on:\s*/i, "").trim() || null;
+function buildPagedUrl(base, page) {
+  const p = parseInt(page, 10);
+  if (!p || p <= 1) return base.endsWith("/") ? base : base + "/";
+  const b = base.endsWith("/") ? base : base + "/";
+  return b + "page/" + p + "/";
+}
 
-    if (title || epUrl) {
-      latest_episode.push({
-        title: decodeEntities(title),
-        episode,
-        anime_url: animeUrl || null,
-        episode_url: epUrl || null,
-        image,
-        author,
-        released
-      });
-    }
-  });
-
-  // Project Movie
-  const project_movie = [];
-  $("[id*=\"sdw_getpostanime\"] li").each((_, el) => {
-    const $el = $(el);
-    const title = $el.find("h2 a, .lftinfo h2").first().text().trim();
-    const url = $el.find("a.series, h2 a").first().attr("href") || "";
-    const image = $el.find("img").attr("src") || null;
-    const genres = $el.find("a[href*=\"/genre/\"]").map((_, g) => $(g).text().trim()).get();
-    if (title && url) {
-      project_movie.push({
-        title: decodeEntities(title),
-        url,
-        image,
-        genres
-      });
-    }
-  });
-
+function parseLatest(html, url) {
+  const items = [];
+  const re = /<article class="bs"[\s\S]*?<\/article>/g;
+  let m;
+  while ((m = re.exec(html))) {
+    const b = m[0];
+    const href =
+      (b.match(/<a[^>]*href="([^"]+)"[^>]*itemprop="url"/) ||
+        b.match(/<a[^>]*href="([^"]+)"[^>]*class="tip"/) ||
+        b.match(/<a[^>]*href="([^"]+)"/) ||
+        [])[1] || "";
+    const title =
+      (b.match(/<h2[^>]*itemprop="headline"[^>]*>([\s\S]*?)<\/h2>/) ||
+        b.match(/title="([^"]+)"/) ||
+        [])[1] || "";
+    const epx = (b.match(/<span class="epx">([\s\S]*?)<\/span>/) || [])[1] || "";
+    const typez = (b.match(/<div class="typez[^"]*">([\s\S]*?)<\/div>/) || [])[1] || "";
+    const sb = (b.match(/<span class="sb[^"]*">([\s\S]*?)<\/span>/) || [])[1] || "";
+    const imgBlock = (b.match(/<img[^>]*>/) || [])[0] || "";
+    const img = extractImg(imgBlock);
+    const h2alt = (b.match(/<div class="tt">[\s\S]*?<h2[^>]*>([\s\S]*?)<\/h2>/) || [])[1] || "";
+    const t = decodeEntities(stripTags(title || h2alt));
+    if (!href) continue;
+    if (!t && !href.includes("samehadaku.li")) continue;
+    items.push({
+      title: t,
+      href,
+      url: absUrl(href),
+      episode: decodeEntities(stripTags(epx)),
+      type: decodeEntities(stripTags(typez)),
+      sub: decodeEntities(stripTags(sb)),
+      poster: absUrl(img),
+    });
+  }
+  const next =
+    (html.match(/<a[^>]*href="([^"]+)"[^>]*class="r"[^>]*>Next/) ||
+      html.match(/<a[^>]*href="([^"]+page\/2\/)"[^>]*>/) ||
+      [])[1] || "";
   return {
-    source: BASE + "/",
-    scraped_at: new Date().toISOString(),
-    top10,
-    latest_episode,
-    project_movie,
+    source: url,
+    type: "latest",
+    count: items.length,
+    items: items.slice(0, 80),
+    next: next ? absUrl(next) : "",
   };
 }
 
-// 2. Search
-async function searchAnime(keyword) {
-  const b = await getBrowser();
-  const page = await b.newPage();
-  try {
-    await page.setUserAgent(UA);
-    await page.goto(BASE, { waitUntil: "domcontentloaded", timeout: 35000 });
-    await waitForCloudflare(page);
-
-    // Try AJAX live search
-    const ajaxUrl = `${AJAX}?action=samehada_live_search&s=${encodeURIComponent(keyword)}`;
-    const ajaxRes = await page.evaluate(async (targetUrl) => {
-      try {
-        const res = await fetch(targetUrl, {
-          headers: { "X-Requested-With": "XMLHttpRequest" }
-        });
-        const text = await res.text();
-        return JSON.parse(text);
-      } catch (e) {
-        return null;
-      }
-    }, ajaxUrl);
-
-    if (ajaxRes && ajaxRes.data && Array.isArray(ajaxRes.data) && ajaxRes.data.length > 0) {
-      return {
-        keyword,
-        total: ajaxRes.data.length,
-        results: ajaxRes.data.map((d) => ({
-          id: d.id,
-          title: decodeEntities(d.title),
-          url: d.url,
-          thumb: d.thumb,
-          score: d.score || null,
-          type: d.type,
-          status: d.status,
-        })),
-      };
-    }
-
-    // Fallback HTML search
-    const searchUrl = `${BASE}/?s=${encodeURIComponent(keyword)}`;
-    await page.goto(searchUrl, { waitUntil: "domcontentloaded", timeout: 35000 });
-    await waitForCloudflare(page);
-    const html = await page.content();
-    const $ = cheerio.load(html);
-    const results = [];
-
-    $("article.animpost, .animepost").each((_, el) => {
-      const $el = $(el);
-      const title = $el.find(".title h2, h2.entry-title, .entry-title a").first().text().trim() || $el.find("a").first().attr("title") || "";
-      const url = $el.find("a").first().attr("href") || "";
-      const thumb = $el.find("img").first().attr("src") || null;
-      const type = $el.find(".type").first().text().trim() || null;
-      const score = $el.find(".score").first().text().replace(/[^\d.]/g, "").trim() || null;
-      if (title && url) {
-        results.push({
-          title: decodeEntities(title),
-          url,
-          thumb,
-          score,
-          type,
-          status: null
-        });
-      }
-    });
-
-    return {
-      keyword,
-      total: results.length,
-      results,
-    };
-  } finally {
-    await page.close().catch(() => {});
-  }
-}
-
-// 3. Detail Anime
-async function scrapeAnime(slug) {
-  let url = slug;
-  if (!/^https?:\/\//.test(slug)) {
-    url = `${BASE}/anime/${slug.replace(/^\/+|\/+$/g, "")}/`;
-  }
-  const html = await fetchHTML(url);
-  const $ = cheerio.load(html);
-
-  const title = $("h1.entry-title, h1[itemprop=\"name\"], h1").first().text().trim();
-  const thumb = $(".thumb img, .anmsa").first().attr("src") || null;
-  const sinopsis = $(".entry-content-single, [itemprop=\"description\"], .desc").first().text().trim();
-
+function parseAnime(html, url) {
+  const title =
+    (html.match(/<h1 class="entry-title"[^>]*>([\s\S]*?)<\/h1>/) ||
+      html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) ||
+      [])[1] ||
+    (html.match(/<title>([\s\S]*?)<\/title>/) || [])[1] ||
+    "";
+  const cleanTitle = decodeEntities(stripTags(title));
+  const alter = (html.match(/<span class="alter">([\s\S]*?)<\/span>/) || [])[1] || "";
+  const posterBlock = (html.match(/<div class="thumb"[^>]*>[\s\S]*?<\/div>/) || [])[0] || "";
+  const posterImg = extractImg(posterBlock);
+  const poster = posterImg
+    ? absUrl(posterImg)
+    : (html.match(/<meta property="og:image"[^>]*content="([^"]+)"/) || [])[1] || "";
+  const rating =
+    (html.match(/<div class="rating">[\s\S]*?<strong>Rating ([^<]+)<\/strong>/) ||
+      html.match(/<meta itemprop="ratingValue"[^>]*content="([^"]+)"/) ||
+      [])[1] || "";
+  const ratingCount =
+    (html.match(/<meta itemprop="ratingCount"[^>]*content="([^"]+)"/) || [])[1] || "";
+  const bookmark = (html.match(/<div class="bmc">([^<]+)<\/div>/) || [])[1] || "";
+  const mindesc = (html.match(/<div class="mindesc">([\s\S]*?)<\/div>/) || [])[1] || "";
+  const synopsis =
+    (html.match(/<div class="entry-content"[^>]*itemprop="description"[^>]*>([\s\S]*?)<\/div>/) ||
+      html.match(/<div class="desc[^"]*">([\s\S]*?)<\/div>/) ||
+      [])[1] || "";
   const info = {};
-  $(".infox span, .spe span").each((_, sp) => {
-    const $sp = $(sp);
-    const key = $sp.find("b").text().replace(/:/g, "").trim();
-    if (key) {
-      $sp.find("b").remove();
-      info[key] = $sp.text().trim();
-    }
-  });
-
-  const genres = $("a[href*=\"/genre/\"]").map((_, a) => $(a).text().trim()).get()
-    .filter((v, i, a) => a.indexOf(v) === i);
-
-  const episodes = [];
-  const seenEp = new Set();
-  $("a[href*=\"-episode-\"]").each((_, a) => {
-    const epUrl = $(a).attr("href");
-    const epTitle = $(a).text().trim() || $(a).attr("title") || "";
-    if (epUrl && !seenEp.has(epUrl) && !epUrl.includes("/anime/")) {
-      seenEp.add(epUrl);
-      episodes.push({
-        title: decodeEntities(epTitle),
-        url: epUrl,
-      });
-    }
-  });
-
-  return {
-    source: url,
-    title: decodeEntities(title),
-    thumb,
-    sinopsis,
-    genres,
-    info,
-    total_episodes: episodes.length,
-    episodes,
-  };
-}
-
-// 4. Detail Episode
-async function scrapeEpisode(url) {
-  if (!/^https?:\/\//.test(url)) {
-    url = `${BASE}/` + url.replace(/^\/+/, "");
+  const speBlock =
+    (html.match(/<div class="spe">([\s\S]*?)<\/div>\s*<div class="genxed">/) ||
+      html.match(/<div class="spe">([\s\S]*?)<\/div>/) ||
+      [])[1] || "";
+  const reInfo = /<span><b>([^:]+):<\/b>\s*([\s\S]*?)<\/span>/g;
+  let mm;
+  while ((mm = reInfo.exec(speBlock))) {
+    const key = mm[1].trim().toLowerCase().replace(/\s+/g, "_");
+    const val = mm[2];
+    const links = [];
+    const reA = /<a[^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>/g;
+    let aa;
+    while ((aa = reA.exec(val)))
+      links.push({ name: decodeEntities(stripTags(aa[2])), href: aa[1], url: absUrl(aa[1]) });
+    const text = decodeEntities(stripTags(val));
+    if (links.length > 0) info[key] = { text, links };
+    else info[key] = text;
   }
-  const html = await fetchHTML(url);
-  const $ = cheerio.load(html);
-
-  const title = $("h1[itemprop=\"name\"], h1.entry-title, h1").first().text().trim();
-  const description = $(".entry-content-single, [itemprop=\"description\"]").first().text().trim();
-  const episodeNumber = $("span[itemprop=\"episodeNumber\"]").text().trim() || null;
-  const timePost = $(".time-post").text().trim() || null;
-
-  const servers = [];
-  $("[id^=\"player-option-\"]").each((_, el) => {
-    const $el = $(el);
-    const name = $el.find("span").text().trim();
-    const embedRaw = $el.attr("data-embed") || "";
-    const decoded = decodeEntities(embedRaw);
-    const iframeMatch = decoded.match(/src=["']([^"']+)["']/);
-    const nume = parseInt($el.attr("id").replace("player-option-", ""), 10) || null;
-    servers.push({
-      nume,
-      name,
-      embed_url: iframeMatch ? iframeMatch[1] : null,
-      embed_html: decoded
+  const genres = [];
+  const genxed = (html.match(/<div class="genxed">([\s\S]*?)<\/div>/) || [])[1] || "";
+  const reG = /<a[^>]*href="([^"]+)"[^>]*rel="tag"[^>]*>([^<]+)<\/a>/g;
+  while ((mm = reG.exec(genxed)))
+    genres.push({ name: decodeEntities(stripTags(mm[2])), href: mm[1], url: absUrl(mm[1]) });
+  const tags = [];
+  const tagBlock = (html.match(/<div class="bottom tags">([\s\S]*?)<\/div>/) || [])[1] || "";
+  const reT = /<a[^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>/g;
+  while ((mm = reT.exec(tagBlock)))
+    tags.push({ name: decodeEntities(stripTags(mm[2])), href: mm[1], url: absUrl(mm[1]) });
+  const chars = [];
+  const cvRe =
+    /<div class="cvitem">[\s\S]*?<span class="charname">([\s\S]*?)<\/span>[\s\S]*?<span class="charrole">([\s\S]*?)<\/span>[\s\S]*?<a[^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>[\s\S]*?<span class="charrole">([\s\S]*?)<\/span>/g;
+  while ((mm = cvRe.exec(html))) {
+    chars.push({
+      character: decodeEntities(stripTags(mm[1])),
+      role: decodeEntities(stripTags(mm[2])),
+      actor_href: mm[3],
+      actor_url: absUrl(mm[3]),
+      actor: decodeEntities(stripTags(mm[4])),
+      actor_role: decodeEntities(stripTags(mm[5])),
     });
-  });
-
-  const downloads = [];
-  $(".download-eps, .dl-box").each((_, block) => {
-    const $b = $(block);
-    const format = $b.find("p b, b").first().text().trim();
-    const items = [];
-    $b.find("li").each((_, li) => {
-      const $li = $(li);
-      const resolution = $li.find("strong").text().trim();
-      const links = [];
-      $li.find("a").each((_, a) => {
-        links.push({
-          host: $(a).text().trim(),
-          url: $(a).attr("href")
-        });
+  }
+  if (chars.length === 0) {
+    const reC =
+      /<div class="cvsubitem cvchar">[\s\S]*?<span class="charname">([^<]+)<\/span>[\s\S]*?<span class="charrole">([^<]+)<\/span>/g;
+    while ((mm = reC.exec(html)))
+      chars.push({
+        character: decodeEntities(stripTags(mm[1])),
+        role: decodeEntities(stripTags(mm[2])),
       });
-      if (resolution) items.push({ resolution, links });
+  }
+  const episodes = [];
+  const listBlock =
+    (html.match(/<div class="eplister">([\s\S]*?)<\/ul>/) ||
+      html.match(/<ul>[\s\S]*?<li data-index="1">[\s\S]*?<\/ul>/) ||
+      [])[0] || "";
+  const src = listBlock || html;
+  const reE =
+    /<li[^>]*>[\s\S]*?<a[^>]*href="([^"]+)"[^>]*>[\s\S]*?<div class="epl-num">([^<]+)<\/div>[\s\S]*?<div class="epl-title">([^<]+)<\/div>[\s\S]*?<div class="epl-sub">[\s\S]*?<span[^>]*>([^<]+)<\/span>[\s\S]*?<div class="epl-date">([^<]+)<\/div>/g;
+  while ((mm = reE.exec(src))) {
+    episodes.push({
+      href: mm[1],
+      url: absUrl(mm[1]),
+      episode: decodeEntities(stripTags(mm[2])),
+      title: decodeEntities(stripTags(mm[3])),
+      sub: decodeEntities(stripTags(mm[4])),
+      date: decodeEntities(stripTags(mm[5])),
     });
-    if (format) downloads.push({ format, items });
-  });
-
-  const prevMatch = $(".nvs a[href*=\"episode\"]").first().attr("href") || null;
-  const nextMatch = $(".nvs.rght a[href*=\"episode\"]").first().attr("href") || null;
-  const allEpUrl = $(".nvs.nvsc a").first().attr("href") || $("h2[itemprop=\"partOfSeries\"] a").attr("href") || null;
-  const animeTitle = $("h2[itemprop=\"partOfSeries\"]").text().trim();
-  const animeThumb = $(".thumb[itemprop=\"image\"] img").attr("src") || null;
-
+  }
+  if (episodes.length === 0) {
+    const reE2 = /<a[^>]*href="([^"]*episode[^"]*)"[^>]*>[\s\S]*?<div class="epl-num">([^<]+)<\/div>/g;
+    while ((mm = reE2.exec(html)))
+      episodes.push({
+        href: mm[1],
+        url: absUrl(mm[1]),
+        episode: decodeEntities(stripTags(mm[2])),
+      });
+  }
+  const banner =
+    (html.match(/<div class="inepcx">[\s\S]*?<a[^>]*href="([^"]+)"[^>]*>/) || [])[1] || "";
+  const screenshotFallback =
+    (html.match(/<meta property="og:image"[^>]*content="([^"]+)"/) || [])[1] || "";
   return {
     source: url,
-    title: decodeEntities(title),
-    description,
-    episode_number: episodeNumber ? parseInt(episodeNumber, 10) : null,
-    time_post: timePost,
-    anime: {
-      title: decodeEntities(animeTitle),
-      thumb: animeThumb,
-      url: allEpUrl
-    },
-    servers,
-    downloads,
-    navigation: {
-      prev: prevMatch,
-      next: nextMatch,
-      all_episodes: allEpUrl
-    }
+    type: "anime",
+    title: cleanTitle,
+    alternative: decodeEntities(stripTags(alter)),
+    poster: absUrl(poster),
+    rating: decodeEntities(stripTags(rating)),
+    rating_count: decodeEntities(stripTags(ratingCount)),
+    followers: decodeEntities(stripTags(bookmark)),
+    description: decodeEntities(stripTags(mindesc)),
+    synopsis: decodeEntities(stripTags(synopsis)),
+    info,
+    genres,
+    tags,
+    characters: chars,
+    episodes,
+    episodes_count: episodes.length,
+    latest_url: banner ? absUrl(banner) : "",
+    screenshot: screenshotFallback ? absUrl(screenshotFallback) : "",
   };
 }
 
-// 5. Latest Only
-async function scrapeLatest() {
-  const home = await scrapeHome();
+function parseEpisode(html, url) {
+  const title =
+    (html.match(/<title>([\s\S]*?)<\/title>/) || [])[1] ||
+    (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] ||
+    "";
+  const cleanTitle = decodeEntities(stripTags(title));
+  const canonical = (html.match(/<link rel="canonical"[^>]*href="([^"]+)"/) || [])[1] || url;
+  const thumb = (html.match(/<meta property="og:image"[^>]*content="([^"]+)"/) || [])[1] || "";
+
+  let iframe = "";
+  const iframeM =
+    html.match(/<IFRAME[^>]*SRC="([^"]+)"[^>]*>/i) ||
+    html.match(/<iframe[^>]*src="([^"]+)"[^>]*>/i) ||
+    html.match(/data-litespeed-src="([^"]+)"/i);
+  if (iframeM) iframe = iframeM[1];
+  if (!iframe) {
+    const m2 = html.match(/<div class="player-embed"[^>]*>[\s\S]*?SRC="([^"]+)"/i);
+    if (m2) iframe = m2[1];
+  }
+  iframe = iframe ? decodeEntities(iframe).trim() : "";
+
+  // Multi-server extraction
+  const streams = [];
+  const serverBtns = html.match(/<button[^>]*class="[^"]*aspd-server[^"]*"[^>]*>[\s\S]*?<\/button>/gi) || [];
+  for (const b of serverBtns) {
+    const sName = (b.match(/data-label="([^"]+)"/) || [])[1] || stripTags(b).trim();
+    const sUrl = (b.match(/data-url="([^"]+)"/) || [])[1] || "";
+    let sEmbed = (b.match(/data-embed="([^"]+)"/) || [])[1] || "";
+    if (sEmbed) {
+      try {
+        const decoded = Buffer.from(sEmbed, "base64").toString("utf8");
+        const sm = decoded.match(/src="([^"]+)"/i);
+        if (sm) sEmbed = sm[1];
+      } catch {}
+    }
+    const finalStreamUrl = sUrl || sEmbed;
+    if (finalStreamUrl) {
+      streams.push({
+        server: decodeEntities(sName),
+        url_stream: finalStreamUrl,
+        embed_url: finalStreamUrl,
+      });
+    }
+  }
+
+  if (streams.length === 0 && iframe) {
+    streams.push({ server: "Default", url_stream: iframe, embed_url: iframe });
+  }
+
+  const download = [];
+  const tera =
+    (html.match(/<a[^>]*href="(https:\/\/terabox\.com[^"]+)"[^>]*>/i) ||
+      html.match(/<a[^>]*href="(https:\/\/www\.terabox[^"]+)"[^>]*>/i) ||
+      [])[1] || "";
+  if (tera) download.push({ label: "Terabox", href: tera, url: tera });
+
+  const dlRe =
+    /<a[^>]*href="([^"]+)"[^>]*>\s*<div class="icol"><i[^>]*><\/i>\s*<span>Download<\/span><\/div>\s*<\/a>/g;
+  let mm;
+  while ((mm = dlRe.exec(html))) download.push({ label: "Download", href: mm[1], url: absUrl(mm[1]) });
+
+  // Download boxes (multi-resolution / single link)
+  const dlBlocks = html.match(/<div class="soraddlx[^"]*"[\s\S]*?<\/div>\s*<\/div>/g) || [];
+  for (const dlb of dlBlocks) {
+    const resTitle = decodeEntities(stripTags((dlb.match(/<div class="sorattlx">([\s\S]*?)<\/div>/) || [])[1] || ""));
+    const linkRe = /<a[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g;
+    let lm;
+    const links = [];
+    while ((lm = linkRe.exec(dlb))) {
+      links.push({
+        host: decodeEntities(stripTags(lm[2])),
+        url: lm[1],
+      });
+    }
+    if (links.length > 0) {
+      download.push({
+        resolution: resTitle || "Direct Download",
+        links,
+      });
+    }
+  }
+
+  const nav = {};
+  const allM = html.match(/<div class="nvs nvsc"><a[^>]*href="([^"]+)"[^>]*>[\s\S]*?All Episodes/);
+  if (allM && allM[1]) nav.all_episodes = absUrl(allM[1]);
+  const nextM =
+    html.match(/<a[^>]*aria-label="next"[^>]*href="([^"]+)"/) ||
+    html.match(/<a[^>]*href="([^"]+)"[^>]*rel="next"/);
+  if (nextM && nextM[1]) nav.next = absUrl(nextM[1]);
+  const prevM = html.match(/<a[^>]*href="([^"]+)"[^>]*>\s*<span class="tex">\s*Prev/);
+  if (prevM && prevM[1]) nav.prev = absUrl(prevM[1]);
+
+  const animeInfo = {};
+  const infoBlock = (html.match(/<h2[^>]*itemprop="partOfSeries"[^>]*>([\s\S]*?)<\/h2>/) || [])[1] || "";
+  if (infoBlock) animeInfo.title = decodeEntities(stripTags(infoBlock));
+  const ratingA =
+    (html.match(/<div class="rating">[\s\S]*?<strong>Rating ([^<]+)<\/strong>/) || [])[1] || "";
+  if (ratingA) animeInfo.rating = decodeEntities(stripTags(ratingA));
+  const animeLink =
+    (html.match(/<div class="nvs nvsc"><a[^>]*href="([^"]+)"[^>]*>[\s\S]*?All Episodes/) ||
+      html.match(/<a[^>]*href="(https:\/\/samehadaku\.li\/anime\/[^"]+)"[^>]*>[\s\S]*?All Episodes/) ||
+      [])[1] || "";
+  if (animeLink) animeInfo.anime_url = absUrl(animeLink);
+
+  const related = [];
+  const relBlock =
+    (html.match(/<div class="bixbox">[\s\S]*?<h3>Related Episodes<\/h3>[\s\S]*?<div class="listupd">([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>/) ||
+      [])[1] || "";
+  if (relBlock) {
+    const reR = /<a[^>]*href="([^"]+)"[^>]*title="([^"]+)"[^>]*>/g;
+    while ((mm = reR.exec(relBlock)))
+      related.push({ title: decodeEntities(stripTags(mm[2])), href: mm[1], url: absUrl(mm[1]) });
+  }
+
+  const desc = (html.match(/<div class="bixbox infx">[\s\S]*?<p>([\s\S]*?)<\/p>/) || [])[1] || "";
+  const streamUrl = (streams[0] && streams[0].url_stream) || iframe;
+
   return {
-    source: BASE + "/",
-    scraped_at: new Date().toISOString(),
-    total: home.latest_episode.length,
-    episodes: home.latest_episode,
+    source: canonical,
+    type: "episode",
+    title: cleanTitle,
+    thumbnail: thumb ? absUrl(thumb) : "",
+    stream_url: streamUrl,
+    embed_url: streamUrl,
+    video_embed: iframe,
+    current_stream: streamUrl,
+    streams,
+    download,
+    navigation: nav,
+    anime: animeInfo,
+    description: decodeEntities(stripTags(desc)),
+    related,
   };
+}
+
+function parseSearch(html, url) {
+  const items = [];
+  const re = /<article class="bs"[\s\S]*?<\/article>/g;
+  let m;
+  while ((m = re.exec(html))) {
+    const b = m[0];
+    const href =
+      (b.match(/<a[^>]*href="([^"]+)"[^>]*itemprop="url"/) ||
+        b.match(/<a[^>]*href="([^"]+)"[^>]*class="tip"/) ||
+        b.match(/<a[^>]*href="([^"]+)"/) ||
+        [])[1] || "";
+    const h2 =
+      (b.match(/<h2[^>]*itemprop="headline"[^>]*>([\s\S]*?)<\/h2>/) ||
+        b.match(/<div class="tt">[\s\S]*?<h2[^>]*>([\s\S]*?)<\/h2>/) ||
+        b.match(/title="([^"]+)"/) ||
+        [])[1] || "";
+    const epx = (b.match(/<span class="epx">([^<]+)<\/span>/) || [])[1] || "";
+    const typez = (b.match(/<div class="typez[^"]*">([^<]+)<\/div>/) || [])[1] || "";
+    const sb = (b.match(/<span class="sb[^"]*">([^<]+)<\/span>/) || [])[1] || "";
+    const imgBlock = (b.match(/<img[^>]*>/) || [])[0] || "";
+    const img = extractImg(imgBlock);
+    const title = decodeEntities(stripTags(h2));
+    if (!href || !title) continue;
+    items.push({
+      title,
+      href,
+      url: absUrl(href),
+      episode: decodeEntities(stripTags(epx)),
+      type: decodeEntities(stripTags(typez)),
+      sub: decodeEntities(stripTags(sb)),
+      poster: absUrl(img),
+    });
+  }
+  const q =
+    (html.match(/<title>You searched for ([^<]+) - Samehadaku<\/title>/) ||
+      html.match(/<meta property="og:title"[^>]*content="You searched for ([^"]+) -/) ||
+      [])[1] || "";
+  const canonical = (html.match(/<meta property="og:url"[^>]*content="([^"]+)"/) || [])[1] || url;
+  return {
+    source: canonical,
+    type: "search",
+    query: decodeEntities(stripTags(q)),
+    count: items.length,
+    items,
+  };
+}
+
+// Scraper Methods
+async function scrapeHome(page = 1) {
+  const p = parseInt(page, 10) || 1;
+  const url = buildPagedUrl(BASE + "/", p);
+  const { text, status } = await fetchText(url);
+  if (status === 403 || text.includes("403 Forbidden")) {
+    throw new Error("Layanan Samehadaku sedang dibatasi WAF, silakan coba lagi beberapa saat.");
+  }
+  const data = parseLatest(text, url);
+  data.type = "home";
+  data.page = p;
+  return data;
+}
+
+async function scrapeLatest(page = 1) {
+  const p = parseInt(page, 10) || 1;
+  const url = buildPagedUrl(BASE + "/", p);
+  const { text, status } = await fetchText(url);
+  if (status === 403 || text.includes("403 Forbidden")) {
+    throw new Error("Layanan Samehadaku sedang dibatasi WAF, silakan coba lagi beberapa saat.");
+  }
+  const data = parseLatest(text, url);
+  data.page = p;
+  return data;
+}
+
+async function searchAnime(query) {
+  const q = (query || "").trim();
+  if (!q) throw new Error("Parameter 'query' wajib diisi untuk pencarian anime");
+  const url = BASE + "/?s=" + encodeURIComponent(q);
+  const { text, status } = await fetchText(url);
+  if (status === 403 || text.includes("403 Forbidden")) {
+    throw new Error("Layanan Samehadaku sedang dibatasi WAF, silakan coba lagi beberapa saat.");
+  }
+  return parseSearch(text, url);
+}
+
+async function scrapeAnime(rawUrl) {
+  let url = (rawUrl || "").trim();
+  if (!url.startsWith("http")) {
+    url = slugToUrl(url.includes("/anime/") ? url : "anime/" + normalizeSlug(url));
+  }
+  const { text, status } = await fetchText(url);
+  if (status === 403 || text.includes("403 Forbidden")) {
+    throw new Error("Gagal mengambil detail anime (WAF 403), silakan coba lagi nanti.");
+  }
+  return parseAnime(text, url);
+}
+
+async function scrapeEpisode(rawUrl) {
+  let url = (rawUrl || "").trim();
+  if (!url.startsWith("http")) {
+    url = normalizeSlug(url);
+    if (!url.includes("episode")) url = url + "-episode-1-subtitle-indonesia";
+    url = BASE + "/" + url + (url.endsWith("/") ? "" : "/");
+  }
+  const { text, status } = await fetchText(url);
+  if (status === 403 || text.includes("403 Forbidden")) {
+    throw new Error("Gagal mengambil episode anime (WAF 403), silakan coba lagi nanti.");
+  }
+  return parseEpisode(text, url);
+}
+
+async function listGenres() {
+  const url = BASE + "/anime/";
+  const { text, status } = await fetchText(url);
+  if (status === 403 || text.includes("403 Forbidden")) {
+    throw new Error("Gagal mengambil daftar genre (WAF 403)");
+  }
+  const items = [];
+  const re = /<input[^>]*id="genre-([^"]+)"[^>]*value="([^"]+)"[^>]*>\s*<label[^>]*>([^<]+)<\/label>/g;
+  let m;
+  const seen = {};
+  while ((m = re.exec(text))) {
+    const slug = m[2].trim();
+    const label = decodeEntities(stripTags(m[3]));
+    if (seen[slug]) continue;
+    seen[slug] = true;
+    items.push({ name: label, slug, href: "/genres/" + slug + "/", url: BASE + "/genres/" + slug + "/" });
+  }
+  items.sort((a, b) => a.name.localeCompare(b.name));
+  return { source: url, type: "listgenre", count: items.length, items };
+}
+
+async function filterGenre(name, page = 1) {
+  const slug = (name || "").trim().toLowerCase().replace(/\s+/g, "-");
+  if (!slug) throw new Error("Parameter 'genre' wajib diisi");
+  const base = BASE + "/genres/" + slug + "/";
+  const p = parseInt(page, 10) || 1;
+  const url = buildPagedUrl(base, p);
+  const { text, status } = await fetchText(url);
+  if (status === 403 || text.includes("403 Forbidden")) {
+    throw new Error("Gagal mengambil anime by genre (WAF 403)");
+  }
+  const data = parseLatest(text, url);
+  data.type = "genre";
+  data.genre = slug;
+  data.page = p;
+  return data;
+}
+
+async function listSeasons() {
+  const url = BASE + "/anime/";
+  const { text, status } = await fetchText(url);
+  if (status === 403 || text.includes("403 Forbidden")) {
+    throw new Error("Gagal mengambil daftar season (WAF 403)");
+  }
+  const items = [];
+  const re = /<input[^>]*id="season-([^"]+)"[^>]*value="([^"]+)"[^>]*>\s*<label[^>]*>([^<]+)<\/label>/g;
+  let m;
+  const seen = {};
+  while ((m = re.exec(text))) {
+    const slug = m[2].trim();
+    const label = decodeEntities(stripTags(m[3]));
+    if (seen[slug]) continue;
+    seen[slug] = true;
+    items.push({ name: label, slug, href: "/season/" + slug + "/", url: BASE + "/season/" + slug + "/" });
+  }
+  return { source: url, type: "listseason", count: items.length, items };
+}
+
+async function filterSeason(name, page = 1) {
+  const slug = (name || "").trim().toLowerCase().replace(/\s+/g, "-");
+  if (!slug) throw new Error("Parameter 'season' wajib diisi");
+  const base = BASE + "/season/" + slug + "/";
+  const p = parseInt(page, 10) || 1;
+  const url = buildPagedUrl(base, p);
+  const { text, status } = await fetchText(url);
+  if (status === 403 || text.includes("403 Forbidden")) {
+    throw new Error("Gagal mengambil anime by season (WAF 403)");
+  }
+  const data = parseLatest(text, url);
+  data.type = "season";
+  data.season = slug;
+  data.page = p;
+  return data;
 }
 
 export default {
   name: "Samehadaku",
-  description: "Scraper Samehadaku — streaming & catalog anime subtitle Indonesia: home, search, detail anime, episode player & download multi-server",
+  description:
+    "Scraper Samehadaku — streaming & catalog anime subtitle Indonesia: home, search, detail anime, episode player embed & download multi-server, genre & season filter",
   category: "Anime",
   methods: ["GET", "POST"],
-  params: ["action", "query", "url"],
+  params: ["action", "query", "url", "page", "genre", "season"],
   paramsSchema: {
     action: {
       type: "string",
       required: false,
       default: "home",
-      description: "Aksi: home, latest, search, detail, episode",
-      enum: ["home", "latest", "search", "detail", "episode"],
-      example: "home",
+      description: "Aksi: home, latest, search, detail, episode, stream, listgenre, genre, listseason, season",
+      enum: ["home", "latest", "search", "detail", "episode", "stream", "listgenre", "genre", "listseason", "season"],
+      example: "latest",
     },
     query: {
       type: "string",
@@ -423,22 +688,54 @@ export default {
     url: {
       type: "string",
       required: false,
-      description: "URL anime atau episode Samehadaku (action=detail, episode)",
-      example: "https://v2.samehadaku.how/anime/one-piece/",
+      description: "URL anime atau episode Samehadaku (action=detail, episode, stream)",
+      example: "https://samehadaku.li/anime/one-piece/",
+    },
+    page: {
+      type: "number",
+      required: false,
+      default: 1,
+      description: "Nomor halaman untuk pagination (action=home, latest, genre, season)",
+      example: 1,
+    },
+    genre: {
+      type: "string",
+      required: false,
+      description: "Slug genre (action=genre), contoh: action, comedy, romance",
+      example: "action",
+    },
+    season: {
+      type: "string",
+      required: false,
+      description: "Slug season (action=season), contoh: fall-2025, winter-2026",
+      example: "fall-2025",
     },
   },
 
   async run(req, res) {
     try {
       const params = { ...req.query, ...req.body };
-      const action = String(params.action || "home").trim().toLowerCase();
+      let action = String(params.action || "").trim().toLowerCase();
       const q = String(params.query || params.q || params.url || "").trim();
+      const page = parseInt(params.page || params.p || 1, 10) || 1;
+      const genre = String(params.genre || "").trim();
+      const season = String(params.season || "").trim();
 
-      logger.info(`[SAMEHADAKU] Request action=${action}`);
+      // Auto-detect action if not explicitly given
+      if (!action) {
+        if (genre) action = "genre";
+        else if (season) action = "season";
+        else if (params.url && (params.url.includes("-episode-") || params.url.includes("/episode/"))) action = "episode";
+        else if (params.url && params.url.includes("/anime/")) action = "detail";
+        else if (params.query || params.q) action = "search";
+        else action = "home";
+      }
+
+      logger.info(`[SAMEHADAKU] Request action=${action} q=${q || "-"} page=${page}`);
 
       // 1. Home
       if (action === "home") {
-        const data = await scrapeHome();
+        const data = await scrapeHome(page);
         return res.status(200).json({
           status: true,
           result: data,
@@ -447,7 +744,7 @@ export default {
 
       // 2. Latest
       if (action === "latest" || action === "terbaru") {
-        const data = await scrapeLatest();
+        const data = await scrapeLatest(page);
         return res.status(200).json({
           status: true,
           result: data,
@@ -485,11 +782,11 @@ export default {
       }
 
       // 5. Episode Detail & Stream/Download
-      if (action === "episode" || action === "ep") {
+      if (action === "episode" || action === "ep" || action === "stream" || action === "play") {
         if (!q) {
           return res.status(400).json({
             status: false,
-            message: "Parameter 'url' atau 'query' wajib diisi untuk action=episode",
+            message: "Parameter 'url' atau 'query' episode wajib diisi untuk action=episode/stream",
           });
         }
         const data = await scrapeEpisode(q);
@@ -499,9 +796,59 @@ export default {
         });
       }
 
+      // 6. List Genre
+      if (action === "listgenre" || action === "genres") {
+        const data = await listGenres();
+        return res.status(200).json({
+          status: true,
+          result: data,
+        });
+      }
+
+      // 7. Filter Genre
+      if (action === "genre") {
+        const gName = genre || q;
+        if (!gName) {
+          return res.status(400).json({
+            status: false,
+            message: "Parameter 'genre' wajib diisi untuk action=genre",
+          });
+        }
+        const data = await filterGenre(gName, page);
+        return res.status(200).json({
+          status: true,
+          result: data,
+        });
+      }
+
+      // 8. List Season
+      if (action === "listseason" || action === "seasons") {
+        const data = await listSeasons();
+        return res.status(200).json({
+          status: true,
+          result: data,
+        });
+      }
+
+      // 9. Filter Season
+      if (action === "season") {
+        const sName = season || q;
+        if (!sName) {
+          return res.status(400).json({
+            status: false,
+            message: "Parameter 'season' wajib diisi untuk action=season",
+          });
+        }
+        const data = await filterSeason(sName, page);
+        return res.status(200).json({
+          status: true,
+          result: data,
+        });
+      }
+
       return res.status(400).json({
         status: false,
-        message: `Action '${action}' tidak valid. Pilihan: home, latest, search, detail, episode`,
+        message: `Action '${action}' tidak valid. Pilihan: home, latest, search, detail, episode, stream, listgenre, genre, listseason, season`,
       });
     } catch (err) {
       logger.error(`[SAMEHADAKU] Error: ${err.message}`);

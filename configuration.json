@@ -1,11 +1,11 @@
 {
     "maintenance": false,
     "notifications": {
-        "enabled": false,
-        "title": "News Channel",
-        "message": "Masuk Ke Channel Baru",
-        "buttonText": "Masuk",
-        "sourceCodeText": "KUNJUNGI WEB",
+        "enabled": true,
+        "title": "Saluran WhatsApp",
+        "message": "Ikuti saluran Zyvor Project di WhatsApp",
+        "buttonText": "Ikuti Saluran",
+        "sourceCodeText": "Ikuti Saluran",
         "sourceCodeUrl": "https://whatsapp.com/channel/0029Vb8vO7o2f3EEsjefzm0w"
     },
     "feedbackButton": {
@@ -1005,7 +1005,6 @@
         "/api/stalker/tiktok": "online",
         "/api/tools/binner2text": "online",
         "/api/tempmail/instanttempemail": "online",
-        "/api/tools/catbox": "online",
         "/api/tools/encrypt": "online",
         "/api/tools/fakedata": "online",
         "/api/tools/font": "online",
@@ -1411,7 +1410,27 @@
         "/api/payment/gopay-refresh": "online",
         "/api/payment/gopay-token-save": "premium",
         "/api/payment/gopay-token-status": "online",
-        "/api/payment/gopay-verif": "online"
+        "/api/payment/gopay-verif": "online",
+        "/api/search/mangadex": "online",
+        "/api/shortlink/tinyurl": "online",
+        "/api/shortlink/tinyurlv2": "online",
+        "/api/shortlink/tinyurlwithalias": "online",
+        "/api/shortlink/cuttly": "online",
+        "/api/shortlink/bitly": "online",
+        "/api/tools/zippyshare": "online",
+        "/api/anime/animein": "online",
+        "/api/index": "online",
+        "/api/payment/assets/gopay/cloudStorage": "online",
+        "/api/payment/assets/gopay/helpers": "online",
+        "/api/payment/assets/gopay/index": "online",
+        "/api/payment/assets/gopay/qrisRegistry": "online",
+        "/api/payment/assets/gopay/sdk": "online",
+        "/api/payment/assets/gopay/tokenManager": "online",
+        "/api/tools/aidetect": "online",
+        "/api/topup/assets/topupTraker": "online",
+        "/api/search/bgn": "online",
+        "/api/topup/unipin": "online",
+        "/api/fun/kahoot": "online"
     },
     "version": "2.1.2"
 }

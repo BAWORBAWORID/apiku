@@ -1,7 +1,7 @@
 /**
  * Bypass Link API
  * 
- * Bypass shortlink services seperti sf.gl, sub2unlock, tinyurl, linkvertise, dll.
+ * Bypass shortlink services seperti sf.gl, sub2unlock, linkvertise, dll (tidak mendukung TinyURL).
  * Menggunakan bypass.tools API dengan Cloudflare Turnstile bypass solver via puppeteer-real-browser.
  * 
  * GET  /api/bypass/bypasslink?url=https://linkvertise.com/...
@@ -147,7 +147,7 @@ async function resolveBypass(targetUrl, androidId) {
 
 export default {
   name: "Bypass Link",
-  description: "Bypass shortlink services (sf.gl, sub2unlock, tinyurl, linkvertise, dll) via bypass.tools with Cloudflare solver",
+  description: "Bypass shortlink services (sf.gl, sub2unlock, linkvertise, dll; tidak mendukung TinyURL) via bypass.tools with Cloudflare solver",
   category: "Bypass",
   methods: ["GET", "POST"],
   params: ["url", "androidId"],
@@ -156,7 +156,7 @@ export default {
     url: {
       type: "string",
       required: true,
-      description: "URL shortlink yang ingin di-bypass (sf.gl, linkvertise, tinyurl, dll)",
+      description: "URL shortlink yang ingin di-bypass (sf.gl, linkvertise, dll - tidak mendukung TinyURL)",
       example: "https://linkvertise.com/546946/mYoUbm5Ro7gU?o=sharing",
     },
     androidId: {
@@ -191,6 +191,13 @@ export default {
         return res.status(400).json({
           status: false,
           message: "Format URL tidak valid",
+        });
+      }
+
+      if (url.toLowerCase().includes("tinyurl.com")) {
+        return res.status(400).json({
+          status: false,
+          message: "Layanan ini tidak mendukung bypass shortlink TinyURL (https://tinyurl.com/...)",
         });
       }
 

@@ -1,1 +1,58 @@
-[]
+[
+  {
+    "filename": "e61fdbba1e2bf3b1aaa43ec92d286451.jpg",
+    "expiresAt": "2026-10-16T06:50:56.550Z",
+    "filePath": "/root/apiku/files/e61fdbba1e2bf3b1aaa43ec92d286451.jpg",
+    "originalName": "photo.jpg",
+    "size": 96603,
+    "mimetype": "image/jpeg"
+  },
+  {
+    "filename": "467cc25b04a95012d0be87aa5d9af557.jpg",
+    "expiresAt": "2026-10-14T07:31:17.942Z",
+    "filePath": "/root/apiku/files/467cc25b04a95012d0be87aa5d9af557.jpg",
+    "originalName": "IMG-20261008-WA0050.jpg",
+    "size": 216286,
+    "mimetype": "image/jpeg"
+  },
+  {
+    "filename": "9d0175fe36f4e71909ffd8358b37434c.jpeg",
+    "expiresAt": "2026-10-12T19:01:27.087Z",
+    "filePath": "/root/apiku/files/9d0175fe36f4e71909ffd8358b37434c.jpeg",
+    "originalName": "cf9a4b6f-e185-47ac-9997-d625ebbd4a4b.jpeg",
+    "size": 171536,
+    "mimetype": "image/jpeg"
+  },
+  {
+    "filename": "90f5367975eefba6995eaf3b6465720d.jpg",
+    "expiresAt": "2026-10-14T07:57:37.300Z",
+    "filePath": "/root/apiku/files/90f5367975eefba6995eaf3b6465720d.jpg",
+    "originalName": "Screenshot_20261009_122524_YouTube ReVanced.jpg",
+    "size": 352180,
+    "mimetype": "image/jpeg"
+  },
+  {
+    "filename": "72010358aebc4539eeaf430a38907834.jpg",
+    "expiresAt": "2026-10-14T08:05:31.509Z",
+    "filePath": "/root/apiku/files/72010358aebc4539eeaf430a38907834.jpg",
+    "originalName": "Screenshot_20261009_144350_Chrome.jpg",
+    "size": 887305,
+    "mimetype": "image/jpeg"
+  },
+  {
+    "filename": "fd5c4d06f96de7920bf2e1923e2671cc.jpg",
+    "expiresAt": "2026-10-14T08:43:48.425Z",
+    "filePath": "/root/apiku/files/fd5c4d06f96de7920bf2e1923e2671cc.jpg",
+    "originalName": "IMG-20261008-WA0050.jpg",
+    "size": 216286,
+    "mimetype": "image/jpeg"
+  },
+  {
+    "filename": "567f0b03cb5314f2b36dcdd3aff3f1a9.jpg",
+    "expiresAt": "2026-10-17T03:40:21.500Z",
+    "filePath": "/root/apiku/files/567f0b03cb5314f2b36dcdd3aff3f1a9.jpg",
+    "originalName": "photo.jpg",
+    "size": 234764,
+    "mimetype": "image/jpeg"
+  }
+]

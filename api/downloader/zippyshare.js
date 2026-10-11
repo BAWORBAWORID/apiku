@@ -7,7 +7,9 @@ import { URL } from 'url';
 // =====================
 const KNOWN_ZIPPYSHARE_DOMAINS = [
   /^www\d{0,2}\.zippyshare\.com$/i,  // www, www12, www32, etc.
-  /^zippyshare\.com$/i
+  /^zippyshare\.com$/i,
+  /^www\d{0,2}\.zippyshare\.day$/i,
+  /^zippyshare\.day$/i
 ];
 
 // =====================
@@ -257,14 +259,19 @@ function isValidZippyshareUrl(urlStr) {
   try {
     const parsed = new URL(urlStr);
     
-    // Only allow HTTPS
-    if (parsed.protocol !== 'https:') return false;
+    // Only allow HTTPS or HTTP
+    if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') return false;
     
     // Check domain against allowlist
     const hostname = parsed.hostname;
     const isKnownDomain = KNOWN_ZIPPYSHARE_DOMAINS.some(regex => regex.test(hostname));
     if (!isKnownDomain) return false;
     
+    // zippyshare.day path format: /ID/file or /ID
+    if (hostname.includes('zippyshare.day')) {
+      return /^\/[a-zA-Z0-9_-]+(\/file)?$/i.test(parsed.pathname);
+    }
+
     // Check path format: /v/ID/file.html
     if (!/^\/v\/[a-zA-Z0-9]+\/file\.html$/.test(parsed.pathname)) return false;
     
@@ -275,15 +282,145 @@ function isValidZippyshareUrl(urlStr) {
 }
 
 // =====================
-// Zippyshare Downloader (Safe Version)
+// Zippyshare.day Downloader
+// =====================
+async function downloadZippyshareDay(url) {
+  const cleanUrl = url.trim();
+  const pageRes = await fetch(cleanUrl, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    },
+  });
+
+  if (!pageRes.ok) {
+    throw new Error(`Gagal memuat halaman Zippyshare: HTTP ${pageRes.status}`);
+  }
+
+  const html = await pageRes.text();
+  const $ = cheerio.load(html);
+
+  const rawCookies = pageRes.headers.getSetCookie
+    ? pageRes.headers.getSetCookie()
+    : [pageRes.headers.get('set-cookie')].filter(Boolean);
+
+  const cookies = rawCookies
+    .map((c) => c.split(';')[0])
+    .filter(Boolean)
+    .join('; ');
+
+  const csrfMatch = html.match(/<meta\s+name=["']csrf-token["']\s+content=["']([^"']+)["']/i);
+  const csrf = csrfMatch ? csrfMatch[1] : null;
+  if (!csrf) throw new Error('Tidak dapat menemukan CSRF token pada halaman.');
+
+  const idMatch = html.match(/const\s+downloadId\s*=\s*["']([^"']+)["']/i);
+  const downloadId = idMatch ? idMatch[1] : cleanUrl.split('/')[3];
+  if (!downloadId) throw new Error('Tidak dapat menemukan download ID pada halaman.');
+
+  const filename = $('.filebox-title').first().text().trim() ||
+    $('meta[name="title"]').attr('content')?.replace(/^Zippyshare\s*-\s*/i, '').trim() ||
+    $('title').text().replace(/Zippyshare\s*—\s*Download\s*—\s*/i, '').trim() ||
+    'file';
+
+  let filesize = '';
+  $('p.small').each((_, el) => {
+    const text = $(el).text();
+    if (/File size\s*:/i.test(text)) {
+      filesize = text.replace(/.*File size\s*:\s*/i, '').trim();
+    }
+  });
+  if (!filesize) {
+    const btnMatch = html.match(/const\s+downloadBtnTxt\s*=\s*"Download\s*\(([^)]+)\)"/i);
+    if (btnMatch) filesize = btnMatch[1].trim();
+  }
+
+  let uploadAt = '';
+  $('p.small').each((_, el) => {
+    const text = $(el).text();
+    if (/Uploaded at\s*:/i.test(text)) {
+      uploadAt = text.replace(/.*Uploaded at\s*:\s*/i, '').trim();
+    }
+  });
+
+  let views = '';
+  $('li.list-group-item').each((_, el) => {
+    const text = $(el).text();
+    if (/Views/i.test(text)) {
+      views = $(el).find('span').text().trim();
+    }
+  });
+
+  const countryMatch = html.match(/This file was uploaded from\s*<strong>([^<]+)<\/strong>/i);
+  const uploaderCountry = countryMatch ? countryMatch[1].trim() : null;
+
+  const createUrl = `https://zippyshare.day/${downloadId}/download/create`;
+  const createRes = await fetch(createUrl, {
+    method: 'POST',
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'X-CSRF-TOKEN': csrf,
+      'X-Requested-With': 'XMLHttpRequest',
+      'Referer': cleanUrl,
+      'Cookie': cookies,
+      'Accept': 'application/json, text/javascript, */*; q=0.01',
+    },
+  });
+
+  if (!createRes.ok) {
+    throw new Error(`Gagal membuat download link: HTTP ${createRes.status}`);
+  }
+
+  const createData = await createRes.json();
+  if (createData.error) {
+    throw new Error(`Zippyshare error: ${createData.error}`);
+  }
+
+  const downloadUrl = createData.download_link;
+  if (!downloadUrl) throw new Error('Download link tidak ditemukan dalam respon.');
+
+  let directUrl = null;
+  try {
+    const headRes = await fetch(downloadUrl, {
+      method: 'HEAD',
+      redirect: 'manual',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Referer': cleanUrl,
+        'Cookie': cookies,
+      },
+    });
+    if (headRes.status >= 300 && headRes.status < 400) {
+      directUrl = headRes.headers.get('location') || null;
+    }
+  } catch {}
+
+  return {
+    url: downloadUrl,
+    direct_url: directUrl || downloadUrl,
+    filename,
+    filesize,
+    uploadDate: uploadAt,
+    views: views || null,
+    uploaderCountry,
+    platform: 'Zippyshare',
+  };
+}
+
+// =====================
+// Zippyshare Downloader
 // =====================
 async function zippyshareDownloader(url) {
+  if (!isValidZippyshareUrl(url)) {
+    throw new Error('Invalid Zippyshare URL format. Contoh: https://zippyshare.day/62pbk9GdX6q1UXY/file');
+  }
+
+  const parsedUrl = new URL(url);
+  if (parsedUrl.hostname.includes('zippyshare.day')) {
+    return downloadZippyshareDay(url);
+  }
+
   return new Promise(async (resolve, reject) => {
     try {
-      // Validasi URL secara ketat
-      if (!isValidZippyshareUrl(url)) {
-        return reject(new Error('Invalid Zippyshare URL format'));
-      }
 
       const parsedUrl = new URL(url);
       const host = parsedUrl.hostname;
@@ -392,21 +529,22 @@ export default {
 
     examples: [
         {
-            url: "https://www32.zippyshare.com/v/abc123/file.html",
+            url: "https://zippyshare.day/62pbk9GdX6q1UXY/file",
             description: "Download file from Zippyshare"
         }
     ],
 
     async run(req, res) {
         try {
-            const { url } = req.query;
+            const params = { ...req.query, ...req.body };
+            const url = params.url ? String(params.url).trim() : '';
 
             // Validate URL parameter
             if (!url) {
                 return res.status(400).json({
                     success: false,
                     error: 'Parameter "url" is required',
-                    example: '/api/zippyshare?url=https://www32.zippyshare.com/v/abc123/file.html',
+                    example: '/api/downloader/zippyshare?url=https://zippyshare.day/62pbk9GdX6q1UXY/file',
                     timestamp: new Date().toISOString()
                 });
             }
@@ -426,7 +564,7 @@ export default {
             if (!isValidZippyshareUrl(url)) {
                 return res.status(400).json({
                     success: false,
-                    error: 'Invalid Zippyshare URL. Must be a valid https://[wwwN].zippyshare.com/v/ID/file.html URL',
+                    error: 'Invalid Zippyshare URL. Must be a valid https://zippyshare.day/ID/file or https://[wwwN].zippyshare.com/v/ID/file.html URL',
                     timestamp: new Date().toISOString()
                 });
             }

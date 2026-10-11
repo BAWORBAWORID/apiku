@@ -246,8 +246,8 @@ export default {
   name: 'Melolo',
   description: 'Scraper Short Drama & Webnovel Melolo — katalog, pencarian, detail drama & episode list, direct MP4 streaming & download',
   category: 'Movie',
-  methods: ['GET', 'POST'],
-  params: ['action', 'query', 'url', 'episode', 'page', 'play'],
+  methods: ['GET', 'POST', 'HEAD', 'OPTIONS'],
+  params: ['action', 'query', 'slug', 'id', 'url', 'episode', 'page', 'play'],
   paramsSchema: {
     action: {
       type: 'string',
@@ -257,10 +257,16 @@ export default {
       description: `Aksi yang dijalankan: ${ACTIONS.join(', ')}`,
       example: 'home',
     },
+    slug: {
+      type: 'string',
+      required: false,
+      description: 'Slug drama Melolo (action=detail, stream, download). Rekomendasi dibanding url agar bebas limitasi SSRF',
+      example: 'abstinent-tycoons-desire-the-factory-cinderella',
+    },
     query: {
       type: 'string',
       required: false,
-      description: 'Kata kunci pencarian (action=search) atau slug/URL drama (action=detail, stream)',
+      description: 'Kata kunci pencarian (action=search) atau slug drama (action=detail, stream)',
       example: 'dewi permata',
     },
     url: {
@@ -296,7 +302,7 @@ export default {
     try {
       const params = { ...req.query, ...req.body };
       const action = String(params.action || 'home').trim().toLowerCase();
-      const q = String(params.query || params.q || params.url || '').trim();
+      const q = String(params.slug || params.id || params.query || params.q || params.url || '').trim();
 
       logger.info(`[MELOLO] Request action=${action}`);
 
@@ -331,7 +337,7 @@ export default {
         if (!q) {
           return res.status(400).json({
             status: false,
-            message: "Parameter 'query' atau 'url' wajib diisi (URL atau slug drama Melolo)",
+            message: "Parameter 'slug', 'query', atau 'url' wajib diisi",
           });
         }
         const data = await scrapeDetail(q);
@@ -342,32 +348,67 @@ export default {
       }
 
       // 4. Stream / Download
-      if (action === 'stream' || action === 'download' || action === 'dl') {
+      if (action === 'stream' || action === 'play' || action === 'download' || action === 'dl') {
         if (!q) {
           return res.status(400).json({
             status: false,
-            message: "Parameter 'url' atau 'query' wajib diisi untuk action=stream/download",
+            message: "Parameter 'slug', 'query', atau 'url' wajib diisi untuk action=stream/download",
           });
         }
+
+        if (req.method === 'OPTIONS') {
+          res.writeHead(204, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+            'Access-Control-Allow-Headers': 'Range, Content-Type',
+            'Access-Control-Max-Age': '86400',
+          });
+          return res.end();
+        }
+
         const ep = params.episode || params.ep || 1;
         const streamInfo = await resolveStream(q, ep);
 
-        const shouldPlay = String(params.play || params.stream || '').toLowerCase() === 'true' || params.play === true;
+        const shouldPlay = String(params.play || params.stream || '').toLowerCase() === 'true' || params.play === true || action === 'play';
         if (shouldPlay) {
+          const upstreamHeaders = { ...streamInfo.headers };
+          if (req.headers.range) upstreamHeaders.Range = req.headers.range;
+
           const mediaRes = await fetch(streamInfo.video_url, {
-            headers: streamInfo.headers,
+            headers: upstreamHeaders,
+            redirect: 'follow',
+            signal: AbortSignal.timeout(60000),
           });
-          if (!mediaRes.ok) {
+
+          if (!mediaRes.ok && mediaRes.status !== 206) {
             return res.status(mediaRes.status).json({
               status: false,
               message: `Gagal streaming video dari provider: HTTP ${mediaRes.status}`,
             });
           }
-          res.setHeader('Content-Type', mediaRes.headers.get('content-type') || 'video/mp4');
-          res.setHeader('Content-Disposition', `inline; filename="melolo-${streamInfo.slug}-ep${streamInfo.episode}.mp4"`);
-          if (mediaRes.headers.get('content-length')) {
-            res.setHeader('Content-Length', mediaRes.headers.get('content-length'));
+
+          const resHeaders = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+            'Access-Control-Allow-Headers': 'Range, Content-Type',
+            'Access-Control-Expose-Headers': 'Content-Length, Content-Range, Accept-Ranges, Content-Type',
+            'Content-Type': mediaRes.headers.get('content-type') || 'video/mp4',
+            'Accept-Ranges': 'bytes',
+            'Cache-Control': 'public, max-age=86400',
+            'Content-Disposition': `inline; filename="melolo-${streamInfo.slug}-ep${streamInfo.episode}.mp4"`,
+          };
+
+          const len = mediaRes.headers.get('content-length');
+          const cr = mediaRes.headers.get('content-range');
+          if (len) resHeaders['Content-Length'] = len;
+          if (cr) resHeaders['Content-Range'] = cr;
+
+          if (req.method === 'HEAD') {
+            res.writeHead(mediaRes.status, resHeaders);
+            return res.end();
           }
+
+          res.writeHead(mediaRes.status, resHeaders);
           if (mediaRes.body) {
             return Readable.fromWeb(mediaRes.body).pipe(res);
           }
@@ -378,7 +419,8 @@ export default {
           status: true,
           result: {
             ...streamInfo,
-            direct_stream_api: `/api/movie/melolo?action=stream&url=${encodeURIComponent(streamInfo.slug)}&episode=${streamInfo.episode}&play=true`,
+            url: streamInfo.video_url,
+            direct_stream_api: `/api/movie/melolo?action=stream&slug=${encodeURIComponent(streamInfo.slug)}&episode=${streamInfo.episode}&play=true`,
           },
         });
       }

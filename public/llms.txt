@@ -1,8 +1,8 @@
 # Zyyvor API
 
-> Free REST API platform with 400++ endpoints for modern developers. No API key required.
+> Free REST API platform with 500++ endpoints for modern developers. No API key required.
 
-Zyyvor is a comprehensive REST API platform providing 400++ endpoints across categories including AI chat, image processing, media downloaders, payment tools, games, and developer utilities. Built on Node.js with Express, deployed on Cloudflare with 99.99% uptime.
+Zyyvor is a comprehensive REST API platform providing 500++ endpoints across categories including AI chat, image processing, media downloaders, payment tools, games, and developer utilities. Built on Node.js with Express, deployed on Cloudflare with 99.99% uptime.
 
 ## Base URL
 

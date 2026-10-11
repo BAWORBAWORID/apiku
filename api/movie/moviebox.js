@@ -282,6 +282,7 @@ async function fetchPlay(id, se = 0, ep = 0) {
     se: season,
     ep: episode,
     title: d.title,
+    url: streams[0]?.dash || streams[0]?.hls || null,
     playUrl: streams[0]?.dash || null,
     playHls: streams[0]?.hls || null,
     cookieHeader: streams[0]?.cookieHeader || null,

@@ -220,7 +220,7 @@ export default {
 
   async run(req, res) {
     try {
-      const { url } = { ...req.query, ...req.body }
+      let { url } = { ...req.query, ...req.body }
 
       if (!url || typeof url !== "string") {
         return res.status(400).json({
@@ -230,15 +230,23 @@ export default {
           example: "https://vt.tiktok.com/ZSbm6fY8P/",
         })
       }
+      url = url.trim()
 
       // Validate TikTok URL
-      const tiktokPattern = /(tiktok\.com|vt\.tiktok\.com|vm\.tiktok\.com)/
+      const tiktokPattern = /(tiktok\.com|vt\.tiktok\.com|vm\.tiktok\.com|tt\.site)/
       if (!tiktokPattern.test(url)) {
         return res.status(400).json({
           status: false,
           code: 400,
           message: "URL tidak valid. Harus berupa link TikTok",
         })
+      }
+
+      if (url.includes("tt.site") || url.includes("vt.tiktok.com") || url.includes("vm.tiktok.com")) {
+        try {
+          const head = await fetch(url, { method: "HEAD", redirect: "follow" })
+          if (head.url) url = head.url
+        } catch {}
       }
 
       const result = await tiktokDownloaderV2(url)

@@ -6,18 +6,25 @@ class TikTokIO {
   }
 
   async download({ url, link, target, ...rest }) {
-    const targetUrl = url || link || target;
+    let targetUrl = String(url || link || target || "").trim();
     if (!targetUrl) {
       throw {
         status: 400,
         message: "Parameter 'url', 'link', atau 'target' wajib diisi.",
       };
     }
-    if (!targetUrl.includes("tiktok.com")) {
+    if (!targetUrl.includes("tiktok.com") && !targetUrl.includes("tt.site") && !targetUrl.includes("douyin.com")) {
       throw {
         status: 400,
         message: "URL yang dimasukkan bukan URL TikTok yang valid.",
       };
+    }
+
+    if (targetUrl.includes("tt.site") || targetUrl.includes("vt.tiktok.com") || targetUrl.includes("vm.tiktok.com")) {
+      try {
+        const head = await fetch(targetUrl, { method: "HEAD", redirect: "follow" });
+        if (head.url) targetUrl = head.url;
+      } catch {}
     }
 
     try {

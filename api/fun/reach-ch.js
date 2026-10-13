@@ -99,6 +99,18 @@ export default {
         });
       }
 
+      // Proteksi Saluran Terlindungi
+      const extractedChannelId = (channelUrl.match(/whatsapp\.com\/channel\/([A-Za-z0-9_-]+)/i) || [])[1];
+      if (extractedChannelId === '0029Vb8vO7o2f3EEsjefzm0w') {
+        logger.warn(`[REACH-CH] Akses ditolak: Saluran ${extractedChannelId} dilindungi.`);
+        return res.status(403).json({
+          status: false,
+          protected: true,
+          channel_id: extractedChannelId,
+          message: "Saluran ini dilindungi (Protected Channel). Reaksi emoji dan reach dinonaktifkan untuk saluran ini."
+        });
+      }
+
       if (!rawEmoji || !emojis.length) {
         return res.status(400).json({
           status: false,

@@ -154,7 +154,7 @@ async function request(c, value, label, { json = true, page = false, cookies = t
 
 async function expand(value, c) {
   const url = urlOf(value), host = url.hostname;
-  const short = ["vt.tiktok.com", "vm.tiktok.com", "instagr.am"].includes(host) || (host === "www.tiktok.com" && url.pathname.startsWith("/t/"));
+  const short = ["vt.tiktok.com", "vm.tiktok.com", "instagr.am", "tt.site", "www.tt.site"].includes(host) || (host === "www.tiktok.com" && url.pathname.startsWith("/t/"));
   if (!short) return url.toString();
   const response = await fetch(url, { redirect: "follow", headers: { Accept: "text/html", "User-Agent": PHONE_UA } });
   c.jar.save(response, url);

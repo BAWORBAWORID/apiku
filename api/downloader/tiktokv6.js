@@ -18,15 +18,22 @@ function apiHeaders(i) {
   };
 }
 
-/** Validasi format link TikTok (terima vt.tiktok.com short link). */
-function parseTiktokUrl(input) {
-  const s = String(input || "").trim();
-  if (!/^(https?:\/\/)?([\w-]+\.)?tiktok\.com\//i.test(s)) {
+/** Validasi format link TikTok (terima vt.tiktok.com & tt.site short link). */
+async function parseTiktokUrl(input) {
+  let s = String(input || "").trim();
+  if (!/^(https?:\/\/)?([\w-]+\.)?(tiktok\.com|tt\.site)\//i.test(s)) {
     throw new Error(
       "Bukan link TikTok. Contoh: https://vt.tiktok.com/ZSbM4DXTu/ atau https://www.tiktok.com/@user/video/123"
     );
   }
-  return s.startsWith("http") ? s : `https://${s}`;
+  if (!s.startsWith("http")) s = `https://${s}`;
+  if (s.includes("tt.site") || s.includes("vt.tiktok.com") || s.includes("vm.tiktok.com")) {
+    try {
+      const head = await fetch(s, { method: "HEAD", redirect: "follow" });
+      if (head.url) s = head.url;
+    } catch {}
+  }
+  return s;
 }
 
 /**
@@ -63,7 +70,7 @@ async function oembedTruth(url) {
  * dari API tidak cocok, berarti URL mati (API balas ok:true + konten acak).
  */
 async function getTiktokInfo(input) {
-  const url = parseTiktokUrl(input);
+  const url = await parseTiktokUrl(input);
   const truth = await oembedTruth(url);
 
   let res = await fetch(`${API}?url=${encodeURIComponent(url)}`, {

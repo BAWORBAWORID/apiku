@@ -189,7 +189,7 @@ export default {
 
   async run(req, res) {
     try {
-      const { url } = { ...req.query, ...req.body }
+      let { url } = { ...req.query, ...req.body }
 
       if (!url || typeof url !== "string") {
         return res.status(400).json({
@@ -197,12 +197,20 @@ export default {
           message: "Parameter 'url' wajib diisi",
         })
       }
+      url = url.trim()
 
-      if (!url.includes("tiktok.com")) {
+      if (!url.includes("tiktok.com") && !url.includes("tt.site") && !url.includes("douyin.com")) {
         return res.status(400).json({
           status: false,
-          message: "URL harus dari domain tiktok.com",
+          message: "URL harus dari domain tiktok.com atau tt.site",
         })
+      }
+
+      if (url.includes("tt.site") || url.includes("vt.tiktok.com") || url.includes("vm.tiktok.com")) {
+        try {
+          const head = await fetch(url, { method: "HEAD", redirect: "follow" })
+          if (head.url) url = head.url
+        } catch {}
       }
 
       const result = await tiktokDownloader(url)

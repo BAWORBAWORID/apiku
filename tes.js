@@ -1,620 +1,539 @@
+#!/usr/bin/env node
+"use strict";
+
 /**
- * Name : YouTube Scraper (search engine max 30 + downloader via provider, JSON only)
- * Owner : Zane
- * SL : https://whatsapp.com/channel/0029VbBe2Xt1t90gnNzfxc1F
- * Base Web : https://www.youtube.com (+ provider: invidious & y2mate.gs)
+ * Name : All In One Downloader
+ * Creator : Razeerh
+ * Source : https://whatsapp.com/channel/0029vbCN4sQLo4hhDCk0HX1m
+ * Base web : https://www(.)videodownloadertools(.)com/
  * Type : Scraper
- * Function : search -> 30 hasil pencarian; dl -> link download video/audio -> JSON ke layar
- * Note : error fix sendiri. Search ambil ytInitialData dari halaman results lalu sambung pakai
- *        endpoint InnerTube /youtubei/v1/search (continuation) — tanpa API key Google, tanpa login,
- *        tanpa captcha. Download: langsung dari YouTube gak bisa (streamingData sekarang semua
- *        signatureCipher + butuh nsig/po-token, client ANDROID/IOS kena 400/LOGIN_REQUIRED), jadi
- *        pakai 2 provider yang di-scrape:
- *          1. invidious  -> api /api/v1/videos/<id> (daftar instance live dari api.invidious.io +
- *                           fallback hardcoded), balikin adaptiveFormats (video-only + audio-only)
- *                           plus formatStreams (muxed) & hls/dash. No captcha, no CF challenge.
- *          2. y2mate.gs  -> backend etacloud (auth/init/convert/progress), hasilnya mp3/mp4 jadi.
- *        Urutan auto: mp4 -> invidious dulu (cepat, link langsung), mp3 -> y2mate dulu (mp3 beneran;
- *        invidious cuma m4a/opus). Tiap link hasil akhir di-probe (GET Range lalu potong socket)
- *        biar ketahuan mati/hidupnya. Zero dep, native https, nol file ditulis ke disk.
- *        Usage:
- *          node ytscrape.js search "one piece opening" --limit 30
- *          node ytscrape.js dl <link|id> --format mp4
- *          node ytscrape.js dl <link|id> --format mp3 --provider y2mate
- *          node ytscrape.js dl <link|id> --itag 137 --provider invidious
- *          node ytscrape.js instances
+ * Description : layanan pengunduh video dan audio berbasis browser. Pengguna cukup memasukkan tautan media, kemudian layanan mencoba mengenali sumbernya, memproses tautan, dan menyediakan opsi unduhan berdasarkan format atau kualitas yang tersedia.
+ * Note : bagian pemrosesan media kadang mengembalikan status: "failed" itu bukan masalah dari script, tetapi masalah selama kuota RapidAPI milik server videodownloadertools.com sudah/masih habis. agar pemrosesan media benar-benar mengembalikan opsi unduhan, kuota RapidAPI server sana harus tersedia (di luar kendali script ini)
  */
 
-import { request as httpsReq } from 'node:https'
-import { parseArgs } from 'node:util'
-import { pathToFileURL } from 'node:url'
+import axios from "axios";
+import * as cheerio from "cheerio";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const YT = 'https://www.youtube.com'
-const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-const TIMEOUT = 30_000
-const RETRIES = 2
+const TARGET_URL = "https://www.videodownloadertools.com/";
+const API_URL = new URL("fetch_api.php", TARGET_URL).toString();
 
-// instance invidious yang biasanya buka API (dicek ulang tiap jalan)
-const IV_FALLBACK = [
-  'invidious.f5.si', 'inv.nadeko.net', 'invidious.tiekoetter.com', 'yewtu.be',
-  'invidious.nerdvpn.de', 'invidious.privacyredirect.com', 'invidious.materialio.us',
-  'invidious.fdn.fr', 'iv.ggtyler.dev', 'invidious.protokolla.fi',
-]
+const USER_AGENT =
+  "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+const TIMEOUT = 45000;
+const MAX_RETRY = 2;
 
-// ── HTTP ────────────────────────────────────────────────────
-/** Request HTTPS native, ikut redirect, retry untuk 429/5xx/timeout. */
-async function req(url, { method = 'GET', headers = {}, body, maxRedirect = 5, timeout = TIMEOUT, retries = RETRIES } = {}) {
-  let cur = url
-  for (let hop = 0; hop <= maxRedirect; hop++) {
-    const u = new URL(cur)
-    let out = null
-    for (let i = 0; i <= retries; i++) {
-      out = await new Promise((resolve) => {
-        const rq = httpsReq(
-          {
-            protocol: u.protocol, hostname: u.hostname, port: u.port || 443,
-            path: u.pathname + u.search, method, servername: u.hostname,
-            headers: { 'User-Agent': UA, 'Accept-Language': 'en-US,en;q=0.9', ...headers },
-          },
-          (res) => {
-            const chunks = []
-            res.on('data', (c) => chunks.push(c))
-            res.on('end', () => resolve({
-              status: res.statusCode, headers: res.headers,
-              text: Buffer.concat(chunks).toString('utf8'), finalUrl: cur,
-            }))
-          },
-        )
-        rq.setTimeout(timeout, () => rq.destroy(new Error('timeout')))
-        rq.on('error', (e) => resolve({ status: 0, error: e.message }))
-        if (body) rq.write(body)
-        rq.end()
-      })
-      if ((out.status >= 500 || out.status === 429 || out.status === 0) && i < retries) {
-        await sleep(700 * (i + 1))
-        continue
-      }
-      break
-    }
-    const loc = out.headers?.location
-    if (loc && out.status >= 300 && out.status < 400) {
-      cur = new URL(loc, cur).toString()
-      continue
-    }
-    return out
-  }
-  throw new Error('gagal: kebanyakan redirect')
+const PLATFORM_MAP = {
+  "youtube.com": "YouTube",
+  "youtu.be": "YouTube",
+  "m.youtube.com": "YouTube",
+  "instagram.com": "Instagram",
+  "tiktok.com": "TikTok",
+  "vt.tiktok.com": "TikTok",
+  "facebook.com": "Facebook",
+  "fb.watch": "Facebook",
+  "m.facebook.com": "Facebook",
+  "twitter.com": "Twitter/X",
+  "x.com": "Twitter/X",
+  "vimeo.com": "Vimeo",
+  "dailymotion.com": "Dailymotion",
+  "dai.ly": "Dailymotion",
+  "pinterest.com": "Pinterest",
+  "pin.it": "Pinterest",
+  "reddit.com": "Reddit",
+  "redd.it": "Reddit",
+  "snapchat.com": "Snapchat",
+  "linkedin.com": "LinkedIn",
+  "tumblr.com": "Tumblr",
+  "twitch.tv": "Twitch",
+  "soundcloud.com": "SoundCloud",
+  "deezer.com": "Deezer",
+  "bilibili.com": "Bilibili",
+  "b23.tv": "Bilibili",
+  "imgur.com": "Imgur",
+  "threads.net": "Threads",
+  "threads.com": "Threads",
+  "likee.video": "Likee",
+  "likee.com": "Likee",
+  "kwai.com": "Kwai",
+  "kwai-video.com": "Kwai",
+  "sharechat.com": "ShareChat",
+  "moj.com": "Moj",
+  "ted.com": "TED",
+  "vk.com": "VK",
+  "ok.ru": "Odnoklassniki",
+  "weibo.com": "Weibo",
+};
+
+const AUDIO_EXT = ["mp3", "m4a", "aac", "opus", "ogg", "wav", "flac"];
+const IMAGE_EXT = ["jpg", "jpeg", "png", "webp", "bmp", "heic", "avif"];
+const VIDEO_EXT = ["mp4", "mov", "webm", "mkv", "avi", "flv", "3gp", "m4v"];
+const GIF_EXT = ["gif"];
+
+const ALL_CONTENT_TYPES = ["video", "audio", "photo", "reels", "shorts", "gif"];
+
+const PLATFORM_CONTENT = {
+  Instagram: ["video", "audio", "reels", "photo"],
+  YouTube: ["video", "audio", "shorts"],
+  TikTok: ["video", "audio", "shorts"],
+  Facebook: ["video", "audio", "reels"],
+  "Twitter/X": ["video", "audio", "gif", "photo"],
+  Snapchat: ["video", "audio"],
+  Threads: ["video", "photo"],
+  Imgur: ["video", "photo", "gif"],
+  Pinterest: ["video", "photo", "gif"],
+  Tumblr: ["video", "photo", "gif"],
+  Reddit: ["video", "audio", "gif"],
+  Likee: ["video", "audio", "shorts"],
+  Kwai: ["video", "audio"],
+  Moj: ["video", "audio"],
+  ShareChat: ["video", "audio"],
+  Vimeo: ["video", "audio"],
+  Dailymotion: ["video", "audio"],
+  Bilibili: ["video", "audio"],
+  Twitch: ["video", "audio"],
+  SoundCloud: ["audio"],
+  Deezer: ["audio"],
+  TED: ["video", "audio"],
+};
+
+function log(...args) {
+  if (process.env.SCRAPE_QUIET) return;
+  process.stderr.write(args.join(" ") + "\n");
 }
 
-/** Probe link download: GET Range 1 byte, langsung potong socket (gak tarik body). */
-async function probe(url) {
+function findKey(obj, keys) {
+  if (!obj || typeof obj !== "object") return undefined;
+  for (const k of Object.keys(obj)) {
+    if (keys.includes(k.toLowerCase())) return obj[k];
+  }
+  return undefined;
+}
+
+function extFromUrl(url) {
   try {
-    let cur = url
-    for (let hop = 0; hop < 5; hop++) {
-      const u = new URL(cur)
-      const out = await new Promise((resolve) => {
-        const rq = httpsReq(
-          {
-            protocol: u.protocol, hostname: u.hostname, port: u.port || 443,
-            path: u.pathname + u.search, method: 'GET', servername: u.hostname,
-            headers: { 'User-Agent': UA, Range: 'bytes=0-0', Accept: '*/*' },
-          },
-          (res) => {
-            res.destroy()
-            resolve({
-              status: res.statusCode, headers: res.headers, finalUrl: cur,
-            })
-          },
-        )
-        rq.setTimeout(12_000, () => rq.destroy(new Error('timeout')))
-        rq.on('error', (e) => resolve({ status: 0, error: e.message }))
-        rq.end()
-      })
-      const loc = out.headers?.location
-      if (loc && out.status >= 300 && out.status < 400) {
-        cur = new URL(loc, cur).toString()
-        continue
-      }
-      const range = out.headers?.['content-range'] || ''
-      const total = Number((range.split('/')[1] || out.headers?.['content-length'] || '').trim())
-      return {
-        ok: out.status === 200 || out.status === 206,
-        status: out.status,
-        contentType: out.headers?.['content-type'] || null,
-        totalBytes: Number.isFinite(total) && total > 0 ? total : null,
-        contentDisposition: out.headers?.['content-disposition'] || null,
-        finalHost: new URL(cur).hostname,
-      }
-    }
-    return { ok: false, status: 0, error: 'kebanyakan redirect' }
-  } catch (e) {
-    return { ok: false, status: 0, error: e.message }
-  }
-}
-
-// ── SEARCH (ytInitialData + continuation InnerTube) ─────────
-function scanJson(text, start) {
-  let depth = 0
-  let inStr = false
-  let esc = false
-  for (let i = start; i < text.length; i++) {
-    const c = text[i]
-    if (inStr) {
-      if (esc) esc = false
-      else if (c === '\\') esc = true
-      else if (c === '"') inStr = false
-      continue
-    }
-    if (c === '"') inStr = true
-    else if (c === '{' || c === '[') depth++
-    else if (c === '}' || c === ']') {
-      depth--
-      if (depth === 0) return text.slice(start, i + 1)
-    }
-  }
-  return null
-}
-
-const runs = (o) => (o?.runs || []).map((r) => r.text).join('')
-
-function walkSearch(node, out, tokenRef) {
-  if (!node || typeof node !== 'object') return
-  if (Array.isArray(node)) {
-    for (const v of node) walkSearch(v, out, tokenRef)
-    return
-  }
-  const v = node.videoRenderer
-  if (v?.videoId) {
-    out.push({
-      id: v.videoId,
-      url: `https://www.youtube.com/watch?v=${v.videoId}`,
-      title: runs(v.title) || null,
-      length: v.lengthText?.simpleText || null,
-      views: v.viewCountText?.simpleText || null,
-      channel: runs(v.ownerText) || null,
-      channelUrl: v.ownerText?.runs?.[0]?.navigationEndpoint?.browseEndpoint?.browseId
-        ? `${YT}/channel/${v.ownerText.runs[0].navigationEndpoint.browseEndpoint.browseId}` : null,
-      published: v.publishedTimeText?.simpleText || null,
-      thumb: v.thumbnail?.thumbnails?.at?.(-1)?.url || null,
-    })
-  }
-  if (!tokenRef.token) {
-    const t = node.continuationCommand?.token || node.continuationEndpoint?.continuationCommand?.token
-    if (t) tokenRef.token = t
-  }
-  for (const val of Object.values(node)) walkSearch(val, out, tokenRef)
-}
-
-/** Cari di YouTube: halaman results + sambungan continuation sampai limit. */
-async function search(query, { limit = 30, pages = 3, log } = {}) {
-  const q = String(query || '').trim()
-  if (!q) throw new Error('query kosong')
-  const max = Math.max(1, Math.min(Number(limit) || 30, 60))
-
-  const page = await req(`${YT}/results?search_query=${encodeURIComponent(q)}&hl=en&gl=US`, {
-    headers: { Accept: 'text/html,application/xhtml+xml' },
-  })
-  if (page.status !== 200) throw new Error(`halaman search HTTP ${page.status}`)
-
-  const key = page.text.match(/"INNERTUBE_API_KEY":"([^"]+)"/)?.[1]
-  const ver = page.text.match(/"INNERTUBE_CONTEXT_CLIENT_VERSION":"([^"]+)"/)?.[1] || '2.20261009.01.00'
-  const at = page.text.indexOf('var ytInitialData')
-  const brace = page.text.indexOf('{', at)
-  if (at < 0 || brace < 0) throw new Error('ytInitialData tak ketemu (kemungkinan kena consent/bot)')
-  const data = JSON.parse(scanJson(page.text, brace))
-
-  const results = []
-  const tokenRef = {}
-  walkSearch(data, results, tokenRef)
-  log?.(`page1: ${results.length} video`)
-
-  let token = tokenRef.token
-  for (let p = 1; p < Math.max(1, Number(pages) || 3) && results.length < max && token; p++) {
-    await sleep(350)
-    const body = JSON.stringify({ context: { client: { hl: 'en', gl: 'US', clientName: 'WEB', clientVersion: ver } }, continuation: token })
-    const res = await req(`${YT}/youtubei/v1/search?key=${key}&prettyPrint=false`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Youtube-Client-Name': '1', 'X-Youtube-Client-Version': ver },
-      body,
-    })
-    if (res.status !== 200) {
-      log?.(`continuation HTTP ${res.status}, stop`)
-      break
-    }
-    const before = results.length
-    const ref = {}
-    walkSearch(JSON.parse(res.text), results, ref)
-    log?.(`page${p + 1}: +${results.length - before} video`)
-    if (results.length === before) break
-    token = ref.token
-  }
-
-  const seen = new Set()
-  const dedup = []
-  for (const r of results) {
-    if (seen.has(r.id)) continue
-    seen.add(r.id)
-    dedup.push({ ...r, rank: dedup.length + 1 })
-    if (dedup.length >= max) break
-  }
-  return { query: q, limit: max, count: dedup.length, results: dedup }
-}
-
-// ── VIDEO ID ────────────────────────────────────────────────
-function videoId(input) {
-  const value = String(input || '').trim()
-  if (/^[\w-]{11}$/.test(value)) return value
-  let url
-  try {
-    url = new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`)
+    const p = new URL(url).pathname;
+    const m = p.match(/\.([a-z0-9]{2,5})(?:$|\?)/i);
+    return m ? m[1].toLowerCase() : null;
   } catch {
-    throw new Error('link YouTube tidak valid')
+    return null;
   }
-  const host = url.hostname.toLowerCase().replace(/^www\./, '')
-  const parts = url.pathname.split('/').filter(Boolean)
-  const id = host === 'youtu.be'
-    ? parts[0]
-    : (url.searchParams.get('v') || (['embed', 'live', 'shorts', 'v'].includes(parts[0]) ? parts[1] : ''))
-  if (!/^[\w-]{11}$/.test(id || '')) throw new Error('link YouTube tidak didukung')
-  return id
 }
 
-// ── PROVIDER 1: INVIDIOUS ───────────────────────────────────
-async function ivInstances(log) {
-  const list = new Set(IV_FALLBACK)
+function detectPlatform(rawUrl) {
+  let host = "";
   try {
-    const r = await req('https://api.invidious.io/instances.json', { timeout: 12_000, retries: 0 })
-    const j = JSON.parse(r.text)
-    if (Array.isArray(j)) {
-      for (const [host, meta] of j) {
-        if (meta?.type?.includes('http') || meta?.api) list.add(host)
-      }
-    }
+    host = new URL(rawUrl).hostname.toLowerCase().replace(/^www\./, "");
   } catch {
-    log?.('daftar instance live gagal, pakai fallback')
+    return { name: null, host: null, detected: false };
   }
-  return [...list]
-}
-
-/** Ambil info + stream dari satu instance invidious. */
-async function ivFetch(host, id, timeout = 16_000) {
-  const r = await req(`https://${host}/api/v1/videos/${id}`, {
-    headers: { Accept: 'application/json', Referer: `https://${host}/` },
-    timeout, retries: 0,
-  })
-  if (r.status !== 200) throw new Error(`HTTP ${r.status}${r.error ? ` ${r.error}` : ''}`)
-  let j
-  try { j = JSON.parse(r.text) } catch { throw new Error('respons bukan JSON (kemungkinan halaman error/bot)') }
-  const adaptive = j.adaptiveFormats || []
-  const muxed = j.formatStreams || []
-  if (!adaptive.length && !muxed.length) throw new Error('tidak ada stream')
-  // invidious: "resolution" bisa label ("360p") atau "640x360"; "size" bisa WxH atau jumlah byte
-  const wh = (f) => {
-    for (const key of ['resolution', 'size']) {
-      const m = /^(\d{2,5})x(\d{2,5})$/.exec(String(f[key] || ''))
-      if (m) return m
-    }
-    return null
-  }
-  const bytesOf = (f) => {
-    const n = Number(f.clen ?? f.size)
-    return Number.isFinite(n) && n > 1000 ? n : null
-  }
-  return {
-    instance: host,
-    title: j.title || null,
-    author: j.author || null,
-    lengthSeconds: j.lengthSeconds || null,
-    viewCount: j.viewCount || null,
-    liveNow: !!j.liveNow,
-    hlsUrl: j.hlsUrl || null,
-    dashUrl: j.dashUrl || null,
-    muxed: muxed.map((f) => {
-      const m = wh(f)
-      return {
-        itag: Number(f.itag) || null, kind: 'muxed', type: f.type || null,
-        quality: f.qualityLabel || f.quality || null, container: f.container || null,
-        width: m ? Number(m[1]) : null,
-        height: m ? Number(m[2]) : null,
-        bytes: bytesOf(f),
-        url: f.url,
+  let name = PLATFORM_MAP[host] || null;
+  if (!name) {
+    for (const domain of Object.keys(PLATFORM_MAP)) {
+      if (host === domain || host.endsWith("." + domain)) {
+        name = PLATFORM_MAP[domain];
+        break;
       }
-    }),
-    adaptive: adaptive.map((f) => {
-      const m = wh(f)
-      const label = f.qualityLabel || ''
-      return {
-        itag: Number(f.itag) || null,
-        kind: String(f.type || '').startsWith('audio') ? 'audio' : 'video',
-        type: f.type || null, quality: label || f.quality || null,
-        container: f.container || null, encoding: f.encoding || null,
-        width: m ? Number(m[1]) : null,
-        height: m ? Number(m[2]) : (Number((label.match(/(\d{3,4})p/) || [])[1]) || null),
-        fps: f.fps || null,
-        bitrate: Number(f.bitrate) || null,
-        bytes: bytesOf(f),
-        url: f.url,
-      }
-    }).filter((f) => f.url),
-  }
-}
-
-/** Coba instance satu-satu sampai ada yang balikin stream. */
-async function viaInvidious(id, log) {
-  const hosts = await ivInstances(log)
-  const errors = []
-  for (const host of hosts) {
-    try {
-      const info = await ivFetch(host, id)
-      log?.(`invidious ok di ${host} (${info.muxed.length + info.adaptive.length} stream)`)
-      return { provider: 'invidious', videoId: id, ...info, errors }
-    } catch (e) {
-      errors.push({ host, why: e.message })
     }
   }
-  throw new Error(`semua instance invidious gagal (${errors.length}): ${errors.slice(0, 3).map((e) => `${e.host}=${e.why}`).join('; ')}`)
+  return { name: name || "Unknown/Generic", host, detected: Boolean(name) };
 }
 
-// ── PROVIDER 2: Y2MATE (backend etacloud) ───────────────────
-const Y2 = 'https://y2mate.gs'
-const y2json = async (url, label, extra = {}) => {
-  const r = await req(url, {
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-      'Cache-Control': 'no-cache', Pragma: 'no-cache',
-      Referer: `${Y2}/`, Origin: Y2,
-      ...extra,
-    },
-  })
-  if (r.status !== 200) throw new Error(`${label} HTTP ${r.status}`)
-  let j
-  try { j = JSON.parse(r.text) } catch { throw new Error(`${label} bukan JSON`) }
-  const code = Number(j.error ?? j.err ?? 0)
-  if (Number.isFinite(code) && code > 0) throw new Error(`${label} kode ${code}`)
-  return j
+function contentTypeFromUrl(rawUrl, platformName) {
+  const u = String(rawUrl).toLowerCase();
+  if (/\/reel\/|\/reels\//.test(u) || (platformName === "Instagram" && /\/p\//.test(u)))
+    return "reels";
+  if (/\/shorts\//.test(u)) return "shorts";
+  if (/\.gif(\?|$)/.test(u)) return "gif";
+  if (/\.(jpg|jpeg|png|webp)(\?|$)/.test(u)) return "photo";
+  if (/\.(mp3|m4a|aac|opus|ogg)(\?|$)/.test(u)) return "audio";
+  return "video";
 }
 
-async function y2discover() {
-  const html = await req(Y2, { headers: { Accept: 'text/html' } })
-  const apiKey = html.text.match(/\bapiKey\s*=\s*(['"])([A-Za-z0-9_-]{16,128})\1/)?.[2]
-  const scriptSrc = html.text.match(/<script\b[^>]*\bsrc\s*=\s*(['"])([^'"]*y2mate(?:\.min)?\.js[^'"]*)\1/i)?.[2]
-  if (!apiKey || !scriptSrc) throw new Error('struktur y2mate berubah')
-  const script = await req(new URL(scriptSrc, Y2).toString(), { headers: { Accept: 'text/javascript' } })
-  const encHost = script.text.match(/\bendpoint\s*=\s*atob\(\s*(['"])([A-Za-z0-9+/=]+)\1\s*\)/)?.[2]
-  return { apiKey, apiOrigin: `https://eta.${encHost ? Buffer.from(encHost, 'base64').toString() : 'etacloud.org'}` }
+function normalizeMediaOptions(medias) {
+  if (!Array.isArray(medias)) return [];
+  return medias.map((m, i) => {
+    const url = m.url || m.link || m.download_url || "";
+    let extension = (m.extension || m.ext || m.format || "").toString().toLowerCase();
+    if (!extension) extension = extFromUrl(url) || "mp4";
+
+    const rawType = (m.type || m.mediaType || "").toString().toLowerCase();
+    let mediaType = rawType;
+    if (AUDIO_EXT.includes(extension) || rawType.includes("audio")) mediaType = "audio";
+    else if (IMAGE_EXT.includes(extension)) mediaType = "image";
+    else if (GIF_EXT.includes(extension)) mediaType = "gif";
+    else if (VIDEO_EXT.includes(extension) || rawType.includes("video")) mediaType = "video";
+
+    const audioOnly = mediaType === "audio";
+    const rawQuality = m.quality || m.label || m.resolution || m.height;
+    const quality = rawQuality ? String(rawQuality) : "unknown";
+    const hasAudio = m.hasAudio !== undefined ? Boolean(m.hasAudio) : !["image", "gif"].includes(mediaType);
+    const hasVideo = m.hasVideo !== undefined ? Boolean(m.hasVideo) : ["video"].includes(mediaType);
+
+    return {
+      index: i + 1,
+      quality,
+      resolution: m.height ? `${m.height}p` : m.resolution || quality,
+      format: extension.toUpperCase(),
+      extension,
+      mediaType,
+      audioOnly,
+      hasVideo,
+      hasAudio,
+      size: m.size || m.filesize || m.fileSize || null,
+      url,
+    };
+  });
 }
 
-async function viaY2mate(id, format, log) {
-  // auth/init kadang 403 -> discover ulang sekali (sama kayak ytmp3.js)
-  let site = await y2discover()
-  let init = null
-  for (let attempt = 0; attempt < 2; attempt++) {
-    const auth = await y2json(`${site.apiOrigin}/api/v1/auth?api_key=${site.apiKey}&_=${Date.now()}`, 'auth y2mate')
-    if (!auth.key) throw new Error('token y2mate tidak ada')
-    try {
-      init = await y2json(`${site.apiOrigin}/api/v1/init?_=${Date.now()}`, 'init y2mate', { Authorization: `Bearer ${auth.key}` })
-      break
-    } catch (e) {
-      if (attempt === 0 && /403/.test(e.message)) {
-        log?.(`${e.message}, discover ulang`)
-        await sleep(900)
-        site = await y2discover()
-        continue
-      }
-      throw e
-    }
-  }
-  if (!init?.convertURL) throw new Error('URL convert tidak ada')
-  const { apiOrigin } = site
+function extractSubtitles(raw, options) {
+  const subRaw =
+    findKey(raw, ["subtitles", "subtitle", "captions", "caption"]) || null;
+  const formats = [];
+  let available = false;
 
-  let url = init.convertURL
-  let job = null
-  const withParams = (raw, params) => {
-    const u = new URL(raw)
-    for (const [k, val] of Object.entries(params)) u.searchParams.set(k, String(val))
-    return u.toString()
-  }
-  for (let hop = 0; hop <= 5; hop++) {
-    const data = await y2json(withParams(url, { v: id, f: format, _: Date.now() }), 'convert y2mate')
-    const dl = String(data.downloadURL || '').trim()
-    const st = String(data.status || '').toLowerCase()
-    if (st === 'download' && dl) { job = { title: data.title || null, downloadUrl: dl }; break }
-    if (String(data.redirect) === '1' && data.redirectURL) { url = data.redirectURL; continue }
-    if (data.progressURL && dl) { job = { title: data.title || null, downloadUrl: dl, progressUrl: data.progressURL, progress: Number(data.progress) || 0 }; break }
-    throw new Error('convert tidak mengembalikan status valid')
-  }
-  if (!job) throw new Error('convert gagal')
-
-  if (job.progressUrl && (job.progress || 0) < 3) {
-    for (let i = 0; i < 20 && (job.progress || 0) < 3; i++) {
-      await sleep(3000)
-      const data = await y2json(withParams(job.progressUrl, { _: Date.now() }), 'progress y2mate')
-      if (String(data.status || '').toLowerCase() === 'download' && data.downloadURL) {
-        job = { title: data.title || job.title, downloadUrl: data.downloadURL }
-        break
-      }
-      job.progress = Number(data.progress) || job.progress
-      job.downloadUrl = data.downloadURL || job.downloadUrl
-    }
-  }
-  if (!job.downloadUrl) throw new Error('download URL tidak keluar')
-  log?.(`y2mate ok (${format})`)
-  return {
-    provider: 'y2mate', videoId: id, format,
-    title: job.title || null, apiOrigin,
-    downloadUrl: withParams(job.downloadUrl, { v: id, f: format, r: 'y2mate.gs' }),
-  }
-}
-
-// ── ORCHESTRASI ─────────────────────────────────────────────
-/** Pilih stream terbaik dari hasil invidious (untuk mode mp4/mp3). */
-function pickStream(info, { format = 'mp4', itag } = {}) {
-  if (itag) {
-    const all = [...info.muxed, ...info.adaptive]
-    const hit = all.find((f) => Number(f.itag) === Number(itag))
-    if (!hit) throw new Error(`itag ${itag} tidak ada di ${info.instance}`)
-    return hit
-  }
-  if (format === 'mp3') {
-    const audio = info.adaptive.filter((f) => f.kind === 'audio')
-    // 140 = m4a, 251 = webm/opus (biasanya bitrate lebih bagus)
-    const best = audio.find((f) => f.itag === 251) || audio.find((f) => f.itag === 140) || audio[0]
-    if (!best) throw new Error('tidak ada stream audio')
-    return { ...best, note: 'bukan hasil konversi mp3 — m4a/opus mentah (butuh ffmpeg kalau mau mp3)' }
-  }
-  const muxed = [...info.muxed].sort((a, b) => (b.height || 0) - (a.height || 0))
-  if (muxed.length) return muxed[0]
-  const video = info.adaptive.filter((f) => f.kind === 'video' && f.container === 'mp4').sort((a, b) => (b.height || 0) - (a.height || 0))
-  if (!video.length) throw new Error('tidak ada stream video')
-  return { ...video[0], note: 'video-only (DASH) — audio terpisah, gabung pakai ffmpeg' }
-}
-
-/** Download: provider invidious (link multi-quality) + y2mate (mp3/mp4 jadi). */
-async function download(input, { format = 'mp4', provider = 'auto', itag, check = true, log } = {}) {
-  const id = videoId(input)
-  const fmt = ['mp3', 'mp4'].includes(String(format).toLowerCase()) ? String(format).toLowerCase() : 'mp4'
-  const order = provider === 'invidious' ? ['invidious']
-    : provider === 'y2mate' ? ['y2mate']
-      : (fmt === 'mp3' ? ['y2mate', 'invidious'] : ['invidious', 'y2mate'])
-
-  const attempts = []
-  for (const name of order) {
-    try {
-      if (name === 'invidious') {
-        const info = await viaInvidious(id, log)
-        const stream = pickStream(info, { format: fmt, itag })
-        const result = {
-          source: String(input), videoId: id, title: info.title, author: info.author,
-          provider: 'invidious', instance: info.instance, format: fmt, stream,
-          streams: { muxed: info.muxed, videoOnly: info.adaptive.filter((f) => f.kind === 'video'), audioOnly: info.adaptive.filter((f) => f.kind === 'audio') },
-          hlsUrl: info.hlsUrl, dashUrl: info.dashUrl,
-          lengthSeconds: info.lengthSeconds,
+  const collect = (v) => {
+    if (!v) return;
+    if (Array.isArray(v)) {
+      available = available || v.length > 0;
+      for (const item of v) {
+        if (typeof item === "string") formats.push(extFromUrl(item) || item);
+        else if (item && typeof item === "object") {
+          const f = item.lang || item.language || item.format || item.ext ||
+            item.label || item.name;
+          if (f) formats.push(String(f));
         }
-        if (check) result.probe = await probe(stream.url)
-        if (check && result.probe && result.probe.ok === false) {
-          attempts.push({ provider: 'invidious', ok: false, why: `link mati (HTTP ${result.probe.status})` })
-          continue
-        }
-        attempts.push({ provider: 'invidious', ok: true })
-        result.attempts = attempts
-        return result
       }
-      const y = await viaY2mate(id, fmt, log)
-      const result = {
-        source: String(input), videoId: id, title: y.title,
-        provider: 'y2mate', format: fmt, downloadUrl: y.downloadUrl,
-      }
-      if (check) result.probe = await probe(y.downloadUrl)
-      if (check && result.probe && result.probe.ok === false) {
-        attempts.push({ provider: 'y2mate', ok: false, why: `link mati (HTTP ${result.probe.status})` })
-        continue
-      }
-      attempts.push({ provider: 'y2mate', ok: true })
-      result.attempts = attempts
-      return result
-    } catch (e) {
-      log?.(`${name} gagal: ${e.message}`)
-      attempts.push({ provider: name, ok: false, why: e.message })
+    } else if (typeof v === "object") {
+      const keys = Object.keys(v);
+      available = available || keys.length > 0;
+      formats.push(...keys);
+    } else if (typeof v === "string") {
+      available = true;
+      formats.push(v);
     }
+  };
+  collect(subRaw);
+  for (const o of options) {
+    const s = o.subtitles || o.subtitle;
+    if (s) collect(s);
   }
-  throw new Error(`semua provider gagal: ${attempts.map((a) => `${a.provider}=${a.why}`).join('; ')}`)
+
+  return { available, formats: [...new Set(formats.filter(Boolean))] };
 }
 
-/** Cek status instance invidious (bonus, buat debugging). */
-async function instances(log) {
-  const hosts = await ivInstances(log)
-  const out = []
-  // video uji netral (jNQXAC9IVRw kadang balik body kosong di beberapa instance)
-  for (const host of hosts.slice(0, 20)) {
-    const t0 = Date.now()
+async function fetchSite(homeHtml) {
+  const $ = cheerio.load(homeHtml);
+  const platforms = [];
+  $(".slider-item").each((_, el) => {
+    const slug = $(el).attr("href") || "";
+    const name = ($(el).find("img").attr("alt") || "").trim();
+    if (!slug || platforms.find((p) => p.slug === slug)) return;
+    platforms.push({
+      name: name || slug.replace(/[/-]/g, " ").trim(),
+      slug,
+      url: new URL(slug, TARGET_URL).toString(),
+    });
+  });
+
+  const text = $("body").text().replace(/\s+/g, " ").trim();
+
+  const supportedFormats = [];
+  for (const f of ["MP4", "MOV", "WEBM", "MP3"]) {
+    if (new RegExp("\\b" + f + "\\b", "i").test(text)) supportedFormats.push(f);
+  }
+
+  const advertisedResolutions = [];
+  for (const r of ["360p", "480p", "720p", "1080p", "1440p", "2K", "4K", "8K"]) {
+    if (new RegExp("\\b" + r + "\\b", "i").test(text)) advertisedResolutions.push(r);
+  }
+
+  const descriptions = [];
+  $("li").each((_, el) => {
+    const t = $(el).text().replace(/\s+/g, " ").trim();
+    if (t.length > 20 && t.length < 240 && !/http|jackpot|news|promo|code/i.test(t)) {
+      descriptions.push(t);
+    }
+  });
+
+  const contentSet = new Set(["video", "audio"]);
+  for (const p of platforms) {
+    const key = Object.keys(PLATFORM_CONTENT).find(
+      (k) => k.toLowerCase() === p.name.toLowerCase()
+    );
+    const caps = PLATFORM_CONTENT[key] || PLATFORM_CONTENT[p.name];
+    if (caps) caps.forEach((c) => contentSet.add(c));
+  }
+  const supportedContentTypes = ALL_CONTENT_TYPES.filter((t) => contentSet.has(t));
+
+  return {
+    title: $("title").text().trim(),
+    description: ($('meta[name="description"]').attr("content") || "").trim(),
+    supportedPlatforms: platforms,
+    platformCount: platforms.length,
+    supportedFormats,
+    advertisedResolutions,
+    supportedContentTypes,
+    contentTypeSource: "inferensi dari platform yang terdaftar + teks halaman",
+    featureHighlights: descriptions.slice(0, 8),
+  };
+}
+
+async function getHomepage() {
+  let lastErr;
+  for (let attempt = 1; attempt <= MAX_RETRY; attempt++) {
     try {
-      const r = await req(`https://${host}/api/v1/videos/dQw4w9WgXcQ`, {
-        headers: { Accept: 'application/json' }, timeout: 12_000, retries: 0,
-      })
-      const j = r.status === 200 && r.text ? JSON.parse(r.text) : null
-      out.push({
-        host, status: r.status, ms: Date.now() - t0,
-        api: !!(j && (j.adaptiveFormats?.length || j.formatStreams?.length)),
-        streams: (j?.adaptiveFormats?.length || 0) + (j?.formatStreams?.length || 0),
-        title: j?.title || null,
-      })
-    } catch (e) {
-      out.push({ host, status: 0, api: false, ms: Date.now() - t0, why: e.message })
+      const res = await axios.get(TARGET_URL, {
+        timeout: TIMEOUT,
+        headers: {
+          "User-Agent": USER_AGENT,
+          Accept: "text/html,application/xhtml+xml",
+          "Accept-Language": "en-US,en;q=0.9",
+        },
+        maxRedirects: 5,
+        validateStatus: (s) => s >= 200 && s < 400,
+      });
+      return res.data;
+    } catch (err) {
+      lastErr = err;
+      log(`[warn] homepage attempt ${attempt} failed: ${err.message}`);
+      if (attempt < MAX_RETRY) await new Promise((r) => setTimeout(r, 1200 * attempt));
     }
   }
-  return { total: hosts.length, checked: out.length, instances: out }
+  throw lastErr;
 }
 
-// ── CLI ─────────────────────────────────────────────────────
-const USAGE = `pakai:
-  node ytscrape.js search "<query>"     pencarian youtube -> JSON (maks 30)
-  node ytscrape.js dl <link|id>         link download video/audio -> JSON
-contoh:
-  node ytscrape.js search "one piece opening" --limit 30
-  node ytscrape.js dl https://youtu.be/9bZkp7q19f0 --format mp4
-  node ytscrape.js dl 9bZkp7q19f0 --format mp3
-  node ytscrape.js dl <link> --itag 137 --provider invidious
-  node ytscrape.js instances
-opsi:
-  --limit n        jumlah hasil search (default 30, maks 60)
-  --pages n        halaman continuation search (default 3)
-  --format mp4|mp3 target download (default mp4)
-  --provider auto|invidious|y2mate
-  --itag n         paksa itag stream invidious (mis. 137 video 1080p, 140 audio m4a)
-  --no-check       lewati probe link (default: di-probe dulu)
-  -q               matiin log di stderr (stdout tetap JSON)
-catatan: nol file ditulis ke disk — keluaran cuma JSON; link stream bertanda tangan &
-         kedaluwarsa (±6 jam), resolve ulang tiap mau dipakai. Direct dari youtube butuh
-         nsig decipher, jadi provider yang dipakai.`
+async function callApi(mediaUrl) {
+  const body = new URLSearchParams();
+  body.append("url", mediaUrl);
+  let lastErr;
+  for (let attempt = 1; attempt <= MAX_RETRY; attempt++) {
+    try {
+      const res = await axios.post(API_URL, body.toString(), {
+        timeout: TIMEOUT,
+        headers: {
+          "User-Agent": USER_AGENT,
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+          Accept: "application/json, text/plain, */*",
+          Referer: TARGET_URL,
+          Origin: new URL(TARGET_URL).origin,
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        maxRedirects: 5,
+        validateStatus: (s) => s >= 200 && s < 500,
+      });
+      return res;
+    } catch (err) {
+      lastErr = err;
+      log(`[warn] api attempt ${attempt} failed: ${err.message}`);
+      if (attempt < MAX_RETRY) await new Promise((r) => setTimeout(r, 1200 * attempt));
+    }
+  }
+  throw lastErr;
+}
 
-const isMain = !!process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href
+function emptySite() {
+  return {
+    title: null,
+    description: "",
+    supportedPlatforms: [],
+    platformCount: 0,
+    supportedFormats: [],
+    advertisedResolutions: [],
+    supportedContentTypes: ALL_CONTENT_TYPES,
+    featureHighlights: [],
+  };
+}
 
-if (isMain) {
-  const { values: v, positionals } = parseArgs({
-    options: {
-      limit: { type: 'string', default: '30' },
-      pages: { type: 'string', default: '3' },
-      format: { type: 'string', default: 'mp4' },
-      provider: { type: 'string', default: 'auto' },
-      itag: { type: 'string', default: '' },
-      'no-check': { type: 'boolean', default: false },
-      quiet: { type: 'boolean', short: 'q', default: false },
+async function scrape(inputUrl, opts) {
+  const started = Date.now();
+  const result = {
+    meta: {
+      target: TARGET_URL,
+      apiEndpoint: API_URL,
+      inputUrl: inputUrl || null,
+      scrapedAt: new Date().toISOString(),
+      method: "Cheerio (HTML statis) + POST fetch_api.php (JSON)",
+      durationMs: 0,
     },
-    allowPositionals: true,
-  })
-  const log = v.quiet ? null : (m) => console.error('[*]', m)
-  const [cmd, ...rest] = positionals
+    status: "info",
+    progress: 0,
+    error: null,
+    platform: { name: null, host: null, detected: false },
+    contentType: { detected: null, allSiteSupported: ALL_CONTENT_TYPES },
+    title: null,
+    source: null,
+    thumbnail: null,
+    mediaUrl: inputUrl || null,
+    formats: { available: [], extensions: [] },
+    resolutions: [],
+    options: [],
+    availability: { video: false, audioOnly: false, image: false, gif: false },
+    subtitle: { available: false, formats: [] },
+    site: emptySite(),
+  };
 
   try {
-    if (!cmd || cmd === 'help' || cmd === '--help') {
-      console.log(USAGE)
-      process.exit(0)
-    }
-    let out
-    if (cmd === 'search') {
-      out = await search(rest.join(' ') || '', { limit: Number(v.limit) || 30, pages: Number(v.pages) || 3, log })
-    } else if (cmd === 'dl' || cmd === 'download') {
-      const link = rest[0]
-      if (!link) throw new Error('link YouTube kosong')
-      out = await download(link, {
-        format: v.format, provider: v.provider,
-        itag: v.itag ? Number(v.itag) : undefined,
-        check: !v['no-check'], log,
-      })
-    } else if (cmd === 'instances') {
-      out = await instances(log)
+    log("[1/2] Mengambil halaman target & mendeteksi platform...");
+    const html = await getHomepage();
+    result.site = await fetchSite(html);
+    log(`      ${result.site.platformCount} platform terdeteksi.`);
+  } catch (err) {
+    result.site = emptySite();
+    log(`[warn] gagal mengambil homepage: ${err.message}`);
+  }
+
+  if (!inputUrl) {
+    result.status = result.site.supportedPlatforms.length ? "info" : "failed";
+    if (result.status === "failed") result.error = "Target tidak mengembalikan data platform.";
+    result.meta.durationMs = Date.now() - started;
+    return result;
+  }
+
+  let parsed;
+  try {
+    parsed = new URL(inputUrl);
+  } catch {
+    result.status = "failed";
+    result.error = `URL tidak valid: ${inputUrl}`;
+    result.meta.durationMs = Date.now() - started;
+    return result;
+  }
+  if (!/^https?:$/.test(parsed.protocol)) {
+    result.status = "failed";
+    result.error = "Hanya URL http/https yang didukung.";
+    result.meta.durationMs = Date.now() - started;
+    return result;
+  }
+
+  result.platform = detectPlatform(inputUrl);
+  result.contentType.detected = contentTypeFromUrl(inputUrl, result.platform.name);
+
+  log(`[2/2] Memproses URL via fetch_api.php (${result.platform.name || "Unknown"})...`);
+  try {
+    const res = await callApi(inputUrl);
+    const data = typeof res.data === "string" ? safeJson(res.data) : res.data;
+    if (opts && opts.raw) result.rawApiResponse = data;
+
+    if (!data || typeof data !== "object") {
+      result.status = "failed";
+      result.error = "Respons API tidak valid (bukan JSON).";
     } else {
-      console.log(USAGE)
-      process.exit(1)
+      const apiMsg = data.message || data.error || null;
+      const rawMedias = data.medias || data.links || data.data || [];
+      const options = normalizeMediaOptions(rawMedias);
+
+      if (data.title) result.title = data.title;
+      if (data.source) result.source = data.source;
+      else result.source = result.platform.name;
+      if (data.thumbnail || data.picture || data.cover) {
+        result.thumbnail = data.thumbnail || data.picture || data.cover;
+      } else if (data.title === undefined && findKey(data, ["thumbnail", "picture"])) {
+        result.thumbnail = findKey(data, ["thumbnail", "picture"]);
+      }
+      result.options = options;
+
+      const exts = [...new Set(options.map((o) => o.extension))];
+      result.formats = { available: exts.map((e) => e.toUpperCase()), extensions: exts };
+      result.resolutions = [
+        ...new Set(options.map((o) => o.resolution).filter((r) => r && r !== "unknown")),
+      ];
+      result.availability = {
+        video: options.some((o) => o.mediaType === "video"),
+        audioOnly: options.some((o) => o.audioOnly),
+        image: options.some((o) => o.mediaType === "image"),
+        gif: options.some((o) => o.mediaType === "gif"),
+      };
+      result.subtitle = extractSubtitles(data, options);
+
+      const isError =
+        data.status === "error" ||
+        (!options.length && (apiMsg || data.status === "error"));
+
+      if (options.length > 0) {
+        result.status = "success";
+        result.progress = 100;
+        result.error = null;
+      } else {
+        result.status = "failed";
+        result.progress = 0;
+        result.error = apiMsg || "Tidak ada media yang ditemukan untuk URL ini.";
+      }
     }
-    console.log(JSON.stringify(out, null, 2))
-  } catch (e) {
-    console.error('[!]', e.message || e)
-    process.exit(1)
+  } catch (err) {
+    result.status = "failed";
+    result.progress = 0;
+    if (err.code === "ECONNABORTED" || /timeout/i.test(err.message)) {
+      result.error = `Timeout setelah ${TIMEOUT}ms pada endpoint fetch_api.php.`;
+    } else if (err.response) {
+      result.error = `HTTP ${err.response.status}: ${err.response.statusText || "error"}`;
+    } else {
+      result.error = `Gagal menghubungi API: ${err.message}`;
+    }
+  }
+
+  result.meta.durationMs = Date.now() - started;
+  return result;
+}
+
+function safeJson(str) {
+  try {
+    return JSON.parse(str);
+  } catch {
+    const m = str.match(/\{[\s\S]*\}/);
+    if (m) {
+      try {
+        return JSON.parse(m[0]);
+      } catch {
+        return null;
+      }
+    }
+    return null;
   }
 }
 
-export { search, download, videoId, instances }
-export default { search, download, videoId, instances }
+function parseArgs(argv) {
+  const args = { url: null, out: null, raw: false };
+  for (const a of argv) {
+    if (a === "--raw") args.raw = true;
+    else if (a.startsWith("--out=")) args.out = a.slice(6);
+    else if (a === "--out") args.out = true;
+    else if (!a.startsWith("--") && !args.url) args.url = a;
+  }
+  if (args.out === true) args.out = "scrape-aio-output.json";
+  return args;
+}
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
+  const result = await scrape(args.url, args);
+  const json = JSON.stringify(result, null, 2);
+
+  process.stdout.write(json + "\n");
+
+  if (args.out) {
+    const outPath = path.resolve(process.cwd(), args.out);
+    fs.writeFileSync(outPath, json, "utf8");
+    log(`[ok] hasil disimpan ke ${outPath}`);
+  }
+}
+
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+if (isMain) {
+  main().catch((err) => {
+    process.stdout.write(
+      JSON.stringify(
+        { status: "failed", error: `Fatal: ${err.message}`, progress: 0 },
+        null,
+        2
+      ) + "\n"
+    );
+    process.exitCode = 1;
+  });
+}
+
+export { scrape, fetchSite, normalizeMediaOptions, detectPlatform };
+export default scrape;

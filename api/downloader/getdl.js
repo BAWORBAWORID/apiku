@@ -5,7 +5,6 @@
  *
  * GET  /api/downloader/getdl?url=<post-url>
  * POST /api/downloader/getdl -d {"url": "..."}
- * GET  /api/downloader/getdl?action=search&query=<keyword>
  */
 
 import logger from "../../src/utils/logger.js";
@@ -197,92 +196,32 @@ async function executeDownload(targetUrl) {
   return json.data || {};
 }
 
-async function executeSearch(keyword) {
-  const sessionId = await ensureSession();
-  const res = await fetch(`${CONFIG.BASE_URL}/api/search/tiktok`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "User-Agent": CONFIG.USER_AGENT,
-      Accept: "application/json, text/plain, */*",
-      Origin: CONFIG.BASE_URL,
-      Referer: `${CONFIG.BASE_URL}/en/search/tiktok`,
-      Cookie: getCookieHeader(),
-    },
-    body: JSON.stringify({ query: keyword, sessionId }),
-    signal: AbortSignal.timeout(CONFIG.TIMEOUT),
-  });
-  saveCookies(res);
-
-  const json = await res.json().catch(() => null);
-  if (!res.ok || !json?.success) {
-    throw new Error(json?.error || `HTTP ${res.status}: Gagal search TikTok`);
-  }
-
-  return json.data;
-}
-
 export default {
   name: "GetDL Downloader",
   description: "Download media video/audio dari berbagai platform (YouTube, CapCut, Pinterest, TikTok, Douyin, Instagram, Facebook, X, dll) via getdl.space",
   category: "Downloader",
   methods: ["GET", "POST"],
-  params: ["url", "action", "query"],
+  params: ["url"],
 
   paramsSchema: {
     url: {
       type: "string",
-      required: false,
-      description: "URL post/video yang ingin di-download (wajib untuk mode download)",
+      required: true,
+      description: "URL post/video yang ingin di-download (YouTube, TikTok, Instagram, CapCut, Facebook, dll)",
       example: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    },
-    action: {
-      type: "string",
-      required: false,
-      enum: ["download", "search"],
-      description: "Aksi: 'download' (default) atau 'search' (pencarian TikTok)",
-      example: "download",
-    },
-    query: {
-      type: "string",
-      required: false,
-      description: "Kata kunci pencarian untuk action=search",
-      example: "mlbb",
     },
   },
 
   async run(req, res) {
     const startTime = Date.now();
     const params = { ...req.query, ...req.body };
-    const action = String(params.action || (params.query ? "search" : "download")).trim().toLowerCase();
 
     try {
-      if (action === "search") {
-        const query = String(params.query || params.q || "").trim();
-        if (!query) {
-          return res.status(400).json({
-            status: false,
-            message: "Parameter 'query' wajib diisi untuk action=search",
-          });
-        }
-
-        logger.info(`[GETDL] search TikTok -> "${query}"`);
-        const searchData = await executeSearch(query);
-
-        return res.json({
-          status: true,
-          action: "search",
-          query,
-          result: searchData,
-          metadata: { processing_time: `${Date.now() - startTime}ms` },
-        });
-      }
-
-      // Default: Download
       const url = params.url ? String(params.url).trim() : "";
       if (!url) {
         return res.status(400).json({
           status: false,
+          code: 400,
           message: "Parameter 'url' wajib diisi",
         });
       }
@@ -294,6 +233,7 @@ export default {
       } catch {
         return res.status(400).json({
           status: false,
+          code: 400,
           message: "Parameter 'url' harus berupa URL http/https yang valid",
         });
       }

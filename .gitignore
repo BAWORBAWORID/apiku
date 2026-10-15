@@ -24,6 +24,7 @@ data/reach_vip_session.json
 
 # Tooling kredensial / state lokal (jangan pernah di-commit)
 .gtc/
+.openclaude/
 *.key
 
 # Backups & archives

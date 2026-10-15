@@ -1,0 +1,31 @@
+node_modules
+.git
+.github
+.openclaude
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Logs & temp files
+logs
+*.log
+files/*
+!files/.gitkeep
+
+# Sessions & dynamic runtime data
+data/session
+data/sessions
+data/*.db
+data/*.db-journal
+data/*.db-wal
+
+# Build artifacts & local cache
+.cache
+.npm
+src/function/chrome/chrome/
+
+# Environment files
+.env
+.env.*
+!.env.example

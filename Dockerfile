@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install dependencies
+# Install system dependencies, media libraries, canvas dependencies, and dumb-init
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
     curl \
@@ -16,6 +16,7 @@ RUN apt-get update && apt-get upgrade -y && \
     python3 \
     ffmpeg \
     xvfb \
+    dumb-init \
     libgtk-3-0 \
     libgbm1 \
     libasound2 \
@@ -55,7 +56,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
 
 WORKDIR /app
 
-# Download Chrome for Testing
+# Download Chrome for Testing 150
 RUN mkdir -p /app/src/function/chrome/chrome/linux-150.0.7843.0 && \
     cd /app/src/function/chrome/chrome/linux-150.0.7843.0 && \
     wget -q https://storage.googleapis.com/chrome-for-testing-public/150.0.7843.0/linux64/chrome-linux64.zip && \
@@ -64,18 +65,18 @@ RUN mkdir -p /app/src/function/chrome/chrome/linux-150.0.7843.0 && \
     chmod +x chrome-linux64/chrome && \
     ln -sf /app/src/function/chrome/chrome/linux-150.0.7843.0/chrome-linux64/chrome /usr/local/bin/chrome
 
-# Install npm packages
+# Install npm dependencies
 COPY package*.json ./
 
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 
-RUN npm install
+RUN npm install && npm cache clean --force
 
-# Copy source
+# Copy source code (respecting .dockerignore)
 COPY . .
 
-# Create directories
+# Ensure required directories exist and permissions are set
 RUN mkdir -p \
     /app/files \
     /app/data \
@@ -89,4 +90,6 @@ ENV CHROME_PATH=/app/src/function/chrome/chrome/linux-150.0.7843.0/chrome-linux6
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+# Use dumb-init as PID 1 to handle signal forwarding and reap zombie Chrome processes
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["node", "index.js"]

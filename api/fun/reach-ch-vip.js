@@ -214,38 +214,177 @@ function solveCaptcha(question, token) {
   return String(Function(`'use strict'; return (${cleanQ})`)());
 }
 
+const AKUNLAMA_API = "https://akunlama.com/api";
+
+const ADJECTIVES = [
+  "sleepy", "fluffy", "sneaky", "bouncy", "fuzzy", "lazy", "happy", "silly", "clever", "tiny",
+  "giant", "swift", "calm", "wild", "gentle", "brave", "quiet", "loud", "smooth", "rough",
+  "bright", "dark", "warm", "cool", "playful", "curious", "mischievous", "adorable", "charming",
+  "witty", "jolly", "cheerful", "mighty", "magical", "sparkling", "glowing", "shiny", "mysterious",
+  "ancient", "cosmic", "electric", "golden", "silver", "purple", "emerald", "crimson", "azure",
+  "violet", "dancing", "singing", "jumping", "flying", "swimming", "running", "climbing", "sliding",
+  "smiling", "laughing", "giggling", "whispering", "dreaming", "wondering", "exploring", "discovering",
+  "cozy", "snuggly", "cuddly", "tender", "sweet", "sour", "spicy", "minty", "fresh",
+  "crispy", "soft", "silky", "velvet", "cotton", "wooly", "feathery", "stormy", "sunny",
+  "cloudy", "misty", "frosty", "snowy", "rainy", "windy", "peppy", "zippy", "snappy",
+  "perky", "quirky", "funky", "groovy", "trendy"
+];
+
+const NOUNS = [
+  "kitten", "cat", "tiger", "lion", "panda", "fox", "wolf", "bear", "rabbit", "mouse",
+  "bird", "fish", "frog", "bee", "butterfly", "owl", "penguin", "dolphin", "whale", "shark",
+  "octopus", "spider", "ant", "dog", "hamster", "guinea", "ferret", "hedgehog", "chinchilla",
+  "squirrel", "raccoon", "otter", "seal", "walrus", "elephant", "giraffe", "zebra", "hippo",
+  "rhino", "monkey", "koala", "kangaroo", "sloth", "alpaca", "llama", "sheep", "goat",
+  "pig", "duck", "goose", "swan", "flamingo", "parrot", "peacock", "robin", "sparrow",
+  "eagle", "hawk", "falcon", "hummingbird", "woodpecker", "toucan", "pelican", "crane", "turtle",
+  "lizard", "snake", "gecko", "iguana", "chameleon", "salamander", "newt", "salmon", "tuna",
+  "cod", "bass", "trout", "pike", "carp", "goldfish", "starfish", "seahorse", "jellyfish",
+  "coral", "anemone", "urchin", "crab", "lobster", "snail", "slug", "worm", "caterpillar",
+  "ladybug", "firefly", "dragonfly", "cricket", "unicorn", "dragon", "phoenix", "griffin", "pegasus",
+  "fairy", "wizard", "knight", "ninja", "pirate", "robot", "alien", "ghost", "vampire",
+  "witch", "angel", "cookie", "muffin", "cupcake", "donut", "pretzel", "bagel", "waffle",
+  "pancake", "pizza", "taco", "burger", "sandwich", "soup", "salad", "pasta", "noodle",
+  "coffee", "tea", "cocoa", "juice", "soda", "smoothie", "milkshake", "lemonade", "star",
+  "moon", "sun", "planet", "comet", "meteor", "galaxy", "nebula", "cloud", "rainbow",
+  "lightning", "thunder", "breeze", "storm", "snowflake", "raindrop", "mountain", "valley", "river",
+  "ocean", "lake", "forest", "desert", "island", "castle", "tower", "bridge", "garden",
+  "park", "beach", "cave", "waterfall"
+];
+
 /**
- * Generate akun baru secara otomatis & instan
+ * Buat alamat email sementara dari akunlama.com
+ */
+function generateAkunlamaEmail() {
+  const adj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
+  const noun = NOUNS[Math.floor(Math.random() * NOUNS.length)];
+  const num = Math.floor(Math.random() * 999) + 1;
+  const recipient = `${adj}-${noun}-${num}`;
+  return {
+    recipient,
+    email: `${recipient}@akunlama.com`,
+    adj,
+    noun,
+    num
+  };
+}
+
+function generateRandomUsername(adj, noun, num) {
+  let candidate = `${adj}_${noun}_${num}`.toLowerCase();
+  if (candidate.length > 20) {
+    candidate = `${adj}_${noun}`.slice(0, 20).toLowerCase();
+  }
+  if (candidate.length < 3) {
+    candidate = `user_${Math.floor(Math.random() * 89999 + 10000)}`;
+  }
+  return candidate;
+}
+
+/**
+ * Polling dan baca OTP dari akunlama.com
+ */
+async function fetchAkunlamaOtp(recipient, maxAttempts = 25, delayMs = 2000) {
+  logger.info(`[REACH-CH-VIP] Menunggu email OTP masuk di akunlama.com (${recipient})...`);
+  
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    await new Promise(r => setTimeout(r, delayMs));
+    try {
+      const res = await fetch(`${AKUNLAMA_API}/list?recipient=${encodeURIComponent(recipient)}`, {
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+        }
+      });
+      
+      if (!res.ok) continue;
+      const list = await res.json();
+      
+      if (Array.isArray(list) && list.length > 0) {
+        const item = list[0];
+        const preview = item.preview || '';
+        const subject = item?.message?.headers?.subject || '';
+        
+        let otpMatch = preview.match(/\b(\d{6})\b/) || subject.match(/\b(\d{6})\b/);
+        
+        if (!otpMatch && item.storage?.region && item.storage?.key) {
+          try {
+            const htmlRes = await fetch(`${AKUNLAMA_API}/getHtml?region=${item.storage.region}&key=${item.storage.key}`);
+            const html = await htmlRes.text();
+            otpMatch = html.match(/\b(\d{6})\b/);
+          } catch {}
+        }
+        
+        if (otpMatch) {
+          const otp = otpMatch[1];
+          logger.info(`[REACH-CH-VIP] OTP berhasil didapatkan: ${otp}`);
+          return otp;
+        }
+      }
+    } catch (err) {
+      logger.warn(`[REACH-CH-VIP] Polling attempt ${attempt} error: ${err.message}`);
+    }
+  }
+  
+  throw new Error(`Timeout: Tidak ada OTP masuk ke ${recipient}@akunlama.com.`);
+}
+
+/**
+ * Registrasi akun baru otomatis menggunakan Akunlama.com + Verifikasi OTP
  */
 async function registerFreshAccount() {
-  const rand = crypto.randomBytes(4).toString('hex');
-  const creds = {
-    username: `usr_${rand}`,
-    email: `vip_${rand}@gmail.com`,
-    password: `P@ss_${crypto.randomBytes(4).toString('hex')}`
-  };
+  const { recipient, email, adj, noun, num } = generateAkunlamaEmail();
+  const password = `P@ss_${crypto.randomBytes(4).toString('hex')}`;
+  const username = generateRandomUsername(adj, noun, num);
 
-  const signUpRes = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: creds.email, password: creds.password, returnSecureToken: true })
+  logger.info(`[REACH-CH-VIP] Registrasi akun baru via Akunlama: ${email} (username: ${username})`);
+
+  // 1. Kirim OTP
+  const sendRes = await fetch(`${BASE_URL}/api/otp?action=send`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
   });
-
-  const signUpData = await signUpRes.json();
-  if (!signUpRes.ok || signUpData.error) {
-    throw new Error(`Gagal register akun: ${JSON.stringify(signUpData.error || signUpData)}`);
+  const sendData = await sendRes.json().catch(() => ({}));
+  if (!sendRes.ok || !sendData.ok) {
+    throw new Error(`Gagal mengirim OTP: ${sendData.error || 'HTTP ' + sendRes.status}`);
   }
 
-  // Set username
+  // 2. Ambil OTP dari Akunlama
+  const otp = await fetchAkunlamaOtp(recipient);
+
+  // 3. Verifikasi OTP
+  const verifRes = await fetch(`${BASE_URL}/api/otp?action=verify`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, otp })
+  });
+  const verifData = await verifRes.json().catch(() => ({}));
+  if (!verifRes.ok || !verifData.ok) {
+    throw new Error(`Verifikasi OTP gagal: ${verifData.error || 'HTTP ' + verifRes.status}`);
+  }
+
+  // 4. Buat Akun Firebase
+  const signUpRes = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password, returnSecureToken: true })
+  });
+  const signUpData = await signUpRes.json();
+  if (!signUpRes.ok || signUpData.error) {
+    throw new Error(`Gagal membuat akun Firebase: ${JSON.stringify(signUpData.error || signUpData)}`);
+  }
+
+  // 5. Simpan Username
   await fetch(`${BASE_URL}/api/profile`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Authorization": `Bearer ${signUpData.idToken}`,
-      "Content-Type": "application/json"
+      'Authorization': `Bearer ${signUpData.idToken}`,
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ username: creds.username })
+    body: JSON.stringify({ username })
   });
 
+  const creds = { username, email, password };
   try {
     const dir = path.dirname(SESSION_FILE);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -258,7 +397,7 @@ async function registerFreshAccount() {
 }
 
 /**
- * Dapatkan token yang valid, auto-rotate jika limit habis
+ * Dapatkan token yang valid, auto-rotate jika limit habis atau dibanned
  */
 async function getActiveToken() {
   let creds = null;
@@ -268,7 +407,7 @@ async function getActiveToken() {
     } catch {}
   }
 
-  if (!creds) {
+  if (!creds || !creds.email || !creds.password || creds.password === '...') {
     return await registerFreshAccount();
   }
 
@@ -283,11 +422,16 @@ async function getActiveToken() {
     return await registerFreshAccount();
   }
 
-  // Cek limit akun saat ini
+  // Cek limit & status akun saat ini
   const profileRes = await fetch(`${BASE_URL}/api/profile`, {
     headers: { "Authorization": `Bearer ${loginData.idToken}` }
   });
   const profile = await profileRes.json().catch(() => null);
+
+  if (profile?.error) {
+    logger.warn(`[REACH-CH-VIP] Akun bermasalah (${profile.error}). Melakukan rotasi akun baru...`);
+    return await registerFreshAccount();
+  }
 
   if (profile && profile.usage && profile.usage.count >= profile.usage.limit) {
     logger.info(`[REACH-CH-VIP] Kuota akun ${creds.username} habis (${profile.usage.count}/${profile.usage.limit}). Melakukan rotasi akun baru...`);

@@ -1,115 +1,103 @@
 /**
- * All-In-One Downloader v3
- * Download video dari berbagai platform (TikTok, Instagram, YouTube, Facebook, Twitter, dll)
- *
- * GET  /api/downloader/allinonev3?url=https://vt.tiktok.com/xxx
- * POST /api/downloader/allinonev3
+ * Endpoint Downloader Multi-Platform (All-in-One v3)
  */
 
-const BASE_URL = "https://dl.valore.web.id";
-const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
-
-function newSessionId() {
-  return "sid_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
-}
-
-function formatSize(bytes) {
-  if (!bytes || bytes <= 0) return "";
-  const units = ["B", "KB", "MB", "GB"];
-  let i = 0, b = bytes;
-  while (b >= 1024 && i < 3) { b /= 1024; i++; }
-  return `${b.toFixed(1)} ${units[i]}`;
-}
-
-async function queryDownload(url) {
-  const t0 = Date.now();
-  const res = await fetch(`${BASE_URL}/api/download`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Session-Id": newSessionId(),
-      "User-Agent": UA,
-    },
-    body: JSON.stringify({ url }),
-    signal: AbortSignal.timeout(60000),
-  });
-
-  const json = await res.json();
-  if (!json.success) {
-    throw new Error(json.error || `Gagal memproses URL (HTTP ${res.status})`);
+async function resolveUrl(url) {
+  try {
+    const res = await fetch(url, {
+      method: "HEAD",
+      redirect: "follow",
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+      }
+    });
+    return res.url || url;
+  } catch {
+    return url;
   }
+}
 
-  const d = json.data || {};
-  const medias = (Array.isArray(d.medias) ? d.medias : Array.isArray(d.formats) ? d.formats : [])
-    .map((m) => ({
-      quality: m.quality || m.qualityLabel || m.label || m.resolution || "Standard",
-      format: (m.format || m.container || m.ext || "media").toLowerCase(),
-      size: m.size || m.size_bytes || 0,
-      size_formatted: formatSize(m.size || m.size_bytes || 0),
-      url: m.url || m.downloadUrl || m.download_url || m.dl || m.data?.url || "",
-    }))
-    .filter((m) => m.url);
-
-  return {
-    platform: d.platform || "other",
-    title: d.title || null,
-    owner: d.creator || d.owner || null,
-    thumbnail: d.thumbnail || d.thumbnailUrl || null,
-    duration: d.duration || 0,
-    processingTime: json.processingTime || Date.now() - t0,
-    medias,
-    downloads: medias,
-  };
+function detectPlatform(url) {
+  const lower = url.toLowerCase();
+  if (lower.includes('tiktok.com') || lower.includes('douyin.com')) return 'tiktok';
+  if (lower.includes('instagram.com')) return 'instagram';
+  if (lower.includes('youtube.com') || lower.includes('youtu.be')) return 'youtube';
+  if (lower.includes('facebook.com') || lower.includes('fb.watch') || lower.includes('fb.com')) return 'facebook';
+  if (lower.includes('twitter.com') || lower.includes('x.com')) return 'twitter';
+  if (lower.includes('threads.net')) return 'threads';
+  if (lower.includes('pinterest.com') || lower.includes('pin.it')) return 'pinterest';
+  if (lower.includes('spotify.com')) return 'spotify';
+  if (lower.includes('soundcloud.com')) return 'soundcloud';
+  if (lower.includes('capcut.com')) return 'capcut';
+  if (lower.includes('snackvideo.com')) return 'snackvideo';
+  if (lower.includes('linkedin.com')) return 'linkedin';
+  return 'tiktok';
 }
 
 export default {
-  name: "All-In-One Downloader v3",
-  description: "Download video dari berbagai platform (TikTok, Instagram, YouTube, Facebook, Twitter, Pinterest, Reddit, dll) dengan multi-format MP4/MP3.",
-  category: "Downloader",
+  name: "All in One v3",
+  description: "Unduh media video, audio, dan foto dari berbagai platform populer seperti TikTok, Instagram, YouTube, Facebook, Twitter, Threads, Pinterest, dan lainnya",
+  category: "DOWNLOADER",
   methods: ["GET", "POST"],
   params: ["url"],
   paramsSchema: {
     url: {
       type: "string",
       required: true,
-      description: "URL video yang ingin diunduh (TikTok, Instagram, YouTube, Facebook, dll)",
-      default: "https://vt.tiktok.com/ZSbm6fY8P/",
-      example: "https://vt.tiktok.com/ZSbm6fY8P/",
-      pattern: "https?:\\/\\/.+",
+      description: "Tautan URL media yang ingin diunduh",
+      example: "https://www.tiktok.com/@tiktok/video/7106594312292453675"
     },
+    platform: {
+      type: "string",
+      required: false,
+      description: "Platform media (opsional, auto-detect jika tidak diisi): tiktok, instagram, youtube, facebook, twitter, threads, pinterest, spotify, soundcloud, capcut, snackvideo, linkedin",
+      example: "tiktok"
+    }
   },
-
   async run(req, res) {
+    const { url, platform } = { ...req.query, ...req.body };
+
+    if (!url) {
+      return res.status(400).json({
+        status: false,
+        error: "Parameter 'url' wajib diisi."
+      });
+    }
+
     try {
-      const { url } = { ...req.query, ...req.body };
+      const targetUrl = await resolveUrl(url);
+      const selectedPlatform = platform || detectPlatform(targetUrl);
+      const targetApi = `https://www.downloadin.web.id/api/download-proxy?platform=${encodeURIComponent(selectedPlatform)}&url=${encodeURIComponent(targetUrl)}`;
 
-      if (!url || !String(url).trim()) {
-        return res.status(400).json({
+      const response = await fetch(targetApi, {
+        method: "GET",
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+          "Referer": "https://www.downloadin.web.id/",
+          "Origin": "https://www.downloadin.web.id",
+          "Accept": "application/json, text/plain, */*"
+        }
+      });
+
+      if (!response.ok) {
+        return res.status(response.status).json({
           status: false,
-          message: "Parameter 'url' wajib diisi",
+          error: `Gagal mengambil data media (HTTP ${response.status})`
         });
       }
 
-      const input = String(url).trim();
-      if (!/^https?:\/\//i.test(input)) {
-        return res.status(400).json({
-          status: false,
-          message: "URL tidak valid. Gunakan format https://...",
-        });
-      }
-
-      const result = await queryDownload(input);
+      const result = await response.json();
 
       return res.json({
         status: true,
-        input,
-        ...result,
+        platform: selectedPlatform,
+        result
       });
     } catch (err) {
       return res.status(500).json({
         status: false,
-        message: err.message || "Gagal mendownload",
+        error: err.message || "Terjadi kesalahan pada server saat memproses unduhan."
       });
     }
-  },
+  }
 };

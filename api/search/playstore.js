@@ -86,7 +86,6 @@ export default {
 
       return res.json({
         status: true,
-        creator: "@zyvorapi",
         result: {
           query,
           total: apps.length,

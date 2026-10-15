@@ -993,7 +993,7 @@
         "/api/primbon/rezekihokiweton": "online",
         "/api/primbon/sifatusaha": "online",
         "/api/primbon/tafsirmimpi": "online",
-        "/api/primbon/zodiac": "offline",
+        "/api/primbon/zodiac": "online",
         "/api/random/blue-archive": "online",
         "/api/random/lahelu": "online",
         "/api/random/quotesanime": "online",
@@ -1028,7 +1028,7 @@
         "/api/downloader/rednote": "online",
         "/api/downloader/webtoon": "online",
         "/api/imageai/pollinations": "online",
-        "/api/search/lazada": "offline",
+        "/api/search/lazada": "online",
         "/api/search/webtoon": "online",
         "/api/ai/lumo": "online",
         "/api/ai/gpt5": "online",
@@ -1422,7 +1422,6 @@
         "/api/shortlink/bitly": "online",
         "/api/tools/zippyshare": "online",
         "/api/anime/animein": "online",
-        "/api/index": "online",
         "/api/payment/assets/gopay/cloudStorage": "online",
         "/api/payment/assets/gopay/helpers": "online",
         "/api/payment/assets/gopay/index": "online",
@@ -1457,8 +1456,8 @@
         "/api/tools/top4top": "online",
         "/api/anime/drakorid": "online",
         "/api/tools/ekycpro": "online",
-        "/api/downloader/ytscrape": "online",
-        "/api/search/ytscrape": "online"
+        "/api/tools/assets/cloneweb": "online",
+        "/api/tools/cloneweb": "online"
     },
     "version": "2.1.2"
 }

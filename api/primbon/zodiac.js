@@ -11,7 +11,7 @@ import * as cheerio from "cheerio"
 /* ===============================
    PRIMBON ZODIAK CLIENT FUNCTION
 ================================ */
-async function zodiak(zodiak) {
+async function getZodiak(zodiak) {
   try {
     const { data } = await axios.get(
       `https://primbon.com/zodiak/${zodiak}.htm`,
@@ -96,7 +96,7 @@ export default {
         })
       }
 
-      const result = await zodiak(lowerCaseZodiak)
+      const result = await getZodiak(lowerCaseZodiak)
 
       res.json({
         status: true,

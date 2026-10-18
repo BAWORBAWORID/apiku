@@ -6,82 +6,117 @@
  * Support : TikTok, YouTube, Facebook, Instagram, dst (multi-platform).
  * Params  : url (wajib), type (vidio/audio, wajib)
  */
-import fs from "fs";
 import vm from "node:vm";
 import crypto from "node:crypto";
 import logger from "../../src/utils/logger.js";
 
-const CHUNK_URL = "https://savefrom.co.id/js/link.chunk.js?ch=e86847080530eb66.js";
-const CHUNK_CACHE = "/tmp/savefrom-link-chunk.js";
-const APP_URL = "https://savefrom.co.id/js/app.js?id=96052dac5cd653fff24c90fa6af00adc";
 const API = "https://api-wh.savefrom.co.id/api/convert";
-const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 
-// Posisi string SECRET di dalam link.chunk.js (index + key decoder)
-const SECRET_PARTS = [
-  [0x2b5, "(uFc"], [0x3be, "pkRS"], [0x254, "z9pS"], [0x342, "[Ft4"],
-  [0x482, "%cV["], [0x453, "vf2#"], [0x2f5, "DkoM"], [0x1c0, "zR*("],
-  [0x26a, "OdW0"],
-];
-// Konstanta build _ts: 0x164b742b2c7 + 0x10e909f8727 + -0x21ca66de*0x63d
-const TS_CONST = 0x164b742b2c7 + 0x10e909f8727 + -0x21ca66de * 0x63d;
+// Fallback constants (terverifikasi aktif)
+const FALLBACK_SECRET = "f798d44177a88668ccff03b58ff945f002bc6ae2eea4901ba9596e3be5367706";
+const FALLBACK_TS_CONST = 1791197287300;
 
-let cachedSecret = null;
+let cachedConfig = {
+  secret: FALLBACK_SECRET,
+  tsConst: FALLBACK_TS_CONST,
+  lastUpdated: Date.now()
+};
 
-async function getChunkCode() {
-  if (fs.existsSync(CHUNK_CACHE) && fs.statSync(CHUNK_CACHE).size > 10000) {
-    const t = fs.readFileSync(CHUNK_CACHE, "utf8");
-    if (!t.startsWith("<!doctype")) return t;
+function parseChunk(chunkJs) {
+  // 1. String array function
+  const arrMatch = chunkJs.match(/function\s+(a0_0x[0-9a-f]+)\(\)\{var\s+(_0x[0-9a-f]+)=\[.*?\];\1=function\(\)\{return\s+\2;\};return\s+\1\(\);\}/);
+  if (!arrMatch) throw new Error("Array function not found in chunk");
+  const arrFn = arrMatch[1];
+  const arrCode = arrMatch[0];
+
+  // 2. Rotation
+  const rotMatch = chunkJs.match(new RegExp(`\\(\\s*function\\s*\\(_0x[0-9a-f]+,\\s*_0x[0-9a-f]+\\)\\s*\\{[\\s\\S]*?\\}\\s*\\(\\s*${arrFn},\\s*[^\\)]+\\)\\s*\\);`));
+  if (!rotMatch) throw new Error("Rotation not found in chunk");
+  const rotCode = rotMatch[0];
+
+  // 3. Decoder function
+  const decMatch = chunkJs.match(/function\s+(a0_0x[0-9a-f]+)\(_0x[0-9a-f]+,\s*_0x[0-9a-f]+\)\{[\s\S]*?\}\s*,\s*\1\(_0x[0-9a-f]+,\s*_0x[0-9a-f]+\);?\}/);
+  if (!decMatch) throw new Error("Decoder function not found in chunk");
+  const decFn = decMatch[1];
+  const decCode = decMatch[0];
+
+  // 4. Secret & TS calculation
+  const idxDate = chunkJs.indexOf("Date['now']()");
+  if (idxDate === -1) throw new Error("Date['now'] marker not found in chunk");
+  const idxSec = chunkJs.lastIndexOf("var _0x", idxDate);
+  if (idxSec === -1) throw new Error("Secret declaration marker not found");
+
+  const rawSnippet = chunkJs.slice(idxSec, idxDate);
+  const parts = rawSnippet.split(",_0x");
+  const tsExpr = parts[0].replace(/^var\s+_0x[0-9a-f]+=\s*/, "").trim();
+  const secRaw = parts[1].replace(/^[0-9a-f]+=\s*/, "").trim();
+  const secExpr = secRaw.replace(/_0x[0-9a-f]+\(/g, `${decFn}(`);
+
+  const codeToRun = `
+    ${arrCode}
+    ${rotCode}
+    ${decCode}
+    var _ts_val = ${tsExpr};
+    var _sec_val = (${secExpr});
+  `;
+
+  const ctx = { Date, Math, String, parseInt, RegExp, Array, decodeURIComponent };
+  vm.createContext(ctx);
+  vm.runInContext(codeToRun, ctx, { timeout: 5000 });
+
+  return {
+    tsConst: ctx._ts_val || FALLBACK_TS_CONST,
+    secret: ctx._sec_val || FALLBACK_SECRET
+  };
+}
+
+async function refreshConfig() {
+  try {
+    const homeHtml = await (await fetch("https://savefrom.co.id/", { headers: { "User-Agent": UA } })).text();
+    const appPathMatch = homeHtml.match(/src="(\/js\/app\.js\?id=[0-9a-f]+)"/i);
+    const appUrl = appPathMatch ? `https://savefrom.co.id${appPathMatch[1]}` : "https://savefrom.co.id/js/app.js";
+
+    const appJs = await (await fetch(appUrl, { headers: { "User-Agent": UA } })).text();
+    const chunkHashMatch = appJs.match(/\{54:"link\.chunk"[^}]*\.js\?ch="\+\{54:"([0-9a-f]+)"/i) 
+      || appJs.match(/\{54:"([0-9a-f]+)"/i);
+    if (!chunkHashMatch) throw new Error("Chunk hash not found in app.js");
+
+    const chunkUrl = `https://savefrom.co.id/js/link.chunk.js?ch=${chunkHashMatch[1]}.js`;
+    const chunkJs = await (await fetch(chunkUrl, { headers: { "User-Agent": UA } })).text();
+
+    const parsed = parseChunk(chunkJs);
+    if (parsed.secret) {
+      cachedConfig = {
+        secret: parsed.secret,
+        tsConst: parsed.tsConst,
+        lastUpdated: Date.now()
+      };
+      logger.info(`[SAVEFROM] Successfully updated secret: ${parsed.secret.slice(0, 10)}...`);
+      return cachedConfig;
+    }
+  } catch (err) {
+    logger.warn(`[SAVEFROM] Dynamic config refresh failed: ${err.message}. Using fallback constants.`);
   }
-  let res = await fetch(CHUNK_URL, { headers: { "User-Agent": UA } });
-  let text = res.ok ? await res.text() : "";
-  if (!res.ok || text.startsWith("<!doctype")) {
-    // hash chunk bisa berubah — derive ulang dari app.js
-    const app = await (await fetch(APP_URL, { headers: { "User-Agent": UA } })).text();
-    const hash = (app.match(/\{54:"([0-9a-f]{16})"/) || [])[1];
-    if (!hash) throw new Error("Gagal menemukan hash chunk di app.js");
-    res = await fetch(`https://savefrom.co.id/js/link.chunk.js?ch=${hash}.js`, { headers: { "User-Agent": UA } });
-    text = await res.text();
-    if (text.startsWith("<!doctype")) throw new Error("Chunk baru invalid");
+
+  return cachedConfig;
+}
+
+async function getConfig(forceRefresh = false) {
+  if (forceRefresh || !cachedConfig.secret) {
+    return await refreshConfig();
   }
-  fs.writeFileSync(CHUNK_CACHE, text);
-  return text;
+  return cachedConfig;
 }
 
-function extractSecret(chunkCode) {
-  // Jalankan hanya bagian decoder (string array + rotasi) — bagian self-defense
-  // yang butuh browser globals dilewati.
-  const cut = chunkCode.indexOf("var a0_0x72bceb");
-  if (cut === -1) throw new Error("Struktur chunk berubah (decoder tidak ditemukan)");
-  const prefix = chunkCode.slice(0, cut);
-  const ctx = vm.createContext({ Date, Math, String, parseInt, RegExp, Array, decodeURIComponent });
-  vm.runInContext(prefix, ctx, { timeout: 10000 });
-  const parts = SECRET_PARTS.map(([idx, key]) => {
-    const val = vm.runInContext(`a0_0x2a8ba8(${idx}, ${JSON.stringify(key)})`, ctx, { timeout: 5000 });
-    if (typeof val !== "string") throw new Error(`Decode gagal untuk index ${idx}`);
-    return val;
-  });
-  return (
-    parts[0] + parts[1] + parts[2] + parts[3] + parts[4] +
-    "56d2d" + parts[5] + parts[6] + "592a5" + parts[7] + "ffa08" + parts[8] + "68e5"
-  );
-}
-
-async function getSecret() {
-  if (cachedSecret) return cachedSecret;
-  const chunk = await getChunkCode();
-  cachedSecret = extractSecret(chunk);
-  return cachedSecret;
-}
-
-async function savefromScrape(targetUrl) {
-  const secret = await getSecret();
+async function savefromScrape(targetUrl, retryWithRefresh = true) {
+  const config = await getConfig();
   const ts = Date.now();
-  const sig = crypto.createHash("sha256").update(`${targetUrl}${ts}${secret}`).digest("hex");
+  const sig = crypto.createHash("sha256").update(`${targetUrl}${ts}${config.secret}`).digest("hex");
   const body = new URLSearchParams({
     sf_url: targetUrl,
     ts: String(ts),
-    _ts: String(TS_CONST),
+    _ts: String(config.tsConst),
     _tsc: "0",
     _s: sig,
   });
@@ -98,17 +133,24 @@ async function savefromScrape(targetUrl) {
     },
     body: body.toString(),
   });
+
   const text = await res.text();
   let json;
   try { json = JSON.parse(text); } catch { throw new Error("Respons upstream bukan JSON"); }
 
   if (json.code && String(json.code).includes("invalid_request")) {
-    cachedSecret = null; // reset cache — secret mungkin sudah berubah
+    if (retryWithRefresh) {
+      logger.warn("[SAVEFROM] Signature rejected, refreshing chunk secret and retrying...");
+      await refreshConfig();
+      return await savefromScrape(targetUrl, false);
+    }
     throw new Error("Signature ditolak upstream");
   }
+
   if (json.success === false || json.message) {
     throw new Error(json.message || "Upstream error");
   }
+
   if (!json.url || !json.url.length) {
     throw new Error("Tidak ada media ditemukan untuk URL ini");
   }
@@ -169,35 +211,29 @@ export default {
         return res.status(400).json({ status: false, message: "Parameter 'type' is required" });
       }
 
-      const normalizedType = type.trim().toLowerCase() === "vidio" ? "video" : type.trim().toLowerCase();
-      if (!["video", "audio"].includes(normalizedType)) {
-        return res.status(400).json({ status: false, message: "Parameter 'type' must be either 'vidio' or 'audio'" });
-      }
-
-      url = url.trim();
-      if (!/^https?:\/\//i.test(url)) {
-        return res.status(400).json({ status: false, message: "URL tidak valid" });
-      }
-
       const allMedia = await savefromScrape(url);
-      const finalData = allMedia.filter((item) => item.type === normalizedType);
-      if (!finalData.length) {
-        return res.status(404).json({ status: false, message: `Tidak ada media tipe '${normalizedType}' untuk URL ini` });
-      }
+      const isAudioReq = type.toLowerCase() === "audio";
+      const filtered = allMedia.filter((m) => m.is_audio === isAudioReq);
+      const finalMedia = filtered.length > 0 ? filtered : allMedia;
 
-      return res.json({
+      const duration = `${Date.now() - startTime}ms`;
+
+      return res.status(200).json({
         status: true,
-        data: finalData,
-        duration: `${Date.now() - startTime}ms`
+        message: "Media berhasil diambil",
+        source: url,
+        requested_type: type,
+        total: finalMedia.length,
+        media: finalMedia,
+        duration,
       });
     } catch (error) {
-      const duration = Date.now() - startTime;
       logger.error(`[SAVEFROM API] Error: ${error.message}`);
       return res.status(500).json({
         status: false,
         message: error.message,
-        duration: `${duration}ms`
+        duration: `${Date.now() - startTime}ms`,
       });
     }
-  }
+  },
 };

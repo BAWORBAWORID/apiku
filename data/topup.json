@@ -1,22 +1,3 @@
 {
-  "files": [
-    {
-      "path": "/root/apiku/files/4e23974b0f47c47c09039fe6fcc35cd7.png",
-      "url": "https://api.zyvor.my.id/files/4e23974b0f47c47c09039fe6fcc35cd7.png",
-      "orderId": "6ad0fada6dff20562fcdb7de",
-      "orderCode": "261015SYGP6WZX8",
-      "type": "dana",
-      "createdAt": 1792080604251,
-      "expiresAt": 1792080904251
-    },
-    {
-      "path": "/root/apiku/files/1432996dfb6658e3f24ff937086234a6.png",
-      "url": "https://api.zyvor.my.id/files/1432996dfb6658e3f24ff937086234a6.png",
-      "orderId": "6ad0faf96dff20562fcdb7f5",
-      "orderCode": "261015LCYRV6NAV",
-      "type": "ml",
-      "createdAt": 1792080634957,
-      "expiresAt": 1792080934957
-    }
-  ]
+  "files": []
 }

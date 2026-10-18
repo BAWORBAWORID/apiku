@@ -1457,7 +1457,9 @@
         "/api/anime/drakorid": "online",
         "/api/tools/ekycpro": "online",
         "/api/tools/assets/cloneweb": "online",
-        "/api/tools/cloneweb": "online"
+        "/api/tools/cloneweb": "online",
+        "/api/shortlink/xmz": "online",
+        "/api/bypass/xmz": "online"
     },
     "version": "2.1.2"
 }

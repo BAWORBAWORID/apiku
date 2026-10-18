@@ -1,7 +1,7 @@
 {
   "name": "apiku",
   "version": "2.1.2",
-  "description": "A minimalist REST API boilerplate built with Express.js — fast, lightweight, and extensible.",
+  "description": "A minimalist REST API boilerplate built with Express.js \u2014 fast, lightweight, and extensible.",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -43,7 +43,6 @@
     "@aws-sdk/client-s3": "^3.1093.0",
     "@aws-sdk/s3-request-presigner": "^3.1093.0",
     "@faker-js/faker": "^10.2.0",
-    "@gitlawb/openclaude": "^0.20.0",
     "@microlink/mql": "^0.15.1",
     "@napi-rs/canvas": "^1.0.2",
     "@putuofc/assetsku": "^9.0.0",
@@ -73,10 +72,8 @@
     "formidable": "^3.5.4",
     "friendly-pow": "^0.2.2",
     "got-scraping": "^4.2.1",
-    "helmet": "^7.2.0",
     "https-proxy-agent": "^9.0.0",
     "image-size": "^2.0.2",
-    "inquirer": "^14.2.2",
     "jimp": "^0.16.13",
     "jsdom": "^29.1.1",
     "json5": "^2.2.3",
@@ -86,10 +83,8 @@
     "node-hls-downloader": "^2.2.0",
     "node-html-parser": "^7.1.0",
     "openpgp": "^6.3.0",
-    "ora": "9.4.1",
     "pdfkit": "^0.18.0",
     "playwright": "^1.58.2",
-    "pm2": "^6.0.14",
     "puppeteer": "^24.43.1",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-adblocker": "^2.13.6",
@@ -109,7 +104,6 @@
     "telegraf": "^4.16.3",
     "tesseract.js": "^7.0.0",
     "tinyurl": "^1.1.7",
-    "tmp": "^0.2.5",
     "tough-cookie": "^6.0.1",
     "undici": "^5.28.4",
     "uuid": "^13.0.0",
@@ -124,7 +118,6 @@
   "devDependencies": {
     "@vercel/node": "^3.2.0",
     "eslint": "^8.57.0",
-    "jest": "^29.7.0",
     "nodemon": "^3.1.0"
   },
   "allowScripts": {

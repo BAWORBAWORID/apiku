@@ -1,263 +1,250 @@
-import crypto from 'node:crypto';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import axios from 'axios';
 
-const DEFAULT_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-function extractSlug(inputUrl) {
-  try {
-    const parsed = new URL(inputUrl);
-    const path = parsed.pathname.replace(/^\/+|\/+$/g, '');
-    const segments = path.split('/');
-    return segments[segments.length - 1] || '';
-  } catch {
-    return inputUrl.replace(/https?:\/\/[^\/]+/, '').replace(/^\/+|\/+$/g, '');
-  }
-}
+const KEY_FILE = path.resolve(__dirname, 'data/key-reach.json');
+const API_ENDPOINT = 'https://apiv2.reactionwa.online/api/v2/react';
+const GENERATE_ENDPOINT = 'https://apiv2.reactionwa.online/api/v2/generate_key';
 
-class CookieManager {
-  constructor() {
-    this.jar = new Map();
-  }
+const LINK_REGEX = /(?:https?:\/\/)?(?:www\.)?whatsapp\.com\/channel\/([A-Za-z0-9_-]+)\/(\d+)/i;
+const EMOJI_REGEX = /\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?/gu;
 
-  save(response) {
-    const list = response.headers.getSetCookie?.() || [response.headers.get('set-cookie')];
-    for (const item of list) {
-      if (!item) continue;
-      const [pair] = item.split(';');
-      const [key, value] = pair.split('=');
-      if (key && value) {
-        this.jar.set(key.trim(), value.trim());
-      }
+const VIP_PROFILES = [
+    {
+        vipKey: 'VIP-SYNOZG8C',
+        email: 'abovezephyrax@gmail.com',
+        uid: 'syNOzg8C4dfMq8CwnE0inNDNdwn1',
+        domain: 'https://reactionwa.online'
+    },
+    {
+        vipKey: 'VIP-G3FA579P',
+        email: 'berrymodapk@gmail.com',
+        uid: 'G3FA579Px5MLiC4zISunSqergX43',
+        domain: 'https://berrymodapk.com'
     }
-  }
+];
 
-  get(key) {
-    return this.jar.get(key) || null;
-  }
-
-  header() {
-    return [...this.jar.entries()].map(([k, v]) => `${k}=${v}`).join('; ');
-  }
+function loadKey() {
+    if (fs.existsSync(KEY_FILE)) {
+        try {
+            const raw = fs.readFileSync(KEY_FILE, 'utf8');
+            const data = JSON.parse(raw);
+            if (data && data.apiKey) {
+                return data;
+            }
+        } catch {}
+    }
+    return { ...VIP_PROFILES[0] };
 }
 
-function buildToken(xsrfCookie) {
-  const decoded = decodeURIComponent(xsrfCookie || '');
-  const dummyHash = crypto.createHash('sha256').update(crypto.randomBytes(32)).digest('hex');
-  const payload = '#' + Buffer.from(dummyHash).toString('base64');
-  return decoded.slice(0, 128 - payload.length) + payload;
+function saveKey(keyData) {
+    try {
+        fs.writeFileSync(KEY_FILE, JSON.stringify(keyData, null, 2));
+    } catch (err) {
+        console.error('Gagal menyimpan key ke key.json:', err.message);
+    }
 }
 
-export async function bypassAdlinksumo(targetUrl, options = {}) {
-  if (!targetUrl || typeof targetUrl !== 'string') {
-    throw new Error('Valid Adlinksumo URL string is required');
-  }
-
-  const slug = extractSlug(targetUrl);
-  if (!slug) {
-    throw new Error('Could not extract shortlink slug from input URL');
-  }
-
-  const startTime = Date.now();
-  const timeoutMs = options.timeout || 20000;
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-
-  try {
-    const cookieManager = new CookieManager();
-
-    const initialRes = await fetch(`https://adlinksumo.com/${slug}`, {
-      headers: {
-        'User-Agent': options.userAgent || DEFAULT_USER_AGENT,
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-      },
-      signal: controller.signal
+async function generateApiKey(profileIndex = 0) {
+    const profile = VIP_PROFILES[profileIndex] || VIP_PROFILES[0];
+    const response = await axios.post(GENERATE_ENDPOINT, {
+        vipKey: profile.vipKey,
+        email: profile.email,
+        domain: profile.domain,
+        uid: profile.uid
+    }, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        timeout: 15000
     });
 
-    cookieManager.save(initialRes);
-    const initialHtml = await initialRes.text();
-
-    const rayIdMatch = initialHtml.match(/name="ray_id"\s+value="([^"]+)"/);
-    const rayId = rayIdMatch ? rayIdMatch[1] : null;
-    const aliasMatch = initialHtml.match(/name="alias"\s+value="([^"]+)"/);
-    const alias = aliasMatch ? aliasMatch[1] : slug;
-
-    if (!rayId) {
-      const readyLinkMatch = initialHtml.match(/window\.location\.href\s*=\s*"([^"]+)"/);
-      if (readyLinkMatch) {
-        return {
-          success: true,
-          slug,
-          original_url: targetUrl,
-          destination_url: readyLinkMatch[1].replace(/\\/g, ''),
-          execution_time_ms: Date.now() - startTime
+    if (response.data && response.data.success && response.data.apiKey) {
+        const keyData = {
+            vipKey: profile.vipKey,
+            email: profile.email,
+            uid: profile.uid,
+            domain: profile.domain,
+            apiKey: response.data.apiKey,
+            updatedAt: new Date().toISOString()
         };
-      }
-      throw new Error('Failed to extract ray_id challenge from Adlinksumo initial page');
+        saveKey(keyData);
+        return keyData;
     }
 
-    const redirectUrl = `https://kalimbachords.net/redirect.php?ray_id=${encodeURIComponent(rayId)}&alias=${encodeURIComponent(alias)}`;
-    const redirectRes = await fetch(redirectUrl, {
-      redirect: 'manual',
-      headers: {
-        'User-Agent': options.userAgent || DEFAULT_USER_AGENT,
-        'Referer': `https://adlinksumo.com/${slug}`
-      },
-      signal: controller.signal
+    throw new Error(response.data?.message || 'Gagal generate API Key');
+}
+
+function isLimitReached(msg) {
+    if (!msg) return false;
+    const lower = String(msg).toLowerCase();
+    return lower.includes('limit') ||
+           lower.includes('kuota') ||
+           lower.includes('habis') ||
+           lower.includes('depleted') ||
+           lower.includes('quota');
+}
+
+function normalizeUrl(inputUrl) {
+    const match = String(inputUrl || '').match(LINK_REGEX);
+    if (!match) return null;
+    return `https://whatsapp.com/channel/${match[1]}/${match[2]}`;
+}
+
+function parseEmojis(inputEmoji) {
+    const str = String(inputEmoji || '');
+    const matches = str.match(EMOJI_REGEX);
+    if (!matches || matches.length === 0) return null;
+    return matches.slice(0, 5).join(', ');
+}
+
+async function sendReactionRequest(targetUrl, reactionText, keyObj) {
+    const origin = keyObj.domain === '*' ? 'https://reactionwa.online' : keyObj.domain;
+    const referer = origin.endsWith('/') ? origin : origin + '/';
+
+    const response = await axios.post(API_ENDPOINT, {
+        url: targetUrl,
+        reaction: reactionText
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Origin': origin,
+            'Referer': referer,
+            'x-api-key': keyObj.apiKey,
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
+        },
+        timeout: 45000
     });
 
-    cookieManager.save(redirectRes);
-    const articlePath1 = redirectRes.headers.get('location');
-    if (!articlePath1) {
-      throw new Error('Failed to follow initial redirect to safelink article');
+    return response.data;
+}
+
+async function react(targetUrl, reactionInput) {
+    const startTime = Date.now();
+    const normalizedUrl = normalizeUrl(targetUrl);
+    if (!normalizedUrl) {
+        return {
+            status: false,
+            time: `${Date.now() - startTime}ms`,
+            error: 'Format URL WhatsApp Channel tidak valid. Contoh: https://whatsapp.com/channel/0029Vb8vO7o2f3EEsjefzm0w/243'
+        };
     }
 
-    const articleRes1 = await fetch(`https://kalimbachords.net${articlePath1}`, {
-      headers: {
-        'User-Agent': options.userAgent || DEFAULT_USER_AGENT,
-        'Cookie': cookieManager.header(),
-        'Referer': `https://adlinksumo.com/${slug}`
-      },
-      signal: controller.signal
-    });
-
-    cookieManager.save(articleRes1);
-
-    const token1 = buildToken(cookieManager.get('XSRF-TOKEN'));
-    const sessionRes1 = await fetch('https://kalimbachords.net/api/session', {
-      method: 'POST',
-      headers: {
-        'User-Agent': options.userAgent || DEFAULT_USER_AGENT,
-        'Content-Type': 'application/json',
-        'Cookie': cookieManager.header(),
-        'Referer': `https://kalimbachords.net${articlePath1}`
-      },
-      body: JSON.stringify({ _token: token1 }),
-      signal: controller.signal
-    });
-
-    cookieManager.save(sessionRes1);
-    const sessionData1 = await sessionRes1.json();
-
-    const verifyPayload = { _a: 0 };
-    if (sessionData1?.captcha === 'turnstile' && options.turnstileToken) {
-      verifyPayload.captcha = options.turnstileToken;
+    const emojiString = parseEmojis(reactionInput);
+    if (!emojiString) {
+        return {
+            status: false,
+            time: `${Date.now() - startTime}ms`,
+            error: 'Emoji tidak valid atau kosong. Masukkan minimal 1 emoji (contoh: "👍" atau "❤️").'
+        };
     }
 
-    const verifyRes = await fetch('https://kalimbachords.net/api/verify', {
-      method: 'POST',
-      headers: {
-        'User-Agent': options.userAgent || DEFAULT_USER_AGENT,
-        'Content-Type': 'application/json',
-        'Cookie': cookieManager.header(),
-        'Referer': `https://kalimbachords.net${articlePath1}`
-      },
-      body: JSON.stringify(verifyPayload),
-      signal: controller.signal
-    });
-
-    cookieManager.save(verifyRes);
-    const verifyData = await verifyRes.json();
-    if (!verifyData?.target) {
-      throw new Error('Verification failed: target URL not returned by safelink API');
+    let keyData = loadKey();
+    if (!keyData || !keyData.apiKey) {
+        keyData = await generateApiKey(0);
     }
 
-    const redirectRes2 = await fetch(verifyData.target, {
-      redirect: 'manual',
-      headers: {
-        'User-Agent': options.userAgent || DEFAULT_USER_AGENT,
-        'Cookie': cookieManager.header(),
-        'Referer': `https://kalimbachords.net${articlePath1}`
-      },
-      signal: controller.signal
-    });
+    let attempts = 0;
+    const maxAttempts = 2;
+    let lastError = 'Terjadi kesalahan pada server';
 
-    cookieManager.save(redirectRes2);
-    const articlePath2 = redirectRes2.headers.get('location');
-    if (!articlePath2) {
-      throw new Error('Failed to follow second redirect to final safelink article');
+    while (attempts < maxAttempts) {
+        try {
+            const result = await sendReactionRequest(normalizedUrl, emojiString, keyData);
+
+            if (result && (result.success === true || result.status === 'success')) {
+                const task = (result.data && result.data.task) || {};
+                const vipInfo = (result.data && result.data.vip) || {};
+
+                return {
+                    status: true,
+                    time: `${Date.now() - startTime}ms`,
+                    message: result.message || 'Reaction VIP API masuk antrean.',
+                    data: {
+                        target: normalizedUrl,
+                        emojis: task.reaction_code || emojiString,
+                        vip_package: vipInfo.packageName || 'VIP Permanent',
+                        usage_today: result.usage_today || null,
+                        limit: result.limit || 50
+                    }
+                };
+            }
+
+            if (result && result.error) {
+                lastError = result.error;
+                if (isLimitReached(lastError) && attempts === 0) {
+                    keyData = await generateApiKey(0);
+                    attempts++;
+                    continue;
+                }
+            }
+        } catch (err) {
+            const errData = err.response && err.response.data;
+            if (errData && errData.error) {
+                lastError = errData.error;
+            } else {
+                lastError = err.message || 'Terjadi kesalahan pada server';
+            }
+
+            if (isLimitReached(lastError) && attempts === 0) {
+                try {
+                    keyData = await generateApiKey(0);
+                    attempts++;
+                    continue;
+                } catch (genErr) {
+                    lastError = `Limit habis & gagal generate key baru: ${genErr.message}`;
+                    break;
+                }
+            }
+        }
+
+        attempts++;
     }
-
-    const articleRes2 = await fetch(`https://kalimbachords.net${articlePath2}`, {
-      headers: {
-        'User-Agent': options.userAgent || DEFAULT_USER_AGENT,
-        'Cookie': cookieManager.header()
-      },
-      signal: controller.signal
-    });
-
-    cookieManager.save(articleRes2);
-
-    const token2 = buildToken(cookieManager.get('XSRF-TOKEN'));
-    const sessionRes2 = await fetch('https://kalimbachords.net/api/session', {
-      method: 'POST',
-      headers: {
-        'User-Agent': options.userAgent || DEFAULT_USER_AGENT,
-        'Content-Type': 'application/json',
-        'Cookie': cookieManager.header(),
-        'Referer': `https://kalimbachords.net${articlePath2}`
-      },
-      body: JSON.stringify({ _token: token2 }),
-      signal: controller.signal
-    });
-
-    cookieManager.save(sessionRes2);
-
-    const key = Math.floor(Math.random() * 1000);
-    const size = `${(1920 + key) * 2}.${(1080 + key) * 2}`;
-    const goRes = await fetch('https://kalimbachords.net/api/go', {
-      method: 'POST',
-      headers: {
-        'User-Agent': options.userAgent || DEFAULT_USER_AGENT,
-        'Content-Type': 'application/json',
-        'Cookie': cookieManager.header(),
-        'Referer': `https://kalimbachords.net${articlePath2}`
-      },
-      body: JSON.stringify({ key, size, ado: null }),
-      signal: controller.signal
-    });
-
-    cookieManager.save(goRes);
-    const goData = await goRes.json();
-    if (!goData?.url) {
-      throw new Error('Failed to generate final ready URL from safelink gateway');
-    }
-
-    const readyRes = await fetch(goData.url, {
-      headers: {
-        'User-Agent': options.userAgent || DEFAULT_USER_AGENT,
-        'Referer': `https://kalimbachords.net${articlePath2}`
-      },
-      signal: controller.signal
-    });
-
-    const readyHtml = await readyRes.text();
-    const finalMatch = readyHtml.match(/window\.location\.href\s*=\s*"([^"]+)"/);
-    if (!finalMatch) {
-      throw new Error('Failed to extract destination URL from final ready page');
-    }
-
-    const destinationUrl = finalMatch[1].replace(/\\/g, '');
 
     return {
-      success: true,
-      slug,
-      original_url: targetUrl,
-      gateway_url: goData.url,
-      destination_url: destinationUrl,
-      execution_time_ms: Date.now() - startTime
+        status: false,
+        time: `${Date.now() - startTime}ms`,
+        error: lastError
     };
-  } finally {
-    clearTimeout(timeoutId);
-  }
 }
 
-export default {
-  bypassAdlinksumo
-};
-// CLI / Test Runner
-const target = process.argv[2] || 'https://adlinksumo.com/demo';
-console.log('=== Testing Adlinksumo Bypasser ===');
-console.log('Target URL:', target);
+async function main() {
+    const args = process.argv.slice(2);
+    if (args.length < 2) {
+        console.log('Usage:\n node tes.js <link> <emoji>');
+        process.exit(1);
+    }
 
-bypassAdlinksumo(target)
-  .then((res) => console.log('Bypass Success:', res))
-  .catch((err) => console.error('Bypass Result/Error:', err.message));
+    const [url, emoji] = args;
+    const res = await react(url, emoji);
+    console.log(JSON.stringify(res, null, 2));
+    if (!res.status) {
+        process.exit(1);
+    }
+}
+
+export {
+    react,
+    generateApiKey,
+    loadKey,
+    saveKey,
+    normalizeUrl,
+    parseEmojis
+};
+
+export default {
+    react,
+    generateApiKey,
+    loadKey,
+    saveKey,
+    normalizeUrl,
+    parseEmojis
+};
+
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+    main();
+}

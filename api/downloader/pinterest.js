@@ -1,5 +1,4 @@
 import axios from "axios"
-import { PROXY_MANAGER } from "../../src/app/index.js"
 
 const WORKER_NAMES = [
   "caliph", "eu", "rpoxy", "prox", "aged", "wave",
@@ -16,7 +15,8 @@ const HEADERS = {
 }
 
 function getProxy() {
-  const url = PROXY_MANAGER.getProxy(WORKER_NAMES)
+  const pm = global.PROXY_MANAGER
+  const url = pm ? pm.getProxy(WORKER_NAMES) : null
   return url && /workers\.dev|1win\.eu\.org|\.my\.id\/|\/cors\//.test(url) ? url : null
 }
 

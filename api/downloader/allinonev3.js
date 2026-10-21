@@ -35,9 +35,9 @@ function detectPlatform(url) {
 }
 
 export default {
-  name: "All in One v3",
+  name: "All-In-One Downloader v3",
   description: "Unduh media video, audio, dan foto dari berbagai platform populer seperti TikTok, Instagram, YouTube, Facebook, Twitter, Threads, Pinterest, dan lainnya",
-  category: "DOWNLOADER",
+  category: "Downloader",
   methods: ["GET", "POST"],
   params: ["url"],
   paramsSchema: {

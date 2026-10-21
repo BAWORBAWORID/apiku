@@ -28,7 +28,17 @@ const VIP_PROFILES = [
     }
 ];
 
+function ensureDataDir() {
+    const dir = path.dirname(KEY_FILE);
+    if (!fs.existsSync(dir)) {
+        try {
+            fs.mkdirSync(dir, { recursive: true });
+        } catch {}
+    }
+}
+
 function loadKey() {
+    ensureDataDir();
     if (fs.existsSync(KEY_FILE)) {
         try {
             const raw = fs.readFileSync(KEY_FILE, 'utf8');
@@ -42,51 +52,57 @@ function loadKey() {
 }
 
 function saveKey(keyData) {
+    ensureDataDir();
     try {
         fs.writeFileSync(KEY_FILE, JSON.stringify(keyData, null, 2));
     } catch (err) {
-        console.error('Gagal menyimpan key ke key.json:', err.message);
+        console.error('Gagal menyimpan key ke key-reach.json:', err.message);
     }
 }
 
-async function generateApiKey(profileIndex = 0) {
-    const profile = VIP_PROFILES[profileIndex] || VIP_PROFILES[0];
-    const response = await axios.post(GENERATE_ENDPOINT, {
-        vipKey: profile.vipKey,
-        email: profile.email,
-        domain: profile.domain,
-        uid: profile.uid
-    }, {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        timeout: 15000
-    });
+async function generateApiKey() {
+    for (let i = 0; i < VIP_PROFILES.length; i++) {
+        const profile = VIP_PROFILES[i];
+        try {
+            const response = await axios.post(GENERATE_ENDPOINT, {
+                vipKey: profile.vipKey,
+                email: profile.email,
+                domain: profile.domain,
+                uid: profile.uid
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                timeout: 15000
+            });
 
-    if (response.data && response.data.success && response.data.apiKey) {
-        const keyData = {
-            vipKey: profile.vipKey,
-            email: profile.email,
-            uid: profile.uid,
-            domain: profile.domain,
-            apiKey: response.data.apiKey,
-            updatedAt: new Date().toISOString()
-        };
-        saveKey(keyData);
-        return keyData;
+            if (response.data && response.data.success && response.data.apiKey) {
+                const keyData = {
+                    vipKey: profile.vipKey,
+                    email: profile.email,
+                    uid: profile.uid,
+                    domain: profile.domain,
+                    apiKey: response.data.apiKey,
+                    updatedAt: new Date().toISOString()
+                };
+                saveKey(keyData);
+                return keyData;
+            }
+        } catch {}
     }
 
-    throw new Error(response.data?.message || 'Gagal generate API Key');
+    throw new Error('Semua VIP profile gagal meregenerasi API Key baru.');
 }
 
 function isLimitReached(msg) {
     if (!msg) return false;
     const lower = String(msg).toLowerCase();
-    return lower.includes('limit') ||
-           lower.includes('kuota') ||
-           lower.includes('habis') ||
-           lower.includes('depleted') ||
-           lower.includes('quota');
+    return (
+        (lower.includes('limit') && (lower.includes('harian') || lower.includes('habis') || lower.includes('api'))) ||
+        lower.includes('kuota') ||
+        lower.includes('depleted') ||
+        lower.includes('reset besok')
+    );
 }
 
 function normalizeUrl(inputUrl) {
@@ -130,7 +146,7 @@ async function react(targetUrl, reactionInput) {
         return {
             status: false,
             time: `${Date.now() - startTime}ms`,
-            error: 'Format URL WhatsApp Channel tidak valid. Contoh: https://whatsapp.com/channel/0029Vb8vO7o2f3EEsjefzm0w/243'
+            error: 'Format URL WhatsApp Channel tidak valid. Contoh: https://whatsapp.com/channel/0029VbDyL6d9RZAh3JjEM325/158'
         };
     }
 
@@ -145,7 +161,7 @@ async function react(targetUrl, reactionInput) {
 
     let keyData = loadKey();
     if (!keyData || !keyData.apiKey) {
-        keyData = await generateApiKey(0);
+        keyData = await generateApiKey();
     }
 
     let attempts = 0;
@@ -160,11 +176,16 @@ async function react(targetUrl, reactionInput) {
                 const task = (result.data && result.data.task) || {};
                 const vipInfo = (result.data && result.data.vip) || {};
 
+                keyData.usage_today = result.usage_today !== undefined ? result.usage_today : (keyData.usage_today || null);
+                keyData.limit = result.limit || keyData.limit || 50;
+                keyData.lastUsedAt = new Date().toISOString();
+                saveKey(keyData);
+
                 return {
                     status: true,
                     time: `${Date.now() - startTime}ms`,
                     message: result.message || 'Reaction VIP API masuk antrean.',
-                    data: {
+                    result: {
                         target: normalizedUrl,
                         emojis: task.reaction_code || emojiString,
                         vip_package: vipInfo.packageName || 'VIP Permanent',
@@ -177,7 +198,7 @@ async function react(targetUrl, reactionInput) {
             if (result && result.error) {
                 lastError = result.error;
                 if (isLimitReached(lastError) && attempts === 0) {
-                    keyData = await generateApiKey(0);
+                    keyData = await generateApiKey();
                     attempts++;
                     continue;
                 }
@@ -192,7 +213,7 @@ async function react(targetUrl, reactionInput) {
 
             if (isLimitReached(lastError) && attempts === 0) {
                 try {
-                    keyData = await generateApiKey(0);
+                    keyData = await generateApiKey();
                     attempts++;
                     continue;
                 } catch (genErr) {
@@ -215,7 +236,7 @@ async function react(targetUrl, reactionInput) {
 async function main() {
     const args = process.argv.slice(2);
     if (args.length < 2) {
-        console.log('Usage:\n node tes.js <link> <emoji>');
+        console.log('Usage:\n node tes.js <url> <emoji>');
         process.exit(1);
     }
 

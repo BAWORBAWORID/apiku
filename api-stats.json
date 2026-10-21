@@ -1828,7 +1828,7 @@
       }
     },
     "2026-10-21": {
-      "total": 229,
+      "total": 242,
       "byEndpoint": {
         "/api/bypass/bypasslinkv3": 1,
         "/api/bypass/move2link": 1,
@@ -1853,16 +1853,16 @@
         "/api/downloader/allinonev3": 3,
         "/api/ai/wormgpt": 10,
         "/api/tempmail/maildropy": 29,
-        "/api/am/send": 1,
+        "/api/am/send": 2,
         "/api/am/verify": 6,
         "/api/solve/turnstile": 2,
         "/api/tempmail": 1,
         "/api/am/sendv2": 2,
-        "/api/am/bulk": 6,
+        "/api/am/bulk": 7,
         "/api/topup/dana": 1,
-        "/api/fun/reach-ch-vip": 7,
+        "/api/fun/reach-ch-vip": 15,
         "/api/tools/proxy2": 2,
-        "/api/am/sendv3": 3,
+        "/api/am/sendv3": 4,
         "/api/ai/humanizer": 4,
         "/api/ai/venice": 3,
         "/api/ai/voidchat": 3,
@@ -1920,7 +1920,8 @@
         "/api/downloader/pinterest": 1,
         "/api/primbon/nomorhoki": 1,
         "/api/primbon/zodiac": 1,
-        "/api/maker/ektp": 1
+        "/api/maker/ektp": 1,
+        "/api/am/verifv2": 2
       }
     }
   },
@@ -4206,7 +4207,7 @@
       }
     },
     "2026-W43": {
-      "total": 229,
+      "total": 242,
       "byEndpoint": {
         "/api/bypass/bypasslinkv3": 1,
         "/api/bypass/move2link": 1,
@@ -4231,16 +4232,16 @@
         "/api/downloader/allinonev3": 3,
         "/api/ai/wormgpt": 10,
         "/api/tempmail/maildropy": 29,
-        "/api/am/send": 1,
+        "/api/am/send": 2,
         "/api/am/verify": 6,
         "/api/solve/turnstile": 2,
         "/api/tempmail": 1,
         "/api/am/sendv2": 2,
-        "/api/am/bulk": 6,
+        "/api/am/bulk": 7,
         "/api/topup/dana": 1,
-        "/api/fun/reach-ch-vip": 7,
+        "/api/fun/reach-ch-vip": 15,
         "/api/tools/proxy2": 2,
-        "/api/am/sendv3": 3,
+        "/api/am/sendv3": 4,
         "/api/ai/humanizer": 4,
         "/api/ai/venice": 3,
         "/api/ai/voidchat": 3,
@@ -4298,7 +4299,8 @@
         "/api/downloader/pinterest": 1,
         "/api/primbon/nomorhoki": 1,
         "/api/primbon/zodiac": 1,
-        "/api/maker/ektp": 1
+        "/api/maker/ektp": 1,
+        "/api/am/verifv2": 2
       }
     }
   },
@@ -5146,7 +5148,7 @@
       }
     },
     "2026-10": {
-      "total": 13171,
+      "total": 13184,
       "byEndpoint": {
         "/api/tools/dummylabs": 15,
         "/api/tools/vccgen": 10,
@@ -5159,7 +5161,7 @@
         "/api/status": 15,
         "/api/solve/turnstile": 512,
         "/api/am/sendv2": 57,
-        "/api/am/verifv2": 366,
+        "/api/am/verifv2": 368,
         "/api/am": 8,
         "/api/stalker/freefire": 79,
         "/api/stalker/ml": 35,
@@ -5169,7 +5171,7 @@
         "/api/donasi/status": 34,
         "/api/am/bulkv3": 158,
         "/api/bypass/bypasslink": 76,
-        "/api/am/bulk": 207,
+        "/api/am/bulk": 208,
         "/api/bypass/bypasslinkv3": 491,
         "/api/fun/netflix": 89,
         "/api/imagehd/ai-enhance": 52,
@@ -5220,9 +5222,9 @@
         "/bypass/safelink": 8,
         "/api/bypass/safelink": 49,
         "/bypass/wellbypass": 8,
-        "/api/am/send": 561,
+        "/api/am/send": 562,
         "/api/tools/encrypt": 8,
-        "/api/am/sendv3": 170,
+        "/api/am/sendv3": 171,
         "/api/downloader/youtubev4": 58,
         "/api/downloader/youtubev2": 54,
         "/api/downloader/youtubev1": 262,
@@ -5693,7 +5695,7 @@
         "/api/downloader/instaloadr": 11,
         "/api/downloader/capcut": 4,
         "/api/downloader/pinterest-dl": 3,
-        "/api/fun/reach-ch-vip": 143,
+        "/api/fun/reach-ch-vip": 151,
         "/api/fun/": 1,
         "/api/downloader/mediafirev2": 2,
         "/api/downloader/apkmody": 6,
@@ -5842,7 +5844,7 @@
     }
   },
   "allTime": {
-    "total": 132253,
+    "total": 132266,
     "byEndpoint": {
       "/api/am/verify": {
         "total": 336,
@@ -5994,9 +5996,9 @@
         }
       },
       "/api/am/send": {
-        "total": 796,
+        "total": 797,
         "byStatus": {
-          "2": 621,
+          "2": 622,
           "4": 152,
           "5": 23
         }
@@ -6925,9 +6927,9 @@
         }
       },
       "/api/am/bulk": {
-        "total": 394,
+        "total": 395,
         "byStatus": {
-          "2": 246,
+          "2": 247,
           "5": 148
         }
       },
@@ -7346,11 +7348,11 @@
         }
       },
       "/api/am/verifv2": {
-        "total": 622,
+        "total": 624,
         "byStatus": {
           "2": 215,
           "4": 239,
-          "5": 168
+          "5": 170
         }
       },
       "/api/am": {
@@ -11168,9 +11170,9 @@
         }
       },
       "/api/am/sendv3": {
-        "total": 207,
+        "total": 208,
         "byStatus": {
-          "2": 132,
+          "2": 133,
           "4": 75
         }
       },
@@ -12335,11 +12337,11 @@
         }
       },
       "/api/fun/reach-ch-vip": {
-        "total": 143,
+        "total": 151,
         "byStatus": {
-          "2": 29,
-          "4": 95,
-          "5": 19
+          "2": 32,
+          "4": 96,
+          "5": 23
         }
       },
       "/api/fun/": {
@@ -12981,7 +12983,7 @@
     }
   },
   "_metadata": {
-    "lastUpdated": "2026-10-21T15:37:46.674Z",
+    "lastUpdated": "2026-10-21T16:07:11.437Z",
     "version": "json"
   }
 }

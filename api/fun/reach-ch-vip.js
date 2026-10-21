@@ -21,8 +21,8 @@ const KEY_FILE = path.resolve(process.cwd(), 'data/key-reach.json');
 const API_ENDPOINT = 'https://apiv2.reactionwa.online/api/v2/react';
 const GENERATE_ENDPOINT = 'https://apiv2.reactionwa.online/api/v2/generate_key';
 
-const POST_RE = /^https?:\/\/(www\.)?whatsapp\.com\/channel\/([A-Za-z0-9_-]+)\/(\d+)/i;
-const CHANNEL_PROFILE_RE = /^https?:\/\/(www\.)?whatsapp\.com\/channel\/([A-Za-z0-9_-]+)\/?$/i;
+const POST_RE = /(?:https?:\/\/)?(?:www\.)?whatsapp\.com\/channel\/([A-Za-z0-9_-]+)\/(\d+)/i;
+const CHANNEL_PROFILE_RE = /(?:https?:\/\/)?(?:www\.)?whatsapp\.com\/channel\/([A-Za-z0-9_-]+)\/?$/i;
 const EMOJI_REGEX = /\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?/gu;
 
 // Daftar Saluran Terlindungi (Protected Channels)
@@ -128,15 +128,14 @@ function isLimitReached(msg) {
 function normalizeUrl(inputUrl) {
   const match = String(inputUrl || '').match(POST_RE);
   if (!match) return null;
-  return `https://whatsapp.com/channel/${match[2]}/${match[3]}`;
+  return `https://whatsapp.com/channel/${match[1]}/${match[2]}`;
 }
 
-function parseEmojis(raw) {
-  if (!raw) return [];
-  const str = String(raw).trim();
+function parseEmojis(inputEmoji) {
+  const str = String(inputEmoji || '').trim();
   const matches = str.match(EMOJI_REGEX);
-  if (!matches || matches.length === 0) return [];
-  return [...new Set(matches)];
+  if (!matches || matches.length === 0) return null;
+  return matches.slice(0, 5).join(', ');
 }
 
 function decodeHtmlEntities(text) {
@@ -222,7 +221,7 @@ function parseNumber(text) {
 
 async function stalkChannelInfo(channelUrl, customIp = null) {
   const match = channelUrl.match(CHANNEL_PROFILE_RE);
-  const channelId = match ? match[2] : channelUrl.split('/').pop().split('?')[0];
+  const channelId = match ? match[1] : channelUrl.split('/').pop().split('?')[0];
   const url = `https://www.whatsapp.com/channel/${channelId}`;
 
   const headers = {
@@ -285,7 +284,7 @@ async function sendReactionRequest(targetUrl, reactionText, keyObj) {
 async function executeReaction(targetUrl, emojiString) {
   let keyData = loadKey();
   if (!keyData || !keyData.apiKey) {
-    keyData = await generateApiKey(0);
+    keyData = await generateApiKey();
   }
 
   let attempts = 0;
@@ -387,6 +386,7 @@ export default {
   },
 
   async run(req, res) {
+    const startTime = Date.now();
     try {
       const params = { ...req.query, ...req.body };
       const rawLink = String(params.link || params.url || params.channelLink || '').trim();
@@ -397,7 +397,8 @@ export default {
       if (!rawLink) {
         return res.status(400).json({
           status: false,
-          message: "Parameter 'link' wajib diisi dengan link WhatsApp Channel."
+          time: `${Date.now() - startTime}ms`,
+          error: "Parameter 'link' wajib diisi dengan link WhatsApp Channel."
         });
       }
 
@@ -407,9 +408,8 @@ export default {
         logger.warn(`[REACH-CH-VIP] Akses ditolak: Saluran ${extractedChannelId} dilindungi.`);
         return res.status(403).json({
           status: false,
-          protected: true,
-          channel_id: extractedChannelId,
-          message: "Saluran ini dilindungi (Protected Channel). Reaksi emoji dan reach dinonaktifkan untuk saluran ini."
+          time: `${Date.now() - startTime}ms`,
+          error: "Saluran ini dilindungi (Protected Channel). Reaksi emoji dan reach dinonaktifkan untuk saluran ini."
         });
       }
 
@@ -422,6 +422,7 @@ export default {
           return res.status(200).json({
             status: true,
             detected_type: "channel_profile",
+            time: `${Date.now() - startTime}ms`,
             message: "Tautan terdeteksi sebagai PROFIL SALURAN WhatsApp, bukan link postingan. Reaksi emoji memerlukan link postingan spesifik (format: https://whatsapp.com/channel/<id>/<id_postingan>). Berikut informasi saluran yang terdeteksi:",
             hint: "Silakan buka saluran dan salin tautan postingan spesifik (tekan lama pesan > Bagikan / Salin Tautan) untuk mengirim reaksi emoji.",
             channel: channelData
@@ -430,6 +431,7 @@ export default {
           return res.status(400).json({
             status: false,
             detected_type: "channel_profile",
+            time: `${Date.now() - startTime}ms`,
             message: "Tautan adalah profil saluran WhatsApp (bukan link postingan). Reaksi emoji memerlukan link postingan spesifik (format: https://whatsapp.com/channel/<id>/<id_postingan>).",
             error: stalkErr.message
           });
@@ -441,23 +443,20 @@ export default {
       if (!normalizedUrl) {
         return res.status(400).json({
           status: false,
-          detected_type: "invalid",
-          message: "Format tautan WhatsApp tidak valid. Masukkan link postingan (contoh: https://whatsapp.com/channel/0029Vb8kYQcK5cDFoQ3NAK2x/108) atau link profil channel (contoh: https://whatsapp.com/channel/0029Vb8vO7o2f3EEsjefzm0w)."
+          time: `${Date.now() - startTime}ms`,
+          error: "Format URL WhatsApp Channel tidak valid. Contoh: https://whatsapp.com/channel/0029VbDyL6d9RZAh3JjEM325/158"
         });
       }
 
       // 3. PROSES REAKSI POSTINGAN:
-      const emojis = parseEmojis(rawEmoji);
-      if (!emojis.length) {
+      const emojiString = parseEmojis(rawEmoji);
+      if (!emojiString) {
         return res.status(400).json({
           status: false,
-          detected_type: "post",
-          message: "Parameter 'emoji' wajib diisi dengan minimal 1 emoji reaksi untuk postingan ini."
+          time: `${Date.now() - startTime}ms`,
+          error: 'Emoji tidak valid atau kosong. Masukkan minimal 1 emoji (contoh: "👍" atau "❤️").'
         });
       }
-
-      // Batasi maksimal 5 emoji per batch sesuai limit provider
-      const emojiString = emojis.slice(0, 5).join(', ');
 
       logger.info(`[REACH-CH-VIP] Processing reaction [${emojiString}] -> ${normalizedUrl} (wait=${shouldWait})`);
 
@@ -473,44 +472,58 @@ export default {
 
         return res.status(200).json({
           status: true,
-          detected_type: "post",
-          message: "Reaksi VIP sedang diproses di antrean latar belakang.",
+          time: `${Date.now() - startTime}ms`,
+          message: "Reaction VIP API masuk antrean.",
           result: {
-            link: normalizedUrl,
+            target: normalizedUrl,
             emojis: emojiString,
-            total_emojis: emojis.length,
+            vip_package: "VIP Permanent",
             mode: "background"
           }
         });
       }
 
       // Mode Sinkron: Tunggu response
-      const startTime = Date.now();
       const outcome = await executeReaction(normalizedUrl, emojiString);
 
       if (!outcome.status) {
         return res.status(500).json({
           status: false,
-          detected_type: "post",
-          message: outcome.error || "Gagal memproses reaksi ke postingan saluran.",
-          error: outcome.error
+          time: `${Date.now() - startTime}ms`,
+          error: outcome.error || "Gagal memproses reaksi ke postingan saluran."
         });
       }
 
       return res.status(200).json({
         status: true,
-        detected_type: "post",
         time: `${Date.now() - startTime}ms`,
-        message: outcome.message || "Reaksi VIP berhasil dikirim ke antrean postingan saluran!",
-        result: outcome.data
+        message: outcome.message || "Reaction VIP API masuk antrean.",
+        result: {
+          target: normalizedUrl,
+          emojis: outcome.data?.emojis || emojiString,
+          vip_package: outcome.data?.vip_package || "VIP Permanent",
+          usage_today: outcome.data?.usage_today || null,
+          limit: outcome.data?.limit || 50
+        }
       });
 
     } catch (err) {
       logger.error(`[REACH-CH-VIP] Internal error: ${err.message}`);
       return res.status(500).json({
         status: false,
-        message: err.message || "Terjadi kesalahan internal pada server VIP reaction"
+        time: `${Date.now() - startTime}ms`,
+        error: err.message || "Terjadi kesalahan internal pada server VIP reaction"
       });
     }
   }
+};
+
+export {
+  executeReaction,
+  stalkChannelInfo,
+  normalizeUrl,
+  parseEmojis,
+  loadKey,
+  saveKey,
+  generateApiKey
 };

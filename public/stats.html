@@ -752,7 +752,9 @@ async function loadStatsData(){
             }
         } catch {}
 
-        const r=await fetch('/status');
+        const r=await fetch('/status', {
+            headers: { 'Accept': 'application/json' }
+        });
         const d=await r.json();
         
         d._realLatency = realLatency;

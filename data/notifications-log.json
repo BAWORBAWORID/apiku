@@ -1,19 +1,9 @@
 {
   "sent": [
     {
-      "ip": "2001:448a:40b0:d74e:eb64:1cd0:4b14:2b8",
-      "type": "vip",
-      "timestamp": 1792594150422
-    },
-    {
-      "ip": "2001:448a:40b0:d74e:6e2e:ff96:13bd:8927",
-      "type": "vip",
-      "timestamp": 1792598580886
-    },
-    {
-      "ip": "::1",
-      "type": "vip",
-      "timestamp": 1792598826674
+      "ip": "system",
+      "type": "stats",
+      "timestamp": 1792713600001
     }
   ]
 }

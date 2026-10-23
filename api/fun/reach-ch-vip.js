@@ -114,14 +114,19 @@ async function generateApiKey() {
   throw new Error('Semua VIP profile gagal meregenerasi API Key baru.');
 }
 
-function isLimitReached(msg) {
+function shouldRegenerateKey(msg) {
   if (!msg) return false;
   const lower = String(msg).toLowerCase();
   return (
     (lower.includes('limit') && (lower.includes('harian') || lower.includes('habis') || lower.includes('api'))) ||
     lower.includes('kuota') ||
     lower.includes('depleted') ||
-    lower.includes('reset besok')
+    lower.includes('reset besok') ||
+    lower.includes('sedang sibuk') ||
+    lower.includes('akses ditolak') ||
+    lower.includes('whitelist') ||
+    lower.includes('tidak valid') ||
+    lower.includes('expired')
   );
 }
 
@@ -288,7 +293,7 @@ async function executeReaction(targetUrl, emojiString) {
   }
 
   let attempts = 0;
-  const maxAttempts = 2;
+  const maxAttempts = VIP_PROFILES.length;
   let lastError = 'Terjadi kesalahan pada server VIP reaction';
 
   while (attempts < maxAttempts) {
@@ -319,9 +324,11 @@ async function executeReaction(targetUrl, emojiString) {
 
       if (result && result.error) {
         lastError = result.error;
-        if (isLimitReached(lastError) && attempts === 0) {
-          logger.warn(`[REACH-CH-VIP] Limit harian habis (${lastError}), otomatis meregenerasi key...`);
-          keyData = await generateApiKey();
+        if (shouldRegenerateKey(lastError) && attempts < maxAttempts - 1) {
+          const currIdx = VIP_PROFILES.findIndex(p => p.vipKey === keyData.vipKey);
+          const nextIdx = currIdx >= 0 ? (currIdx + 1) % VIP_PROFILES.length : 0;
+          logger.warn(`[REACH-CH-VIP] Error detected (${lastError}), otomatis rotasi ke profile #${nextIdx}...`);
+          keyData = await generateApiKey(nextIdx);
           attempts++;
           continue;
         }
@@ -334,14 +341,16 @@ async function executeReaction(targetUrl, emojiString) {
         lastError = err.message || 'Terjadi kesalahan pada server';
       }
 
-      if (isLimitReached(lastError) && attempts === 0) {
+      if (shouldRegenerateKey(lastError) && attempts < maxAttempts - 1) {
         try {
-          logger.warn(`[REACH-CH-VIP] Limit harian habis (${lastError}), otomatis meregenerasi key...`);
-          keyData = await generateApiKey();
+          const currIdx = VIP_PROFILES.findIndex(p => p.vipKey === keyData.vipKey);
+          const nextIdx = currIdx >= 0 ? (currIdx + 1) % VIP_PROFILES.length : 0;
+          logger.warn(`[REACH-CH-VIP] Error detected (${lastError}), otomatis rotasi ke profile #${nextIdx}...`);
+          keyData = await generateApiKey(nextIdx);
           attempts++;
           continue;
         } catch (genErr) {
-          lastError = `Limit habis & gagal generate key baru: ${genErr.message}`;
+          lastError = `Rotasi & generate key baru gagal: ${genErr.message}`;
           break;
         }
       }

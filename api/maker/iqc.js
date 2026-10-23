@@ -40,14 +40,14 @@ export default {
       type: "string",
       required: false,
       description: "Nama penulis quotes",
-      example: "Alwayscodex",
+      example: "Zyvor",
     },
   },
 
   async run(req, res) {
     try {
       const text = req.query?.text || req.body?.text
-      const author = req.query?.author || req.body?.author || "Alwayscodex"
+      const author = req.query?.author || req.body?.author || "Zyvor"
 
       if (!text) {
         return res.status(400).json({

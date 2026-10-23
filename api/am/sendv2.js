@@ -7,7 +7,7 @@ const CONTINUE_URL = 'https://alightcreative.com'
 
 const headers = {
   'Content-Type': 'application/json',
-  'User-Agent': 'Alwayscodex/1.0',
+  'User-Agent': 'Zyvor/1.0',
   'Referer': FIREBASE_REFERER,
   'Origin': 'https://alight-creative.firebaseapp.com'
 }

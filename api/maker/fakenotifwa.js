@@ -195,7 +195,7 @@ async function generateFakeNotifWA({ ppurl, username, chat, tanggal, jam }) {
   ctx.fillStyle = "#FFFFFF";
   ctx.textBaseline = "top";
   ctx.textAlign = "left";
-  await drawTextWithEmojis(ctx, username || "Alwayscodex", usernameX, usernameY, usernameFontSize, 'bold 26px "RobotoBold", sans-serif');
+  await drawTextWithEmojis(ctx, username || "Zyvor", usernameX, usernameY, usernameFontSize, 'bold 26px "RobotoBold", sans-serif');
 
   const chatX = 135;
   const chatY = 952;
@@ -219,7 +219,7 @@ export default {
       type: "string",
       required: true,
       description: "Nama pengirim pesan WhatsApp",
-      example: "Alwayscodex"
+      example: "Zyvor"
     },
     chat: {
       type: "string",
@@ -251,7 +251,7 @@ export default {
     const startTime = Date.now();
     try {
       const data = { ...req.query, ...req.body };
-      const username = data.username || data.name || "Alwayscodex";
+      const username = data.username || data.name || "Zyvor";
       const chat = data.chat || data.message || "Haii sayangg udah makan belumm? 🥺";
       const ppurl = data.ppurl || data.avatar || "";
       const tanggal = data.tanggal || "Senin, 6 Maret";

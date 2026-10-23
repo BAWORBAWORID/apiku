@@ -208,13 +208,13 @@ export default {
     name: {
       type: "string",
       required: false,
-      default: "Alwayscodex",
+      default: "Zyvor",
       description: "Nama pengguna",
     },
     username: {
       type: "string",
       required: false,
-      default: "@Alwayscodex",
+      default: "@Zyvor",
       description: "Username pengguna",
     },
   },

@@ -1,0 +1,4 @@
+[2m2026-10-22T11:45:46.039061Z[0m [32m INFO[0m [2mapiku_rs[0m[2m:[0m 🚀 Memulai APIKU Rust Engine (Arsitektur Selaras 1:1 dengan Node.js)...
+[2m2026-10-22T11:45:46.042401Z[0m [32m INFO[0m [2mapiku_rs[0m[2m:[0m Konfigurasi: Apiku v2.1.2 (512 endpoint Rust terdeteksi)
+[2m2026-10-22T11:45:46.049591Z[0m [32m INFO[0m [2mapiku_rs[0m[2m:[0m ⚡ Rust Server aktif di http://0.0.0.0:3005
+[2m2026-10-22T11:45:46.049614Z[0m [32m INFO[0m [2mapiku_rs[0m[2m:[0m 📁 Struktur folder src/api/* selaras 100% dengan Node.js api/*

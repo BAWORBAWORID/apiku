@@ -164,7 +164,7 @@ export default {
       type: "string",
       required: true,
       description: "Nama nickname pemain FF",
-      example: "Alwayscodex"
+      example: "Zyvor"
     },
     uid: {
       type: "string",

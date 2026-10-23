@@ -182,7 +182,7 @@ export default {
       type: "string",
       required: true,
       description: "MediaFire File URL",
-      example: "https://www.mediafire.com/file/xxxxx/file.zip/file",
+      example: "https://www.mediafire.com/file/jkluhveafn7bw97/r.js",
       pattern: "mediafire\\.com"
     }
   },
@@ -211,7 +211,7 @@ export default {
         return res.status(400).json({
           status: false,
           message: "Parameter 'url' is required",
-          example: "https://www.mediafire.com/file/abc123/filename.zip/file"
+          example: "https://www.mediafire.com/file/jkluhveafn7bw97/r.js"
         });
       }
 

@@ -73,8 +73,8 @@ export default {
       type: "string",
       required: true,
       description: "Nama author",
-      default: "Alwayscodex",
-      example: "Alwayscodex"
+      default: "Zyvor",
+      example: "Zyvor"
     }
   },
 

@@ -32,7 +32,7 @@ async function getSession() {
 
   const { data } = await axios.post('https://saas.castbox.fm/auth/api/v1/tokens/provider/secret', { secret: sec }, {
     headers: {
-      'User-Agent': 'Alwayscodex/1.0',
+      'User-Agent': 'Zyvor/1.0',
       'Content-Type': 'application/json',
       'x-app-id': APP_ID
     },
@@ -61,7 +61,7 @@ async function getSession() {
     firebaseAppInstanceId: crypto.randomBytes(16).toString('hex')
   }, {
     headers: {
-      'User-Agent': 'Alwayscodex/1.0',
+      'User-Agent': 'Zyvor/1.0',
       'x-app-id': APP_ID,
       'x-device-info': getDevInfo(aid),
       'x-access-token': token,
@@ -79,7 +79,7 @@ async function uploadVisionImage(imgBuffer, ext = 'jpg', auth) {
       'x-app-id': APP_ID,
       'x-device-info': getDevInfo(auth.aid),
       'x-access-token': auth.token,
-      'User-Agent': 'Alwayscodex/1.0'
+      'User-Agent': 'Zyvor/1.0'
     },
     timeout: 15000
   })
@@ -108,7 +108,7 @@ async function askAISeek(prompt, auth, sessionId, model, imageS3Keys = []) {
       'x-app-id': APP_ID,
       'x-device-info': getDevInfo(auth.aid),
       'x-access-token': auth.token,
-      'User-Agent': 'Alwayscodex/1.0'
+      'User-Agent': 'Zyvor/1.0'
     },
     responseType: 'stream',
     timeout: 60000

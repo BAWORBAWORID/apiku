@@ -234,7 +234,7 @@ app.use(
     secret: process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex'),
     store: new FileStoreSession({
       path: path.join(process.cwd(), 'data', 'sessions'),
-      ttl: 86400, // 1 day in seconds
+      ttl: 86400 * 30, // 30 days in seconds
       retries: 2,
       logFn: function() {} // silent store logging
     }),
@@ -244,7 +244,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24 // 24 jam
+      maxAge: 1000 * 60 * 60 * 24 * 30 // 30 days
     }
   })
 );

@@ -693,7 +693,7 @@
         // Fetch endpoints from /openapi.json (already has all fields)
         async function loadEndpoints(){
             try{
-                const r=await fetch('/openapi.json');
+                const r=await fetch('/openapi.json?_='+Date.now());
                 const d=await r.json();
                 if(d.endpoints&&d.endpoints.length){
                     allEndpoints=d.endpoints;

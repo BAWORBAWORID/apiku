@@ -31,3 +31,7 @@ data/luna.json
 # Backups & archives
 data/donasi.json
 *.zip
+
+apiku-rs/target/
+api-stats.json
+api-stats.bak.json

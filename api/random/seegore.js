@@ -62,23 +62,17 @@ class SeegoreClient {
             
             // Extract detailed data
             const detailed = {
-                title: linkData.title,
+                title: $("h1.entry-title, h1").first().text().trim() || linkData.title,
                 source: linkData.link,
                 thumb: linkData.thumb,
-                tag: $("div.site-main > div > header > div > div > p").text().trim(),
-                upload: $("div.site-main")
-                    .find("span.auth-posted-on > time:nth-child(2)")
-                    .text()
-                    .trim(),
-                author: $("div.site-main").find("span.auth-name.mf-hide > a").text().trim(),
-                comment: linkData.comment,
-                vote: linkData.vote,
-                view: $("div.site-main")
-                    .find("span.post-meta-item.post-views.s-post-views.size-lg > span.count")
-                    .text()
-                    .trim(),
-                video1: $("div.site-main").find("video > source").attr("src"),
-                video2: $("div.site-main").find("video > a").attr("href")
+                tag: $("a[href*='/tag/'], a[href*='/category/']").map((i, el) => $(el).text().trim()).get().filter(t => !["Home", "Previous", "Next"].includes(t)).slice(0, 5).join(", ") || linkData.tag,
+                upload: $("time").first().text().trim(),
+                author: $(".author a, .entry-author a").text().trim() || "SeeGore",
+                comment: linkData.comment || "",
+                vote: linkData.vote || "",
+                view: $("[class*='view']").text().replace(/\s+/g, " ").trim() || linkData.view || "",
+                video1: $("video source").attr("src") || $("video").attr("src") || undefined,
+                video2: $("video source").eq(1).attr("src") || $("video a").attr("href") || undefined
             };
 
             logger.info(`[SEEGORE] Details fetched successfully for: ${detailed.title.substring(0, 30)}...`);
@@ -97,41 +91,41 @@ class SeegoreClient {
      */
     async getRandomContent() {
         try {
-            // Random page between 0 and 227
-            const page = Math.floor(Math.random() * 228);
-            logger.info(`[SEEGORE] Scraping page: ${page}`);
+            // Random page between 1 and 250
+            const page = Math.floor(Math.random() * 250) + 1;
+            const targetUrl = page === 1 ? "https://seegore.com/gore/" : `https://seegore.com/gore/page/${page}/`;
+            logger.info(`[SEEGORE] Scraping page: ${page} -> ${targetUrl}`);
             
             // Fetch listing page
             const res = await axios({
                 method: 'get',
-                url: `https://seegore.com/gore/page/${page}`,
+                url: targetUrl,
                 timeout: 30000,
                 headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
                 }
             });
 
             const $ = cheerio.load(res.data);
             
             // Extract links from articles
-            const links = $("ul > li > article").map((i, el) => ({
-                title: $(el).find("div.content > header > h2").text().trim(),
-                link: $(el).find("div.post-thumbnail > a").attr("href") || "",
-                thumb: $(el).find("div.post-thumbnail > a > div > img").attr("src"),
-                view: $(el)
-                    .find("div.post-thumbnail > div.post-meta.bb-post-meta.post-meta-bg > span.post-meta-item.post-views")
-                    .text()
-                    .trim(),
-                vote: $(el)
-                    .find("div.post-thumbnail > div.post-meta.bb-post-meta.post-meta-bg > span.post-meta-item.post-votes")
-                    .text()
-                    .trim(),
-                tag: $(el).find("div.content > header > div > div.bb-cat-links").text().trim(),
-                comment: $(el)
-                    .find("div.content > header > div > div.post-meta.bb-post-meta > a")
-                    .text()
-                    .trim()
-            })).get();
+            const links = $("article").map((i, el) => {
+                const title = $(el).find("h2").text().trim();
+                const link = $(el).find("a").attr("href") || "";
+                const thumb = $(el).find("img").attr("src") || $(el).find("img").attr("data-src");
+                const view = $(el).find("[class*='view']").text().replace(/\s+/g, ' ').trim();
+                const vote = $(el).find("[class*='vote']").text().replace(/\s+/g, ' ').trim();
+                const tag = $(el).find("[class*='cat'] a, [class*='tag'] a").map((_, a) => $(a).text().trim()).get().join(", ");
+                return {
+                    title,
+                    link,
+                    thumb,
+                    view,
+                    vote,
+                    tag,
+                    comment: ""
+                };
+            }).get().filter(item => item.title && item.link);
 
             if (links.length === 0) {
                 throw new Error("No links found on the scraped page.");

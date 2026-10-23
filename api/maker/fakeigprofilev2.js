@@ -206,7 +206,7 @@ export default {
       type: "string",
       required: true,
       description: "Nama / Username Instagram",
-      example: "Alwayscodex"
+      example: "Zyvor"
     },
     ppurl: {
       type: "string",

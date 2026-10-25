@@ -1,12 +1,34 @@
 import { spawn } from "child_process";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
+import { accessSync, constants } from "fs";
 
 const SCRAPER = join(dirname(fileURLToPath(import.meta.url)), "../../scrape/quil-image.js");
 const SCRAPER_DIR = dirname(SCRAPER);
 
 const STYLES = ["Auto", "3D Scene", "Anime", "Artistic", "Cinematic", "Digital Art", "Educational", "Fantasy World", "Prototyping & Mockup", "Realism"];
 const ASPECTS = ["Auto", "1:1", "4:3", "3:4", "16:9", "9:16"];
+
+const ASPECT_MAP = {
+  "Auto": [1024, 1024],
+  "1:1": [1024, 1024],
+  "4:3": [1024, 768],
+  "3:4": [768, 1024],
+  "16:9": [1280, 720],
+  "9:16": [720, 1280],
+};
+
+const STYLE_PREFIX = {
+  "3D Scene": "3D scene render, ",
+  "Anime": "anime style illustration, ",
+  "Artistic": "artistic painting, ",
+  "Cinematic": "cinematic film still, ",
+  "Digital Art": "digital art, ",
+  "Educational": "educational illustration, ",
+  "Fantasy World": "fantasy world concept art, ",
+  "Prototyping & Mockup": "UI mockup design, ",
+  "Realism": "photorealistic, ",
+};
 
 function runScraper(args, timeoutMs = 120000) {
   return new Promise((resolve, reject) => {
@@ -71,8 +93,8 @@ export default {
     }
 
     prompt = prompt.trim();
-    style = style.trim();
-    aspect = aspect.trim();
+    style = (style || "Auto").trim();
+    aspect = (aspect || "Auto").trim();
 
     if (!STYLES.includes(style)) {
       return res.status(400).json({ status: false, message: `Style tidak valid. Pilihan: ${STYLES.join(", ")}` });
@@ -81,20 +103,66 @@ export default {
       return res.status(400).json({ status: false, message: `Aspect ratio tidak valid. Pilihan: ${ASPECTS.join(", ")}` });
     }
 
+    // Primary: scraper quillbot (jika file scraper tersedia)
+    let generator = "pollinations-fallback";
     try {
+      accessSync(SCRAPER, constants.F_OK);
       const data = await runScraper(["--prompt", prompt, "--style", style, "--aspect", aspect]);
-      res.json({
-        status: data.success,
-        result: {
-          prompt: data.prompt,
-          style: data.style,
-          aspect: data.aspectRatio,
-          images: data.images,
-          count: data.imageCount,
-        },
-      });
+      if (data.success && data.images?.length) {
+        return res.json({
+          status: true,
+          result: {
+            prompt: data.prompt,
+            style: data.style,
+            aspect: data.aspectRatio,
+            images: data.images,
+            count: data.imageCount,
+          },
+        });
+      }
+    } catch {
+      // scraper tidak ada / gagal → fallback di bawah
+    }
+
+    // Fallback: Pollinations (proxy binary, tanpa API key)
+    try {
+      const [w, h] = ASPECT_MAP[aspect] || [1024, 1024];
+      const styled = (STYLE_PREFIX[style] || "") + prompt;
+      const seed = Math.floor(Math.random() * 1_000_000);
+      const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(styled)}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
+
+      // Pollinations kadang balik 402/429 rate-limit per-IP → retry hingga 3x dengan seed baru
+      let buf = null;
+      let lastErr = null;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          const r = await fetch(url, {
+            headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
+            signal: AbortSignal.timeout(90000),
+          });
+          if (r.ok) {
+            buf = Buffer.from(await r.arrayBuffer());
+            break;
+          }
+          lastErr = new Error(`Upstream ${r.status}`);
+          await new Promise((s) => setTimeout(s, 3000 * (attempt + 1)));
+        } catch (e) {
+          lastErr = e;
+        }
+      }
+      if (!buf) throw lastErr || new Error("Gagal mengambil gambar");
+
+      res.setHeader("Content-Type", "image/jpeg");
+      res.setHeader("Content-Length", buf.length);
+      res.setHeader("Cache-Control", "public, max-age=86400");
+      res.setHeader("X-Image-Generator", generator);
+      res.setHeader("X-Prompt", prompt);
+      return res.send(buf);
     } catch (err) {
-      res.status(500).json({ status: false, message: err.message || "Quillbot image generation failed" });
+      return res.status(502).json({
+        status: false,
+        message: `Gagal generate gambar: ${err.message}`,
+      });
     }
   },
 };

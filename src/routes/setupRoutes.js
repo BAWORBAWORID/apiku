@@ -309,7 +309,8 @@ export default function setupRoutes(app, endpoints, deps) {
   // Admin - Get settings (protected)
   app.get('/admin/api/settings', adminAuth, (req, res) => {
     try {
-      const config = getConfig()
+      const config = { ...getConfig() }
+      delete config.endpoints
       const dbConnected = isConnected()
       const totalEndpoints = allEndpoints.length
       res.json({
@@ -336,6 +337,7 @@ export default function setupRoutes(app, endpoints, deps) {
 
       const existing = { ...getConfig() }
       const merged = { ...existing, ...config }
+      delete merged.endpoints
       fs.writeFile(CONFIG_FILE, JSON.stringify(merged, null, 4), () => {
         reloadConfig()
       })

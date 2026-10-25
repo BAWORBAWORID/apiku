@@ -364,7 +364,12 @@
             opacity: 1;
         }
 
+        /* Mobile: pill filter & meta tidak melebar, kartu tetap rapi */
+        .filter-pill { white-space: nowrap; }
+        .timeline-item { overflow-wrap: break-word; word-break: break-word; }
         @media (max-width: 640px) {
+            .filter-pill { padding: 0.3rem 0.65rem; font-size: 0.7rem; }
+            .card h3 { overflow-wrap: anywhere; }
             .timeline-container { padding-left: 1.75rem; }
             .timeline-track { left: 10px; }
             .timeline-dot { left: -22px; width: 12px; height: 12px; }
@@ -390,7 +395,7 @@
                         <a href="/donasi"><i class="fas fa-heart w-4 text-center"></i><span>Donasi</span></a>
                         <div style="height:1px;border-bottom:1px dashed var(--border-color);margin:4px 0"></div>
                         <a href="/support"><i class="fas fa-headset w-4 text-center"></i><span>Support</span></a>
-                        <a href="/stats"><i class="fas fa-chart-line w-4 text-center"></i><span>Status</span></a>
+                        <a href="/status"><i class="fas fa-chart-line w-4 text-center"></i><span>Status</span></a>
                         <a href="/changelog" style="background:var(--card-pink);color:var(--accent-red);font-weight:700"><i class="fas fa-clock-rotate-left w-4 text-center"></i><span>Changelog</span></a>
                         <div style="height:1px;border-bottom:1px dashed var(--border-color);margin:4px 0"></div>
                         <a href="/request-report"><i class="fas fa-bug w-4 text-center"></i><span>Request</span></a>
@@ -458,7 +463,7 @@
         </div>
 
         <!-- Loading -->
-        <div id="loading" class="text-center py-20 hidden">
+        <div id="loading" class="text-center py-20">
             <div class="inline-block w-6 h-6 border-2 border-[#8c8275] border-t-[#8b2626] rounded-full animate-spin"></div>
             <p class="text-[#665f55] mt-4 text-xs font-mono font-bold">Loading changelog...</p>
         </div>
@@ -490,7 +495,7 @@
                     <h4 class="font-display text-base font-bold text-[#2b2b2b] mb-3">Endpoints</h4>
                     <div class="space-y-2">
                         <a href="/docs" class="block text-xs font-semibold text-[#665f55] hover:text-[#8b2626] transition-colors">Documentation</a>
-                        <a href="/stats" class="block text-xs font-semibold text-[#665f55] hover:text-[#8b2626] transition-colors">Status</a>
+                        <a href="/status" class="block text-xs font-semibold text-[#665f55] hover:text-[#8b2626] transition-colors">Status</a>
                         <a href="/changelog" class="block text-xs font-semibold text-[#665f55] hover:text-[#8b2626] transition-colors">Changelog</a>
                     </div>
                 </div>
@@ -525,49 +530,7 @@
     </footer>
 
     <script>
-        const DEFAULT_ITEMS = [
-            {
-                isRelease: false,
-                title: 'New Feature Added',
-                description: 'Added support for QRIS automated payment status polling & real-time webhook listeners.',
-                date: 'September 28, 2026'
-            },
-            {
-                isRelease: false,
-                title: 'Security Bug Fix',
-                description: 'Patched CORS policy restrictions and reinforced header security rules.',
-                date: 'July 10, 2026'
-            },
-            {
-                isRelease: true,
-                version: '1.2.0',
-                date: 'October 2, 2026',
-                changelog: [
-                    'Transformed platform aesthetic to Vintage Paper Notebook theme',
-                    'Enhanced QRIS payment Gateway API integration for donation system',
-                    'Optimized mobile viewport responsive navigation for all core pages'
-                ]
-            },
-            {
-                isRelease: true,
-                version: '1.1.0',
-                date: 'August 15, 2026',
-                changelog: [
-                    'Added rate-limiting protection & API Key authentication layer',
-                    'Added automated Status monitor & uptime dashboard endpoint',
-                    'Improved server response time & database queries caching'
-                ]
-            },
-            {
-                isRelease: true,
-                version: '1.0.0',
-                date: 'May 01, 2026',
-                changelog: [
-                    'Official Public Initial Release of Zyyvor REST API Platform'
-                ]
-            }
-        ];
-
+        
         let allItems = [];
         let currentFilter = 'all';
 
@@ -606,6 +569,17 @@
             if (isNaN(d.getTime())) return dateStr;
             return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         }
+        // Escape HTML lalu render markdown ringan: **bold**, `code`, baris kosong → paragraf, newline → <br>
+        function formatDescription(text) {
+            if (!text) return '';
+            let t = String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            t = t
+                .replace(/\*\*([^*]+)\*\*/g, '<strong style="color:#2b2b2b;">$1</strong>')
+                .replace(/`([^`]+)`/g, '<code style="background:#f3ece0;border:1px solid #e0d5c1;border-radius:4px;padding:1px 5px;font-family:\'JetBrains Mono\',monospace;font-size:0.72rem;">$1</code>');
+            const paras = t.split(/\n{2,}/).map(x => x.replace(/\n/g, '<br>')).filter(x => x.trim());
+            return paras.map(x => `<p style="margin:0 0 8px 0;">${x}</p>`).join('');
+        }
+
         function getTypeInfo(type) {
             const t = (type || '').toLowerCase();
             if (t.includes('added') || t.includes('add') || t.includes('new')) return { icon: 'fas fa-plus', badge: 'badge-new', label: 'Features' };
@@ -649,6 +623,28 @@
                 });
             }
 
+            // Urutkan berdasarkan tanggal rilis asli: terbaru -> terlama (descending)
+            const tsOf = it => {
+                const d = parseIndoDate(it.date);
+                const t = (d instanceof Date) ? d.getTime() : NaN;
+                return isNaN(t) ? 0 : t;
+            };
+            filtered = filtered.slice().sort((a, b) => tsOf(b) - tsOf(a));
+
+            // Hubungkan announcement ke release dgn versi sama persis (normalisasi prefix v); SEMUA announcement versi sama ditampilkan
+            const relList = filtered.filter(i => i.isRelease);
+            relList.forEach(r => { r._announcements = []; });
+            const norm = v => String(v || '').replace(/^v/, '').toLowerCase();
+            filtered.forEach(item => {
+                if (!item.isRelease && item.releaseVersion) {
+                    const rel = relList.find(r => norm(r.version) === norm(item.releaseVersion));
+                    if (rel) rel._announcements.push(item);
+                    else item._unlinked = true; // versi belum tersedia → tampil standalone bertanda belum terhubung
+                }
+            });
+            // announcement yang sudah nempel di release card tidak dirender ulang sebagai kartu terpisah
+            filtered = filtered.filter(item => item.isRelease || !item.releaseVersion || item._unlinked || !relList.find(r => norm(r.version) === norm(item.releaseVersion)));
+
             if (filtered.length === 0) {
                 emptyState.classList.remove('hidden');
                 timeline.innerHTML = '<div class="timeline-track"></div>';
@@ -656,9 +652,9 @@
             }
 
             let html = '<div class="timeline-track"></div>';
-            
-            filtered.forEach((item) => {
-                if (!item.isRelease) {
+
+                        // Announcement umum (tanpa releaseVersion) dulu, lalu release cards dengan announcements nempel
+            filtered.filter(i => !i.isRelease).forEach((item) => {
                     const typeInfo = getTypeInfo(item.title);
                     html += `
                         <div class="timeline-item fade-up">
@@ -668,21 +664,24 @@
                                     <span class="badge ${typeInfo.badge}" style="margin-bottom: 6px;">${typeInfo.label}</span>
                                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; flex-wrap: wrap;">
                                         <h3 style="font-size: 0.95rem; font-weight: 700; color: #2b2b2b; line-height: 1.3;">${item.title || 'Update'}</h3>
-                                        <span style="font-size: 0.75rem; color: #8c8275; font-family: 'JetBrains Mono', monospace; font-weight: 700;">${formatDate(item.date)}</span>
+                                        <span style="font-size: 0.75rem; color: #8c8275; font-family: 'JetBrains Mono', monospace; font-weight: 700;">${formatDate(item.date)}${item.releaseVersion ? ' · <span style="color:#8b2626; background:#f9dbdb; border:1px solid #e0d5c1; border-radius:4px; padding:1px 5px; font-size:0.65rem;">v' + String(item.releaseVersion).replace(/^v/, '') + '</span>' + (item._unlinked ? ' <span style="color:#665f55; background:#f3ece0; border:1px dashed #e0d5c1; border-radius:4px; padding:1px 5px; font-size:0.6rem;" title="Release version belum tersedia">belum terhubung</span>' : '') : ''}</span>
                                     </div>
                                 </div>
-                                <p style="font-size: 0.8rem; color: #665f55; font-weight: 500; line-height: 1.5; margin-top: 4px;">${item.description || ''}</p>
+                                <p style="font-size: 0.8rem; color: #665f55; font-weight: 500; line-height: 1.5; margin-top: 4px;">${formatDescription(item.description)}</p>
                             </div>
                         </div>
                     `;
-                } else {
+            });
+
+            filtered.filter(i => i.isRelease).forEach((item) => {
+
                     html += `
                         <div class="timeline-item fade-up">
                             <div class="timeline-dot major"></div>
                             <div class="release-card">
                                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
                                     <span class="badge badge-release"><i class="fas fa-rocket mr-1 text-[8px]"></i> RELEASE</span>
-                                    <span style="font-size: 0.75rem; color: #8c8275; font-family: 'JetBrains Mono', monospace; font-weight: 700;">${formatDate(item.date)}</span>
+                                    <span style="font-size: 0.75rem; color: #8c8275; font-family: 'JetBrains Mono', monospace; font-weight: 700;">${formatDate(item.date)}${item.releaseVersion ? ' · <span style="color:#8b2626; background:#f9dbdb; border:1px solid #e0d5c1; border-radius:4px; padding:1px 5px; font-size:0.65rem;">v' + String(item.releaseVersion).replace(/^v/, '') + '</span>' + (item._unlinked ? ' <span style="color:#665f55; background:#f3ece0; border:1px dashed #e0d5c1; border-radius:4px; padding:1px 5px; font-size:0.6rem;" title="Release version belum tersedia">belum terhubung</span>' : '') : ''}</span>
                                 </div>
                                 <h3 class="font-display text-2xl font-bold text-[#2b2b2b] tracking-tight mb-3">
                                     v${item.version}
@@ -697,17 +696,41 @@
                                         </li>
                                     `).join('')}
                                 </ul>
+                                ${item._announcements && item._announcements.length > 0 ? `
+                                <div style="margin-top: 16px; padding-top: 12px; border-top: 1px dashed #e0d5c1;">
+                                    <h4 style="font-size: 0.6rem; font-weight: 800; color: #665f55; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace;">
+                                        <i class="fas fa-bullhorn" style="font-size: 0.55rem; margin-right: 4px;"></i> Announcements
+                                    </h4>
+                                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                                        ${item._announcements.map(a => {
+                                            const typeInfo = getTypeInfo(a.title);
+                                            return `
+                                            <div style="display: flex; align-items: flex-start; gap: 10px; padding: 10px; border-radius: 6px; background: #faf8f5; border: 1px solid #e0d5c1;">
+                                                <span style="width: 16px; height: 16px; border-radius: 50%; background: #fceea7; border: 1px solid #e0d5c1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
+                                                    <i class="${typeInfo.icon}" style="font-size: 7px; color: #8b2626;"></i>
+                                                </span>
+                                                <div style="flex: 1; min-width: 0;">
+                                                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                                        <span class="badge ${typeInfo.badge}">${typeInfo.label}</span>
+                                                        <span style="font-size: 0.8rem; font-weight: 600; color: #2b2b2b;">${a.title || 'Update'}</span>
+                                                        <span style="font-size: 0.65rem; color: #8c8275; font-family: 'JetBrains Mono', monospace; margin-left: auto;">${formatDate(a.date)}</span>
+                                                    </div>
+                                                    <p style="font-size: 0.75rem; color: #665f55; margin-top: 4px; line-height: 1.5;">${formatDescription(a.description)}</p>
+                                                </div>
+                                            </div>`;
+                                        }).join('')}
+                                    </div>
+                                </div>` : ''}
                             </div>
                         </div>
                     `;
                 }
-            });
-
+            );
             timeline.innerHTML = html;
 
-            requestAnimationFrame(() => {
+            requestAnimationFrame(() => requestAnimationFrame(() => {
                 timeline.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
-            });
+            }));
         }
 
         // Load Function
@@ -717,7 +740,9 @@
                 if (!res.ok) throw new Error('API unreachable');
                 const config = await res.json();
 
-                const latestRelease = config.releases?.[0] || {};
+                // "latest" = release dgn tanggal rilis valid terbaru (bukan sekadar array pertama)
+                const _ts = r => { const d = parseIndoDate(r && r.date); const t = (d instanceof Date) ? d.getTime() : NaN; return isNaN(t) ? 0 : t; };
+                const latestRelease = [...(config.releases || [])].sort((a, b) => _ts(b) - _ts(a))[0] || {};
                 const version = latestRelease.version || '1.2.0';
                 let date = latestRelease.date || 'October 2026';
 
@@ -731,7 +756,8 @@
 
                 const announcements = config.announcements?.items || [];
                 announcements.forEach(item => {
-                    items.push({ isRelease: false, title: item.title, description: item.description, date: item.date });
+                    const _sig = [item.title, item.date, item.description].join('|');
+                    if (!items.some(x => x._sig === _sig)) items.push({ isRelease: false, _sig, title: item.title, description: item.description, date: item.date, releaseVersion: item.releaseVersion || null });
                 });
 
                 if (config.releases?.length) {
@@ -742,13 +768,18 @@
                     });
                 }
 
-                allItems = items.length > 0 ? items : DEFAULT_ITEMS;
+                allItems = items;
                 document.getElementById('statUpdates').textContent = announcements.length || 2;
                 renderTimeline();
             } catch (err) {
-                console.warn('Backend API unavailable, using fallback dataset:', err);
-                allItems = DEFAULT_ITEMS;
-                renderTimeline();
+                console.warn('Backend API unavailable (attempt), retrying...', err);
+                if ((loadChangelog._retry || 0) < 4) {
+                    loadChangelog._retry = (loadChangelog._retry || 0) + 1;
+                    setTimeout(loadChangelog, 2000 * loadChangelog._retry);
+                    return;
+                }
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('error').classList.remove('hidden');
             }
         }
 

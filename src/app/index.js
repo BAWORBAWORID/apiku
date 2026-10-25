@@ -1920,7 +1920,7 @@ let cachedSIResult = null;
 let lastSITime = 0;
 let siFetchPromise = null;
 
-app.get('/status2', async (req, res) => {
+app.get('/checkstatus2', async (req, res) => {
   try {
     const siModule = await getSI();
     const start = process.hrtime();
@@ -2257,37 +2257,35 @@ app.get("/openapi.json", async (req, res) => {
 });
 
 
-app.get('/stats', (req, res) => {
+app.get(['/status', '/stats'], (req, res) => {
+  if (req.path === '/stats') return res.redirect(301, '/status');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
   res.sendFile(path.join(process.cwd(), 'public', 'stats.html'));
 });
 
-// New /status endpoint - proxies to /status2
-app.get('/status', async (req, res) => {
+// POST /checkstatus — metrics via localhost /checkstatus2 (cache 3 dtk)
+app.post('/checkstatus', async (req, res) => {
   try {
-    // Check if client wants JSON (API) or HTML
-    const acceptsHtml = req.accepts('html');
     const acceptsJson = req.accepts('json');
-    
-    if (acceptsHtml && !acceptsJson) {
-      // Serve HTML page
-      return res.sendFile(path.join(process.cwd(), 'public', 'stats.html'));
+    if (!acceptsJson) return res.status(400).json({ status: false, message: 'Accept: application/json diperlukan' });
+    const action = (req.body && req.body.action) || 'metrics';
+    if (action !== 'metrics') return res.status(400).json({ status: false, message: 'action tidak dikenal' });
+    // data dikumpulkan via localhost (tanpa CF/rate limit), sysinfo berat max 1x per 3 dtk walau banyak visitor
+    if (!global._statusCache || Date.now() - global._statusCache.at > 3000) {
+      const response = await fetch('http://localhost:3000/checkstatus2', {
+        headers: { 'Accept': 'application/json' },
+        signal: AbortSignal.timeout(10000)
+      });
+      if (!response.ok) throw new Error(`Status2 returned ${response.status}`);
+      const data = await response.json();
+      global._statusCache = { data, at: Date.now() };
     }
-    
-    // Proxy to /status2 for JSON data
-    const response = await fetch('http://localhost:3000/status2', {
-      headers: { 'Accept': 'application/json' },
-      signal: AbortSignal.timeout(10000)
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Status2 returned ${response.status}`);
-    }
-    
-    const data = await response.json();
-    return res.json(data);
+    res.setHeader('Cache-Control', 'no-store');
+    return res.json({ status: true, result: global._statusCache.data });
   } catch (e) {
-    // Fallback: serve HTML if JSON fails
-    return res.sendFile(path.join(process.cwd(), 'public', 'stats.html'));
+    return res.status(500).json({ status: false, message: e.message });
   }
 });
 

@@ -141,6 +141,33 @@ function isValidIP(ip) {
   return IPv4_RE.test(ip) || IPv6_RE.test(ip);
 }
 
+// ==================== COUNTRY LOOKUP (untuk alert spam) ====================
+const optionsCountryCache = new Map(); // ip → kode negara ('ID', 'US', null)
+const COUNTRY_TTL = 24 * 60 * 60 * 1000; // 24 jam cache
+
+/**
+ * Ambil kode negara untuk alert: prioritas header Cloudflare (gratis, instan),
+ * fallback ip-api.com (free 45 req/menit) — hasil di-cache 24 jam per IP.
+ */
+export async function lookupCountry(ip) {
+  if (!ip || optionsCountryCache.has(ip)) return optionsCountryCache.get(ip) ?? null;
+  try {
+    const res = await fetch(`http://ip-api.com/json/${ip}?fields=countryCode`, {
+      signal: AbortSignal.timeout(3000)
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const code = data.countryCode || null;
+      optionsCountryCache.set(ip, code);
+      setTimeout(() => optionsCountryCache.delete(ip), COUNTRY_TTL).unref?.();
+      return code;
+    }
+  } catch { /* gagal → null */ }
+  optionsCountryCache.set(ip, null);
+  setTimeout(() => optionsCountryCache.delete(ip), COUNTRY_TTL).unref?.();
+  return null;
+}
+
 export function getClientIP(req) {
   const rawRemote = req.socket?.remoteAddress || '';
   const remote = cleanIPv6(rawRemote);
@@ -558,21 +585,25 @@ async function sendTelegramNotification(options) {
   let message = '';
 
   switch(type) {
-    case 'spam': // Ganti dari warning ke spam
-      message = 
+    case 'spam': // Format sama persis seperti alert Telegram premium
+      {
+        const windowSec = Math.max(1, Math.round((timestamp - (options.windowStart || timestamp - 60000)) / 1000)) || 60;
+        const reason = options.reason || `Spam ${count} request / ${windowSec} detik`;
+        const banUntil = options.banUntil ? formatDisplayTime(options.banUntil) : null;
+        const cfNote = options.cloudflareBlocked
+          ? '☁️ *Cloudflare:* ✅ diblokir di edge\n\n'
+          : '';
+        message =
         `${emoji} *SPAM TERDETEKSI*\n\n` +
-        `🕒 Waktu: \`${timeStr}\`\n` +
-        `🌐 Host: \`${hostname}\`\n` +
-        `📌 IP: \`${ip}\`\n` +
-        `🔗 Path: \`${path}\`\n` +
-        `📡 Method: \`${method}\`\n` +
-        `📊 Penggunaan: \`${count}/${maxReq}\` (melebihi batas!)\n` +
-        `⚠️ Total Pelanggaran: \`${violations}/${violationLimit}\`\n` +
-        `⏳ Reset: ${Math.ceil((options.windowReset - timestamp) / 1000)} detik lagi\n\n`;
-      
-      // Tambahkan response jika ada
-      if (response) {
-        message += `📦 *Response yang dikirim:*\n\`\`\`json\n${JSON.stringify(response, null, 2)}\n\`\`\``;
+        `🌐 *IP:* \`${ip}\`\n` +
+        `🌍 *Negara:* \`${options.country || '–'}\`\n` +
+        `📊 *Request:* ${count} dalam ${windowSec} detik\n` +
+        `🔗 *Path:* \`${path}\`\n` +
+        `📡 *User-Agent:* \`${userAgent || 'Unknown'}\`\n` +
+        `⚠️ *Alasan:* ${reason}\n` +
+        (banUntil ? `⛔ *Blokir s/d:* \`${banUntil} WIB\`\n` : '') +
+        `\n${cfNote}` +
+        `🕒 *${formatDisplayTime(timestamp)} WIB*`;
       }
       break;
 
@@ -929,7 +960,7 @@ scheduleDailyReport();
 
 // ==================== MAIN RATE LIMITER ====================
 function rateLimiterMiddleware() {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     const config = getConfig();
     // Dynamic config from configuration.json (editable from admin dashboard)
     const maxReq = (config.rateLimit && config.rateLimit.maxRequests) ? config.rateLimit.maxRequests : MAX_REQUESTS;
@@ -1085,17 +1116,23 @@ function rateLimiterMiddleware() {
       };
 
       // Kirim notifikasi SPAM (hanya jika belum dalam cooldown)
+      // Negara: header Cloudflare dulu (gratis), fallback lookupCountry (ip-api, cached)
+      const country = req.headers['cf-ipcountry'] || await lookupCountry(ip);
       sendTelegramNotification({
         type: 'spam',
         ip,
         hostname,
         path,
         method,
+        userAgent,
+        country,
         count: data.count,
         maxReq,
         violations: data.violations,
         violationLimit,
+        windowStart: data.windowStart,
         windowReset,
+        banUntil: null, // diisi jika ban diterapkan
         response: errorResponse, // Sertakan response yang dikirim
         timestamp: now
       });

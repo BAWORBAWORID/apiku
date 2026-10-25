@@ -54,7 +54,7 @@
                     {"@type": "SiteNavigationElement", "name": "Home", "url": "https://api.zyvor.my.id/"},
                     {"@type": "SiteNavigationElement", "name": "Documentation", "url": "https://api.zyvor.my.id/docs"},
                     {"@type": "SiteNavigationElement", "name": "Support", "url": "https://api.zyvor.my.id/support"},
-                    {"@type": "SiteNavigationElement", "name": "Status", "url": "https://api.zyvor.my.id/stats"},
+                    {"@type": "SiteNavigationElement", "name": "Status", "url": "https://api.zyvor.my.id/status"},
                     {"@type": "SiteNavigationElement", "name": "Changelog", "url": "https://api.zyvor.my.id/changelog"},
                     {"@type": "SiteNavigationElement", "name": "Request", "url": "https://api.zyvor.my.id/request-report"}
                 ]
@@ -394,7 +394,7 @@
                         <a href="/donasi"><i class="fas fa-heart w-4 text-center"></i><span>Donasi</span></a>
                         <div style="height:1px;border-bottom:1px dashed var(--border-color);margin:4px 0"></div>
                         <a href="/support"><i class="fas fa-headset w-4 text-center"></i><span>Support</span></a>
-                        <a href="/stats"><i class="fas fa-chart-line w-4 text-center"></i><span>Status</span></a>
+                        <a href="/status"><i class="fas fa-chart-line w-4 text-center"></i><span>Status</span></a>
                         <a href="/changelog"><i class="fas fa-clock-rotate-left w-4 text-center"></i><span>Changelog</span></a>
                         <div style="height:1px;border-bottom:1px dashed var(--border-color);margin:4px 0"></div>
                         <a href="/request-report"><i class="fas fa-bug w-4 text-center"></i><span>Request</span></a>
@@ -650,7 +650,7 @@
 
         let lastStartTime = null;
         setInterval(() => {
-            fetch('/stats').then(r => r.json()).then(d => {
+            fetch('/checkstatus', {method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:'{"action":"metrics"}'}).then(r => r.json()).then(j => { const d = j.result || {};
                 if (!lastStartTime) lastStartTime = d.startTime;
                 else if (lastStartTime !== d.startTime) location.reload();
             }).catch(() => {});

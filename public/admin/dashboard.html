@@ -570,7 +570,7 @@
                     <i class="fas fa-book text-[11px]"></i>
                     <span class="md:hidden lg:inline">Docs</span>
                 </a>
-                <a href="/stats" target="_blank" class="flex items-center justify-center lg:justify-start gap-1.5 p-2 rounded bg-paper-bg border border-paper-border text-main hover:bg-paper-yellow transition-colors">
+                <a href="/status" target="_blank" class="flex items-center justify-center lg:justify-start gap-1.5 p-2 rounded bg-paper-bg border border-paper-border text-main hover:bg-paper-yellow transition-colors">
                     <i class="fas fa-chart-line text-[11px]"></i>
                     <span class="md:hidden lg:inline">Status</span>
                 </a>
@@ -1019,8 +1019,8 @@
 
                     <div class="settings-section">
                         <h3><i class="fas fa-tag text-success"></i> Releases</h3>
-                        <div class="grid grid-cols-1 gap-4">
-                            <div id="releases-list">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div id="releases-list" class="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-2">
                                 <div class="text-xs text-sub py-2">Loading releases...</div>
                             </div>
                             <div class="flex justify-center pt-1">
@@ -1038,7 +1038,7 @@
                                 <label class="block mb-0">Enabled</label>
                                 <div id="toggle-announcements" class="toggle-switch active" onclick="toggleSetting(this, 'announcements.enabled')"></div>
                             </div>
-                            <div id="announcements-list">
+                            <div id="announcements-list" class="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-2">
                                 <div class="text-xs text-sub py-2">Loading announcements...</div>
                             </div>
                             <div class="flex justify-center pt-1">
@@ -1324,10 +1324,10 @@
                         <div>
                             <label class="block mb-1">Expired</label>
                             <select id="modal-key-expired" class="input-field w-full px-3 py-2 text-sm">
-                                <option value="lifetime">Lifetime</option>
-                                <option value="3">3 Days</option>
-                                <option value="7">7 Days</option>
-                                <option value="30">30 Days</option>
+                                <option value="lifetime"${edExp === 'lifetime' ? ' selected' : ''}>Lifetime</option>
+                                <option value="3"${edExp === '3' ? ' selected' : ''}>3 Days</option>
+                                <option value="7"${edExp === '7' ? ' selected' : ''}>7 Days</option>
+                                <option value="30"${edExp === '30' ? ' selected' : ''}>30 Days</option>
                             </select>
                         </div>
                     </div>
@@ -1439,6 +1439,7 @@
         }
 
         async function toggleApiKey(key, enabled, toggleEl) {
+            const expiredVal = document.getElementById('modal-edit-expired')?.value || 'lifetime';
             try {
                 const res = await fetch(`/admin/api/keys/${encodeURIComponent(key)}`, {
                     method: 'PUT',
@@ -1482,6 +1483,9 @@
             const k = allKeys.find(kk => kk._key === key);
             if (!k) return;
             const rl = k.rateLimit || {};
+            const remainingDays = k.expiresAt ? Math.ceil((new Date(k.expiresAt).getTime() - Date.now()) / 86400000) : 0;
+            const edExp = (!k.expiresAt || remainingDays <= 0) ? 'lifetime'
+                : (remainingDays <= 3 ? '3' : remainingDays <= 7 ? '7' : remainingDays <= 14 ? '14' : remainingDays <= 30 ? '30' : 'lifetime');
             openModal(`
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="handwritten text-2xl font-bold text-main">Edit Key Settings ✏️</h3>
@@ -1497,6 +1501,16 @@
                         <select id="modal-edit-pkg" class="input-field w-full px-3 py-2 text-sm">
                             <option value="premium" ${(k.package?.type || k.role) === 'premium' ? 'selected' : ''}>Premium</option>
                             <option value="vip" ${(k.package?.type || k.role) === 'vip' ? 'selected' : ''}>VIP</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block mb-1">Expired</label>
+                        <select id="modal-edit-expired" class="input-field w-full px-3 py-2 text-sm">
+                            <option value="lifetime"${edExp === 'lifetime' ? ' selected' : ''}>Lifetime</option>
+                            <option value="3"${edExp === '3' ? ' selected' : ''}>3 Days</option>
+                            <option value="7"${edExp === '7' ? ' selected' : ''}>7 Days</option>
+                            <option value="14"${edExp === '14' ? ' selected' : ''}>14 Days</option>
+                            <option value="30"${edExp === '30' ? ' selected' : ''}>30 Days</option>
                         </select>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
@@ -1546,7 +1560,8 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         name,
-                        package: { type: pkgType },
+                        package: { type: pkgType, expired: expiredVal === 'lifetime' ? null : expiredVal },
+                        expiresAt: expiredVal === 'lifetime' ? null : new Date(Date.now() + parseInt(expiredVal) * 86400000).toISOString(),
                         rateLimit: { maxPerDay, maxPerMinute },
                         allowedEndpoints: editAllowedEndpoints.length ? editAllowedEndpoints : null,
                         allowedStatuses: editAllowedStatuses.length ? editAllowedStatuses : null
@@ -1603,6 +1618,8 @@
             setInput('setting-notifications-sourceCodeUrl', notif.sourceCodeUrl || '');
 
             renderReleases(config.releases || []);
+            // Simpan daftar version utk dropdown Release Version di modal announcement
+            window._releaseVersions = (config.releases || []).map(r => r.version ? (String(r.version).startsWith('v') ? r.version : 'v'+r.version) : null).filter(Boolean);
 
             const ann = config.announcements || {};
             setToggle('toggle-announcements', ann.enabled === true);
@@ -1624,10 +1641,13 @@
             }
 
             container.innerHTML = items.map((item, idx) => `
-                <div class="flex items-center justify-between p-2 rounded bg-paper-bg border border-paper-border">
-                    <div>
-                        <span class="font-bold text-xs">v${escapeHtml(item.version)}</span>
-                        <span class="text-[10px] text-sub ml-2">${escapeHtml(item.date || '')}</span>
+                <div class="flex items-start justify-between gap-2 p-2 rounded bg-paper-bg border border-paper-border">
+                    <div class="min-w-0">
+                        <div>
+                            <span class="font-bold text-xs">v${escapeHtml(item.version)}</span>
+                            <span class="text-[10px] text-sub ml-2">${escapeHtml(item.date || '')}</span>
+                        </div>
+                        ${item.changelog && item.changelog.length ? `<p class="text-[10px] text-sub mt-1 leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${escapeHtml(item.changelog.join(' · ')).slice(0, 160)}</p>` : ''}
                     </div>
                     <div class="flex gap-1">
                         <button onclick="openEditReleaseModal(${idx})" class="action-btn"><i class="fas fa-pen"></i></button>
@@ -1751,10 +1771,13 @@
             }
 
             container.innerHTML = items.map((item, idx) => `
-                <div class="flex items-center justify-between p-2 rounded bg-paper-bg border border-paper-border">
-                    <div>
-                        <span class="font-bold text-xs">${escapeHtml(item.title)}</span>
-                        <span class="text-[10px] text-sub ml-2">${escapeHtml(item.date || '')}</span>
+                <div class="flex items-start justify-between gap-2 p-2 rounded bg-paper-bg border border-paper-border">
+                    <div class="min-w-0">
+                        <div>
+                            <span class="font-bold text-xs">${escapeHtml(item.title)}</span>
+                            <span class="text-[10px] text-sub ml-2">${escapeHtml(item.date || '')}</span>
+                        </div>
+                        ${item.description ? `<p class="text-[10px] text-sub mt-1 leading-relaxed" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${escapeHtml(String(item.description).replace(/\*\*/g, '').replace(/\`/g, '')).slice(0, 160)}</p>` : ''}
                     </div>
                     <div class="flex gap-1">
                         <button onclick="openEditAnnouncementModal(${idx})" class="action-btn"><i class="fas fa-pen"></i></button>
@@ -1782,6 +1805,13 @@
                     <div>
                         <label class="block mb-1">Date</label>
                         <input type="text" id="modal-ann-date" class="input-field w-full px-3 py-2 text-sm" placeholder="Oct 2, 2026">
+                    </div>
+                    <div>
+                        <label class="block mb-1">Release Version</label>
+                        <select id="modal-ann-version" class="input-field w-full px-3 py-2 text-sm">
+                            <option value="">— None —</option>
+                            ${window._releaseVersions.map(v => `<option value="${v}">${v}</option>`).join('')}
+                        </select>
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 mt-5">
@@ -1812,6 +1842,13 @@
                         <label class="block mb-1">Date</label>
                         <input type="text" id="modal-ann-date" class="input-field w-full px-3 py-2 text-sm" value="${escapeHtml(item.date)}">
                     </div>
+                    <div>
+                        <label class="block mb-1">Release Version</label>
+                        <select id="modal-ann-version" class="input-field w-full px-3 py-2 text-sm">
+                            <option value="">— None —</option>
+                            ${window._releaseVersions.map(v => `<option value="${v}" ${item.releaseVersion === v ? 'selected' : ''}>${v}</option>`).join('')}
+                        </select>
+                    </div>
                 </div>
                 <div class="flex justify-end gap-2 mt-5">
                     <button onclick="closeModal()" class="px-4 py-2 rounded bg-paper-bg border border-paper-border text-sm font-bold">Cancel</button>
@@ -1824,9 +1861,10 @@
             const title = document.getElementById('modal-ann-title')?.value?.trim();
             const description = document.getElementById('modal-ann-description')?.value?.trim();
             const date = document.getElementById('modal-ann-date')?.value?.trim();
+            const releaseVersion = document.getElementById('modal-ann-version')?.value?.trim() || null;
 
             if (!title) return showToast('Title required', 'warning');
-            const item = { title, description: description || '', date: date || new Date().toLocaleDateString() };
+            const item = { title, description: description || '', date: date || new Date().toLocaleDateString(), releaseVersion };
 
             if (index === -1) window._announcementItems.unshift(item);
             else window._announcementItems[index] = item;

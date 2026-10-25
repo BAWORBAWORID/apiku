@@ -4,8 +4,8 @@
       "key": "adm",
       "name": "admin",
       "createdAt": "2026-09-29T12:24:00.494Z",
-      "lastUsed": "2026-10-21T23:52:49.771Z",
-      "usageCount": 73,
+      "lastUsed": "2026-10-25T08:46:40.367Z",
+      "usageCount": 91,
       "enabled": true,
       "role": "vip",
       "allowedEndpoints": null,
@@ -18,11 +18,11 @@
         "maxPerMinute": 60
       },
       "dailyUsage": {
-        "date": "2026-10-21",
-        "count": 14
+        "date": "2026-10-25",
+        "count": 18
       },
       "minuteUsage": {
-        "timestamp": 29877112,
+        "timestamp": 29881966,
         "count": 1
       },
       "expiresAt": null,
@@ -35,9 +35,9 @@
       "key": "khoirularifin",
       "name": "User 2",
       "createdAt": "2026-10-02T05:25:50.663Z",
-      "lastUsed": "2026-10-13T11:41:38.671Z",
-      "usageCount": 8,
-      "enabled": true,
+      "lastUsed": "2026-10-23T16:45:18.205Z",
+      "usageCount": 10,
+      "enabled": false,
       "role": "vip",
       "allowedEndpoints": null,
       "allowedStatuses": [
@@ -49,12 +49,12 @@
         "maxPerMinute": 60
       },
       "dailyUsage": {
-        "date": "2026-10-13",
-        "count": 4
+        "date": "2026-10-23",
+        "count": 2
       },
       "minuteUsage": {
-        "timestamp": 29864861,
-        "count": 1
+        "timestamp": 29879565,
+        "count": 2
       },
       "expiresAt": null,
       "package": {
@@ -93,6 +93,38 @@
       "package": {
         "type": "vip",
         "expired": null
+      }
+    },
+    {
+      "key": "ac_live_53cb42adc551ea3628e030b40f51615b4a3800ddd691a7ef",
+      "name": "opet",
+      "createdAt": "2026-10-23T16:47:56.286Z",
+      "lastUsed": "2026-10-23T16:48:32.583Z",
+      "usageCount": 1,
+      "enabled": false,
+      "role": "vip",
+      "allowedEndpoints": [
+        "/api/fun/reach-ch-vip"
+      ],
+      "allowedStatuses": [
+        "vip"
+      ],
+      "rateLimit": {
+        "maxPerDay": 1000,
+        "maxPerMinute": 60
+      },
+      "dailyUsage": {
+        "date": "2026-10-23",
+        "count": 1
+      },
+      "minuteUsage": {
+        "timestamp": 29879568,
+        "count": 1
+      },
+      "expiresAt": "2026-10-26T16:47:56.193Z",
+      "package": {
+        "type": "vip",
+        "expired": "2026-10-26T16:47:56.193Z"
       }
     }
   ]

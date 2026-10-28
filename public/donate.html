@@ -577,6 +577,70 @@
         const rp = (n) => 'Rp' + Number(n || 0).toLocaleString('id-ID');
         const $ = (id) => document.getElementById(id);
 
+        const STORAGE_KEY = 'zyvor_donation_pending';
+
+        function savePending(rec) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    id: rec.id,
+                    amount: rec.amount,
+                    totalAmount: rec.totalAmount,
+                    name: rec.name || 'Anonim',
+                    expiredAt: rec.expiredAt,
+                    paymentUrl: rec.paymentUrl
+                }));
+            } catch(e) {}
+        }
+
+        function loadPending() {
+            try {
+                const s = localStorage.getItem(STORAGE_KEY);
+                if (!s) return null;
+                const rec = JSON.parse(s);
+                if (rec && rec.id && rec.expiredAt) return rec;
+                return null;
+            } catch(e) { return null; }
+        }
+
+        function clearPending() {
+            try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+        }
+
+        // ---- restore pending donation on page load ----
+        (function restorePendingDonation() {
+            const rec = loadPending();
+            if (!rec) return;
+
+            // Check if expired
+            const expiredTs = new Date(rec.expiredAt).getTime();
+            if (Date.now() > expiredTs) {
+                clearPending();
+                return;
+            }
+
+            // Restore payment state
+            currentId = rec.id;
+            expiredAt = expiredTs;
+
+            $('formState').classList.add('hidden');
+            $('payState').classList.remove('hidden');
+
+            $('invoiceId').textContent = rec.id;
+            $('paidAmount').textContent = rp(rec.amount);
+            $('totalAmount').textContent = rp(rec.totalAmount);
+            $('amountSummary').textContent = 'Total ' + rp(rec.totalAmount) + ' untuk ' + rec.name;
+            $('payLink').href = rec.paymentUrl || '#';
+            $('qrImage').src = '/api/donasi/qr/' + encodeURIComponent(rec.id) + '.png';
+
+            // Only start polling/countdown if not expired
+            if (Date.now() < expiredTs) {
+                runCountdown();
+                pollStatus();
+                clearInterval(pollTimer);
+                pollTimer = setInterval(pollStatus, POLL_MS);
+            }
+        })();
+
         function toggleNavMenu() {
             $('navMenu').classList.toggle('hidden');
         }
@@ -677,6 +741,7 @@
         function showPayment(rec) {
             currentId = rec.id;
             expiredAt = rec.expiredAt ? new Date(rec.expiredAt).getTime() : Date.now() + 3 * 60e3;
+            savePending(rec);
 
             $('formState').classList.add('hidden');
             $('payState').classList.remove('hidden');
@@ -730,11 +795,13 @@
                 if (rec.status === 'paid') {
                     stopPolling();
                     clearInterval(countdownTimer);
+                    clearPending();
                     $('thanksAmount').textContent = rp(rec.totalAmount || rec.amount);
                     $('payState').classList.add('hidden');
                     $('successState').classList.remove('hidden');
                 } else if (rec.status === 'expired') {
                     stopPolling();
+                    clearPending();
                     $('statusLabel').textContent = 'QRIS KEDALUWARSA';
                 }
             } catch (e) { /* diamkan, coba lagi di tick berikutnya */ }
@@ -743,6 +810,7 @@
         $('resetBtn').addEventListener('click', () => {
             stopPolling();
             clearInterval(countdownTimer);
+            clearPending();
             currentId = null;
             $('qrImage').src = '';
             $('payState').classList.add('hidden');
@@ -777,7 +845,7 @@
             </div>
             <div>
                 <h4>Connect</h4>
-                <a href="mailto:contact@api.zyvor.my.id">Email</a>
+                <a href="mailto:admin@api.zyvor.my.id">Email</a>
                 <a href="https://t.me/ZyyvorAPI" target="_blank">Telegram</a>
                 <a href="https://whatsapp.com/channel/0029Vb8vO7o2f3EEsjefzm0w" target="_blank">WhatsApp Channel</a>
                 <a href="#">GitHub</a>

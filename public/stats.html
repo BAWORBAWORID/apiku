@@ -114,7 +114,7 @@
                 "contactPoint": {
                     "@type": "ContactPoint",
                     "contactType": "technical support",
-                    "email": "contact@api.zyvor.my.id",
+                    "email": "admin@api.zyvor.my.id",
                     "url": "https://t.me/ZyyvorAPI",
                     "availableLanguage": ["English", "Indonesian"]
                 }
@@ -544,7 +544,7 @@
         <!-- Quick Stats Row -->
         <div class="flex justify-center gap-3 flex-wrap mb-10">
             <div class="quick-stat">
-                <span class="num" id="statVersion"></span>
+                <span class="num" id="statVersion">—</span>
                 <span class="label">Version</span>
             </div>
             <div class="quick-stat">
@@ -623,7 +623,7 @@
             </div>
             <div>
                 <h4>Connect</h4>
-                <a href="mailto:contact@api.zyvor.my.id">Email</a>
+                <a href="mailto:admin@api.zyvor.my.id">Email</a>
                 <a href="https://t.me/ZyyvorAPI" target="_blank">Telegram</a>
                 <a href="https://whatsapp.com/channel/0029Vb8vO7o2f3EEsjefzm0w" target="_blank">WhatsApp Channel</a>
                 <a href="#">GitHub</a>
@@ -769,7 +769,7 @@ function infoCard(icon,label,value){
     </div>`;
 }
 
-/* Fetch visitors */
+/* Fetch visitors — independent */
 async function loadVisitors(){
     try{
         const r=await fetch('/visitors');
@@ -783,70 +783,218 @@ async function loadVisitors(){
     }catch(e){}
 }
 
-/* Fetch stats */
-let isFetchingStats = false;
-async function loadStatsData(){
-    if (isFetchingStats) return;
-    isFetchingStats = true;
-    try{
-        let realLatency = '—';
-        try {
-            const sr = await fetch('/api/stats');
-            const sd = await sr.json();
-            if (sd.success && sd.latency) {
-                realLatency = sd.latency.average + ' ms';
-            }
-        } catch {}
+/* ---- Split load: each section independent ---- */
 
+async function loadSystemMetrics(){
+    try {
         const r=await fetch('/checkstatus', {
-            method: 'POST',
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'metrics' })
+            method:'POST',
+            headers:{'Accept':'application/json','Content-Type':'application/json'},
+            body:JSON.stringify({action:'metrics'})
         });
         const j=await r.json();
-        if (!j.status || !j.result) throw new Error(j.message || 'invalid response');
+        if(!j.status || !j.result) throw new Error(j.message||'invalid response');
         const d=j.result;
-        try{ localStorage.setItem('apiku_last_status', JSON.stringify(d)); }catch{}
-        
-        d._realLatency = realLatency;
-        
-        if (d.status === 'online' || d.cpu) {
-            render(d);
-        }
-
-        try {
-            const cfgRes = await fetch('/configuration');
-            const cfg = await cfgRes.json();
-            if (cfg.releases?.[0]?.version) {
-                document.getElementById('statVersion').textContent = 'v' + cfg.releases[0].version;
-                document.getElementById('footerVer').textContent = 'v' + cfg.releases[0].version;
-            }
-        } catch (e) {
-            if (d.version) {
-                document.getElementById('statVersion').textContent = 'v' + d.version;
-                document.getElementById('footerVer').textContent = 'v' + d.version;
-            }
-        }
-    }catch(e){
-        console.error('Status fetch failed:',e);
-        // Fallback: render data terakhir yang sukses (offline-tolerant)
-        try{
-            const last=localStorage.getItem('apiku_last_status');
-            if(last){ render(JSON.parse(last)); return; }
-        }catch{}
-        const grid=document.getElementById('metricGrid');
-        if (grid && !grid.innerHTML) {
-            grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-muted);font-size:12px">Gagal memuat metrics — mencoba ulang...</div>';
-            // retry cepat saat masih kosong (jangan tunggu interval 5s penuh)
-            setTimeout(()=>{ if(!document.getElementById('metricGrid')?.querySelector('.metric-card')) loadStatsData(); }, 2000);
-        }
-    } finally {
-        isFetchingStats = false;
+        try{localStorage.setItem('apiku_last_metrics',JSON.stringify(d));}catch{}
+        renderSystemMetrics(d);
+    } catch(e) {
+        const last=localStorage.getItem('apiku_last_metrics');
+        if(last){ renderSystemMetrics(JSON.parse(last)); }
     }
 }
+
+function renderSystemMetrics(d){
+    if(!d || (d.status==='error' && !d.cpu)) return;
+    const isOn=d.status==='online';
+    const cpuPct=(parseFloat(d.cpu?.currentLoad)||0).toFixed(1);
+    const memPct=parseFloat(d.mem?.usagePercent)||0;
+    const diskPct=parseFloat(d.disk?.[0]?.usePercent)||0;
+    const cacheSize=d.cache?.size||0;
+    const cacheMax=d.cache?.maxEntries||500;
+    const cachePct=Math.min(100,Math.round((cacheSize/cacheMax)*100));
+    const osName=(d.os?.distro||d.os?.platform||'Linux')+' '+(d.os?.release||'');
+    const cpuDesc=(d.cpu?.totalCores||'—')+' cores · Load '+(d.cpu?.loadAverage?.['1min']||'0.00');
+    const memDesc=(d.mem?.used_human||'0 B')+' / '+(d.mem?.total_human||'0 B');
+    const diskDesc=(d.disk?.[0]?.used_human||'0 B')+' / '+(d.disk?.[0]?.size_human||'0 B');
+    const procDesc=(d.processes?.total||0)+' processes ('+(d.processes?.running||0)+' running)';
+
+    document.getElementById('metricGrid').innerHTML=[
+        metricCard('fas fa-circle-check','Status',isOn?'<span class="status-dot status-online"></span>Online':'<span class="status-dot status-offline"></span>Offline', osName),
+        metricCard('fas fa-microchip','CPU Load',cpuPct+'%', cpuDesc, cpuPct),
+        metricCard('fas fa-memory','Memory',memPct+'%', memDesc, memPct, 'mem'),
+        metricCard('fas fa-hard-drive','Disk',diskPct+'%', diskDesc, diskPct, 'disk'),
+        metricCard('fas fa-bolt','Requests',fmtNum(d.apiStats?.hits?.allTime||0), fmtNum(d.apiStats?.hits?.today||0)+' today'),
+        metricCard('fas fa-clock','Uptime',d.uptime_human||'—', procDesc),
+        metricCard('fas fa-shield-halved','Upstream Health','<span class="status-dot status-online"></span>Live', 'Direct connection'),
+        metricCard('fas fa-layer-group','RAM Cache Engine',cacheSize+' / '+cacheMax, 'Fast LRU Memory', cachePct, 'mem')
+    ].join('');
+
+    requestAnimationFrame(()=>{setTimeout(()=>{
+        document.querySelectorAll('[data-pct]').forEach(el=>{el.style.width=el.dataset.pct+'%'});
+    },100)});
+
+    /* Hero stats */
+    const el=document.getElementById('statVersion');
+    if(el) el.textContent='v'+(d.version||'—');
+    const fel=document.getElementById('footerVer');
+    if(fel) fel.textContent='v'+(d.version||'—');
+    const lel=document.getElementById('statLatency');
+    if(lel) lel.textContent=d.latency_human||d.latency||'—';
+    const eel=document.getElementById('statEndpoints');
+    if(eel) eel.textContent=d.endpoints?.total||'—';
+}
+
+async function loadApiStats(){
+    try {
+        const r=await fetch('/checkstatus', {
+            method:'POST',
+            headers:{'Accept':'application/json','Content-Type':'application/json'},
+            body:JSON.stringify({action:'metrics'})
+        });
+        const j=await r.json();
+        if(!j.status || !j.result) throw new Error();
+        const sd=j.result;
+        try{localStorage.setItem('apiku_last_apistats',JSON.stringify(sd));}catch{}
+        renderApiStats(sd);
+    } catch(e) {
+        const last=localStorage.getItem('apiku_last_apistats');
+        if(last){ renderApiStats(JSON.parse(last)); }
+    }
+}
+
+function renderApiStats(sd){
+    const h=sd.apiStats?.hits||{};
+    const today=h.today||sd.today||0;
+    const thisWeek=h.thisWeek||sd.thisWeek||0;
+    const thisMonth=h.month||h.thisMonth||sd.thisMonth||0;
+    const allTime=h.allTime||sd.total||0;
+    document.getElementById('apiStatsGrid').innerHTML=[
+        apiCard('fas fa-calendar-day','Today',fmtNum(today)),
+        apiCard('fas fa-calendar-week','This Week',fmtNum(thisWeek)),
+        apiCard('fas fa-calendar-alt','This Month',fmtNum(thisMonth)),
+        apiCard('fas fa-infinity','All Time',fmtNum(allTime))
+    ].join('');
+}
+
+async function loadPopularEndpoints(){
+    try {
+        const r=await fetch('/checkstatus', {
+            method:'POST',
+            headers:{'Accept':'application/json','Content-Type':'application/json'},
+            body:JSON.stringify({action:'metrics'})
+        });
+        const j=await r.json();
+        if(!j.status || !j.result) throw new Error();
+        const pop=j.result.apiStats?.popularEndpoints||[];
+        try{localStorage.setItem('apiku_last_popular',JSON.stringify(pop));}catch{}
+        renderPopularEndpoints(pop);
+    } catch(e) {
+        const last=localStorage.getItem('apiku_last_popular');
+        if(last){ renderPopularEndpoints(JSON.parse(last)); }
+    }
+}
+
+function renderPopularEndpoints(pop){
+    document.getElementById('popularBody').innerHTML=pop.length
+        ?pop.map((ep,idx)=>{
+            const rate=ep.successRate;
+            const cls=rate>=75?'rate-good':rate>=40?'rate-warn':'rate-bad';
+            const dotCls=rate>=75?'status-online':rate>=40?'status-warn':'status-offline';
+            return `<tr>
+                <td style="text-align:center;color:var(--text-muted);font-family:'JetBrains Mono',monospace;font-size:11px">${idx+1}</td>
+                <td><span class="ep-path">${esc(ep.endpoint)}</span></td>
+                <td style="text-align:right"><span class="ep-hits">${fmtNum(ep.hits)}</span></td>
+                <td style="text-align:right"><span class="ep-rate ${cls}"><span class="status-dot ${dotCls}" style="width:5px;height:5px"></span>${rate}%</span></td>
+            </tr>`;
+        }).join('')
+        :'<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-muted);font-size:12px">No data recorded yet</td></tr>';
+}
+
+async function loadSystemInfo(){
+    try {
+        const r=await fetch('/checkstatus', {
+            method:'POST',
+            headers:{'Accept':'application/json','Content-Type':'application/json'},
+            body:JSON.stringify({action:'metrics'})
+        });
+        const j=await r.json();
+        if(!j.status || !j.result) throw new Error();
+        const d=j.result;
+        try{localStorage.setItem('apiku_last_sysinfo',JSON.stringify(d));}catch{}
+        renderSystemInfo(d);
+    } catch(e) {
+        const last=localStorage.getItem('apiku_last_sysinfo');
+        if(last){ renderSystemInfo(JSON.parse(last)); }
+    }
+}
+
+function renderSystemInfo(d){
+    document.getElementById('sysInfoGrid').innerHTML=[
+        infoCard('fab fa-node-js','Node.js',d.software?.nodejs||'—'),
+        infoCard('fas fa-box','npm',d.software?.npm||'—'),
+        infoCard('fas fa-fingerprint','PID',d.pid||'—'),
+        infoCard('fas fa-microchip','CPU Cores',d.cpu?.totalCores||'—'),
+        infoCard('fas fa-network-wired','Network RX',fmtBytes(d.network?.stats?.rxBytes||0)),
+        infoCard('fas fa-network-wired','Network TX',fmtBytes(d.network?.stats?.txBytes||0))
+    ].join('');
+}
+
+/* Master load — fire all independently */
+async function loadStatsData(){
+    // Fire all in parallel, each handles its own errors
+    loadSystemMetrics();
+    loadApiStats();
+    loadPopularEndpoints();
+    loadSystemInfo();
+
+    /* version from /configuration as well */
+    try {
+        const cfgRes=await fetch('/configuration');
+        const cfg=await cfgRes.json();
+        try{localStorage.setItem('apiku_last_cfg',JSON.stringify(cfg));}catch{}
+        if(cfg.releases?.[0]?.version){
+            const v=cfg.releases[0].version;
+            const el=document.getElementById('statVersion');
+            if(el) el.textContent='v'+v;
+            const fel=document.getElementById('footerVer');
+            if(fel) fel.textContent='v'+v;
+        }
+    } catch(e){}
+}
 loadVisitors();
-// Jeda 5 detik sebelum get /status pertama & antar poll (anti rate limit)
-setTimeout(loadStatsData, 5000);
+// Load cached data immediately (instant display), then refresh in background
+(function loadCachedFirst(){
+    // Restore from localStorage caches immediately
+    try {
+        const m=localStorage.getItem('apiku_last_metrics');
+        if(m) renderSystemMetrics(JSON.parse(m));
+    } catch(e){}
+    try {
+        const a=localStorage.getItem('apiku_last_apistats');
+        if(a) renderApiStats(JSON.parse(a));
+    } catch(e){}
+    try {
+        const p=localStorage.getItem('apiku_last_popular');
+        if(p) renderPopularEndpoints(JSON.parse(p));
+    } catch(e){}
+    try {
+        const s=localStorage.getItem('apiku_last_sysinfo');
+        if(s) renderSystemInfo(JSON.parse(s));
+    } catch(e){}
+    try {
+        const cfg=JSON.parse(localStorage.getItem('apiku_last_cfg')||'{}');
+        if(cfg.releases?.[0]?.version){
+            const v=cfg.releases[0].version;
+            const el=document.getElementById('statVersion');
+            if(el) el.textContent='v'+v;
+            const fel=document.getElementById('footerVer');
+            if(fel) fel.textContent='v'+v;
+        }
+    } catch(e){}
+})();
+// Fire all fetches immediately (no delay) — background refresh
+loadStatsData();
+// Refresh every 5s
 setInterval(loadStatsData, 5000);
 </script>
 </body>

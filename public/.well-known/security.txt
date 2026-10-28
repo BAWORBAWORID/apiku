@@ -1,4 +1,4 @@
-Contact: mailto:contact@api.zyvor.my.id
+Contact: mailto:admin@api.zyvor.my.id
 Contact: https://t.me/ZyyvorAPI
 Preferred-Languages: en, id
 Policy: https://api.zyvor.my.id/legal/security-policy

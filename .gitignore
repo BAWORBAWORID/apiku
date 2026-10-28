@@ -2,7 +2,6 @@ node_modules/
 src/function/chrome
 
 # Environment variables & local folders
-.env
 gopay/
 
 # Runtime data & uploads

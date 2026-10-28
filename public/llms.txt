@@ -89,7 +89,7 @@ Full interactive documentation with playground:
 ## Contact
 
 - Telegram: @ZyyvorAPI
-- Email: contact@api.zyvor.my.id
+- Email: admin@api.zyvor.my.id
 
 ## License
 

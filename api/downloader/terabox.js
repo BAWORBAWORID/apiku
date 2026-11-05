@@ -136,10 +136,11 @@ export default {
   methods: ["GET", "POST"],
   params: ["url"],
   paramsSchema: {
-    url: { type: "string", required: true, description: "Terabox share URL", example: "https://terabox.app/s/1HSEb8PZRUE7Z1Tvd3ZtT0g" }
+    url: { type: "string", required: false, description: "Terabox share URL", default: "https://www.terabox.app/wap/share/filelist?surl=sab4x_EjggLREkDSC616Rw", example: "https://terabox.app/s/1HSEb8PZRUE7Z1Tvd3ZtT0g" }
   },
   async run(req, res) {
-    const { url } = { ...req.query, ...req.body };
+    const DEFAULT_URL = "https://www.terabox.app/wap/share/filelist?surl=sab4x_EjggLREkDSC616Rw";
+    const { url = DEFAULT_URL } = { ...req.query, ...req.body };
 
     if (!url || !String(url).includes("terabox")) {
       return res.status(400).json({ status: false, error: "URL Terabox tidak valid" });

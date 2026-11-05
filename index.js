@@ -300,8 +300,11 @@ const server = app.listen(PORT, async () => {
     process.exit(0);
   };
 
-  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
-  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  if (!process.__rootSignalsBound) {
+    process.__rootSignalsBound = true;
+    process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+    process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  }
 });
 
 /**

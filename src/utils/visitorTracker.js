@@ -45,9 +45,12 @@ function flushToDisk() {
 // Periodic flush
 setInterval(flushToDisk, FLUSH_INTERVAL);
 
-// Flush on shutdown
-process.on('SIGINT', flushToDisk);
-process.on('SIGTERM', flushToDisk);
+// Flush on shutdown (guard: module bisa di-reimport via HMR — jangan register dua kali)
+if (!process.__vtSignalsBound) {
+  process.__vtSignalsBound = true;
+  process.on('SIGINT', flushToDisk);
+  process.on('SIGTERM', flushToDisk);
+}
 
 export function trackVisitor(ip) {
   const data = load();

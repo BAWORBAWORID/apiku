@@ -35,7 +35,7 @@ export default {
       const { count } = { ...req.query, ...req.body };
       const n = Math.min(Math.max(parseInt(count) || 1, 1), 20);
 
-      // 1. Generate akun & orderId instan (respons instan ke client)
+      // 1. Generate akun instan (respons instan ke client)
       const results = [];
       for (let i = 0; i < n; i++) {
         const suffix = Math.random().toString(36).substring(2, 9);
@@ -43,13 +43,11 @@ export default {
         const user = `am_${Date.now().toString(36)}_${suffix}`;
         const email = `${user}@${domain}`;
         const inboxUrl = `https://generator.email/${domain}/${user}`;
-        const orderId = amService.generateCodeOrder();
-
+        
         results.push({
           email,
           status: "success",
-          inboxUrl,
-          orderId
+          inboxUrl
         });
       }
 
@@ -92,11 +90,11 @@ export default {
             logger.info(`[AM Bulk BG] [${i + 1}/${n}] ${item.email} login terverifikasi`);
 
             // Terapkan lisensi premium dengan orderId yang sudah di-generate
-            const premiumRes = await amService.applyPremium(verifyRes.idToken, item.orderId);
+            const premiumRes = await amService.applyPremium(verifyRes.idToken);
             logger.info(
               `[AM Bulk BG] [${i + 1}/${n}] ${item.email} Premium: ${
                 premiumRes.success ? "AKTIF" : "GAGAL"
-              } (Order: ${item.orderId})`
+              }`
             );
           } catch (err) {
             logger.error(`[AM Bulk BG] [${i + 1}/${n}] ${item.email} error: ${err.message}`);

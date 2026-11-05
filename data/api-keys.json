@@ -4,8 +4,8 @@
       "key": "adm",
       "name": "admin",
       "createdAt": "2026-09-29T12:24:00.494Z",
-      "lastUsed": "2026-10-26T14:53:35.268Z",
-      "usageCount": 93,
+      "lastUsed": "2026-11-05T12:23:53.640Z",
+      "usageCount": 126,
       "enabled": true,
       "role": "vip",
       "allowedEndpoints": null,
@@ -18,12 +18,12 @@
         "maxPerMinute": 60
       },
       "dailyUsage": {
-        "date": "2026-10-26",
-        "count": 2
+        "date": "2026-11-05",
+        "count": 14
       },
       "minuteUsage": {
-        "timestamp": 29883773,
-        "count": 2
+        "timestamp": 29898023,
+        "count": 1
       },
       "expiresAt": null,
       "package": {
@@ -35,8 +35,8 @@
       "key": "khoirularifin",
       "name": "User 2",
       "createdAt": "2026-10-02T05:25:50.663Z",
-      "lastUsed": "2026-10-23T16:45:18.205Z",
-      "usageCount": 10,
+      "lastUsed": "2026-11-04T04:07:24.446Z",
+      "usageCount": 15,
       "enabled": true,
       "role": "vip",
       "allowedEndpoints": null,
@@ -49,12 +49,12 @@
         "maxPerMinute": 60
       },
       "dailyUsage": {
-        "date": "2026-10-23",
-        "count": 2
+        "date": "2026-11-04",
+        "count": 3
       },
       "minuteUsage": {
-        "timestamp": 29879565,
-        "count": 2
+        "timestamp": 29896087,
+        "count": 1
       },
       "expiresAt": null,
       "package": {
@@ -96,15 +96,15 @@
       }
     },
     {
-      "key": "ac_live_53cb42adc551ea3628e030b40f51615b4a3800ddd691a7ef",
-      "name": "opet",
-      "createdAt": "2026-10-23T16:47:56.286Z",
-      "lastUsed": "2026-10-23T16:48:32.583Z",
-      "usageCount": 1,
-      "enabled": false,
+      "key": "apa_apikey_RPgnr8mtuFApvPO3",
+      "name": "apa_apikey_RPgnr8mtuFApvPO3",
+      "createdAt": "2026-11-04T02:55:21.328Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "enabled": true,
       "role": "vip",
       "allowedEndpoints": [
-        "/api/fun/reach-ch-vip"
+        "/api/fun/netflix"
       ],
       "allowedStatuses": [
         "vip"
@@ -114,17 +114,17 @@
         "maxPerMinute": 60
       },
       "dailyUsage": {
-        "date": "2026-10-23",
-        "count": 1
+        "date": "",
+        "count": 0
       },
       "minuteUsage": {
-        "timestamp": 29879568,
-        "count": 1
+        "timestamp": 0,
+        "count": 0
       },
-      "expiresAt": "2026-10-26T16:47:56.193Z",
+      "expiresAt": "2026-12-04T02:55:20.940Z",
       "package": {
         "type": "vip",
-        "expired": "2026-10-26T16:47:56.193Z"
+        "expired": "2026-12-04T02:55:20.940Z"
       }
     }
   ]

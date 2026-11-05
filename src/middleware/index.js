@@ -18,6 +18,7 @@
  */
 
 import express from "express";
+import helmet from "helmet";
 import logApiRequest from "../utils/logApiRequest.js";
 import rateLimiter from "./rateLimiter.js";
 
@@ -44,12 +45,23 @@ import rateLimiter from "./rateLimiter.js";
  */
 export default function setupMiddleware(app) {
   /**
+   * Security headers (helmet) — CSP disabled karena halaman status/admin butuh inline script;
+   * crossOriginResourcePolicy relaxed supaya file/media bisa di-hotlink dari client lain.
+   */
+  app.use(helmet({
+    contentSecurityPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  }));
+
+  // Sembunyikan tanda-tanda Express
+  app.disable('x-powered-by');
+  /**
    * JSON parsing middleware
    * @middleware express.json
    * @description Parses incoming requests with JSON payloads
    * @see {@link https://expressjs.com/en/api.html#express.json}
    */
-  app.use(express.json({ limit: '50mb' }));
+  app.use(express.json({ limit: '2mb' }));
   
   /**
    * URL-encoded data parsing middleware
@@ -59,7 +71,7 @@ export default function setupMiddleware(app) {
    * @description Parses incoming requests with URL-encoded payloads
    * @see {@link https://expressjs.com/en/api.html#express.urlencoded}
    */
-  app.use(express.urlencoded({ limit: '50mb', extended: true }));
+  app.use(express.urlencoded({ limit: '2mb', extended: true }));
 
   
   /**

@@ -99,7 +99,7 @@ const sessionsDir = path.join(process.cwd(), 'data', 'sessions');
 if (!fs.existsSync(sessionsDir)) fs.mkdirSync(sessionsDir, { recursive: true });
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage });
+const upload = multer({ storage, limits: { fileSize: 50 * 1024 * 1024 } }); // 50MB hanya di route upload
 
 const app = express();
 
@@ -223,6 +223,20 @@ function sanitizeProxies(proxies) {
 
 // middleware dasar — express.json/urlencoded applied by setupMiddleware
 app.use(cookieParser());
+
+// CORS preflight global — semua OPTIONS balas 204 (API hanya support GET/POST)
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    res.set({
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-KEY, x-api-key',
+      'Access-Control-Max-Age': '86400',
+    });
+    return res.status(204).end();
+  }
+  next();
+});
 
 // session config
 const FileStoreSession = FileStore(session);
@@ -2462,6 +2476,7 @@ app.get('/admin/dashboard', (req, res) => {
 
 // Cleanup pada exit — simpan stats sebelum shutdown
 // Gunakan prependListener agar berjalan SEBELUM handler rateLimiter (yang panggil process.exit)
+process.setMaxListeners(25); // HMR re-import bisa menambah listener shutdown — batas aman 25
 process.prependListener('SIGINT', async () => {
     await backupOnShutdown();
 });

@@ -464,7 +464,10 @@ function gracefulShutdown(signal) {    logger.info(`📊 Saving rate limit data 
   process.exit(0);
 }
 
-process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+if (!process.__rlSigintBound) {
+  process.__rlSigintBound = true;
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+}
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 
 // ==================== FILE WATCHERS (Debounced) ====================

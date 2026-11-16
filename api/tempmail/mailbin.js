@@ -59,7 +59,7 @@ async function fetchDomains() {
 export default {
   name: 'Mailbin Temp Mail',
   description: 'Temporary email via Mailbin — generate mailbox, cek inbox, dan list domain gratis.',
-  category: 'Tempmail',
+  category: 'Email',
   methods: ['GET', 'POST'],
   params: ['action', 'email', 'domain'],
 

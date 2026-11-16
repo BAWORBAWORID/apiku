@@ -141,9 +141,8 @@ async function ensureSession(forceNew = false) {
 }
 
 async function executeDownload(targetUrl) {
-  let sessionId = await ensureSession();
-
-  const makeRequest = async (url, sid) => {
+  // getdl.space tidak lagi pakai /api/session (sudah 404). API baru cukup POST /api/download {url}.
+  const makeRequest = async (url) => {
     const res = await fetch(`${CONFIG.BASE_URL}/api/download`, {
       method: "POST",
       headers: {
@@ -154,7 +153,7 @@ async function executeDownload(targetUrl) {
         Referer: `${CONFIG.BASE_URL}/en`,
         Cookie: getCookieHeader(),
       },
-      body: JSON.stringify({ url, sessionId: sid }),
+      body: JSON.stringify({ url }),
       signal: AbortSignal.timeout(CONFIG.TIMEOUT),
     });
     saveCookies(res);
@@ -162,21 +161,13 @@ async function executeDownload(targetUrl) {
     return { res, json };
   };
 
-  let { res, json } = await makeRequest(targetUrl, sessionId);
-
-  // Jika sesi expired di server upstream
-  if (!res.ok && json?.code === "SESSION_REQUIRED") {
-    sessionId = await ensureSession(true);
-    const retry = await makeRequest(targetUrl, sessionId);
-    res = retry.res;
-    json = retry.json;
-  }
+  let { res, json } = await makeRequest(targetUrl);
 
   // Jika gagal dan URL berupa shortlink, coba resolve redirect
   if (!res.ok && /vt\.tiktok\.com|vm\.tiktok\.com|youtu\.be|t\.co|bit\.ly|fb\.watch/i.test(targetUrl)) {
     const resolved = await resolveRedirect(targetUrl);
     if (resolved && resolved !== targetUrl) {
-      const retryResolved = await makeRequest(resolved, sessionId);
+      const retryResolved = await makeRequest(resolved);
       if (retryResolved.res.ok && retryResolved.json?.success) {
         res = retryResolved.res;
         json = retryResolved.json;
@@ -185,7 +176,7 @@ async function executeDownload(targetUrl) {
   }
 
   if (!res.ok || !json?.success) {
-    const errMsg = json?.error || `HTTP ${res.status}: Gagal memproses download`;
+    const errMsg = json?.error || json?.message || `HTTP ${res.status}: Gagal memproses download`;
     const err = new Error(errMsg);
     err.status = res.status;
     err.code = json?.code || "FAILED";
@@ -193,7 +184,8 @@ async function executeDownload(targetUrl) {
     throw err;
   }
 
-  return json.data || {};
+  // Respons API baru: { success, platform, engine, result: { title, author, thumbnailUrl, duration, formats:[...] } }
+  return json.result || json.data || {};
 }
 
 export default {
@@ -245,11 +237,13 @@ export default {
 
       const data = await executeDownload(cleanUrl);
 
-      const downloads = (data.downloads || []).map((item) => ({
-        label: item.label || "Download",
-        url: item.url || "",
-        quality: item.quality || null,
-        ext: (item.ext || "mp4").toLowerCase().replace(".", ""),
+      // API baru getdl.space: result.formats[] (qualityLabel, extension, downloadUrl)
+      const rawFormats = data.formats || data.downloads || [];
+      const downloads = rawFormats.map((item) => ({
+        label: item.qualityLabel || item.label || "Download",
+        url: item.downloadUrl || item.url || "",
+        quality: item.qualityLabel || item.quality || null,
+        ext: (item.extension || item.ext || "mp4").toLowerCase().replace(".", ""),
       }));
 
       const duration = Date.now() - startTime;
@@ -261,12 +255,15 @@ export default {
         platform_name: PLATFORM_NAMES[platform] || platform,
         type: data.type || "video",
         title: data.title || "",
-        thumbnail: data.thumbnail || null,
-        author: {
-          name: data.author?.name || "Unknown",
-          username: data.author?.username || "",
-          avatar: data.author?.avatar || null,
-        },
+        thumbnail: data.thumbnailUrl || data.thumbnail || null,
+        author:
+          typeof data.author === "string"
+            ? { name: data.author, username: "", avatar: null }
+            : {
+                name: data.author?.name || "Unknown",
+                username: data.author?.username || "",
+                avatar: data.author?.avatar || null,
+              },
         duration: data.duration || null,
         downloads,
         metadata: { processing_time: `${duration}ms` },

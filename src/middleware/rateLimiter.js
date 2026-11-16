@@ -21,6 +21,7 @@ const LOCK_FILE = path.join(DATA_DIR, "global-lock.json");
 const REQUESTS_FILE = path.join(DATA_DIR, "requests-data.json"); // NEW: Simpan data requests
 const NOTIF_LOG_FILE = path.join(DATA_DIR, "notifications-log.json"); // NEW: Log notifikasi yang sudah dikirim
 const NOTIF_FEED_FILE = path.join(DATA_DIR, "notifications-feed.json"); // NEW: Detailed feed for dashboard
+const STATS_HISTORY_FILE = path.join(DATA_DIR, "stats-history.json"); // NEW: Snapshot harian utk perbandingan
 const WINDOW_MS = 24 * 60 * 60 * 1000; // 24 jam (daily)
 const MAX_REQUESTS = 500; // Max 500 request per hari
 const VIOLATION_LIMIT = 20; // Maksimum pelanggaran sebelum di-ban
@@ -208,6 +209,34 @@ function formatTime(timestamp = Date.now()) {
 
 function formatDisplayTime(timestamp) {
   return fmtDisplay.format(new Date(timestamp)).replace(',', '');
+}
+
+function formatUptime(seconds) {
+  const s = Math.max(0, Math.floor(seconds));
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  if (d > 0) return `${d}h ${h}j ${m}m`;
+  if (h > 0) return `${h}j ${m}m`;
+  return `${m}m ${s % 60}d`;
+}
+
+function pctDiff(curr, prev) {
+  if (prev == null || prev === 0) return '–';
+  const p = ((curr - prev) / prev) * 100;
+  if (p > 0) return `📈 +${p.toFixed(0)}%`;
+  if (p < 0) return `📉 ${p.toFixed(0)}%`;
+  return '➡️ 0%';
+}
+
+function loadStatsHistory() {
+  try { return JSON.parse(fs.readFileSync(STATS_HISTORY_FILE, 'utf8')); }
+  catch { return null; }
+}
+
+function saveStatsHistory(data) {
+  try { fs.writeFileSync(STATS_HISTORY_FILE, JSON.stringify(data, null, 2)); }
+  catch (e) { logger.error('Failed to save stats history:', e); }
 }
 
 // ==================== FILE OPERATIONS ====================
@@ -428,7 +457,7 @@ function saveNotificationToFeed(notification) {
 
 function getNotificationMessage(notif) {
   switch(notif.type) {
-    case 'spam': return `SPAM detected from ${notif.ip} on ${notif.path}`;
+    case 'spam': return `DDoS detected from ${notif.ip} on ${notif.path}`;
     case 'violation': return `Violation #${notif.violations} for ${notif.ip}`;
     case 'ban': return `IP ${notif.ip} has been banned`;
     case 'unban': return `IP ${notif.ip} has been unbanned`;
@@ -575,7 +604,7 @@ async function sendTelegramNotification(options) {
 
   const timeStr = formatDisplayTime(timestamp);
   const emoji = {
-    'spam': '🚨', // Ganti warning jadi spam
+    'spam': '💥', // Ganti warning jadi spam
     'violation': '🔴',
     'ban': '⛔',
     'unban': '✅',
@@ -597,7 +626,7 @@ async function sendTelegramNotification(options) {
           ? '☁️ *Cloudflare:* ✅ diblokir di edge\n\n'
           : '';
         message =
-        `${emoji} *SPAM TERDETEKSI*\n\n` +
+        `${emoji} *💥 DDoS TERDETEKSI*\n\n` +
         `🌐 *IP:* \`${ip}\`\n` +
         `🌍 *Negara:* \`${options.country || '–'}\`\n` +
         `📊 *Request:* ${count} dalam ${windowSec} detik\n` +
@@ -658,17 +687,60 @@ async function sendTelegramNotification(options) {
         `✅ REST API dapat digunakan kembali`;
       break;
 
-    case 'stats':
-      message = 
-        `${emoji} *STATISTIK RATE LIMITER*\n\n` +
-        `🕒 Waktu: \`${timeStr}\`\n` +
-        `👥 IP Aktif: \`${options.activeIps}\`\n` +
-        `⛔ IP Terblokir: \`${options.bannedCount}\`\n` +
-        `✅ IP Whitelist: \`${options.whitelistedCount}\`\n` +
-        `📊 Total Request: \`${options.totalRequests}\`\n` +
-        `⚠️ Total Pelanggaran: \`${options.totalViolations}\`\n` +
+    case 'stats': {
+      const num = (n) => Number(n || 0).toLocaleString('id-ID');
+      const reqDiff = options.prevRequests != null
+        ? pctDiff(options.totalRequests, options.prevRequests)
+        : null;
+      const ipDiff = options.prevIps != null
+        ? pctDiff(options.activeIps, options.prevIps)
+        : null;
+
+      message =
+        `${emoji} *STATISTIK RATE LIMITER — HARIAN*\n\n` +
+        `🕒 Waktu: \`${timeStr} WIB\`\n` +
+        `⏱️ Uptime: \`${formatUptime(options.uptimeSeconds || 0)}\`\n\n` +
+        `👥 IP Aktif: \`${num(options.activeIps)}\`\n` +
+        `✅ IP Whitelist: \`${num(options.whitelistedCount)}\`\n` +
+        `📊 Total Request: \`${num(options.totalRequests)}\`\n` +
+        `⚠️ Total Pelanggaran: \`${num(options.totalViolations)}\`\n` +
         `🔒 Status Lock: \`${options.lockStatus}\``;
+
+      if (Array.isArray(options.topIps) && options.topIps.length) {
+        message += `\n\n🔝 *TOP ${options.topIps.length} IP AKTIF*\n`;
+        options.topIps.forEach((t, i) => {
+          message += `${i + 1}. \`${t.ip}\` — ${num(t.totalRequests)} req\n`;
+        });
+      }
+
+      if (Array.isArray(options.topViolators) && options.topViolators.length) {
+        message += `\n⚠️ *TOP IP PELANGGAR*\n`;
+        options.topViolators.forEach((t, i) => {
+          message += `${i + 1}. \`${t.ip}\` — ${num(t.violations)} pelanggaran\n`;
+        });
+      }
+
+      if (Array.isArray(options.bannedList) && options.bannedList.length) {
+        message += `\n🚫 *IP TERBLOKIR (${options.bannedList.length})*\n`;
+        options.bannedList.slice(0, 10).forEach((b, i) => {
+          const until = b.until ? formatDisplayTime(b.until) : 'permanen';
+          message += `${i + 1}. \`${b.ip}\` — ${b.reason} (${until})\n`;
+        });
+      }
+
+      if (options.lockDetails) {
+        message += `\n🔒 *DETAIL LOCK*\n`;
+        message += `⏳ Sampai: \`${formatDisplayTime(options.lockDetails.until)}\`\n`;
+        message += `📌 Alasan: \`${options.lockDetails.reason}\`\n`;
+      }
+
+      if (reqDiff != null || ipDiff != null) {
+        message += `\n📈 *VS KEMARIN*\n`;
+        message += `📊 Request: ${reqDiff} (\`${num(options.totalRequests)}\` vs \`${num(options.prevRequests)}\`)\n`;
+        message += `👥 IP Unik: ${ipDiff} (\`${num(options.activeIps)}\` vs \`${num(options.prevIps)}\`)`;
+      }
       break;
+    }
 
     case 'premium':
     case 'vip': {
@@ -852,22 +924,63 @@ function sendDailyStats() {
 
   if (lastStatsDay === today) return;
 
-  const totalViolations = Array.from(requests.values())
-    .reduce((sum, d) => sum + (d.violations || 0), 0);
+  const reqArray = Array.from(requests.entries());
+  const totalViolations = reqArray.reduce((sum, [, d]) => sum + (d.violations || 0), 0);
+  const totalRequests = reqArray.reduce((sum, [, d]) => sum + (d.totalRequests || 0), 0);
+
+  // Top 5 IP aktif (by totalRequests)
+  const topIps = reqArray
+    .map(([ip, d]) => ({ ip, totalRequests: d.totalRequests || 0, lastPath: d.lastPath || '–' }))
+    .sort((a, b) => b.totalRequests - a.totalRequests)
+    .slice(0, 5);
+
+  // Top IP pelanggar (violations > 0)
+  const topViolators = reqArray
+    .filter(([, d]) => (d.violations || 0) > 0)
+    .map(([ip, d]) => ({ ip, violations: d.violations || 0, lastPath: d.lastPath || '–' }))
+    .sort((a, b) => b.violations - a.violations)
+    .slice(0, 5);
+
+  // Detail IP terblokir
+  const bannedList = Object.entries(banned.ips || {}).map(([ip, info]) => ({
+    ip,
+    reason: info?.reason || '–',
+    until: info?.until || null
+  }));
+
+  // Detail lock (jika aktif)
+  const lockActive = isLocked();
+  const lock = getLockStatus();
+  const lockDetails = lockActive ? { until: lock.until, reason: lock.reason } : null;
+
+  // Perbandingan vs kemarin
+  const prev = loadStatsHistory();
+  const prevRequests = prev?.totalRequests ?? null;
+  const prevIps = prev?.uniqueIps ?? null;
 
   const stats = {
     type: 'stats',
     activeIps: requests.size,
-    bannedCount: Object.keys(banned.ips || {}).length,
+    bannedCount: bannedList.length,
     whitelistedCount: Object.keys(whitelist.ips || {}).length,
-    totalRequests: Array.from(requests.values()).reduce((sum, d) => sum + (d.totalRequests || 0), 0),
+    totalRequests,
     totalViolations,
-    lockStatus: isLocked() ? '🔒 Active' : '🔓 Inactive',
+    lockStatus: lockActive ? '🔒 Active' : '🔓 Inactive',
+    lockDetails,
+    topIps,
+    topViolators,
+    bannedList,
+    uptimeSeconds: process.uptime(),
+    prevRequests,
+    prevIps,
     timestamp: now
   };
 
   sendTelegramNotification(stats);
   logNotification('system', 'stats');
+
+  // Simpan snapshot utk perbandingan besok
+  saveStatsHistory({ date: today, totalRequests, uniqueIps: requests.size });
 }
 
 /**

@@ -19,6 +19,15 @@
       "bannedAt": "2026-09-17T23:58:00.000Z",
       "reason": "Spamming deleted endpoint /api/tools/ff-guest (IPv4)",
       "until": null
+    },
+    "72.167.132.229": {
+      "bannedAt": "2026-11-12T12:47:19.150Z",
+      "bannedAtTimestamp": 1794487639150,
+      "reason": "Violation limit reached (20x exceed rate limit)",
+      "by": "rateLimiter",
+      "lastPath": "/anime/anichi",
+      "lastMethod": "GET",
+      "violations": 20
     }
   }
 }

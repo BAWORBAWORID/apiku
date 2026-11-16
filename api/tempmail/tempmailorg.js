@@ -85,7 +85,7 @@ async function getMessages(token, after = null) {
 
 export default {
   name: "TempMail - TempMailOrg (temp-mail.org)",
-  category: "TempMail",
+  category: "Email",
   description: "Temporary email via API resmi temp-mail.org (mobile endpoint). action=create untuk buat email baru, action=inbox + token untuk cek pesan masuk.",
   methods: ["GET", "POST"],
   params: ["action", "token"],

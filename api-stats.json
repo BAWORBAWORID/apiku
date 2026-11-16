@@ -5693,14 +5693,14 @@
       }
     },
     "2026-11-16": {
-      "total": 605,
+      "total": 688,
       "byEndpoint": {
-        "/api/am/send": 329,
+        "/api/am/send": 378,
         "/api/checknumber/checknumber": 4,
         "/api/canvas/brat-anime": 2,
         "/api/canvas/brat-gojo": 2,
         "/api/bypass/bypasslinkv2": 4,
-        "/api/bypass/bypasslinkv3": 2,
+        "/api/bypass/bypasslinkv3": 6,
         "/api/downloader/terabox": 1,
         "/api/maker/iqc-dark": 8,
         "/api/bypass/wellbypass": 1,
@@ -5708,9 +5708,11 @@
         "/api/am/sendv2": 200,
         "/api/stalker/roblox": 7,
         "/api/am/bulk": 1,
-        "/api/solve/turnstile": 4,
+        "/api/solve/turnstile": 6,
         "/api/am/verifv2": 7,
-        "/api/maker/fake-ff": 32
+        "/api/maker/fake-ff": 52,
+        "/api/canvas/sertifikat-tolol": 2,
+        "/api/search/pinterest": 6
       }
     }
   },
@@ -9977,7 +9979,7 @@
       }
     },
     "2026-W46": {
-      "total": 136158,
+      "total": 136241,
       "byEndpoint": {
         "/api/am/sendv2": 2064,
         "/api/fun/netflix": 2,
@@ -9985,9 +9987,9 @@
         "/api/tools/proxy": 23,
         "/api/tempmail/1timetech": 4,
         "/api/donasi/summary": 9,
-        "/api/am/send": 9130,
+        "/api/am/send": 9179,
         "/api/am/verifv2": 38,
-        "/api/solve/turnstile": 128,
+        "/api/solve/turnstile": 130,
         "/api/status": 17,
         "/api/ai/qwenai": 11,
         "/api/ai/qwen.js": 1,
@@ -10003,8 +10005,8 @@
         "/api/image/nanobanana": 8,
         "/api/image/nanobananav2": 1,
         "/api/downloader/sssinstagram": 9,
-        "/api/bypass/bypasslinkv3": 54,
-        "/api/maker/fake-ff": 160,
+        "/api/bypass/bypasslinkv3": 58,
+        "/api/maker/fake-ff": 180,
         "/api/fun/philosopher-quotes": 1,
         "/api/tools/upload": 3,
         "/api/bypass/bypasslink": 20,
@@ -10106,7 +10108,7 @@
         "/api/actuator/env": 4,
         "/api/phpinfo.php": 4,
         "/api/canvas/brat-gojo": 12,
-        "/api/canvas/sertifikat-tolol": 11,
+        "/api/canvas/sertifikat-tolol": 13,
         "/api/imagehd/ai-enhancev4": 4433,
         "/imagehd/ai-enhancev4": 2,
         "/api/am/verify": 12,
@@ -10161,7 +10163,7 @@
         "/api/imagehd/ai-enhancev6": 1,
         "/api/imagehd/ai-enhancev8": 114,
         "/api/session/properties": 2,
-        "/api/search/pinterest": 60,
+        "/api/search/pinterest": 66,
         "/api/anime/anichi": 109646,
         "/anime/anichi": 8903,
         "/api/bypass/wellbypass": 4,
@@ -12644,20 +12646,20 @@
       }
     },
     "2026-11": {
-      "total": 146439,
+      "total": 146522,
       "byEndpoint": {
         "/api/tools/nikparse": 2,
         "/api/stalker/freefire": 71,
         "/api/stalker/ml-id": 11,
         "/api": 17,
         "/api/search/spotify": 39,
-        "/api/search/pinterest": 152,
+        "/api/search/pinterest": 158,
         "/api/status": 52,
         "/api/search/youtube-search": 4,
         "/api/bypass/safelink": 23,
         "/api/downloader/facebook": 18,
         "/api/maker/iqc-dark": 245,
-        "/api/solve/turnstile": 290,
+        "/api/solve/turnstile": 292,
         "/api/topup/ff": 44,
         "/api/topup/ml": 8,
         "/api/downloader/tiktok": 10,
@@ -12677,7 +12679,7 @@
         "/api/am/bulkv3": 11,
         "/api/downloader/allinonev2": 7,
         "/api/ai/cloudai": 6,
-        "/api/am/send": 13546,
+        "/api/am/send": 13595,
         "/api/am/verifv2": 304,
         "/api/downloader/terabox": 17,
         "/api/downloader/9xbuddy": 39,
@@ -12738,7 +12740,7 @@
         "/api/ai/gpt4o-mini": 13,
         "/api/ai/heck-ai": 25,
         "/api/ai/gpt5": 20,
-        "/api/bypass/bypasslinkv3": 133,
+        "/api/bypass/bypasslinkv3": 137,
         "/api/hdvidio/ai-upscale-vidio": 2,
         "/hdvidio/wink-hd-video": 1,
         "/api/tempmail/tempmailorg": 2,
@@ -12760,7 +12762,7 @@
         "/api/tools/ekycpro": 7,
         "/api/tools/qris-info": 16,
         "/api/stalker/getcontact": 20,
-        "/api/canvas/sertifikat-tolol": 37,
+        "/api/canvas/sertifikat-tolol": 39,
         "/api/tempmail/cybermail": 3,
         "/api/kalender/hari-libur": 3,
         "/api/maker/bounty": 5,
@@ -12854,7 +12856,7 @@
         "/api/random/blue-archive": 4,
         "/api/random/lahelu": 1,
         "/api/search/anime": 2,
-        "/api/maker/fake-ff": 378,
+        "/api/maker/fake-ff": 398,
         "/api/fun/reach-ch-vip": 19,
         "/api/checknumber/xlcheck": 45,
         "/api/maker/ektpv2": 5,
@@ -13143,7 +13145,7 @@
     }
   },
   "allTime": {
-    "total": 285705,
+    "total": 285788,
     "byEndpoint": {
       "/api/am/verify": {
         "total": 993,
@@ -13153,9 +13155,9 @@
         }
       },
       "/api/bypass/bypasslinkv3": {
-        "total": 722,
+        "total": 726,
         "byStatus": {
-          "2": 686,
+          "2": 690,
           "4": 16,
           "5": 20
         }
@@ -13187,9 +13189,9 @@
         }
       },
       "/api/maker/fake-ff": {
-        "total": 522,
+        "total": 542,
         "byStatus": {
-          "2": 507,
+          "2": 527,
           "4": 14,
           "5": 1
         }
@@ -13297,10 +13299,10 @@
         }
       },
       "/api/am/send": {
-        "total": 14756,
+        "total": 14805,
         "byStatus": {
           "2": 965,
-          "4": 13687,
+          "4": 13736,
           "5": 104
         }
       },
@@ -14357,9 +14359,9 @@
         }
       },
       "/api/solve/turnstile": {
-        "total": 1324,
+        "total": 1326,
         "byStatus": {
-          "2": 1254,
+          "2": 1256,
           "4": 6,
           "5": 64
         }
@@ -14913,11 +14915,11 @@
         }
       },
       "/api/search/pinterest": {
-        "total": 344,
+        "total": 350,
         "byStatus": {
-          "2": 314,
+          "2": 319,
           "4": 21,
-          "5": 9
+          "5": 10
         }
       },
       "/api/search/voratoon-updates": {
@@ -16925,9 +16927,9 @@
         }
       },
       "/api/canvas/sertifikat-tolol": {
-        "total": 46,
+        "total": 48,
         "byStatus": {
-          "2": 44,
+          "2": 46,
           "4": 2
         }
       },
@@ -25137,7 +25139,7 @@
     }
   },
   "_metadata": {
-    "lastUpdated": "2026-11-16T05:58:11.357Z",
+    "lastUpdated": "2026-11-16T06:50:19.448Z",
     "version": "json"
   }
 }

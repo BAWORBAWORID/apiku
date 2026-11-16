@@ -1,13 +1,13 @@
 {
   "2a06:98c0:3600::103": {
-    "count": 22,
+    "count": 43,
     "windowStart": 1794768541579,
-    "totalRequests": 607,
+    "totalRequests": 628,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794808498474,
+    "lastRequest": 1794811090712,
     "firstRequest": 1792909755366,
-    "lastPath": "/maker/fake-ff",
+    "lastPath": "/bypass/bypasslinkv3",
     "lastUserAgent": "Mozilla/5.0",
     "lastNotif": 0
   },
@@ -10632,12 +10632,12 @@
     "lastNotif": 0
   },
   "178.83.188.232": {
-    "count": 714,
+    "count": 766,
     "windowStart": 1794762800821,
-    "totalRequests": 13429,
+    "totalRequests": 13481,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794808507107,
+    "lastRequest": 1794811814448,
     "firstRequest": 1793984885474,
     "lastPath": "/am/send",
     "lastUserAgent": "Unknown",
@@ -20232,15 +20232,15 @@
     "lastNotif": 0
   },
   "182.8.98.29": {
-    "count": 19,
-    "windowStart": 1794648321617,
-    "totalRequests": 19,
+    "count": 2,
+    "windowStart": 1794811060561,
+    "totalRequests": 21,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794708020282,
+    "lastRequest": 1794811087481,
     "firstRequest": 1794648321617,
-    "lastPath": "/maker/fake-nokia",
-    "lastUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+    "lastPath": "/bypass/bypasslinkv3",
+    "lastUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
     "lastNotif": 0
   },
   "2400:9800:2ab:62:48d4:2aff:fe60:540e": {
@@ -20568,15 +20568,15 @@
     "lastNotif": 0
   },
   "182.10.109.3": {
-    "count": 11,
+    "count": 30,
     "windowStart": 1794808280131,
-    "totalRequests": 30,
+    "totalRequests": 49,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794808498291,
+    "lastRequest": 1794809424385,
     "firstRequest": 1794710618974,
-    "lastPath": "/maker/fake-ff",
-    "lastUserAgent": "Mozilla/5.0 (Linux; Android 14; CPH2387 Build/TP1A.220905.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/157.0.8103.38 Mobile Safari/537.36 trill_470703 AppName/trill ByteLocale/id-ID",
+    "lastPath": "/search/pinterest",
+    "lastUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
     "lastNotif": 0
   },
   "180.252.32.54": {
@@ -20748,12 +20748,12 @@
     "lastNotif": 0
   },
   "54.221.20.59": {
-    "count": 34,
+    "count": 36,
     "windowStart": 1794728142724,
-    "totalRequests": 34,
+    "totalRequests": 36,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794807761586,
+    "lastRequest": 1794810153600,
     "firstRequest": 1794728142724,
     "lastPath": "/solve/turnstile",
     "lastUserAgent": "axios/1.20.0",

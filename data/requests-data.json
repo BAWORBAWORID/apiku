@@ -1,13 +1,13 @@
 {
   "2a06:98c0:3600::103": {
-    "count": 43,
+    "count": 46,
     "windowStart": 1794768541579,
-    "totalRequests": 628,
+    "totalRequests": 631,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794811090712,
+    "lastRequest": 1794812586175,
     "firstRequest": 1792909755366,
-    "lastPath": "/bypass/bypasslinkv3",
+    "lastPath": "/maker/iqc-dark",
     "lastUserAgent": "Mozilla/5.0",
     "lastNotif": 0
   },
@@ -10632,12 +10632,12 @@
     "lastNotif": 0
   },
   "178.83.188.232": {
-    "count": 766,
+    "count": 790,
     "windowStart": 1794762800821,
-    "totalRequests": 13481,
+    "totalRequests": 13505,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794811814448,
+    "lastRequest": 1794813249819,
     "firstRequest": 1793984885474,
     "lastPath": "/am/send",
     "lastUserAgent": "Unknown",
@@ -21069,6 +21069,18 @@
     "firstRequest": 1794808045087,
     "lastPath": "/am/verifv2",
     "lastUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36",
+    "lastNotif": 0
+  },
+  "2404:c0:c601:bdb1:313d:1d24:f410:e9c1": {
+    "count": 3,
+    "windowStart": 1794812565437,
+    "totalRequests": 3,
+    "violations": 0,
+    "violationTimes": [],
+    "lastRequest": 1794812585550,
+    "firstRequest": 1794812565437,
+    "lastPath": "/maker/iqc-dark",
+    "lastUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/31.0 Chrome/148.0.0.0 Mobile Safari/537.36",
     "lastNotif": 0
   }
 }

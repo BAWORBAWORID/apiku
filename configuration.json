@@ -1216,7 +1216,9 @@
         "/api/canvas/katabangwaindah": "online",
         "/api/anime/dongha": "online",
         "/api/downloader/allinonev5": "online",
-        "/api/anime/komikcast": "online"
+        "/api/anime/komikcast": "online",
+        "/api/nsfw/rule34": "online",
+        "/api/downloader/mp3juices": "online"
     },
     "feedbackButton": {
         "enabled": false,

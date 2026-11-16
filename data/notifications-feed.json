@@ -1,5 +1,37 @@
 [
   {
+    "id": "mwixcp8yl1w8",
+    "type": "premium",
+    "ip": "::1",
+    "hostname": null,
+    "path": "/api/nsfw/masturbation",
+    "method": "GET",
+    "message": "Notification: premium",
+    "timestamp": 1794813055387,
+    "timeFormatted": "16/11/2026 14:10:55",
+    "details": null,
+    "violations": null,
+    "violationLimit": null,
+    "count": null,
+    "maxReq": null
+  },
+  {
+    "id": "mwixcozqsvkq",
+    "type": "premium",
+    "ip": "::1",
+    "hostname": null,
+    "path": "/api/nsfw/foot",
+    "method": "GET",
+    "message": "Notification: premium",
+    "timestamp": 1794813055073,
+    "timeFormatted": "16/11/2026 14:10:55",
+    "details": "{\n  \"status\": true,\n  \"url\": \"https://cdn.discordapp.com/attachments/707201738255368194/771368914386681926/tumblr_o4gryejrvv1uxlh2uo3_1280.png\",\n  \"message\": \"Gagal memuat buffer gambar langsung, mengembalikan URL\",\n  \"timestamp\": \"2026-11-16T07:10:55.072Z\",\n  \"attribution\": \"@zyvorapi\"\n}",
+    "violations": null,
+    "violationLimit": null,
+    "count": null,
+    "maxReq": null
+  },
+  {
     "id": "mwihyj3kng75",
     "type": "stats",
     "ip": null,

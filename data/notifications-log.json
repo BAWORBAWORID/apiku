@@ -4,6 +4,11 @@
       "ip": "system",
       "type": "stats",
       "timestamp": 1794787200017
+    },
+    {
+      "ip": "::1",
+      "type": "premium",
+      "timestamp": 1794813055954
     }
   ]
 }

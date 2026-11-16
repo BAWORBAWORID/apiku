@@ -4,8 +4,8 @@
       "key": "adm",
       "name": "admin",
       "createdAt": "2026-09-29T12:24:00.494Z",
-      "lastUsed": "2026-11-14T04:17:39.276Z",
-      "usageCount": 155,
+      "lastUsed": "2026-11-16T07:10:55.098Z",
+      "usageCount": 157,
       "enabled": true,
       "role": "vip",
       "allowedEndpoints": null,
@@ -18,12 +18,12 @@
         "maxPerMinute": 60
       },
       "dailyUsage": {
-        "date": "2026-11-14",
-        "count": 20
+        "date": "2026-11-16",
+        "count": 2
       },
       "minuteUsage": {
-        "timestamp": 29910497,
-        "count": 1
+        "timestamp": 29913550,
+        "count": 2
       },
       "expiresAt": null,
       "package": {

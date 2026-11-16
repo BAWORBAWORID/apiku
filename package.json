@@ -1,7 +1,7 @@
 {
   "name": "apiku",
-  "version": "2.1.2",
-  "description": "A minimalist REST API boilerplate built with Express.js — fast, lightweight, and extensible.",
+  "version": "2.1.3",
+  "description": "A minimalist REST API boilerplate built with Express.js \u2014 fast, lightweight, and extensible.",
   "main": "index.js",
   "type": "module",
   "scripts": {

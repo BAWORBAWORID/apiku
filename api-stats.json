@@ -5693,16 +5693,16 @@
       }
     },
     "2026-11-16": {
-      "total": 688,
+      "total": 746,
       "byEndpoint": {
-        "/api/am/send": 378,
+        "/api/am/send": 405,
         "/api/checknumber/checknumber": 4,
         "/api/canvas/brat-anime": 2,
         "/api/canvas/brat-gojo": 2,
         "/api/bypass/bypasslinkv2": 4,
         "/api/bypass/bypasslinkv3": 6,
         "/api/downloader/terabox": 1,
-        "/api/maker/iqc-dark": 8,
+        "/api/maker/iqc-dark": 12,
         "/api/bypass/wellbypass": 1,
         "/api/bypass/bypasslink": 1,
         "/api/am/sendv2": 200,
@@ -5712,7 +5712,21 @@
         "/api/am/verifv2": 7,
         "/api/maker/fake-ff": 52,
         "/api/canvas/sertifikat-tolol": 2,
-        "/api/search/pinterest": 6
+        "/api/search/pinterest": 6,
+        "/maker/iqc-dark": 2,
+        "/api/nsfw/anal": 2,
+        "/api/nsfw/blowjob": 2,
+        "/api/nsfw/cum": 2,
+        "/api/nsfw/feet": 2,
+        "/api/nsfw/foot": 2,
+        "/api/nsfw/futanari": 2,
+        "/api/nsfw/hentai": 2,
+        "/api/nsfw/masturbation": 2,
+        "/api/nsfw/neko": 2,
+        "/api/nsfw/pussy": 2,
+        "/api/image/nsfw-check": 3,
+        "/api/nsfw/rule34": 1,
+        "/api/downloader/mp3juices": 1
       }
     }
   },
@@ -9979,7 +9993,7 @@
       }
     },
     "2026-W46": {
-      "total": 136241,
+      "total": 136299,
       "byEndpoint": {
         "/api/am/sendv2": 2064,
         "/api/fun/netflix": 2,
@@ -9987,7 +10001,7 @@
         "/api/tools/proxy": 23,
         "/api/tempmail/1timetech": 4,
         "/api/donasi/summary": 9,
-        "/api/am/send": 9179,
+        "/api/am/send": 9206,
         "/api/am/verifv2": 38,
         "/api/solve/turnstile": 130,
         "/api/status": 17,
@@ -10076,7 +10090,7 @@
         "/api/maker/fakenotif": 2,
         "/api/maker/fakenotifwa": 1,
         "/api/maker/igstory": 2,
-        "/api/maker/iqc-dark": 130,
+        "/api/maker/iqc-dark": 134,
         "/api/maker/iqc-pink": 3,
         "/api/maker/jarvis-meme": 2,
         "/api/maker/motivasi": 1,
@@ -10112,7 +10126,7 @@
         "/api/imagehd/ai-enhancev4": 4433,
         "/imagehd/ai-enhancev4": 2,
         "/api/am/verify": 12,
-        "/maker/iqc-dark": 38,
+        "/maker/iqc-dark": 40,
         "/api/downloader/allinone": 6,
         "/api/downloader/allinonev2": 3,
         "/api/downloader/allinonev3": 3,
@@ -10229,7 +10243,20 @@
         "/api/ai/unlimited": 1,
         "/api/ai/qwen": 2,
         "/api/solve/altcha": 1,
-        "/api/shortlink/bitly": 1
+        "/api/shortlink/bitly": 1,
+        "/api/nsfw/anal": 2,
+        "/api/nsfw/blowjob": 2,
+        "/api/nsfw/cum": 2,
+        "/api/nsfw/feet": 2,
+        "/api/nsfw/foot": 2,
+        "/api/nsfw/futanari": 2,
+        "/api/nsfw/hentai": 2,
+        "/api/nsfw/masturbation": 2,
+        "/api/nsfw/neko": 2,
+        "/api/nsfw/pussy": 2,
+        "/api/image/nsfw-check": 3,
+        "/api/nsfw/rule34": 1,
+        "/api/downloader/mp3juices": 1
       }
     },
     "2026-W47": {
@@ -12646,7 +12673,7 @@
       }
     },
     "2026-11": {
-      "total": 146522,
+      "total": 146580,
       "byEndpoint": {
         "/api/tools/nikparse": 2,
         "/api/stalker/freefire": 71,
@@ -12658,7 +12685,7 @@
         "/api/search/youtube-search": 4,
         "/api/bypass/safelink": 23,
         "/api/downloader/facebook": 18,
-        "/api/maker/iqc-dark": 245,
+        "/api/maker/iqc-dark": 249,
         "/api/solve/turnstile": 292,
         "/api/topup/ff": 44,
         "/api/topup/ml": 8,
@@ -12679,7 +12706,7 @@
         "/api/am/bulkv3": 11,
         "/api/downloader/allinonev2": 7,
         "/api/ai/cloudai": 6,
-        "/api/am/send": 13595,
+        "/api/am/send": 13622,
         "/api/am/verifv2": 304,
         "/api/downloader/terabox": 17,
         "/api/downloader/9xbuddy": 39,
@@ -12956,11 +12983,11 @@
         "/api/tools/base64": 1,
         "/api/payment/qris-decode": 1,
         "/api/downloader/tiktokio": 3,
-        "/api/nsfw/foot": 24,
+        "/api/nsfw/foot": 26,
         "/api/kalender/hari": 1,
         "/api/kalender": 1,
         "/api/search/kalender": 1,
-        "/api/nsfw/masturbation": 3,
+        "/api/nsfw/masturbation": 5,
         "/api/bypass/bypassv4": 32,
         "/api/payment/gopay-me": 2,
         "/api/payment/gopay-qris": 1,
@@ -12994,7 +13021,7 @@
         "/api/downloader/spotifyv2": 1,
         "/api/downloader/spotify": 9,
         "/solve/uam": 2,
-        "/api/image/nsfw-check": 1,
+        "/api/image/nsfw-check": 4,
         "/api/movie/melolo": 99,
         "/api/search/cekbansos": 1,
         "/api/tempmail/emailnator": 3,
@@ -13093,7 +13120,7 @@
         "/api/search/spotifyv2": 2,
         "/api/search/tiktok-search": 2,
         "/api/image/removebg": 5,
-        "/maker/iqc-dark": 66,
+        "/maker/iqc-dark": 68,
         "/maker/fake-tele": 2,
         "/api/image/unblurv2": 3,
         "/api/maker/fakeig": 2,
@@ -13140,12 +13167,22 @@
         "/api/canvas/struk-generator": 1,
         "/api/donasi/qr/DNR-MWHFVWJY-3F8D.png": 1,
         "/api/anime/hidoristream": 8,
-        "/api/solve/altcha": 1
+        "/api/solve/altcha": 1,
+        "/api/nsfw/anal": 2,
+        "/api/nsfw/blowjob": 2,
+        "/api/nsfw/cum": 2,
+        "/api/nsfw/feet": 2,
+        "/api/nsfw/futanari": 2,
+        "/api/nsfw/hentai": 2,
+        "/api/nsfw/neko": 2,
+        "/api/nsfw/pussy": 2,
+        "/api/nsfw/rule34": 1,
+        "/api/downloader/mp3juices": 1
       }
     }
   },
   "allTime": {
-    "total": 285788,
+    "total": 285846,
     "byEndpoint": {
       "/api/am/verify": {
         "total": 993,
@@ -13299,10 +13336,10 @@
         }
       },
       "/api/am/send": {
-        "total": 14805,
+        "total": 14832,
         "byStatus": {
           "2": 965,
-          "4": 13736,
+          "4": 13763,
           "5": 104
         }
       },
@@ -13490,17 +13527,17 @@
         }
       },
       "/api/nsfw/foot": {
-        "total": 54,
+        "total": 56,
         "byStatus": {
-          "2": 18,
-          "4": 36
+          "2": 19,
+          "4": 37
         }
       },
       "/api/nsfw/masturbation": {
-        "total": 18,
+        "total": 20,
         "byStatus": {
-          "2": 2,
-          "4": 16
+          "2": 3,
+          "4": 17
         }
       },
       "/api/tools/encrypt": {
@@ -14503,9 +14540,9 @@
         }
       },
       "/api/maker/iqc-dark": {
-        "total": 300,
+        "total": 304,
         "byStatus": {
-          "2": 232,
+          "2": 236,
           "3": 10,
           "5": 58
         }
@@ -14945,11 +14982,11 @@
         }
       },
       "/api/image/nsfw-check": {
-        "total": 69,
+        "total": 72,
         "byStatus": {
           "2": 61,
           "4": 2,
-          "5": 6
+          "5": 9
         }
       },
       "/api/fun/animehub": {
@@ -25070,9 +25107,9 @@
         }
       },
       "/maker/iqc-dark": {
-        "total": 66,
+        "total": 68,
         "byStatus": {
-          "4": 66
+          "4": 68
         }
       },
       "/maker/fake-tele": {
@@ -25135,11 +25172,71 @@
           "2": 4,
           "4": 4
         }
+      },
+      "/api/nsfw/anal": {
+        "total": 2,
+        "byStatus": {
+          "4": 2
+        }
+      },
+      "/api/nsfw/blowjob": {
+        "total": 2,
+        "byStatus": {
+          "4": 2
+        }
+      },
+      "/api/nsfw/cum": {
+        "total": 2,
+        "byStatus": {
+          "4": 2
+        }
+      },
+      "/api/nsfw/feet": {
+        "total": 2,
+        "byStatus": {
+          "4": 2
+        }
+      },
+      "/api/nsfw/futanari": {
+        "total": 2,
+        "byStatus": {
+          "4": 2
+        }
+      },
+      "/api/nsfw/hentai": {
+        "total": 2,
+        "byStatus": {
+          "4": 2
+        }
+      },
+      "/api/nsfw/neko": {
+        "total": 2,
+        "byStatus": {
+          "4": 2
+        }
+      },
+      "/api/nsfw/pussy": {
+        "total": 2,
+        "byStatus": {
+          "4": 2
+        }
+      },
+      "/api/nsfw/rule34": {
+        "total": 1,
+        "byStatus": {
+          "2": 1
+        }
+      },
+      "/api/downloader/mp3juices": {
+        "total": 1,
+        "byStatus": {
+          "2": 1
+        }
       }
     }
   },
   "_metadata": {
-    "lastUpdated": "2026-11-16T06:50:19.448Z",
+    "lastUpdated": "2026-11-16T07:18:12.893Z",
     "version": "json"
   }
 }

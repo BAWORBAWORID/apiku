@@ -3,6 +3,12 @@
         "enabled": true,
         "items": [
             {
+                "date": "November 17, 2026",
+                "title": "New Endpoint — AnimeTosho Scraper",
+                "releaseVersion": "2.1.4",
+                "description": "**Pembaruan endpoint:**\n\n**Anime (Baru)**\n- `/api/anime/animetosho` — Scraper halaman rilis AnimeTosho (`/view/...`): ambil metadata & link download (Torrent, Magnet URI, dan DDL/mirror MultiUp per part). Parameter: `url` (wajib).\n\nContoh: `/api/anime/animetosho?url=https://animetosho.org/view/<slug>`"
+            },
+            {
                 "date": "November 15, 2026",
                 "title": "Update Endpoint — Hidori Stream Anime & Pembersihan Sistem",
                 "releaseVersion": "2.1.3",
@@ -1218,7 +1224,17 @@
         "/api/downloader/allinonev5": "online",
         "/api/anime/komikcast": "online",
         "/api/nsfw/rule34": "online",
-        "/api/downloader/mp3juices": "online"
+        "/api/downloader/mp3juices": "online",
+        "/api/anime/hidoristream": "online",
+        "/api/fun/reach-ch-v2": "vip",
+        "/api/anime/doujindesu": "online",
+        "/api/bypass/sflgl": "online",
+        "/api/bypass/bicolink": "online",
+        "/api/tempmail/emailqu": "online",
+        "/api/imagehd/removebg-nb": "online",
+        "/api/imagehd/upscale-nb": "online",
+        "/api/movie/nunodrama": "online",
+        "/api/anime/animetosho": "online"
     },
     "feedbackButton": {
         "enabled": false,
@@ -1241,6 +1257,13 @@
         "windowMs": 86400000
     },
     "releases": [
+        {
+            "version": "2.1.4",
+            "date": "November 17, 2026",
+            "changelog": [
+                "Anime — Endpoint baru: /api/anime/animetosho (scraper halaman rilis AnimeTosho /view/...: metadata, torrent, magnet, DDL/mirror MultiUp per part; param: url)"
+            ]
+        },
         {
             "changelog": [
                 "AI Chat — Endpoint baru: /api/ai/ainorestrictions, /api/ai/easemate, /api/ai/imagine",

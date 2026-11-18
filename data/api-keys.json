@@ -4,8 +4,8 @@
       "key": "adm",
       "name": "admin",
       "createdAt": "2026-09-29T12:24:00.494Z",
-      "lastUsed": "2026-11-16T07:10:55.098Z",
-      "usageCount": 157,
+      "lastUsed": "2026-11-16T10:38:58.603Z",
+      "usageCount": 159,
       "enabled": true,
       "role": "vip",
       "allowedEndpoints": null,
@@ -19,11 +19,11 @@
       },
       "dailyUsage": {
         "date": "2026-11-16",
-        "count": 2
+        "count": 4
       },
       "minuteUsage": {
-        "timestamp": 29913550,
-        "count": 2
+        "timestamp": 29913758,
+        "count": 1
       },
       "expiresAt": null,
       "package": {
@@ -63,39 +63,6 @@
       }
     },
     {
-      "key": "reach-ch-free",
-      "name": "free reach ch",
-      "createdAt": "2026-10-12T14:03:22.211Z",
-      "lastUsed": "2026-10-22T01:05:53.963Z",
-      "usageCount": 2,
-      "enabled": true,
-      "role": "vip",
-      "allowedEndpoints": [
-        "/api/fun/reach*"
-      ],
-      "allowedStatuses": [
-        "premium",
-        "vip"
-      ],
-      "rateLimit": {
-        "maxPerDay": 100,
-        "maxPerMinute": 20
-      },
-      "dailyUsage": {
-        "date": "2026-10-22",
-        "count": 1
-      },
-      "minuteUsage": {
-        "timestamp": 29877185,
-        "count": 1
-      },
-      "expiresAt": null,
-      "package": {
-        "type": "vip",
-        "expired": null
-      }
-    },
-    {
       "key": "apa_apikey_RPgnr8mtuFApvPO3",
       "name": "apa_apikey_RPgnr8mtuFApvPO3",
       "createdAt": "2026-11-04T02:55:21.328Z",
@@ -125,6 +92,36 @@
       "package": {
         "type": "vip",
         "expired": "2026-12-04T02:55:20.940Z"
+      }
+    },
+    {
+      "key": "ac_live_23fb30f79f9a1b21686c36bf2c61c5be80c6bfecdba06c9b",
+      "name": "free reach",
+      "createdAt": "2026-11-16T10:51:05.611Z",
+      "lastUsed": "2026-11-16T12:34:14.422Z",
+      "usageCount": 1,
+      "enabled": true,
+      "role": "premium",
+      "allowedEndpoints": null,
+      "allowedStatuses": [
+        "premium"
+      ],
+      "rateLimit": {
+        "maxPerDay": 1000,
+        "maxPerMinute": 50
+      },
+      "dailyUsage": {
+        "date": "2026-11-16",
+        "count": 1
+      },
+      "minuteUsage": {
+        "timestamp": 29913874,
+        "count": 1
+      },
+      "expiresAt": null,
+      "package": {
+        "type": "premium",
+        "expired": null
       }
     }
   ]

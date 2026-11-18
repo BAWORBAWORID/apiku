@@ -72,15 +72,7 @@ export default {
   description: "Cari gambar Rule34 berdasarkan tag dan kirim langsung sebagai gambar (jpg/png)",
   category: "NSFW",
   methods: ["GET"],
-  params: [
-    {
-      name: "query",
-      in: "query",
-      required: true,
-      schema: { type: "string" },
-      description: "Tag pencarian Rule34 (contoh: cute_cat, 1girl solo)",
-    },
-  ],
+  params: ["query"],
 
   async run(req, res) {
     try {

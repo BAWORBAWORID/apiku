@@ -3,6 +3,12 @@
         "enabled": true,
         "items": [
             {
+                "date": "November 17, 2026",
+                "title": "New Endpoint — AnimeTosho Scraper",
+                "releaseVersion": "2.1.4",
+                "description": "**Pembaruan endpoint:**\n\n**Anime (Baru)**\n- `/api/anime/animetosho` — Scraper halaman rilis AnimeTosho (`/view/...`): ambil metadata & link download (Torrent, Magnet URI, dan DDL/mirror MultiUp per part). Parameter: `url` (wajib).\n\nContoh: `/api/anime/animetosho?url=https://animetosho.org/view/<slug>`"
+            },
+            {
                 "date": "November 15, 2026",
                 "title": "Update Endpoint — Hidori Stream Anime & Pembersihan Sistem",
                 "releaseVersion": "2.1.3",

@@ -1234,7 +1234,9 @@
         "/api/imagehd/removebg-nb": "online",
         "/api/imagehd/upscale-nb": "online",
         "/api/movie/nunodrama": "online",
-        "/api/anime/animetosho": "online"
+        "/api/anime/animetosho": "online",
+        "/api/anime/manta": "online",
+        "/api/am/bulkv3": "online"
     },
     "feedbackButton": {
         "enabled": false,

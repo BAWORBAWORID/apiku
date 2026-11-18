@@ -166,22 +166,7 @@ export default {
     "Search & download YouTube audio/video (MP3/MP4) via MP3Juices/FLVTO engine",
   category: "Downloader",
   methods: ["GET", "POST"],
-  params: [
-    {
-      name: "query",
-      in: "query",
-      required: true,
-      schema: { type: "string" },
-      description: "Kata kunci pencarian, URL YouTube, atau video ID",
-    },
-    {
-      name: "type",
-      in: "query",
-      required: false,
-      schema: { type: "string", enum: ["mp3", "mp4"], default: "mp3" },
-      description: "Format output: mp3 (audio) atau mp4 (video)",
-    },
-  ],
+  params: ["query", "type"],
   paramsSchema: {
     query: {
       type: "string",

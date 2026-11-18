@@ -1,5 +1,37 @@
 [
   {
+    "id": "mwllcczyw64n",
+    "type": "vip",
+    "ip": "114.10.151.55",
+    "hostname": null,
+    "path": "/api/fun/reach-ch-v2",
+    "method": "POST",
+    "message": "Notification: vip",
+    "timestamp": 1794974283016,
+    "timeFormatted": "18/11/2026 10:58:03",
+    "details": "{\n  \"status\": true,\n  \"message\": \"Reaksi berhasil dikirim\",\n  \"link\": \"https://whatsapp.com/channel/0029Vb8vO7o2f3EEsjefzm0w/847\",\n  \"emoji\": [\n    \"❤️\"\n  ],\n  \"total\": 171,\n  \"sukses\": 171,\n  \"metadata\": {\n    \"processing_time\": \"2199ms\"\n  },\n  \"timestamp\": \"2026-11-18T03:58:03.012Z\",\n  \"attribution\": \"@zyvorapi\"\n}",
+    "violations": null,
+    "violationLimit": null,
+    "count": null,
+    "maxReq": null
+  },
+  {
+    "id": "mwll9bqn4xi3",
+    "type": "vip",
+    "ip": "114.10.151.55",
+    "hostname": null,
+    "path": "/api/fun/reach-ch-v2",
+    "method": "POST",
+    "message": "Notification: vip",
+    "timestamp": 1794974141080,
+    "timeFormatted": "18/11/2026 10:55:41",
+    "details": "{\n  \"status\": false,\n  \"protected\": true,\n  \"channel_id\": \"0029Vb8vO7o2f3EEsjefzm0w\",\n  \"message\": \"Saluran ini dilindungi (Protected Channel).\"\n}",
+    "violations": null,
+    "violationLimit": null,
+    "count": null,
+    "maxReq": null
+  },
+  {
     "id": "mwlcu8fngqhp",
     "type": "stats",
     "ip": null,

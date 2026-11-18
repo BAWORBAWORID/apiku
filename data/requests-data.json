@@ -1,11 +1,11 @@
 {
   "2a06:98c0:3600::103": {
-    "count": 3,
+    "count": 14,
     "windowStart": 1794966188745,
-    "totalRequests": 737,
+    "totalRequests": 748,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794966206627,
+    "lastRequest": 1794980895651,
     "firstRequest": 1792909755366,
     "lastPath": "/maker/iqc-dark",
     "lastUserAgent": "Mozilla/5.0",
@@ -372,12 +372,12 @@
     "lastNotif": 0
   },
   "161.120.177.213": {
-    "count": 184,
+    "count": 223,
     "windowStart": 1794899047517,
-    "totalRequests": 1748,
+    "totalRequests": 1787,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794956163108,
+    "lastRequest": 1794981082862,
     "firstRequest": 1792943960224,
     "lastPath": "/am/sendv2",
     "lastUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -1992,12 +1992,12 @@
     "lastNotif": 0
   },
   "161.120.186.182": {
-    "count": 180,
+    "count": 214,
     "windowStart": 1794899053233,
-    "totalRequests": 1647,
+    "totalRequests": 1681,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794956147102,
+    "lastRequest": 1794981066883,
     "firstRequest": 1793165294025,
     "lastPath": "/am/sendv2",
     "lastUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -10632,12 +10632,12 @@
     "lastNotif": 0
   },
   "178.83.188.232": {
-    "count": 512,
+    "count": 767,
     "windowStart": 1794935708958,
-    "totalRequests": 15910,
+    "totalRequests": 16165,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794966365255,
+    "lastRequest": 1794981663757,
     "firstRequest": 1793984885474,
     "lastPath": "/am/send",
     "lastUserAgent": "Unknown",
@@ -20568,14 +20568,14 @@
     "lastNotif": 0
   },
   "182.10.109.3": {
-    "count": 32,
-    "windowStart": 1794808280131,
-    "totalRequests": 51,
+    "count": 4,
+    "windowStart": 1794978251445,
+    "totalRequests": 55,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794879936065,
+    "lastRequest": 1794978312061,
     "firstRequest": 1794710618974,
-    "lastPath": "/bypass/bypasslinkv3",
+    "lastPath": "/bypass/bypasslinkv2",
     "lastUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
     "lastNotif": 0
   },
@@ -21444,12 +21444,12 @@
     "lastNotif": 0
   },
   "2001:448a:2050:1ee0:6075:8bbd:72df:2f17": {
-    "count": 8,
+    "count": 10,
     "windowStart": 1794916509716,
-    "totalRequests": 8,
+    "totalRequests": 10,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794919685895,
+    "lastRequest": 1794975752882,
     "firstRequest": 1794916509716,
     "lastPath": "/bypass/bypasslinkv3",
     "lastUserAgent": "Mozilla/5.0 (Linux; Android 14; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
@@ -21624,14 +21624,14 @@
     "lastNotif": 0
   },
   "114.10.151.55": {
-    "count": 4,
+    "count": 9,
     "windowStart": 1794918348140,
-    "totalRequests": 4,
+    "totalRequests": 9,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794937012309,
+    "lastRequest": 1794974280812,
     "firstRequest": 1794918348140,
-    "lastPath": "/am/bulk",
+    "lastPath": "/fun/reach-ch-v2",
     "lastUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
     "lastNotif": 0
   },
@@ -21900,12 +21900,12 @@
     "lastNotif": 0
   },
   "210.87.92.33": {
-    "count": 1,
+    "count": 2,
     "windowStart": 1794928335545,
-    "totalRequests": 1,
+    "totalRequests": 2,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794928335545,
+    "lastRequest": 1794968841120,
     "firstRequest": 1794928335545,
     "lastPath": "/bypass/bypasslinkv3",
     "lastUserAgent": "Mozilla/5.0 (Linux; Android 14; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
@@ -22140,12 +22140,12 @@
     "lastNotif": 0
   },
   "114.10.79.157": {
-    "count": 3,
+    "count": 5,
     "windowStart": 1794959873147,
-    "totalRequests": 3,
+    "totalRequests": 5,
     "violations": 0,
     "violationTimes": [],
-    "lastRequest": 1794963506655,
+    "lastRequest": 1794968613371,
     "firstRequest": 1794959873147,
     "lastPath": "/bypass/bypasslinkv3",
     "lastUserAgent": "Mozilla/5.0 (Linux; Android 14; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
@@ -22173,6 +22173,66 @@
     "firstRequest": 1794966187720,
     "lastPath": "/maker/iqc-dark",
     "lastUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Mobile Safari/537.36",
+    "lastNotif": 0
+  },
+  "13.184.109.146": {
+    "count": 1,
+    "windowStart": 1794972058117,
+    "totalRequests": 1,
+    "violations": 0,
+    "violationTimes": [],
+    "lastRequest": 1794972058117,
+    "firstRequest": 1794972058117,
+    "lastPath": "/bypass/bypasslinkv3",
+    "lastUserAgent": "node",
+    "lastNotif": 0
+  },
+  "2001:448a:c130:7f3b:dc91:d662:460d:b061": {
+    "count": 1,
+    "windowStart": 1794972136475,
+    "totalRequests": 1,
+    "violations": 0,
+    "violationTimes": [],
+    "lastRequest": 1794972136475,
+    "firstRequest": 1794972136475,
+    "lastPath": "/bypass/bypasslinkv3",
+    "lastUserAgent": "Mozilla/5.0 (Linux; Android 14; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
+    "lastNotif": 0
+  },
+  "187.40.44.121": {
+    "count": 1,
+    "windowStart": 1794972620018,
+    "totalRequests": 1,
+    "violations": 0,
+    "violationTimes": [],
+    "lastRequest": 1794972620018,
+    "firstRequest": 1794972620018,
+    "lastPath": "/bypass/bypasslinkv3",
+    "lastUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "lastNotif": 0
+  },
+  "114.122.78.80": {
+    "count": 4,
+    "windowStart": 1794980667524,
+    "totalRequests": 4,
+    "violations": 0,
+    "violationTimes": [],
+    "lastRequest": 1794980871414,
+    "firstRequest": 1794980667524,
+    "lastPath": "/maker/iqc-dark",
+    "lastUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
+    "lastNotif": 0
+  },
+  "114.122.72.184": {
+    "count": 3,
+    "windowStart": 1794980809972,
+    "totalRequests": 3,
+    "violations": 0,
+    "violationTimes": [],
+    "lastRequest": 1794980893994,
+    "firstRequest": 1794980809972,
+    "lastPath": "/maker/iqc-dark",
+    "lastUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
     "lastNotif": 0
   }
 }

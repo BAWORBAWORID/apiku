@@ -76,18 +76,6 @@ export default {
         });
       }
 
-      // Proteksi saluran terlindungi (sama seperti reach-ch)
-      const channelId = (url.match(/whatsapp\.com\/channel\/([A-Za-z0-9_-]+)/i) || [])[1];
-      if (channelId === '0029Vb8vO7o2f3EEsjefzm0w') {
-        logger.warn(`[REACH-CH-V2] Akses ditolak: saluran ${channelId} dilindungi.`);
-        return res.status(403).json({
-          status: false,
-          protected: true,
-          channel_id: channelId,
-          message: 'Saluran ini dilindungi (Protected Channel).',
-        });
-      }
-
       if (!emojis.length) {
         return res.status(400).json({
           status: false,
